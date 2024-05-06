@@ -9,8 +9,6 @@ spec:
   interval: 1m0s
   ref:
     branch: master
-  secretRef:
-    name: homelab-github-pat
   url: https://github.com/afonsoc12/homelab
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1

@@ -1,0 +1,81 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+    name: discord
+    namespace: flux-system
+spec:
+    type: discord
+    secretRef:
+        name: discord-webhook
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-05-06T17:32:55Z"
+    mac: ENC[AES256_GCM,data:v22mNW7h79bHXq5l22faVqyCxpn8ww0rAs6htYrXWi2gbJl/FBruwwdkLaIHJPGoctPl6b3CCl/wl7FN1vYWBO9xcsBGiK8KvG0xeAed9KTOKoSkeejfnDmZGDt1sVMVeXt1meFwIVgJdGJ/hNsdbsg0iOuxRU1TpNmdoEHq4gY=,iv:oXy6YbTnDhHPzCdDtfo1BhUfRClKcg+HH3FxHErYobs=,tag:15LTmRw85YTMWTJuUzKEeQ==,type:str]
+    pgp:
+        - created_at: "2024-05-06T17:32:55Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//VyG3M2GBgUO+XBB3KOvLsoqi5MlCZXUznf0XgOcYqxEy
+            WQwyBTGxl7FqNiGAL79Zw1j+qNDVwWTYtKQCLMVb+iFUif1rpFyzMvloX9OyVedW
+            gYr/lZwar3CyIzvoHwbXWEdLWJhc4+Bp+TrHcQHiShyb8Zou51XRJ0upVt7aKXzB
+            zukd1+h/8YRXd8pKbASkF0II3PAaG/yAUz4bMFtaGcZJKhlXM/l6nXYPE1SLS1KE
+            ng3SHCvUW/l58lTxFHtFoTtdTqgRMtwYtfcV813wRYx8XKpErYIzRUuT9vX4oEbg
+            pAzT5quRwgl1QZIEaNN9CwCMvC6gGFGLSYft3YVxQfClEbrXu0l05xNexwwvrTWE
+            Wp74qixHdy5Oh/5HeTy9uQusaCCRwem7Spd//zAdzofNqjsauNC98fH3fSGgGux2
+            CtlGOixUJLtjsNqJPG3Lc1AFDaVPh+wNMUL02a5JrEaarherItAVjQcMXjzLA6Xc
+            /RkuuF361g1a9wXhIzmJqV6S5SGYDCPPXUhBqkWZ+eSHRWJhM5xtS9H3VZXfF6yQ
+            SzvAzq2cX66G0KB/sXkZeO577XemDpeabwx+gBmFdbHng3m8Mtpa1oK37Og05ZDs
+            jwjCdlE3PI6D9vRsoGijSYpBe9DHIapNJslqs0xs+RUXYw2cLsgbJQg6ImignjHU
+            aAEJAhDp9HxDhIrUZIJWZkHzvMTV1kE/+3y4RhyQhL/lwbCycMNwVZ5F8xi3oRTf
+            yHy961Bhh6+wOlnBgTtv+iCDDFz9eT0yqFNVLJ9fITaGh+LG69UxB5rHWyewhmwm
+            xC9sXhT58Pf6
+            =Wr26
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
+---
+apiVersion: v1
+kind: Secret
+metadata:
+    name: discord-webhook
+    namespace: flux-system
+stringData:
+    address: ENC[AES256_GCM,data:fm9TLOy4Fs0GxMYATBoIlSL7wxDCSz88e52boh74QKX6bWAa6C/lqq0Nch1BVjwO7KdGb0sIh2E+5Cdf3y8A8bjq/mXYL6bVkzCUlSa/oKTy/bKJ7+0bwqCSCuG9y98A11nTgR78Y6U64LlG8BQTp1hcE8/CnEtcNg==,iv:s7IE5kPxObPGGAQUp1GSQhT6pcFA7LFUiW6/xpw/r+M=,tag:Y+TRC9+OhmRFrkckpp+pOQ==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-05-06T17:32:55Z"
+    mac: ENC[AES256_GCM,data:v22mNW7h79bHXq5l22faVqyCxpn8ww0rAs6htYrXWi2gbJl/FBruwwdkLaIHJPGoctPl6b3CCl/wl7FN1vYWBO9xcsBGiK8KvG0xeAed9KTOKoSkeejfnDmZGDt1sVMVeXt1meFwIVgJdGJ/hNsdbsg0iOuxRU1TpNmdoEHq4gY=,iv:oXy6YbTnDhHPzCdDtfo1BhUfRClKcg+HH3FxHErYobs=,tag:15LTmRw85YTMWTJuUzKEeQ==,type:str]
+    pgp:
+        - created_at: "2024-05-06T17:32:55Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//VyG3M2GBgUO+XBB3KOvLsoqi5MlCZXUznf0XgOcYqxEy
+            WQwyBTGxl7FqNiGAL79Zw1j+qNDVwWTYtKQCLMVb+iFUif1rpFyzMvloX9OyVedW
+            gYr/lZwar3CyIzvoHwbXWEdLWJhc4+Bp+TrHcQHiShyb8Zou51XRJ0upVt7aKXzB
+            zukd1+h/8YRXd8pKbASkF0II3PAaG/yAUz4bMFtaGcZJKhlXM/l6nXYPE1SLS1KE
+            ng3SHCvUW/l58lTxFHtFoTtdTqgRMtwYtfcV813wRYx8XKpErYIzRUuT9vX4oEbg
+            pAzT5quRwgl1QZIEaNN9CwCMvC6gGFGLSYft3YVxQfClEbrXu0l05xNexwwvrTWE
+            Wp74qixHdy5Oh/5HeTy9uQusaCCRwem7Spd//zAdzofNqjsauNC98fH3fSGgGux2
+            CtlGOixUJLtjsNqJPG3Lc1AFDaVPh+wNMUL02a5JrEaarherItAVjQcMXjzLA6Xc
+            /RkuuF361g1a9wXhIzmJqV6S5SGYDCPPXUhBqkWZ+eSHRWJhM5xtS9H3VZXfF6yQ
+            SzvAzq2cX66G0KB/sXkZeO577XemDpeabwx+gBmFdbHng3m8Mtpa1oK37Og05ZDs
+            jwjCdlE3PI6D9vRsoGijSYpBe9DHIapNJslqs0xs+RUXYw2cLsgbJQg6ImignjHU
+            aAEJAhDp9HxDhIrUZIJWZkHzvMTV1kE/+3y4RhyQhL/lwbCycMNwVZ5F8xi3oRTf
+            yHy961Bhh6+wOlnBgTtv+iCDDFz9eT0yqFNVLJ9fITaGh+LG69UxB5rHWyewhmwm
+            xC9sXhT58Pf6
+            =Wr26
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
