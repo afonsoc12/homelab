@@ -1,0 +1,95 @@
+nameOverride: ""
+fullnameOverride: ""
+
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+podAnnotations: {}
+  # annot_1: abc
+  # annot_2: def
+
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+
+image:
+  repository: esphome/esphome
+  tag: latest
+  pullPolicy: Always
+
+hostNetwork: true
+
+ports:
+  - containerPort: 6052
+    name: http
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+volumeMounts:
+- name: config
+  mountPath: "/config"
+
+volumes:
+- name: config
+  persistentVolumeClaim:
+    claimName: esphome-pvc
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+ingress:
+  enabled: true
+  authelia: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # adds 301 redirect with trailing slash
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/esphome)$ $1/ permanent;
+
+  tls:
+    - secretName: local-wildcard-cert
+
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: local.{{ .Values.domain }}
+      paths:
+        - path: /esphome(/|$)(.*)
+          pathType: Prefix
+
+
+livenessProbe: {}
+
+readinessProbe: {}
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  privileged: true
+
+nodeSelector:
+  kubernetes.io/hostname: k3s-m1
+
+tolerations: []
+
+affinity: {}

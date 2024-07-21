@@ -1,0 +1,80 @@
+nameOverride: ""
+fullnameOverride: ""
+
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+podAnnotations: {}
+  # annot_1: abc
+  # annot_2: def
+
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+
+image:
+  repository: binwiederhier/ntfy
+  tag: latest
+  pullPolicy: Always
+
+#   restartPolicy:
+
+command: {}
+
+args: ["serve", "--cache-file", "/var/cache/ntfy/cache.db"]
+
+ports:
+  - containerPort: 80
+    name: http
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+configmap:
+  data:
+    server.yml: |
+      base-url: https://ntfy.local.{{ .Values.domain }}
+      # iOS users:
+      #   If you use the iOS ntfy app, you MUST configure this to receive timely notifications. You'll like want this:
+      upstream-base-url: https://ntfy.sh
+volumeMounts:
+- name: config
+  mountPath: "/etc/ntfy"
+  readOnly: true
+- name: cache
+  mountPath: /var/cache/ntfy
+
+volumes:
+- name: config
+  configMap:
+    name: ntfy
+- name: cache
+  mountPvc: true
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi
+
+ingress:
+  enabled: true
+  authelia: true
+  className: "nginx"
+  annotations:
+  tls:
+   - secretName: local-wildcard-cert
+
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: ntfy.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix

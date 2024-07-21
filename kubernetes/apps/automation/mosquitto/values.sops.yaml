@@ -1,0 +1,85 @@
+labels: {}
+# label_1: abc
+# label_2: def
+replicas: 1
+image:
+    repository: eclipse-mosquitto
+    tag: latest
+ports:
+    - containerPort: 1883
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+    type: LoadBalancer
+    loadBalancerIP: ENC[AES256_GCM,data:vUGPMkf2RJTAE+v3B+E=,iv:S7Jh088amDXlcswY+Y5Sa/SJpb9ESnli6yqIoJcb5N8=,tag:r3BmV1wveZX6bvHEWbI1uQ==,type:str]
+secret:
+    mountEnv: false
+    stringData:
+        pwfile: ENC[AES256_GCM,data:F6XMRxQkvY2LE1tE68LPfXg9SN7JwgEB4o8XzKT1+nPaLwpRDvqdLTrNBtWq5YbSsmzKtF8tNyW8C2SqMBy4CXRUmEdh37Q89sc04GtvJDy1qbfat2v2S13p1CY/DUJDU4Ak0zdgO7lnvfPWRrc3uxXuitiFpMs=,iv:dhA9HyACOrSB/Vm+P01gpBUqbYdBS3z6evep6lBR8O0=,tag:Nsxe06NLdKO+rXDIbyrv7g==,type:str]
+configmap:
+    mountEnv: false
+    data:
+        mosquitto.conf: |
+            per_listener_settings true
+            listener 1883
+            persistence true
+            persistence_location /mosquitto/data
+            log_type error
+            log_type warning
+            log_type notice
+            log_type information
+            allow_anonymous false
+            password_file /mosquitto/config/pwfile
+volumeMounts:
+    - name: config
+      mountPath: /mosquitto/config/mosquitto.conf
+      subPath: mosquitto.conf
+    - name: pwfile
+      mountPath: /mosquitto/config/pwfile
+      subPath: pwfile
+volumes:
+    - name: config
+      configMap:
+        name: mosquitto
+        items:
+            - key: mosquitto.conf
+              path: mosquitto.conf
+    - name: pwfile
+      secret:
+        secretName: mosquitto
+        items:
+            - key: pwfile
+              path: pwfile
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T14:54:03Z"
+    mac: ENC[AES256_GCM,data:YjFobLbRZC/fAe+fVnZxVXk2Z7PmVTrD99k+sEcp3Sb0/HztQ2pwSrNS0nwa4C9Ao87o1PlE8h+/4w6cYZtrKDxBuyQgFwKFPyPDA+TshXqDZTDJoAaCKtRF9/6eu4l+hLmxjOtBVkGA/tQHK/QGUxXC9wCmznSyeASD+zhpxUY=,iv:vwoUIENZkA4+LuZ7+vI96drhYcNu5HFp8oHaM4gMR8Y=,tag:uGoRF0AvXghnplrbiS5CRw==,type:str]
+    pgp:
+        - created_at: "2024-07-20T14:53:29Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/+JF86sKEiYCr1SJ9q2QWvrR4NxhO6FXpYvj42/HVxMShu
+            OPsDpqp6I3YziWcrCieP7KoETwrRggk3pWHQVQ1ENu4ZZWWhDixhFmBOOQAcE1Px
+            i0C3wObIQgWKXW6OfMO80S7ZxRXfqLGEaw3QWfq1J1dqdSQ4gi/1Z/dGCd3SzLk2
+            KL58rOZVXqexPiZ7lGtVFJFX7eKPVZxt+66y+pl2Sm7S/76RkQx0dQnZTWjPa9t5
+            vLqgN8US4Ja7cfWCvDocsyA/xrB3Km1WjBrhJE3gFHd6NB8EV44g/JplT27Qp9yC
+            94OY3HgZm/uPK5YhgLOW1xG0S+VEZC+LhtKsop0UZk6tsF6dfO0tXua0PW1Vu9RQ
+            EYtDHxBzIVwulT+3BNhgbbW9QqOOK10n0V+wXrZSP9UgX1Qj6soR9rHgKhn19qie
+            PB4UGZJu54BmLxN7H8K2gFWrvXiqWXBVv+lLFDEQS2y5NYlrg6DF5TIrK06H6rRF
+            qopTiUS8scDu5L3h0AytUNrYu+hVdw2aIV8hSnwVeGGcPGCW8kiTQwHUEE514kLn
+            2100XxQzbECVY9j0Or3ulpn/xADv7RiBnSgdMl1/d28puxBLcISt7BrAa8s+suwz
+            eJAkc5Bm7rmlB3rwGYz9sGI/dFEuc3pIpuZ+kqxbCelnXWJXiXw5NYpoA/R+MTDU
+            aAEJAhDl4LMh3qCsdHlCum05E1kWhoZNGL9CuVDfbsYulIqYBj9fKv/MijuZRD+Z
+            p3qbMDMCu+yMidlQGZuk0zpA8VDID6GJLzh/GADXILdyRNnLmWCwrNmOWfNcJi3X
+            X9wz7mNmfmwR
+            =0ImY
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData|loadBalancerIP)$
+    version: 3.9.0

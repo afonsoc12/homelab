@@ -1,0 +1,22 @@
+# Default values for external-service.
+
+# Labels applied to all templates
+labels:
+  host: rpi_4b
+
+# External server configuration
+server:
+  ip: "{{ .Values.ips.rpi_4b }}"
+  port: 80
+
+# Ingress configuration
+ingress:
+  enabled: true
+  authelia: true
+  tls:
+  - secretName: local-wildcard-cert
+  hosts:
+    - host: adguard.local.{{ .Values.domain }}
+      paths:
+      - path: /
+        pathType: Prefix

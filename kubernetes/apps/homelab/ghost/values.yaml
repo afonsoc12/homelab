@@ -1,0 +1,111 @@
+nameOverride: ""
+fullnameOverride: ""
+
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+podAnnotations: {}
+  # annot_1: abc
+  # annot_2: def
+
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+
+image:
+  repository: docker.io/ghost
+  tag: latest
+  pullPolicy: Always
+
+#   restartPolicy:
+
+command: {}
+
+args: {}
+
+ports:
+  - containerPort: 2368
+    name: http
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+# secret:
+#   mountEnv: true
+#   encryptedData:
+
+configmap:
+  mountEnv: true
+  data:
+    NODE_ENV: development
+    database__connection__filename: /var/lib/ghost/content/data/ghost.db
+    url: https://local.{{ .Values.domain }}/blog
+
+volumeMounts:
+  - mountPath: /var/lib/ghost/content
+    name: content
+
+volumes:
+- name: content
+  mountPvc: yes
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+
+ingress:
+  enabled: true
+  authelia: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  tls:
+   - secretName: local-wildcard-cert
+
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: local.{{ .Values.domain }}
+      paths:
+        - path: /blog
+          pathType: ImplementationSpecific
+        # - path: /ghost
+        #   pathType: ImplementationSpecific
+
+livenessProbe: {}
+
+readinessProbe: {}
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

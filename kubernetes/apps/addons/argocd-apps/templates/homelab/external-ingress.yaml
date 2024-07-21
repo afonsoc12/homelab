@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: external-ingress
+  namespace: {{ .Release.Namespace }}
+  labels:
+    appset: external-ingress
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  generators:
+  - list:
+      elements:
+        - app: adguard
+        - app: bazarr
+        - app: calibre-web
+        - app: deluge
+        - app: kopia
+        - app: lidarr
+        - app: minio
+        - app: overseerr
+        - app: plex
+        - app: portainer
+        - app: prowlarr
+        - app: radarr
+        - app: radarr-4k
+        - app: sonarr
+        - app: storm
+        - app: tautulli
+        - app: unifi
+        - app: unraid
+  template:
+    metadata:
+      name: '{{`{{`}}app{{`}}`}}-external'
+      labels:
+        app: '{{`{{`}}app{{`}}`}}-external'
+        appset: external-ingress
+    spec:
+      project: default
+      source:
+        repoURL: git@github.com:afonsoc12/homelab.git
+        targetRevision: HEAD
+        path: kubernetes/charts/external-svc
+        helm:
+          valueFiles:
+            - secrets://../../apps/values.sops.yaml
+            - ../../apps/homelab/external-ingress/{{`{{`}}app{{`}}`}}/values.yaml
+      destination:
+        name: {{ .Values.spec.destination.name }}
+        namespace: homelab
+
+

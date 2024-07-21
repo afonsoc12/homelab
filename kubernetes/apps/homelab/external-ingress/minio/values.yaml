@@ -1,0 +1,40 @@
+# Default values for external-service.
+
+# Labels applied to all templates
+labels:
+  host: hoarder
+
+# External server configuration
+server:
+  ip: "{{ .Values.ips_tailscale.hoarder }}"
+  port: 9091
+
+# Ingress configuration
+ingress:
+  enabled: true
+  # authelia: true
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      client_max_body_size 0;
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      chunked_transfer_encoding off;
+      proxy_set_header Host $http_host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-NginX-Proxy true;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_set_header Origin '';
+      real_ip_header X-Real-IP;
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  tls:
+  - secretName: local-wildcard-cert
+  hosts:
+    - host: minio.local.{{ .Values.domain }}
+      paths:
+        - path: /minio(/|$)(.*)
+          pathType: Prefix

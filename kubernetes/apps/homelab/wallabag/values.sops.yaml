@@ -1,0 +1,127 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: wallabag/wallabag
+    tag: latest
+    pullPolicy: Always
+#   restartPolicy:
+command: {}
+args: {}
+ports:
+    - containerPort: 80
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        SYMFONY__ENV__DATABASE_NAME: ENC[AES256_GCM,data:rig/wQ0gW8I=,iv:TbY3y2TuVegZiypYHw3a3HAUBJJaWhQRe895O4Ng17c=,tag:UVplJWwuWEpbqMf00DLctQ==,type:str]
+        SYMFONY__ENV__DATABASE_PASSWORD: ENC[AES256_GCM,data:ipmFYHD4oItQvEo9OI2+gfY9GWo=,iv:K6iTRNfhXKjWKnyOjPT0ZSbut6xdYPJYpG2mLl+ASmU=,tag:HAmNSCLNoerh17esRkUAcg==,type:str]
+        SYMFONY__ENV__DATABASE_USER: ENC[AES256_GCM,data:J2KQmA7n5oY=,iv:fMDMaGu31QXYX7yta37pzmMUjAhB2QRpYFZbAk21k3w=,tag:6OhEjm3ysQcoEcUnwwnNmw==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        SYMFONY__ENV__DOMAIN_NAME: https://wallabag.{{ .Values.domain }}
+        # SYMFONY__ENV__DOMAIN_NAME: http://localhost
+        SYMFONY__ENV__DATABASE_DRIVER: pdo_mysql
+        SYMFONY__ENV__DATABASE_HOST: mariadb.databases
+        SYMFONY__ENV__DATABASE_PORT: "3306"
+        SYMFONY__ENV__DATABASE_CHARSET: utf8mb4
+volumeMounts:
+    - mountPath: /var/www/wallabag/data
+      subPath: data
+      name: data
+    - mountPath: /var/www/wallabag/web/assets/images
+      subPath: images
+      name: data
+volumes:
+    - name: data
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-replicated
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 500Mi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations: null
+    # nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls:
+        - secretName: wallabag-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: wallabag.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector: {}
+tolerations: []
+affinity: {}
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T15:38:20Z"
+    mac: ENC[AES256_GCM,data:uOUxoIh/7zGGWlKRbRAvNft9Cj+E+TLV78YQ/8BpJomnCq8CmkZd8yjVidyiWjKUdFASCOn/SPwxE/wH3l8AlB5bjQcUFIfTxKHTbcCmceSKZNTZjSfDkUfBmP+iTb8ltMptJ/w8U+r02Lgv9zVnTox6DLGaLK66IbSQ9VV4IXU=,iv:sVe1vyRV4IXkgqBWzF+CivWK45QelEECms2YFM7fzMY=,tag:h7Sny9W39X7UCcFDyyNIMw==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:38:20Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/6Axkor7nJ+IV1PwhaFHYPGqPYUlWPf+4zFarcG1N9dpb4
+            Rfaw+G7AFCRiFp6n9CGFVq9ZZMQNZJTH7Bh+ngwQM6GrWpffapw1zMjwTMWhXnkH
+            2O1S8KnSOSgJ+OSpTOrpwENCpqx5VNPqDfOA1xh986J8DzeqdJzqA/IZgv1XDgSB
+            KieJPR+yRPCdHGDs/WcJBENvtFAErYfdB2WZQTPiOkTFvmJ+CpR4MagxEIxEYzF9
+            1IyARThlnPiOYb3BvOZ1PzKb90+E4MWzlRMmZzIVkmXy9KV/1z2DoClZEbTJslNh
+            TaeGbgdBAxdUXdftULGVUVJc1lEPRNm4M2+ol6Kf96p6OwfEB9MiTc8x+hr1ifjl
+            WccorsiRJirsQVkDo/GpnTWMXK4lW02aa/Akkj6x59QH8cNdEcWFIHIpwlsTjnfq
+            IkgxhZoahgt+etw3zGQJfMCviDqTdrJcnZCKWVG3rorDKe6+VrBFXsGMfHTDIhxA
+            k3TuG5f9Xr859Oa/BPFFcl9wlr0O7p1u6DyN0CM0Ekm/r9NmVt3ednL0GG6IDhmS
+            AeY2WRSnJODuTgBU6alfqjdx0ZcrIU+PS83bGGMyvxiAQkqCGhgBZusPv9Q28f3+
+            HipiqwJQYNKbzn8uRKf7oXWDHIO4L/da4XLysrkBHTfXYExdoHm/YDT0md8VUO3U
+            aAEJAhDloBcCz358YnSnZgt5+wdcUvkeAQ7tdzTLEXZIxfchKO4zL5/aWtQSoEA8
+            e8NwVg/hn7hNcQIGujHGgNk4r6hzKYRk9+j+lYHr3D/1PZokZasD7/YDqJvQMoFR
+            gHw/5Lshvgta
+            =vyFq
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0

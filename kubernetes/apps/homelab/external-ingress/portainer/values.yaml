@@ -1,0 +1,27 @@
+# Default values for external-service.
+
+# Labels applied to all templates
+labels:
+  host: rpi_4b
+
+# External server configuration
+server:
+  ip: "{{ .Values.ips.rpi_4b }}"
+  port: 9000
+
+# Ingress configuration
+ingress:
+  enabled: true
+  authelia: false
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/portainer)$ $1/ permanent;
+      proxy_hide_header X-Frame-Options;
+  tls:
+  - secretName: local-wildcard-cert
+  hosts:
+    - host: local.{{ .Values.domain }}
+      paths:
+        - path: /portainer(/|$)(.*)
+          pathType: Prefix

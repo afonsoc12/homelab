@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: '>=21 <22'
+      chart: prometheus
+      helm:
+        valueFiles:
+        # - $values/kubernetes/apps/values.sops.yaml
+        - $values/kubernetes/apps/monitoring/prometheus/values.sops.yaml
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      ref: values
+
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: monitoring

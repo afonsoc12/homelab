@@ -1,0 +1,22 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wedding-site
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:afonsoc12/homelab.git
+    targetRevision: HEAD
+    path: kubernetes/charts/homelab-svc
+    helm:
+      valueFiles:
+        - secrets://../../apps/values.sops.yaml
+        - secrets://../../apps/wordpress/wedding-site/values.sops.yaml
+
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: wordpress

@@ -1,0 +1,110 @@
+nameOverride: ""
+fullnameOverride: ""
+
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+podAnnotations: {}
+  # annot_1: abc
+  # annot_2: def
+
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+
+image:
+  repository: homeassistant/home-assistant
+  tag: stable
+  pullPolicy: Always
+
+hostNetwork: true
+
+ports:
+  - containerPort: 8123
+    name: http
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+secret: {}
+  # stringData:
+  #   secret_string_1: abc
+  #   secret_string_2: def
+  # data:
+  #   secret_base64_1: ==a
+  #   secret_base64_2: ==b
+
+configmap: {}
+  # mountEnv: false
+  # data:
+  #   config_1: abc
+  #   config_2: def
+
+volumeMounts:
+- name: config
+  mountPath: "/config"
+
+volumes:
+- name: config
+  mountPvc: true
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+ingress:
+  enabled: true
+  authelia: true
+  className: "nginx"
+  annotations: {}
+    # nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  tls:
+    - secretName: home-cert
+
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: home.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+
+
+livenessProbe: {}
+
+readinessProbe: {}
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+nodeSelector:
+  kubernetes.io/hostname: k3s-m1
+
+tolerations: []
+
+affinity: {}

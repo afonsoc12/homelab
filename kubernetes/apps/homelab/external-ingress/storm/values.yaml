@@ -1,0 +1,23 @@
+# Default values for external-service.
+
+# Labels applied to all templates
+labels:
+  host: hoarder
+
+# External server configuration
+server:
+  ip: "{{ .Values.ips_tailscale.hoarder }}"
+  port: 8221
+
+# Ingress configuration
+ingress:
+  enabled: true
+  authelia: true
+  annotations:
+  tls:
+  - secretName: local-wildcard-cert
+  hosts:
+    - host: local.{{ .Values.domain }}
+      paths:
+        - path: /storm
+          pathType: Prefix

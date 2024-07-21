@@ -1,0 +1,181 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: fireflyiii/core
+    tag: latest
+    pullPolicy: Always
+#   restartPolicy:
+command: {}
+args: {}
+ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        APP_KEY: ENC[AES256_GCM,data:BRo2b7lCv0TTUSw0B7ch5hCbCM9281cIb5MVVKiCNP8=,iv:iyIdaTrlCJTfYiej/Yp7Kb1wiwaF/tOXs2fKsfaaqpg=,tag:ct+8oA6/e732hplp1S/N9g==,type:str]
+        CRON_TOKEN: ENC[AES256_GCM,data:/0I6wIAB6yX+xsnhXkzHzXdUxWTr0cvcBcFIcic0Tp8=,iv:A7Du1SzQkWfD89J+RuqBAyTLuTPhSVHyS2Ja/4DELk8=,tag:m1zqpGJvQvlzeIAZWJZ//Q==,type:str]
+        DB_DATABASE: ENC[AES256_GCM,data:Ug/cBAwT9w==,iv:O2G6PmkmHiqbzTYYwk5fvVL9B2J0WWc7aZbds0WK4pg=,tag:M9UlY/nGYLha4yN/joOj/A==,type:str]
+        DB_USERNAME: ENC[AES256_GCM,data:3zNEhtXweQ==,iv:MTsUdVKBxnlsEc36Vp2ZeP/T5wap22l5hUCK2x31IkY=,tag:R0ZdDXJI4W9UOfzjqLI3Dg==,type:str]
+        DB_PASSWORD: ENC[AES256_GCM,data:Kkmz6TtAVEjzxbdELKwDvYzeawQ=,iv:L4NPNVt3VV1j2TlK/POyQ7D+HbH34kylu/BOJZQ/6kY=,tag:kEuH3GgGpVDSkrsUZOoDHQ==,type:str]
+        MAIL_FROM: ENC[AES256_GCM,data:7og1bTmWyxs43OeAskZcAZUy0xkS,iv:2ijBEbsY5OeS/9mz65pjDRwUmUMIQkBpq72asNAwgxo=,tag:/PnT4QVeR2oEfq8WwXloBw==,type:str]
+        MAIL_HOST: ENC[AES256_GCM,data:Fixk2VvvfkyyQjz2posnGSAU/1hcucDpX7ivGUPRytMq8sZP/phn5LrfR6e8kQKSnJpIXaGKrsjyPISvTLR47rEAdmoS0QZSbfBs1OdtlVndXLqFJmdbaO8KfjUmS8ZTpZqIDnk9AOAgxWBo+AhZcM3XL+Kwho1Xo/o4g/HsgvGGQ2Q1TOmpQP5cs4n0E9kW+mjNkGtXxFXY/irOtwL3tgOzEtG04mRXBXNGEvKDAcRZT+x7BWWhNjwykJ0ZE8pkcjjTKryvtewbGdUzVyK3Fma2YbsBzN53CaU3KdU80ttq7ClEwKwxmX4zSTkrw+bx7Mio+W8yXxgvMHKsvCNrEivYdOakjolAhrc5uKTpGO/yEIaxCnIpDaXt2cW9/OaoiY+x+GWzUqmDu+bdEsY9WapsGHSOwG2emDJgLX8Q8xfMhgQGtRyfoINo8G2Rcnbp38wnd3Oydp0PSsNwc6CKxXpITpcWcfPp79iW+qzljAA1gMa4Hx2orQVKhBkkeSIf7zwTlr25t/DMWTUZ1x0OfXwF/u6xmu7PfySKYIbyfvUGC9s/GTx2NSYcYqx6iJpwRLvfdFPaBwmbHJp5kq8RjDjFUCLqZdxGQL19hmzwcDz2BM8RACnWoi8GWQOT2mImvjTkI+pyU9RJTa8F8EQ0cCokh7xrLKmF0PrUJw9L/9+7ai5NI5pT/4pMpSHFcjlZyqcBVOScdmixNNiDNtnfNW4nr/iH6CC9w0SbyMJ9Ae4TLsrNVpelgEqZ3doo5zh5PY24oUnmQXtSPu/hdqsdtqny+oOxNvDB7G3CeLkxV0jgeR3M3t0eZMT++CWqkbTmL1XSEMSTOmZS/J3C6IToprOMP3/vRJ09UfLz5ZhZ+uMZT4P5QSFEYg4U42zJ6gRcb24hyse9SQnuUi903hv881sb/Xgxpx5KZMCJKfxlbfWN8/Pj+ImCXtN+K4cle8Tz96Zyzg==,iv:ihsL6yctZlPWvQiN6Nfkx4UORWsZE4EOF8/83CKtAxY=,tag:i3Io7VLF2UDp0gaM/b99FA==,type:str]
+        MAIL_PASSWORD: ENC[AES256_GCM,data:Fm91iQa2CFb4TmWK,iv:kDMOFbiWydufa9RkXLbpSYqNSDHjhg3VqHO19hlLy5U=,tag:fJqcmOSS6ixZY1RpWQ9Y7w==,type:str]
+        MAIL_PORT: ENC[AES256_GCM,data:Iok8,iv:hC654tiIeHLX9IRr0gKjgxXovLDCCYLbWfZ2jUI4JSU=,tag:uJLqnoZe2t2bgNXXqhjTNA==,type:str]
+        MAIL_USERNAME: ENC[AES256_GCM,data:nk+SuQcN1cLYugc0hRyTP42uzL9i,iv:FL+acz2/wOrRuX9QDVG0QOn5v6l9u5ba5YwjfiZDh6g=,tag:TJZ5DQnqPGAZcaPlND0Dow==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        APP_URL: firefly.{{ .Values.domain }}
+        DB_CONNECTION: mysql
+        DB_HOST: mariadb.databases
+        DB_PORT: "3306"
+        CACHE_DRIVER: redis
+        SESSION_DRIVER: redis
+        REDIS_HOST: redis.databases
+        REDIS_PORT: "6379"
+        TRUSTED_PROXIES: '**'
+        MAIL_MAILER: smtp
+        MAIL_ENCRYPTION: tls
+volumeMounts:
+    - mountPath: /var/www/html/storage/upload
+      name: upload
+volumes:
+    - name: upload
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 2Gi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations:
+        nginx.ingress.kubernetes.io/client-max-body-size: "0"
+        nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls:
+        - secretName: firefly-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: firefly.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector: {}
+tolerations: []
+affinity:
+    podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                namespaceSelector: {}
+                labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - mariadb
+                topologyKey: kubernetes.io/hostname
+cronjobs:
+    - name: firefly-cron
+      labels: {}
+      podAnnotations: {}
+      schedule: 15 * * * *
+      concurrencyPolicy: Forbid
+      failedJobsHistoryLimit: 1
+      successfulJobsHistoryLimit: 1
+      image:
+        repository: alpine
+        tag: latest
+        pullPolicy: Always
+      restartPolicy: Never
+      command:
+        - wget
+        - http://firefly:8080/api/v1/cron/$(CRON_TOKEN)
+      env:
+        - name: CRON_TOKEN
+          valueFrom:
+            secretKeyRef:
+                name: firefly
+                key: CRON_TOKEN
+      affinity:
+        podAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 1
+                  podAffinityTerm:
+                    labelSelector:
+                        matchExpressions:
+                            - key: app.kubernetes.io/instance
+                              operator: In
+                              values:
+                                - '{{ $.Release.Name }}'
+                    topologyKey: kubernetes.io/hostname
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T15:23:36Z"
+    mac: ENC[AES256_GCM,data:N4PnLPCGxOYvsxyCm0KofZBHu5FFkWVnWlkHSbg3XJ/5KajOU/Rz/sLFdkuUvQNjDSbgIbA+C3lSTiQ4nOZSgBAFp/IYnH2k1eAm1rvVjIpB+CGSsThG+4d7ri8ApjMyJLr4Sy2WUJEm1LL+sv5edZOw2a7gDbF/8XBANxRdQWw=,iv:ke5fWl+Zy72+SRwg0aGNWR7B+i4jzbGOoYQxoojKToU=,tag:k9SS3VSI9WeOvY8jG/gU7g==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:23:16Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAArFigkI/8M2Bj6mm4S1Gp+n8qcuIOrqlFNXKIDnyA0xOP
+            9FF3PBt4ELvf+WvzwQFSzFBzg26VxpekweEQp/RMY4XdPLpELjlKcqZaYgGCmKTN
+            htb10OFYBtWAI2lyYvkiuumX4X3IUAX1W4+ZVW3X2q8/aWal40knOkYh4CKvrCpV
+            OrvuyNCyn5QGFoKNgL2UScxr+5JUSdp/99A6W4xdXKEuyEmUsNLrjYlQ639EQDvv
+            9exy3f9hgU/Au2/wf4kYQHXMgiBvobZKuMqISCOtiqNtJfvJ5oLolyogN8OzgFt/
+            TdjDaD25zfkROIjyYLaAbWBxHo3ypN/3AISeXNBip6dVlXZQziU2ngNQam/sqPQs
+            fHHBQhZCaGWov7RuKAp5ADM6ZWmjyQ2JPVV6scwB4weuIS1MGV9FP0YlhnRUT29t
+            tCutgVWekThbY1G/0Pk9KhxyM89uZjiUC8/q/xIrP2lc8Z6Ai3cFUyeLWVtUAVFU
+            9JwPvXXgrQtvFV6GOJFKCK+fOJ3vO+60UV68EBV8XIyX0R1e6DFdZeZ/Ny/WU10Q
+            bpzEpjLDc3oE1Ag3gGo0rWPKSqzDFEkSh9ZRRudZvkrJmulI1hyr6pwv77CXuUhO
+            89nugvqD7Va6sH0bugFrnqx5jEisl1bFETbXY+t+4W7JJKB+RRfPMEsx8birXHXU
+            aAEJAhDQHOf8Hjhdv28bZXsqHFiHo2bHuK2eoFg+wA3sLzZ+wJOe3ZHnGCg4vEsj
+            oHv6z+qCpCZ6pRf5wcdq0JlvyqfBk1r0FyRSlAs5hhLCCdyhwWbGYoSKjJUlA/1U
+            UwFrYD6+d1zE
+            =KJGh
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0

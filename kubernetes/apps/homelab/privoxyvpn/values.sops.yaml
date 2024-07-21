@@ -1,0 +1,139 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: binhex/arch-privoxyvpn
+    tag: latest
+    pullPolicy: Always
+#   restartPolicy:
+command: {}
+args: {}
+ports:
+    - containerPort: 8118
+      name: privoxy
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        VPN_USER: ENC[AES256_GCM,data:CMcFjhYF2wi0aKU8xvZc04K2LwQMyadY,iv:91M58r8gwBtwuy7WSMEgUv3D8HK1vpts1N5PmbDD+mM=,tag:AYTVEWG4cG+L0rUYf6ydRA==,type:str]
+        VPN_PASS: ENC[AES256_GCM,data:LJUKyhqA2rVcQHz74M+Vaca5TMKdNISD,iv:pP/uDgxk9SMA9Y244EhFH9nDmdHc3MXqZMlU7u5QYhk=,tag:nbuGGZJBy3luwhfpCdfxMw==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        VPN_ENABLED: "true"
+        VPN_PROV: custom
+        VPN_CLIENT: openvpn
+        LAN_NETWORK: 10.42.0.0/24
+        # VPN_OPTIONS: <additional openvpn cli options>
+        NAME_SERVERS: 1.1.1.1,8.8.8.8
+        #          - name: SOCKS_USER
+        #            value: <socks username>
+        #          - name: SOCKS_PASS
+        #            value: <socks password>
+        #          - name: ENABLE_SOCKS
+        #            value: <yes|no>
+        ENABLE_PRIVOXY: "yes"
+#          - name: VPN_INPUT_PORTS
+#            value: <port number(s)>
+#          - name: VPN_OUTPUT_PORTS
+#            value: <port number(s)>
+# DEBUG: "true"
+#          - name: UMASK
+#            value: <umask for created files>
+#          - name: PUID
+#            value: <uid for user>
+#          - name: PGID
+#            value: <gid for user>
+volumeMounts:
+    - mountPath: /config
+      name: config
+volumes:
+    - name: config
+      emptyDir: {}
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+podSecurityContext: {}
+securityContext:
+    capabilities:
+        add:
+            - NET_ADMIN
+            # readOnlyRootFilesystem: true
+            # runAsNonRoot: true
+            # runAsUser: 1000
+nodeSelector:
+    kubernetes.io/arch: amd64
+tolerations: []
+affinity: {}
+initContainers:
+    - name: surfshark-config
+      image: busybox
+      env:
+        - name: SURFSHARK_CONFIG
+          value: us-las.prod.surfshark.com_udp.ovpn
+      volumeMounts:
+        - name: config
+          mountPath: /config
+      command:
+        - sh
+        - -c
+        - |
+          set -e
+          cd /config
+          mkdir -p $PWD/openvpn
+          wget https://my.surfshark.com/vpn/api/v1/server/configurations -O configurations.zip
+          unzip configurations.zip -d configurations
+          cp $PWD/configurations/$SURFSHARK_CONFIG $PWD/openvpn
+          ls -alh
+          echo "Will use file /config/$SURFSHARK_CONFIG"
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T16:00:27Z"
+    mac: ENC[AES256_GCM,data:ZgtgoqCWHfLuouWO3DIyi+nQj6C1nRnEa/JxEEke2icN4SeuLik7KLxue32jaYTp+DLxIYHEL/ay6/wVrks8xFE1+P6NM7VpY/Z0jj+W+ejvS+Z48lHh8C2XU8ody3kBsvflIxyOGZ+1upbTv+4MGU0PFv98AZaeEE/qVUQQfCs=,iv:0hdxkf9DHeXnmtX89JS0NNH/H1g+Nejta0r3OGsVaEU=,tag:10DU2SXXkX8245kuCUN9Sg==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:37:57Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/8DZxpWteFVuJrJjYQh2iEKVp+q2cNsoAXxjp/E4kyKTRi
+            V0F2Q2voS9dxiu66qknPMYiewnucLXsmFHfxhoW5G3c4TAfRhp16xxRDHEaelwZP
+            T8ldbqAFXeza4B5K/DOiEbH1e/Ux3Wj2Q6CjZNLEIWRXyGVGdZpl7hM1jdHAhYmY
+            y9B/bodAzDEwh0mN6U1ILAMW2TM4sXH66/17udINUqsv6tmZAi5KrNEAQIySQngH
+            zr2JEB+aHh6ta3xmd6UOSxdhmKBQJEV0zUqyYHfyl1WIWF1lFUVx2RLbukW/leoO
+            3Esm34AZ18AsDDXlB9g8riHBXdhRFeV7YhzeQav8pTTV9kyXnR1E8fiT1pzPxbwZ
+            gQ+g/AwX5YNxS5sgVyyi2liGKthJmnQWC3ovx3MqAqQkbiBeG/ZZDzaKpLRoilJ3
+            PfgcpBjYOAKn/EFnYvvAy2TkL8qGfSPW4In0bloKm+qyqtjGSPLx9kFf7ktGzrcW
+            1HCRGOfo7AIbTz0/nq5zq5WI3oDcwEV4nEcssT38OF1jwUaGT7t37E7SDhgKW+Xz
+            FWrSp0oVb9oJh+bDSTXj78IxMlT2980rW2nZGHu3hVrNL2Fmf0NGMvWaqjtgkl4r
+            3lDmsriMSDUcDOrONRSKmRu1/RTQXI9TX3ygTjIFA36we9Cc9KgHCaduZNH++UTU
+            aAEJAhAzZWyJ3voMZ3WgEgl5S76nFRYpUlF6vceWBLtlS7N0tObMwJ5/QkDxoCum
+            FAd0Jv3qkfAvw+FLAzq+/4uRuGe+WHECRwiCln9aN+IPeDXoc6SD7ojMvKYEDz7O
+            B6w+6BZajg/r
+            =cmle
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0

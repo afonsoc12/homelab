@@ -1,0 +1,127 @@
+# Default values for gitea.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+    #TODO: REMOVE MEMCACHED< USE REDIS INSTEAD
+    imageRegistry: ""
+    ## E.g.
+    ## imagePullSecrets:
+    ##   - myRegistryKeySecretName
+    ##
+    imagePullSecrets: []
+    storageClass: longhorn-persistent
+## @param replicaCount number of replicas for the statefulset
+replicaCount: 1
+## @section Service
+service:
+    http:
+        type: ClusterIP
+        port: 3000
+    ssh:
+        type: ClusterIP
+        port: 22
+ingress:
+    enabled: true
+    className: nginx
+    annotations:
+        nginx.ingress.kubernetes.io/auth-method: GET
+        nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
+        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:yz1RvNdrNfHNzXiq+cQS9px3etGKgacZ+WJc1teh0Gn+xAcbe4C0f4V/hm90,iv:lD72+Pexx9D3kqXWjICQ2aBDpyLAAJDtOite6S7Zcjk=,tag:UA4m2h104sPdijk5QkxAnA==,type:str]
+        nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+        nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+    hosts:
+        - host: ENC[AES256_GCM,data:ZSbmonCGM/LbNUWYK6mcQio=,iv:w4qZaFjC9o5Ba7NdBIa/UJWIq6Sj4XsziRVXr3WMoXc=,tag:/ee6fsP+AHsZY5cH2chjpQ==,type:str]
+          paths:
+            - path: /
+              pathType: Prefix
+    tls:
+        - secretName: git-cert
+persistence:
+    enabled: true
+    size: 10Gi
+    accessModes:
+        - ReadWriteOnce
+    storageClass: longhorn-persistent
+gitea:
+    ## @param gitea.config  Configuration for the Gitea server,ref: [config-cheat-sheet](https://docs.gitea.io/en-us/config-cheat-sheet/)
+    config:
+        database:
+            DB_TYPE: mysql
+            HOST: mariadb.databases
+            NAME: gitea
+            USER: gitea
+            PASSWD: ENC[AES256_GCM,data:ryVmHqTXK8i8IznAxKY1Kf59EMI=,iv:NdKyrv0hYekqKEZulw9MwLShTk+hvtMsDw3dL+yyjnA=,tag:CvXdS6nHuB9c7t82v4ZNeA==,type:str]
+        task:
+            QUEUE_TYPE: channel
+            #  APP_NAME: "Gitea: Git with a cup of tea"
+            #  RUN_MODE: dev
+            #
+        server:
+            SSH_DOMAIN: ENC[AES256_GCM,data:uJ7gwv3CBEy3IPqwQuMkD++feHux,iv:gGSBtcvSspDdFeBXfc87/0+s2BGIwahSlnzR9Iaz5/c=,tag:t7OZ8A3GwkZukIs6BhsSHw==,type:str]
+            # rootful image
+            SSH_PORT: 22
+            # rootless image
+            SSH_LISTEN_PORT: 2222
+            #
+            #  security:
+            #    PASSWORD_COMPLEXITY: spec
+        service:
+            DISABLE_REGISTRATION: true
+    livenessProbe:
+        enabled: true
+        tcpSocket:
+            port: http
+        initialDelaySeconds: 200
+        timeoutSeconds: 1
+        periodSeconds: 10
+        successThreshold: 1
+        failureThreshold: 10
+    readinessProbe:
+        enabled: true
+        tcpSocket:
+            port: http
+        initialDelaySeconds: 5
+        timeoutSeconds: 1
+        periodSeconds: 10
+        successThreshold: 1
+        failureThreshold: 3
+memcached:
+    enabled: true
+    service:
+        port: 11211
+postgresql-ha:
+    enabled: false
+redis-cluster:
+    enabled: false
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T21:28:50Z"
+    mac: ENC[AES256_GCM,data:ogdfWqZuhDvQNx5VxMaFlHngtUIMiO9qUqduygpRD1y1sajeQHNAp8FLA57UVH8TZP+sWqk7J+stg4ktkDWbUWirVedYLurcodmtiz5/wC6EhvZOh2styvjm0OEblwYZLG7vxInYfiO2NT85KJ+jZitpLYYBD5StEUhiv8nz0ZE=,iv:Nji9P144wjg8pkOnFqmYAmIAULTTD0L4pJLvx37O2PA=,tag:Dh8wMgkCkHuKcAph8i6BZw==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:33:19Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/7BAt8cAkvYMSHrXFuRPSKROQoiJ2FGcZ1hlwADXGvuKpI
+            4eZHNvzqGFhYDHmbnWBWBH9wrPvAPl4/0GXG2+8EQzb+poVXgt/xUgRr+rkgI5m+
+            9qzHQZJzmzapsDATPK0UBxc9sTYL1ptC4L8PwuTOA1XAEz0efovAb8VSBbpmdsAo
+            CqZ9b88wacpLH0c1Hmvtkx5dzk0QYYCWNNkEZ9swrdmNAgXhL2oMd5NxPLfnjSwh
+            G368IG5zeBWedEOS7DQus7vPogTot83GPaRJPa9ifUCfUDzox7/uSMCfuuMaaxxQ
+            gYyUUYC3UOTer3S6ei75CuAPw/+CpOosYzp+I6mJQhHU2OGv0t+W4yF2TJiTZQTw
+            uShW9K6Mos0+LEWYvFzOCe/6zWWLCSlICEd11ZgEX33RFbDoz80wF8umymVWInHy
+            1elpKrCw3KdEXYAHuTCcFSu5hf+mcACkAHxQ496i9rd5p4Xqa+rlnkduhJO7U8OZ
+            KrDLnxDFLqvaAntO6YcOQglGkERwkiUrOnxtWI7CxxQCCOwafVt9Jmj3B5jQNx2+
+            RuSEY7MPmPQERSJo8j05Hez0P/HgUcuWgHAbw0aJjWrmHDTGvay0trzE/3samvnU
+            hNQLKfYgil60N3g7bR+scr7G8oE64Htt540zhqKxefXVMdSXfhnIvT0IYtwe88zU
+            aAEJAhBlTDJRotX8KrxwBbuv1f900C9SaMs8KXZ3FC+VmeySJjjxKl+gMNP029xd
+            T3aXMPr4Rby3etBgcmDg/ESjIcQ4SIlcP0yh2bGLXepqgZFGLV00TS0qYE4fYlEM
+            eGr6J1Vcq8qL
+            =fKsc
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host|PASSWD|SSH_DOMAIN)$
+    version: 3.9.0

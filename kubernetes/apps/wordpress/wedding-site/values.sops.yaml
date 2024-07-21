@@ -1,0 +1,108 @@
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: bitnami/wordpress-nginx
+    tag: latest
+    pullPolicy: Always
+ports:
+    - containerPort: 8443
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        WORDPRESS_DATABASE_HOST: ENC[AES256_GCM,data:Kk0m7SryHvB/HhRfo3g/zFmVXeHqUKv0PLHi050Y11jAMVk=,iv:REOlvj3NI5LWjb1sEB5ZgQ+jfk4jjLcUxYHXsYKnZbk=,tag:A2EEe8dkZDo8UuUtYyUtIw==,type:str]
+        WORDPRESS_DATABASE_NAME: ENC[AES256_GCM,data:7x3A4WgbOCZs+uaZ,iv:UHb5TBoRn66gpbYvv8VxVSixDfHP3R3IP6gfqGGf8vU=,tag:wAw6KkBkyWiJ2Hc3c9Y2qQ==,type:str]
+        WORDPRESS_DATABASE_PASSWORD: ENC[AES256_GCM,data:VQDfblbc2nUSVQ1jQckKpoe2rsE=,iv:wcWV4mc2AJdV+C+cDdfL0wTNyuD3UIMDgwocdGnvp+k=,tag:bu/TkAxK5ycG7m9fawcIMQ==,type:str]
+        WORDPRESS_DATABASE_USER: ENC[AES256_GCM,data:bJEx8BuzQxYsBN6t,iv:j0kmco54CeLdQoD2qxBFaZQpWEWehEDqNCeSS5nKfdg=,tag:2OZ25Ns8yCkcWLu7if2zkw==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        BITNAMI_DEBUG: "true"
+        PHP_UPLOAD_MAX_FILESIZE: 5G
+        PHP_POST_MAX_SIZE: 5G
+        # PHP_MAX_EXECUTION_TIME: "1000000"
+volumeMounts:
+    - name: data
+      mountPath: /bitnami/wordpress
+    - name: data
+      mountPath: /opt/bitnami/nginx/conf/nginx.conf
+      subPath: nginx.conf
+      readOnly: true
+volumes:
+    - name: data
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 20Gi
+ingress:
+    enabled: true
+    authelia: false
+    className: nginx
+    annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: 5G
+        ingress.kubernetes.io/proxy-body-size: 5000m
+        nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    tls:
+        - secretName: wedding-site-root-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: '{{ .Values.domainWedding }}'
+          paths:
+            - path: /
+              pathType: Prefix
+affinity:
+    podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                namespaceSelector: {}
+                labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - mariadb
+                topologyKey: kubernetes.io/hostname
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-21T10:30:21Z"
+    mac: ENC[AES256_GCM,data:IFEEGCnJV4GiMjDA9merw7HbXGLCFyt7b9OWMV9/7jPTGbC3z4MmS1vNLc19vC9CQSICqBPT1rtylI5pMGtrypJ+EyFYO+18kBNrOxD0/ClZz1eZqQgQrNmYkQXtPlVoep4Gu8mIj87xgok7RYSxafDUP0Ov6HeRhd+EfNLKWgo=,iv:Nl9ILPm1+sRXEd0wAmNbgFUrRfjYv6b28G/G0kVrgPI=,tag:zUQgUqE8QIeZF9IJ91vwDw==,type:str]
+    pgp:
+        - created_at: "2024-07-20T18:54:09Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//aRVyuqSTkJc2ze3vo44pnAPTIs3lUoMZBmlpMxGkz0L3
+            PeTdI1+v5QLTVMWTWF+v9biFfii24JOLx6RLxKcHJVmTgsLd/tf7E+kaz8wBFpsV
+            kiAvA4nk02cTBmg88G/joQUTHzGUvjxegiPRhdD67XCm89Px7/HTquYyzGNFYTBV
+            idZc8igMxQznKATsGerTj3WA17qCUcmHIZNmQuSbTN8axDZK+F5j43qXWv8I+bA3
+            FQaTezGYJevU316mYD9kTur0VpYLVAf1SgEwvYnnrwLGtnTYM+9KXKwY8hlSO0UY
+            W7kkCl9lziZsXaNdPVRgUVliGY5TWZDKQVvYWnQBKNvIBqjsv9YyBWuO+5gi+tGq
+            XSzW6B3bEtwHxMbnRz7Tdj3th4gRcrCWbIl1IRhmIZmx0SIkeBZ180GlrMZCeKhG
+            rYY3eaKOtapWXEy4iqU4vTtAy+/SfftaX9Nt68Mu55Co/uhN6VHwS7rMFbjlr09Q
+            ae76DynkJNupPMIuQ3oyV5428kAdbwJV6Z+RPaORSfrFlEqu6vrCRP4RQX+uAI9/
+            3KlP54zy2swb9u/ylaMnltweF5yfcGQNTXlUzsl0Hz8/WOVJDfSTybj847vyynVu
+            i53Y/47Lz8CYamfNHFlM/uRyvid3c/4VgU8azRF3R6RxlqMsvt5OdpTgLfzF/OXU
+            ZgEJAhDu/6IQkQYNRj5GrKWVzhcTSyswBk4N89LDXKNXSdN8XOcH/Cx4Q86j+ihw
+            s/UGxcy+tFaCk95OTsCsKT/AjszPEIa2DdSsv7X9MDoPKjacGa7M7sZMXIYjuB6v
+            xOMwRauHhA==
+            =/G0Y
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0

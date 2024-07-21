@@ -1,0 +1,75 @@
+labels: {}
+# label_1: abc
+# label_2: def
+replicas: 1
+image:
+    repository: ghcr.io/unpoller/unpoller
+    tag: latest
+ports:
+    - containerPort: 9130
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+    port: 9130
+secret:
+    mountEnv: true
+    stringData:
+        UP_UNIFI_DEFAULT_PASS: ENC[AES256_GCM,data:pvVyfGmeNPHK5zfLVHygo9pIjos=,iv:eV3N2aaHw7BcnZnH9BGArdz4IO0u0RqDGA6ricDcQhs=,tag:KIYL+GRswkXejjhA65lYow==,type:str]
+        UP_UNIFI_DEFAULT_USER: ENC[AES256_GCM,data:QQPYXxhEUPg=,iv:WoLzIuVwuNV/afqPDqPJIr4xuQM75q56UoW5DK4UZ04=,tag:CmltntH8+CM110ORHri8Ew==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        UP_POLLER_DEBUG: false
+        UP_POLLER_QUIET: false
+        UP_UNIFI_DEFAULT_URL: https://{{ .Values.ips.unifi }}
+        UP_UNIFI_DEFAULT_SAVE_SITES: true
+        UP_UNIFI_DEFAULT_SAVE_IDS: true
+        UP_UNIFI_DEFAULT_SAVE_EVENTS: true
+        UP_UNIFI_DEFAULT_SAVE_ALARMS: true
+        UP_UNIFI_DEFAULT_SAVE_ANOMALIES: true
+        UP_UNIFI_DEFAULT_SAVE_DPI: true
+        UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:9130
+        UP_INFLUXDB_DISABLE: true
+        UP_LOKI_URL: http://loki:3100
+resources:
+    limits:
+        cpu: 100m
+        memory: 128Mi
+    requests:
+        cpu: 10m
+        memory: 32Mi
+nodeSelector:
+    kubernetes.io/hostname: k3s-m1
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T19:13:41Z"
+    mac: ENC[AES256_GCM,data:Q1o947R0haBDIWhhEL9ikG+1fYgQa59cWbWcZJ3qYdm50rkYFeLFGl2/kZADOS9mfYENmSFrairyNMz4l9ljLjw9OpvbFk9WYpU3grI/K6VzV7HOc+4LkVH8OZrDrc4KctV79ApC6kVNLrrlktrb52lNbYSLPaRqhrxD7UoKEzM=,iv:xVN4RkHZ4EjAu9+0r9IfPbBaSPR699ZJFTF667sTt9Q=,tag:hj63wU371lR/Im/a7cTuLw==,type:str]
+    pgp:
+        - created_at: "2024-07-20T19:13:41Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAAjox6aOzrUbaipB4HNvekclGoZ2A4/eXQd6kqWaI7H0QF
+            cmeBFKYJ9FDqsiiqXtm2bzmW9QRhd/0iT8rTgciDwhYLiYuFRSzN+HYNnyVtinLE
+            gpFJ87rCKVkVG8YR6A/iag89towhSYK3vl4zOu0OfiPo7LM6M3LNwQc2gu7w0BAS
+            EE09cAXNkX0E6irab7bQJ3apx/E21M24DA16P5I7FWBf7b2Khm2JnKfZNXWYXFQM
+            X1AmDgH+/gerHft3UPaP9WUwzjm7mSPUomMgaBg3tM5DoCHikkQjvnnSjbACepa9
+            /gXaIgOfwsFV5SER3iTqahkIFZmgnVh4N2S5kHIb6OmcXl7NsMHJUaY9MJge1dVD
+            2MMcZeB0H5S6Ly8/x7V419xKDqZYiBA7plyhqeRYRo7SRVojpmfnx2cWx0OR1C6P
+            evDGIUVyxHe44FSX5v/3SGi2BvLkRwMh2tuSbFqtEAWG70uhBzwzqWC2ktLhO6RQ
+            k3ozYOfFD+1f1RFMbVx0ormaEjbpAkvEAzXKHosTFH3dRPyPy7fUxECluQ/7mJ/+
+            6tENohbedUGWokrNwLXdO6vWOSWd0lwzJtWdRBq6OzCA12TtJ2gPOBA4QJ+QpJg+
+            /FnUWXmXeKJ+PVofBUw9GernQMkHNQE8N5Dam43bQcu/juEnCAe2TtHfbJ0q8SnU
+            ZgEJAhAfXods0US6XjC96QuLN9ibzm2W67xnswI1ZU07tuzQXaSCGcFc1KWB1sLw
+            5ukD+JcyyUd+iNNfzRI6eG6f5bzBG2E5vdQlMOod4dt/BtiYO/RKovJxfzrhRnT6
+            P+IVPNkQ1A==
+            =TVI3
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0

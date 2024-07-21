@@ -1,0 +1,118 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: koenkk/zigbee2mqtt
+    tag: 1.35.1
+    pullPolicy: Always
+ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    stringData:
+        configuration.yaml: ENC[AES256_GCM,data:o5nKQztCUuxnxK5azUl355/jtA6dJdaZszGa846ZAtYUBXKLUd5srS1lCHKllLxMTTYOfsVol8JV4f92kXm5Tcj96Arv+klj9fROovkLz8VyqiyddNTiHexTdmz7HSQ72nW6gf1Sk48xjBnYhJMMAF+MV95yRSGMQIKWnVZ1RsPXWrprHBk3G2kz2HNHacqVjG/kleDaJjcjj6O+umiQjgZ8gaY1gHietf8qdGVGreQEp2EzasxMS63Zv+rIvzm5BpdUM40KXq9CXuhtiGZLXJvfmPqqifWcHEpjdOqm63zncoM7GnTGvTjWghvxiK+3YHVw72vzG7TBh3SqIYn7aGAxhFlGgdMHzhJ2mG8m511QV6f/S5JWrqMQUlj9R0zyJDrqZAcxt4b8PAj41ad9mrqDWDK4EJdx07RYcyUQb9+Cx+f2axJXed+LXqgw+DGBpAp9pOimZZxwpSoiYRy7sgl4oK7wPJcCU8QpaYbbz8ZT9rdROQHSpZ1MX/Cba53Xpfp94Jp387S4r+12sUtzpx9oQO7W+gjLuqQCaBKjpVHqun7sNd8S+q/8rwDK4wV6KfxIVexWTHLx9cvvLB8elBjqsrEs7HhPdcir+T9G211R2jgFBtpgm40Kq6sCJM1aJ6LQW9EfYdDLjPzrbl6VYuagidye1ihAtH5SAcRn4xXQc7hjstqm2Gm6P8PVXcRODAG5kXzV3jPNr3IQsTYBmc3JMGRbtcLUDDCx5JqrAvjX7h0eeMWp64iUzSV96g==,iv:YDgT1AkRzPdmr4CuqUN1zdv8XeyE1HYTvT1SX16aHhY=,tag:G0IQ5MChZYnYexrrMnSEYg==,type:str]
+volumeMounts:
+    - name: data
+      mountPath: /app/data
+    - name: dev
+      mountPath: /run/udev
+      readOnly: true
+    - name: dongle
+      mountPath: /dev/ttyACM0
+volumes:
+    - name: data
+      mountPvc: true
+    - name: dev
+      hostPath:
+        path: /run/udev
+    - name: dongle
+      hostPath:
+        path: /dev/serial/by-id/usb-Silicon_Labs_Sonoff_Zigbee_3.0_USB_Dongle_Plus_0001-if00-port0
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 250Mi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations: null
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: z2m.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext:
+    privileged: true
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+nodeSelector:
+    kubernetes.io/hostname: k3s-m1
+tolerations: []
+affinity: {}
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-21T11:25:16Z"
+    mac: ENC[AES256_GCM,data:hflU+V3RFmC3WfQC2j3CJcUDfD8HmoUNibnAWb1zhNR8BnW7HXfJn1DpTSf6pw17Pd44PWiRZD+CMgfWdsFtOZ2vXaDP2Ybj2IT9CptfPs71JEY7leaLhqXcJLDsOxUyt0CubYA3RW+VBpO4NjmzLoW9k7yTEhPz3uMlO8d4pqs=,iv:SL2oHvzJ0+Y/BFa0TjdrvTXXXe7AQf8xYCtRfp2LyFg=,tag:3fCkEwRTlvQ0fTgF8lF47w==,type:str]
+    pgp:
+        - created_at: "2024-07-21T11:19:53Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//Y8ggn0ae0cm7aYRKkcA1ZWPU5IOFf+EtPg/Vi4LLgFaq
+            PnO/qnudJ8xfoVaATTtJNixxlurp8R8hLTL1+1CGmPcACIWr1J3h1Fpz9NOJwRyg
+            ubp59OLWiM53AiTlyf0MFjWdcbNZZEFhgUWahz4bwYDDP/SFaUHJrS8L7FchhHcn
+            /LPCqTAU4NDZDOxcNmevYbprMrx+9jop3DS5mACx5FAiAKC/nQwKTtvBrU/EInY6
+            jg6SE8huz7RJRo93FcSJjmZ1WG2nPnXIZS+e9YZWT+YX6dL8awDHWRwo/FVhepGv
+            /e4OfCUscgxEcgAPjt+p37gJLUDIzXe//UyRE58c/HXrrUdHiZcVzV2SzJTftX/M
+            WblNYyzx54Ddjz+4SaO2eX2aPXROQGAhJnq32UYsq3hlOsxYrPx8BdRnk08K9GGJ
+            NXD7YaAo/lr467dvgaLF4kmB2c21bdB5EDE2PTyWuxztA62h3upDOrDEON2Cc0CX
+            SzGCEK3eHlYqalvmspsK2GmhPOgJuffRVLrLLYv3g9yV4um+GrYOAyNPqyqVySSd
+            VtLqa3j7QbbZJWYgxaaa6+ubn5zynZ+2T87n8ahVtrAV8NyMCmrPA915RIKw3ZER
+            iRe4o5Vfj6i8MBfXm/Lj4j/CWUDAJ2vTxhevEJP3kMNRMMKOr00cKSdgQ2W9hTbU
+            aAEJAhBtR8wkja0L7HnxpbClTGOR6HjtATOK3K05vLkEDfOOUMUz+ueKGwSsixJh
+            9aZJwGeOX4OLcEwU4r1eZ9xzjrxanOlhDtxvNA90cP+WiTdpIdJ6uyRkfVUxNikU
+            n057TkKe2ht7
+            =+PA1
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    version: 3.9.0

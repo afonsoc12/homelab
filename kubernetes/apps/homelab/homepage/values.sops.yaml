@@ -1,0 +1,392 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/gethomepage/homepage
+    tag: latest
+    pullPolicy: Always
+#   restartPolicy:
+command: {}
+args: {}
+ports:
+    - containerPort: 3000
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        HOMEPAGE_VAR_ADGUARD_PASSWORD: ENC[AES256_GCM,data:/JViOtW6A675fcAfh0rK6uUMJNM=,iv:JdwdoEvIDSLTHvf9cNZ+JHQ/ILsKQ79ozWYyX1Q4c0k=,tag:AjI2op9bdW2QJXA7d6AXDQ==,type:str]
+        HOMEPAGE_VAR_ADGUARD_USERNAME: ENC[AES256_GCM,data:ZVXMYAaC,iv:B5yO6+fSK0qnD7OzA8MVj2hQt7ujfCuVKHGTSBp/pYw=,tag:6Uk6aMsVV/+JUPezxBbLJQ==,type:str]
+        HOMEPAGE_VAR_BAZARR_KEY: ENC[AES256_GCM,data:dGqtPM4irQEOAydvA5adTwGZlXPNUWJWmOk6HZ95cmw=,iv:zRLqQXV/xZkcgIBkXQ/0aSqjJ408TVvVfsBQpu1w6N8=,tag:Zxrx8L+ZLJkdcYzd/Ez0FQ==,type:str]
+        HOMEPAGE_VAR_DELUGE_KEY: ENC[AES256_GCM,data:eOkSuyxhnGSDv7TI5CnGeg==,iv:fMGO3IAxUYy1Qs4RxAI7LqHCe0dKtLVwsxgvRimQHZ8=,tag:9jgRZOhCHaD3raYXc6TMOw==,type:str]
+        HOMEPAGE_VAR_FRESHRSS_PASSWORD: ENC[AES256_GCM,data:x67o6mf9ssEohlWIvpfK7Cua8WnJCObjBLEOGWNi,iv:r3RCJ/09XUK4s1z44LNRHL9mLZYx23e80k6rw7b25uM=,tag:MMa93cqCI1Ti/vWyMc1ppw==,type:str]
+        HOMEPAGE_VAR_FRESHRSS_USERNAME: ENC[AES256_GCM,data:LZYc2+X3,iv:pI8c0x4fw8rut55+sYKhlKLjqDuuovR5NNkySkC6m7c=,tag:HBFGK5OUMaQjoioYkgXoOA==,type:str]
+        HOMEPAGE_VAR_GRAFANA_PASSWORD: ENC[AES256_GCM,data:Kd9eAzMT0a+sN/89,iv:GW87peyijTN5tDSx7X2Kk7wBRNsPKNtjXanisGM4Fes=,tag:M/aTyYnLt43KcsrdF6w/fg==,type:str]
+        HOMEPAGE_VAR_GRAFANA_USERNAME: ENC[AES256_GCM,data:/J2Xev8=,iv:ZT59IQOyLb/kLaNutcSIdT9x7G0a5HTGykJduRjd/6s=,tag:WMc+u5AWkXiNVg0StFw/kQ==,type:str]
+        HOMEPAGE_VAR_HOMEASSISTANT_KEY: ENC[AES256_GCM,data:pgUXb6Y9CcWtO6Se6i+4VerzGhOI9qCPT+9sm9QypgGZMWdLbYWC6hFBdGl+cYD60mSVA4pT6YlLJqLG3DT4pPE9z77SyGBkhmMSMGj6Ngv/nW0wVIP1b9c/Y4o3fNLs8cIn11kBFtwdU3ucdqnlsJcTJvb/iSq9yqy4BmIrRUU8VRCFclwkYO0ML2/KI9j4Yxz3Ev9LGqsB4muXQWgrWHYnd82MFuheqMbeqoDUjaFEWUPna1Ln,iv:Xoa0tztbS2Mj8tyfCV7ElGmzt0hm36gg/GbMoSnw7dw=,tag:scOJzJythUudzndbrNnBVg==,type:str]
+        HOMEPAGE_VAR_LIDARR_KEY: ENC[AES256_GCM,data:TbQ8EuV6K+JVFLs4C68yruNt0FT2VfsobkaLIMMMP8A=,iv:sVxPwmaXh9saHydwO/7Hm/+CY9yvcp4+TNMTU8hx0/M=,tag:dT69a6Tc9ol7gWK5+txeEA==,type:str]
+        HOMEPAGE_VAR_OVERSEERR_KEY: ENC[AES256_GCM,data:74VESGK9VfzxG0hbgCV+oE1ZcJi6+25GpbpXwvSg4fkMbVyOBN0hupvC8aLLYdVFfx9geuwIWco+ytE7OH2DsAJReKU=,iv:B6l3H9Xmho1IRvJ8CILfZnJkSVa7rATt7xnE/+s5IX8=,tag:oQkcTJNEzyao/FKxWO442A==,type:str]
+        HOMEPAGE_VAR_PLEX_KEY: ENC[AES256_GCM,data:ixFdS9eL8qr0bE1Ik1Jh8f6/OtE=,iv:+DrJ4XHradEDGueKKCBzFpiTdV3dgzHwWbc8ofD8SAE=,tag:v9gavRaBH/tjrLCSjt59pA==,type:str]
+        HOMEPAGE_VAR_PROWLARR_KEY: ENC[AES256_GCM,data:1BLTpxd4CTWAO2GrAvPFHO9RTOLwu8BTX0U8UJQyPZw=,iv:scCoiOS6BGcxn5+Q9JKG3agQ8iZAG0idgXyRIYP0bvc=,tag:zhTS5FOwNBRCYY3JkER6RA==,type:str]
+        HOMEPAGE_VAR_RADARR_4K_KEY: ENC[AES256_GCM,data:x0oC8UYDRT9narlXGDyO85fAiGi0yTxyEYUmmE87hJ8=,iv:VaBIEb3FHK/IZgqQk4XArVNaNX68iTA/pFbTkY48HOo=,tag:1JKroaLVH/Y8A7dTuLB6JA==,type:str]
+        HOMEPAGE_VAR_RADARR_KEY: ENC[AES256_GCM,data:uM+xaD60MbBL8cucmCQnK7+bWCkfyGkCLwiYtCJRVDA=,iv:whBvAZErdMEdR1seSkA6YhZ7LBPROurflpMz0h5sgkg=,tag:Yknk6UMjpj9sf3i2pL1Gkw==,type:str]
+        HOMEPAGE_VAR_SONARR_KEY: ENC[AES256_GCM,data:MsQCAvqP5cU/KigWQSXi9DpBwRhZ8UiiYP+iWCbQ924=,iv:Z6AzKvEX6gw8Tkc6d8+Tx5OFOaRyk0Qm9WBmcSMUSpw=,tag:2vPrzxyrn5cjQQuVGYS80w==,type:str]
+        HOMEPAGE_VAR_TAUTULLI_KEY: ENC[AES256_GCM,data:hFBQEt/34yxxvKUUPgUB0SkY6X+muukOOxFqOCbrFCk=,iv:iPLe40AwctpoIVnU4hrz+yWwwH8T7c1Tcr++5YfC7+4=,tag:CsmdMI2nFMdJN1UdH08BRg==,type:str]
+configmap:
+    data:
+        bookmarks.yaml: |
+            - Entertainment:
+                - YouTube:
+                    - abbr: YT
+                      href: https://youtube.com
+                - Netflix:
+                    - abbr: NF
+                      href: https://netflix.com
+        docker.yaml: ""
+        kubernetes.yaml: ""
+        services.yaml: |
+            - Services:
+                - FireflyIII:
+                    description: Expense management
+                    icon: firefly.png
+                    href: https://firefly.{{ .Values.domain }}
+                - FreshRSS:
+                    description: RSS news aggregator
+                    icon: freshrss.png
+                    href: https://rss.{{ .Values.domain }}
+                    widget:
+                      type: freshrss
+                      url: https://rss.{{ .Values.domain }}
+                      username: "{{`{{`}}HOMEPAGE_VAR_FRESHRSS_USERNAME{{`}}`}}"
+                      password: "{{`{{`}}HOMEPAGE_VAR_FRESHRSS_PASSWORD{{`}}`}}"
+                - Wallabag:
+                    description: Link aggregator
+                    icon: wallabag.png
+                    href: https://wallabag.{{ .Values.domain }}
+                - Nextcloud:
+                    description: Media storage
+                    icon: nextcloud.png
+                    href: https://nextcloud.{{ .Values.domain }}
+                - Gitea:
+                    description: Git
+                    icon: gitea.png
+                    href: https://git.{{ .Values.domain }}
+                - Change Detection:
+                    description: Site stock monitor
+                    icon: changedetection-io.png
+                    href: https://local.{{ .Values.domain }}/changedetection
+            - Home Automation:
+                - Home Assistant:
+                    description: House brains
+                    icon: home-assistant.png
+                    href: https://home.{{ .Values.domain }}
+                    widget:
+                        type: homeassistant
+                        fields: ["targets_up", "targets_down", "targets_total"]
+                        url: https://home.{{ .Values.domain }}
+                        key: "{{`{{`}}HOMEPAGE_VAR_HOMEASSISTANT_KEY{{`}}`}}"
+                - Node-RED:
+                    description: Automations UI
+                    icon: node-red.png
+                    href: https://local.{{ .Values.domain }}/node-red
+                - Zigbee2MQTT:
+                    description: Zigbee devices manager
+                    icon: zigbee2mqtt.png
+                    href: https://z2m.local.{{ .Values.domain }}
+                - ESPHome:
+                    description: Controller for ESP8266 devices
+                    icon: esphome.png
+                    href: https://local.{{ .Values.domain }}/esphome
+            - Media:
+                - Plex:
+                    description: Plex media server
+                    icon: plex.png
+                    href: https://plex.{{ .Values.domain }}
+                    widget:
+                      type: plex
+                      url: http://{{ .Values.ips.hoarder }}:32400
+                      key: "{{`{{`}}HOMEPAGE_VAR_PLEX_KEY{{`}}`}}"
+                - Tautulli:
+                    description: Plex monitoring
+                    icon: tautulli.png
+                    href: https://local.{{ .Values.domain }}/tautulli
+                    widget:
+                      type: tautulli
+                      url: http://{{ .Values.ips.hoarder }}:8181/tautulli
+                      key: "{{`{{`}}HOMEPAGE_VAR_TAUTULLI_KEY{{`}}`}}"
+                - Overseerr:
+                    description: Media requests
+                    icon: overseerr.png
+                    href: https://overseerr.{{ .Values.domain }}
+                    widget:
+                      type: overseerr
+                      url: http://{{ .Values.ips.hoarder }}:5055
+                      key: "{{`{{`}}HOMEPAGE_VAR_OVERSEERR_KEY{{`}}`}}"
+                - Calibre:
+                    description: Ebooks library
+                    icon: calibre-web.png
+                    href: https://calibre.{{ .Values.domain }}
+            - Media Management:
+                - Sonarr:
+                    description: TV Shows management
+                    icon: sonarr.png
+                    href: https://local.{{ .Values.domain }}/sonarr
+                    widget:
+                        type: sonarr
+                        fields: ["wanted", "queued", "series"]
+                        url: http://{{ .Values.ips.hoarder }}:8989
+                        key: "{{`{{`}}HOMEPAGE_VAR_SONARR_KEY{{`}}`}}"
+                - Radarr:
+                    description: Movies management
+                    icon: radarr.png
+                    href: https://local.{{ .Values.domain }}/radarr
+                    widget:
+                        type: radarr
+                        fields: ["wanted", "missing", "queued", "movies"]
+                        url: http://{{ .Values.ips.hoarder }}:7878
+                        key: "{{`{{`}}HOMEPAGE_VAR_RADARR_KEY{{`}}`}}"
+                - Radarr 4K:
+                    description: 4K Movies management
+                    icon: radarr.png
+                    href: https://local.{{ .Values.domain }}/radarr-4k
+                    widget:
+                        type: radarr
+                        fields: ["wanted", "missing", "queued", "movies"]
+                        url: http://{{ .Values.ips.hoarder }}:7879
+                        key: "{{`{{`}}HOMEPAGE_VAR_RADARR_4K_KEY{{`}}`}}"
+                - Bazarr:
+                    description: Subtitles management
+                    icon: bazarr.png
+                    href: https://local.{{ .Values.domain }}/bazarr
+                    widget:
+                        type: bazarr
+                        fields: ["missingEpisodes", "missingMovies"]
+                        url: http://{{ .Values.ips.hoarder }}:6767/bazarr
+                        key: "{{`{{`}}HOMEPAGE_VAR_BAZARR_KEY{{`}}`}}"
+                - Lidarr:
+                    description: Music management
+                    icon: lidarr.png
+                    href: https://local.{{ .Values.domain }}/lidarr
+                    widget:
+                        type: lidarr
+                        fields: ["wanted", "queued", "albums"]
+                        url: http://{{ .Values.ips.hoarder }}:8686/lidarr
+                        key: "{{`{{`}}HOMEPAGE_VAR_LIDARR_KEY{{`}}`}}"
+                - Deluge:
+                    description: Torrent downloader
+                    icon: deluge.png
+                    href: https://local.{{ .Values.domain }}/deluge
+                    widget:
+                        type: deluge
+                        url: http://{{ .Values.ips.hoarder }}:8112
+                        password: "{{`{{`}}HOMEPAGE_VAR_DELUGE_KEY{{`}}`}}"
+                - Storm:
+                    description: Deluge, but pretty
+                    icon: storm.png
+                    href: https://local.{{ .Values.domain }}/storm
+                - Prowlarr:
+                    description: Torrent indexer
+                    icon: prowlarr.png
+                    href: https://local.{{ .Values.domain }}/prowlarr
+                    widget:
+                        type: prowlarr
+                        url: http://{{ .Values.ips.hoarder }}:9696/prowlarr
+                        key: "{{`{{`}}HOMEPAGE_VAR_PROWLARR_KEY{{`}}`}}"
+
+            - Admin:
+                - UniFi OS:
+                    description: Controller Management
+                    icon: unifi.png
+                    href: https://unifi.local.{{ .Values.domain }}
+                - UniFi Network:
+                    description: Network controller
+                    icon: unifi-controller.png
+                    href: https://unifi.local.{{ .Values.domain }}/network
+                - Uptime Kuma:
+                    description: Status page
+                    icon: uptime-kuma.png
+                    href: https://status.{{ .Values.domain }}
+                    widget:
+                      type: uptimekuma
+                      url: https://status.{{ .Values.domain }}
+                      slug: 1
+                - Kubernetes:
+                    description: Kubernetes dashboard
+                    icon: kubernetes.png
+                    href: https://local.{{ .Values.domain }}/kubernetes
+                - AdGuard:
+                    description: DNS, DHCP and Adblocker
+                    icon: adguard-home.png
+                    href: https://adguard.local.{{ .Values.domain }}
+                    widget:
+                      type: adguard
+                      url: http://{{ .Values.ips.rpi_4b }}
+                      username: "{{`{{`}}HOMEPAGE_VAR_ADGUARD_USERNAME{{`}}`}}"
+                      password: "{{`{{`}}HOMEPAGE_VAR_ADGUARD_PASSWORD{{`}}`}}"
+                - Grafana:
+                    description: Dashboards
+                    icon: grafana.png
+                    href: https://local.{{ .Values.domain }}/grafana
+                    widget:
+                        type: grafana
+                        fields: ["dashboards", "datasources", "totalalerts", "alertstriggered"]
+                        url: https://local.{{ .Values.domain }}/grafana
+                        username: "{{`{{`}}HOMEPAGE_VAR_GRAFANA_USERNAME{{`}}`}}"
+                        password: "{{`{{`}}HOMEPAGE_VAR_GRAFANA_PASSWORD{{`}}`}}"
+                - Prometheus:
+                    description: Alerting TSDB
+                    icon: prometheus.png
+                    href: https://local.{{ .Values.domain }}/prometheus
+                - Alertmanager:
+                    description: Alerts manager
+                    icon: alertmanager.png
+                    href: https://local.{{ .Values.domain }}/alertmanager
+                - InfluxDB:
+                    description: TSDB with nice UI
+                    icon: influxdb.png
+                    href: https://influxdb.local.{{ .Values.domain }}
+                - ntfy:
+                    description: Notifications manager
+                    icon: ntfy.png
+                    href: https://ntfy.local.{{ .Values.domain }}
+                - ArgoCD:
+                    description: Deployments manager
+                    icon: argocd.png
+                    href: https://local.{{ .Values.domain }}/argocd
+                - Kopia:
+                    description: Off-site backups manager
+                    icon: kopia.png
+                    href: https://kopia.local.{{ .Values.domain }}
+                - lldap:
+                    description: LDAP identity provider
+                    icon: https://market.enonic.com/vendors/enonic/com.enonic.app.ldapidprovider/_/attachment/inline/f77bfb0b-5af6-4e68-b0e9-1bceff97e0fa:c1808c774597366f4296426039e3b963764a9e27/simpleid-icon-adapt.svg
+                    href: https://ldap.local.{{ .Values.domain }}
+                - Longhorn:
+                    description: Kubernetes distributed block storage
+                    icon: longhorn.png
+                    href: https://local.{{ .Values.domain }}/longhorn
+                - Authelia:
+                    description: SSO portal
+                    icon: authelia.png
+                    href: https://auth.{{ .Values.domain }}
+                # - Prometheus:
+                #     description: Time-series database
+                #     icon: prometheus.png
+                #     href: https://local.{{ .Values.domain }}/prometheus
+                #     widget:
+                #         type: prometheus
+                #         fields: ["targets_up", "targets_down", "targets_total"]
+                #         url: https://local.{{ .Values.domain }}/prometheus
+                # - Alertmanager:
+                #     description: Alert manager
+                #     icon: alertmanager.png
+                #     href: https://local.{{ .Values.domain }}/alertmanager
+        settings.yaml: ""
+        widgets.yaml: |
+            - resources:
+                cpu: true
+                memory: true
+                disk: /
+
+            - search:
+                provider: duckduckgo
+                target: _blank
+
+            - datetime:
+                text_size: xl
+                format:
+                  timeStyle: short
+volumeMounts:
+    - mountPath: /app/config
+      name: config
+    - mountPath: /app/config/logs
+      name: logs
+volumes:
+    - name: config
+      configMap:
+        name: homepage
+    - name: logs
+      emptyDir:
+        sizeLimit: 5Mi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector:
+    kubernetes.io/hostname: k3s-m1
+tolerations: []
+affinity: {}
+dnsConfig:
+    nameservers:
+        - '{{ .Values.ips.rpi_4b }}'
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T16:08:56Z"
+    mac: ENC[AES256_GCM,data:zxZtKiB/MlP7+zlqt9AI/iQwsBNKMsH2xAOQYVcYb+jgJif/t+U3uGImUBu2H+YuyVA2Epqs4gpYyToQUMWNzqxxrVFRG66h7W4DzaViShLlwmDt1OcUWcV+yryS6RzJ3HPDMwfUZW630lIZVXh7KYPfx6dbdEZfmcrszBfeyYs=,iv:WsiNEneGGS3V630ooEKagjYV8wcgphxjWVluN2mayNw=,tag:DxJew/u0zqAPLk7vDZh0EQ==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:52:00Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//fJhbBiMtQeGPj4XJZoUAFeg0JT/UBDtuBmGoEscMMYA4
+            +PPHSz0hTQyIaJKDeFxlMy8+y4u48wb9V+oPUK88OhfXSkG8sH+xkYyCK3QTVYEt
+            jkmtG781ZQ8q5c1OqWIg/mf7C12Toqit0PuRaFg3irwu9oGUd77/Ma1NPqUwP5Ph
+            HASXXbRLvk3PyuH590ckY4OyXgCpg6tcUCbaXqQ8N37+O5u+KnTQXM3j7ZAKD2fW
+            d5bKqPdjv97rBkW5s0UJoWRQ7v43hxyc3E/UaaKmxKGm+4xXxjfp6YqvM5UQ7oSq
+            1uBoKCuIsw7cFJjzw1cKXCM0jwuB0nSs+XeXJmP8jwUMBKt+vyhWv2835v9nc23r
+            orMF8NezkS+x+LFL3wt/+sA5UH41nOLl7KVv0ud4TZ9qSBR2iA1QUxnIsZ7piK50
+            /EawCiohtLYP1DayXUCJj1EFoUI872gmZ6oPOO86icrVhWzzbBXHU7s4EnUWy5Wl
+            JHTfQC21wj5+BAty24KMIfjkP9d+n6eZ4X2/+430wkIYYQbZ+ws1frKDgalTACAk
+            Z0G2t1JzG4gRpRzvUdDeSBdhyg8x7aKpjB8itHOdKKRf9G1bLiDuuH98HQwXMhye
+            LCQo7CipU4JxYmcjCwsjFvrDnkqlCHEJOFaOK2ZWpiZe+uXsG+eYYxpA4RhyUjPU
+            aAEJAhAjuYzxmg7mMB8HSrQu/ylzGZH/QbNoZTTjv0cVRW9lhpJ93EpINo60Z4Wf
+            KWXnalq8zKzZSn+gubE9ST/30lmabSyzb6csJp5Q9t3WEBluxZABdHLarO0b4s8j
+            dUII8Ykrle9O
+            =5Vky
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0

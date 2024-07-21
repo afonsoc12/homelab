@@ -1,0 +1,84 @@
+labels: {}
+secret:
+    stringData:
+        INFLUXDB_V2_BUCKET: ENC[AES256_GCM,data:+NPKhKPndw==,iv:p6jf3+SJXfgXkzmut904z4abh4PpW5QDZdeiOaHEN4E=,tag:NMGtUHHp8E7S1YIVF0ny6Q==,type:str]
+        INFLUXDB_V2_ORG: ENC[AES256_GCM,data:owE39Ydyzw==,iv:htW2AQbuJo+3cY0v3rLLeb4CoPjYHflUPjNPm9e+DUM=,tag:ffjA3pQ4MXsX/msMUbJosg==,type:str]
+        INFLUXDB_V2_TOKEN: ENC[AES256_GCM,data:0gEgv1sr7P5glNr2uuFh39COYjYiJnCgx36KObSKnXDCiTLYcMpmwQ6RkKYoAO1eWtWkBaJ/6dUUCMMASaxVEwYdxwR2zNIOzqbPhqt7g2OrsuZ7xP2E+Q==,iv:wxC1D/9wPGzLEJIgu1hENUlqzQodUTvVadAKWtpwxqA=,tag:IT5U6Mh7aL6BRsL5XCCzcw==,type:str]
+        INFLUXDB_V2_URL: ENC[AES256_GCM,data:EilQ3IHHNoNSuSrp1zxlRkqhu9rjoxo8RBo7i9/y,iv:GzbN5Qr5B0halzmHEeTzpPLLhDNL8B/o5fUGMikLIs4=,tag:3lMu66QYybkWz+b/6iPPkg==,type:str]
+        OCTOPUS_API_KEY: ENC[AES256_GCM,data:EuIcOTzypNuRPl/eo69UEAhAfWHPad2754TqFhxA618=,iv:TAmhRu2FZqV92aoYZsee5T+UCSUC9EOu0ypoCYGntME=,tag:5VCdhjPbUzKRcRR4vqehcQ==,type:str]
+        OCTOPUS_ELECTRICITY_MPAN: ENC[AES256_GCM,data:yNxdqktW8hVqbSH2YQ==,iv:CUFu8zp/Oc7IrrePbyuwKCAv27fxO7BUzVj+AWr/h0M=,tag:13v8nS/5MeCz5qJyI3MXFg==,type:str]
+        OCTOPUS_ELECTRICITY_SN: ENC[AES256_GCM,data:tCy3F4S/heN10A==,iv:/qD2fHJqseVJdzwIRHi9wScRpx0ZMhgX/c6caGVdNIM=,tag:QJOat9WU2/vsbz87j2tlfQ==,type:str]
+cronjobs:
+    - name: octopus-api-consumer
+      schedule: 0 8 * * *
+      concurrencyPolicy: Forbid
+      failedJobsHistoryLimit: 1
+      successfulJobsHistoryLimit: 1
+      # backoffLimit: 0
+      image:
+        repository: ghcr.io/afonsoc12/octopus-api-consumer
+        tag: develop
+        pullPolicy: Always
+      restartPolicy: Never
+      command: []
+      args:
+        - --period-start=1970-01-01
+      ports: []
+      #  - containerPort: 80
+      #    name: http
+      #    protocol: TCP
+      #    service: true
+      volumeMounts: {}
+      # - name: config
+      #   mountPath: "/config"
+      #   readOnly: true
+      volumes: {}
+      # - name: config
+      #   projected:
+      #     sources:
+      #     - configMap:
+      #         name: authelia-config
+      #         items:
+      #         - key: "configuration.yml"
+      #           path: "configuration.yml"
+      livenessProbe: {}
+      readinessProbe: {}
+      resources:
+        limits:
+            cpu: 50m
+            memory: 64Mi
+        requests:
+            cpu: 50m
+            memory: 64Mi
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T15:18:59Z"
+    mac: ENC[AES256_GCM,data:e3UDxD18T5tmpjnIqYc2c/nm3sCLsSUNXfoBGxNJ9rCcabQ9/aLnLdtgwqDE4GAm9OszTy/XK00RyxnD/mn4vOZAwSbI7nEzwIUkHRHMfEdmocE6jk+90KnGw2kmKyNIA+I1gO2u+ToVWbVGhiXpN+K6LkzIPCwjHDbirTsRg4Y=,iv:F5zrEct4b7EEeoDafPU57Ul5sLae6dRDby5bWg5EDmM=,tag:rAUViZex9PGbpN80ufMLMw==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:01:51Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAAovTKlLtkOb61ceSzA3qPhfaP3SOmVVvc3MKvtei379ZL
+            i+w9rF8hEtg4OT6g+Xq91bG4uEzbqWpLtDgEjb/IVhPYH8uP2g0hfyYDXC14eBJc
+            JmnC/Wvap6ZSNrRLE5vS6PJ0sQGWgumYyIFw0fAOz1HfwUEHxWK7XbGqWMx/LleV
+            PjhZBq+bwQ91ZWb6kYqHVJnXV75RYr1Mv8i/QJQENGU8Baj0km5vqSXbONsJFWqL
+            8XWHRchoSEWl9wnvKk5pdWuum23JSt9wRVjqvuGvay8qZaZymPrULPn1fRgoWuJm
+            U/Sa6oHY3bG/dcS+2xVmT2cL1aXa2ugo9zy+hEqR9cX3cqei+QhMcLITtASE6O9I
+            qdiDIWuxKgUiwYVbwK2zIKov0DVO1Ke39le0/uw1ZKWFIIjWMXjP8Hy94MhyRFtq
+            wmqyEUJCr/Log87IWsDvwFwKX3MRauJoGRz8FaskM5wqal8XLmCg6wD4xv9SLxk1
+            7R9hE0g0rm7lkebIMEYJznYzrVhbw2g3TcDYzsQIDKxQc4rscFDqS5SA1zc5a267
+            G7IXae5BpfeoK9p8orIxEIcex2QWcREiRM7RhUaWQdVj3FklLG7Zl89ptUZL8Wcq
+            nF9xPxW9V41wahBIWhP3xUJMFE5dD0CvrXfu1z9L0ovbL25s09b3GXytV5wVVTLU
+            ZgEJAhBmRpp9oCQAKxkFmW7b9HteynrVj/Rhkg21cjyWxwcHWVswT1gmcGqd3BNo
+            Ca0OOo64LGgVwe/c1WoJgdT7wduQXAVf0jSOMRV0VZW2Y3KWFtgvC0qZWddCKtuy
+            ksCHIP058Q==
+            =ulOd
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
+    version: 3.9.0

@@ -1,0 +1,61 @@
+nameOverride: ""
+fullnameOverride: ""
+
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+podAnnotations: {}
+  # annot_1: abc
+  # annot_2: def
+
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+
+image:
+  repository: louislam/uptime-kuma
+  tag: 1
+  pullPolicy: Always
+
+ports:
+  - containerPort: 3001
+    name: http
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+volumeMounts:
+- name: data
+  mountPath: /app/data
+
+volumes:
+- name: data
+  mountPvc: true
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+
+ingress:
+  enabled: true
+  authelia: true
+  className: "nginx"
+  annotations:
+  tls:
+   - secretName: status-cert
+
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: status.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix

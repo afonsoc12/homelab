@@ -1,0 +1,61 @@
+labels: {}
+# label_1: abc
+# label_2: def
+replicas: 1
+image:
+    repository: ghcr.io/wez/govee2mqtt
+hostNetwork: true
+secret:
+    mountEnv: true
+    stringData:
+        GOVEE_API_KEY: ENC[AES256_GCM,data:0QWS33qnt9DNRpLZTepY7UA/a1u5YkDxxmIxGBmXJ6CTzD6U,iv:k9d2r5L2EKvtL3UNaXKmHZrlLo6a+Irsnq1PNHCJHVM=,tag:jAc4ihaLcG5lrlKkeeBkbQ==,type:str]
+        GOVEE_PASSWORD: ENC[AES256_GCM,data:OEcF6bdWqyu4dl37qdWfboGzywQ=,iv:1eLBYBrCArcKLcD3a8G4GEkHlLML/tjFPZrjgDYVCws=,tag:x53m1uvJbkEbjaJyVFPBZQ==,type:str]
+        GOVEE_EMAIL: ENC[AES256_GCM,data:1nsu1UpNPibjbgPfvwH6CRjyWRCpW+DNpedO,iv:Y0Xsq969Am4dABp/zUF2bzLHNfYFpHqt/MJ7SqQPxu4=,tag:M8IJ+8mlc7vwUEoR0qvwvA==,type:str]
+        GOVEE_MQTT_USER: ENC[AES256_GCM,data:sDYdfAmdX/yf,iv:31kYWz7b280lR3/WG2mLYSv68sS9MHFISZP2u4kQlfo=,tag:OZCWGfMHZFG5ntLROVulmg==,type:str]
+        GOVEE_MQTT_PASSWORD: ENC[AES256_GCM,data:Xw5ll0WzcAJcttEU,iv:lClGhpTmgBEgfwnWLU2ErN9+Ne1P3XrCh/ULLXwQAgA=,tag:bNhu8XinZTeJOSLDAiWdZQ==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        GOVEE_MQTT_HOST: mqtt.local.{{ .Values.domain }}
+        GOVEE_MQTT_PORT: 1883
+        # Specify the temperature scale to use, either C for Celsius
+        # or F for Farenheit
+        GOVEE_TEMPERATURE_SCALE: C
+        # Always use colorized output
+        RUST_LOG_STYLE: always
+        # If you are asked to set the debug level, uncomment the next line
+        #RUST_LOG: govee=trace
+nodeSelector:
+    kubernetes.io/hostname: k3s-m1
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T14:47:13Z"
+    mac: ENC[AES256_GCM,data:LkWslITKaxvryWkC2pUMY+wvzc3PnBvtnnHcGMeDXSrLH24WBoqx6z+VLaWoIdRXSDLBxXqDrJ9CBXLa5/PobLhtJI0t+JmS1MXqONZarOkbxUN2Ttk3DDPAobCVT4UYjKRs6A9K6bSV0baOuYrxhDNPgFJ2aLCtudrKu51bYYI=,iv:4xoT4stQX/A2NMUYazEOvRtEQP6rxtrbkV9XoZLfGDo=,tag:dPke6Z1fOKnFuk+5KVEp/g==,type:str]
+    pgp:
+        - created_at: "2024-07-20T14:47:13Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//aQLlqJVdxEIPK14erojj/lzdIiJFfYbVShH1zOiwPIGS
+            9AWsIQiyO6rjExexokP33hUbN2w4mjxMUEbNotnKMkmUQ0tGgSmaRj8LTZ/IkEgB
+            gfTa4QInUwIXA+VbHH1GFVtwcm8w8gqIdD/bZ7uLiO9IikhgCe/kyLTjnixsgGc9
+            U3OGnqhj3+BfAPf/WXIUEmVzjejDalwiXwytbJxQYHH1PeVhHVdFxzNs+Vd/yM8H
+            YH9bxHoYjdOE9hWBC/OABwJ+N/uqpQ0M0ANBwo6k44gduGlfoDqUK24/1Rk6QXMP
+            +QOq6vttfSMkdpBpOfHJagFTY7TK/7r7Qp6RC1u/IGsh2M1RMSAHaMf21DNKnwwn
+            ahcaRYTAEf4UPhytpAmKO2+PvjHvN4daYeoRH4HT4SLl2WmBOaVcrgregGLrTZ3B
+            Eaipi9xQyNJeZshlzKTnJW+nC/hyVooRp7wxk2lJZNz0z9Twt3r6cJDJv/0/DQGY
+            XDLgDomnWjKgYiqvjtGHO3lvNDpqoh2MqAgHqbY9k7ftqemqwuxQ2bdu8EwIIWdo
+            itPW7qp7BPYEpIfmmIwbpKQgE2fvSwmmmREbdKvgvecYmEW4QK516TCEHpKOFOSz
+            8tmzcHs8okj03tO20i7+r9rzQ5pGwCzPfsVYgdjaIWQwFusdbazEIBDnxVhTVUfU
+            aAEJAhADyD7Ytjb1mckGUoyyAxE/CVVsjUV39ELUuAmShkYsos8etaAQ9PE/2Zne
+            46Insh70VJcXZtfrXAE4I0A8o+2keIwLqiZTuCzedhQz4wyi4/3R3qb6zLN4Wwx6
+            ro7jhL9lwgvM
+            =3a7W
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0

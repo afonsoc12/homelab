@@ -1,0 +1,134 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghostfolio/ghostfolio
+    tag: latest
+    pullPolicy: Always
+ports:
+    - containerPort: 3333
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        ACCESS_TOKEN_SALT: ENC[AES256_GCM,data:QzRFffVl3FNrsjGyYdV5whxc5cSzY4DGIdrIq0huSvyaQbTYsJlbhFP0oFtcqprmvxrHvPxByX+z8oI5tBqNNg==,iv:iErWMMUdjIqp+Dqp+skfCEc0c/LMB/GTooaEoqG5U14=,tag:JSHy8oqoLIdPB/4Q8Joi4A==,type:str]
+        JWT_SECRET_KEY: ENC[AES256_GCM,data:A7n0sNBMfcGhXILWN6Xis2pwlcwe/zyx4C9F0JSOqZXLO4IcM2KRA+Jczzh6tz/ESKkTzStNz+nmCHOL+xXjcw==,iv:VhzJLqlWbG9XlEGN3AqeMoBHI2qySlS4fN8LZmEDEEw=,tag:l9FLqFesG307kx7Y6LKrrw==,type:str]
+        DATABASE_URL: ENC[AES256_GCM,data:rxkn/VBBwxalwlGWKbdOv4TmYuQM7yQXPRs2Sm3vYVd4PJPCZsnM5aUM0nYDZJN7aL2nO61aVBA1RasDSVkm4Z2TpC9x/2tioyYipuX48tBkKR9WLV/N7oEI9acH/BGwbZhsz14ySQfAyRg4xw==,iv:dIEnwbalMzAmg6Yp10fIztdW966cstRy8Heph8G+ATM=,tag:dlvtsJVbObyWRiDlHJRDMA==,type:str]
+        POSTGRES_DB: ENC[AES256_GCM,data:1ZeSeu8DVeTRlQ==,iv:SlNHjPAriQlP6RrKgx/+cyTd/nwhRS+ljJxw+l9U9Mg=,tag:BrMFqZx3FW2PrvVnC1v7fQ==,type:str]
+        POSTGRES_USER: ENC[AES256_GCM,data:nI50x2SUWMJYwg==,iv:RrRdL1W4f0cy9OBEa7AYjdufzkax/FJfJf2PDa6kCcU=,tag:nj26siqt1m9wlszKHN6pCw==,type:str]
+        POSTGRES_PASSWORD: ENC[AES256_GCM,data:XTgawlHXdGPrDLuONG42mROZaqQ=,iv:KwZIcp2AQmI6JxbqL7ZJdyz5zwSbxja75GiF3RNtA7Y=,tag:45f2gwgm50hSoWx34GSLrw==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        NODE_ENV: production
+        BASE_CURRENCY: GBP
+        HOST: 0.0.0.0
+        PORT: "3333"
+        REDIS_HOST: redis.databases
+        REDIS_PORT: "6379"
+volumeMounts: {}
+# - name: config
+#   mountPath: "/config"
+#   readOnly: true
+volumes: {}
+# - name: config
+#   projected:
+#     sources:
+#     - configMap:
+#         name: authelia-config
+#         items:
+#         - key: "configuration.yml"
+#           path: "configuration.yml"
+# - name: config
+#   mountPvc: yes
+pvc: {}
+# storageClassName: longhorn
+# accessModes:
+# - ReadWriteOnce
+# resources:
+#   requests:
+#     storage: 2Gi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations: {}
+    # nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls:
+        - secretName: stocks-cert
+    #    hosts:
+    #      - chart-example.local
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: stocks.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector: {}
+tolerations: []
+affinity: {}
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T15:24:30Z"
+    mac: ENC[AES256_GCM,data:TcLEUl865y7pEFCGUr8YaRYpnrDEbF3LuLeeFtd9Ab8jqNs8gaVjZp5QSzhH7AjmrVoxa1in9xZVG+dv3q72Ew3OYIJhDrYvWYsJEM0zjwWUsO0gPjS8FK8Ta5nAB6cxnfAxfzOhZRQmqlNiq2hVSw9P1KiSkPR415btfdudk0c=,iv:bzf8YkuWIAPtlUj315AdW3s3Kuk/7wMtMQM92nbMw2A=,tag:ltaNlUo4s7sZhPyYNrIS8A==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:24:30Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/+IJEm4Xxgwob/harmb85+llaMn6kckNoif+eBeGrrkIXV
+            M6B7X6Ck8Gu4xh2qELK5LQAh8znGSzIeH+ZRxvLOcXK5Ax5IheL7HFiUjv14oN3V
+            7RDouL/0MSSDUMBt32ZSXx4ORaiGLAVhz/+4sLn3xGyBb4ZPd2mFm1Y345rtbwk3
+            cAQTbponp7cDhFiJtE98QVkyvGnLNy+R/23Dc3SLG/RqCIFgi6xFZh2znJQsTshR
+            VN2BtSaEBwuSwff04MZL1oqJGOki3Yu+YGXt4zQMqKoXGBYh0sQZw4e5LTRyQkVA
+            2aP4S8vpXcCq6Eb38S+HFne52dz9oNV5OYjzoSDbGwlw2P6DiRyjwB2YGdhx4+jC
+            vSkrKJjTsG/XkwLHoWB5LutLCi1VyGW26ymRXd6YdCQ/i0IQg091SDutIa/9+xJL
+            PdkIxA59U8mgvOkcr4dAakEr/Ko/76+gnYOvmBzRaeJg27Qzq5R/jbRZJwlSsyfI
+            oZDZd1Z+YIhU+/ZSh5pIFNQVmFPqFzsqwVnYuWqYLCkuhG/VTeLq0upn+/WA7hNm
+            rJ/BOhZDmQ4/MuRwgV+WsTMFXBpkXPZNZCtot5gAGIcod3n9duYZdlCPimS0Z1pr
+            S46MknWnvHQJfJpHEEi7O4/R125ZIeFKaoOEpvqBgadjOle3JnZGZyxgViMhVqbU
+            aAEJAhCrBMDW2GX+nUWA/HXH0LuFCeR/MDGCATotOo5Ycg9Lt2bJOVqpdjDumS7Q
+            GsXBqEntEWvi6V3wVVOrs+6qwVazyD/Fwaifxo3Mcrc2fj01NYa6jI2jf2QAI2Na
+            GGp+IuCdYFn9
+            =ke5k
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0
