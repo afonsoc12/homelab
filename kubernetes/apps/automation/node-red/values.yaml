@@ -48,8 +48,8 @@ configmap: {}
 volumeMounts:
 - name: data
   mountPath: /data
-- name: ssh-keys
-  mountPath: /usr/src/node-red/.ssh
+# - name: ssh-keys
+#   mountPath: /usr/src/node-red/.ssh
 
 volumes:
 - name: data
