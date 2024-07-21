@@ -54,10 +54,10 @@ volumeMounts:
 volumes:
 - name: data
   mountPvc: true
-- name: ssh-keys
-  secret:
-    defaultMode: 256
-    secretName: ssh-keys-secret
+# - name: ssh-keys
+#   secret:
+#     defaultMode: 256
+#     secretName: ssh-keys-secret
 
 pvc:
   storageClassName: longhorn-persistent
