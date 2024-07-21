@@ -1,0 +1,6 @@
+creation_rules:
+  - path_regex: 'kubernetes/.*.y?ml'
+    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    key_groups:
+      - pgp: [47E4999BED565F9874AA0E7C05DA03D000FC10D1]
+  - pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
