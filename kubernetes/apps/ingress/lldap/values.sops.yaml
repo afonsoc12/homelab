@@ -1,0 +1,102 @@
+labels: {}
+# label_1: abc
+# label_2: def
+replicas: 1
+image:
+    repository: nitnelave/lldap
+    tag: stable
+ports:
+    - containerPort: 17170
+      name: web
+      service: true
+    - containerPort: 3890
+      name: ldap
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+    # port: 80
+secret:
+    mountEnv: true
+    stringData:
+        LLDAP_JWT_SECRET: ENC[AES256_GCM,data:sYiBnp8Rkclqn7olNkitTziZGoPnCpD6Zdz4PQP1WyWGo1MxpoGbD0Wo6y1QAJBYUoJYdqn/5ykMW2JRNEfw8Q==,iv:HpaRFcOZxbFnP2absNrWWQDoEscWKl4aSulHenw5FSU=,tag:JhBi9T1igpHujzsZz0exNw==,type:str]
+        LLDAP_LDAP_BASE_DN: ENC[AES256_GCM,data:y7FRxiYaJNLvQvDXcTwQKyyCAw==,iv:pL4k/HiOfHEgd+2sAW0ekVlMF/Bd2enBQaJV3H9XGnc=,tag:AvaXjD7ASJQTUL1uQX6vSA==,type:str]
+        LLDAP_LDAP_USER_PASS: ENC[AES256_GCM,data:k2QBQeKb/EQclU8b2wHAhUSz898=,iv:ZiQn39oZg1DFajCY6Osj5mZr6DiwisvyM6o+b78Jt0M=,tag:Rg9fZUY91rNESLk/g/QmpQ==,type:str]
+volumeMounts:
+    - name: data
+      mountPath: /data
+volumes:
+    - name: data
+      mountPvc: true
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 250Mi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations: {}
+    # nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: ldap.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+# livenessProbe:
+#   httpGet:
+#     path: /verify
+#     port: 9091
+#   initialDelaySeconds: 5
+#   periodSeconds: 10
+# readinessProbe:
+#   httpGet:
+#     path: /verify
+#     port: 9091
+#   initialDelaySeconds: 5
+#   periodSeconds: 10
+# resources:
+#   limits:
+#     cpu: 100m
+#     memory: 128Mi
+#   requests:
+#     cpu: 20m
+#     memory: 64Mi
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T14:18:21Z"
+    mac: ENC[AES256_GCM,data:UeG7vjp+mu7V2NI23G8shhiY7aPzjXfxd0T85djKg/MnB3b5X/DSIBpm67+79UCU8URSP2Bvt1E+HLWykMTFaWZ3NmhO07zJnkgTg3eZ4wm0oLsi9AU0FgYmKdPvrBIZ2QfkKVqZC3HkUDz9WPell0h2VnCXqADYK9dh/6coxwc=,iv:XZuCY8WHSgMVDiNi3ePjagzzOYalKUaXPdigtOLZkLs=,tag:grjp0qDNlW55IQd5dJLWOw==,type:str]
+    pgp:
+        - created_at: "2024-07-20T14:18:21Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQILA5NT/LvuRqeGAQ/yAxWa/vcGqLB/jRuePcLm8Vs00bmIvVfqHvsM4PDW+j1R
+            P78wtZFPOHLLyFPgjJ2Pm2w9n/IJDKUwb4s72k2QvrV1W+BCmwnMSuhgHoElEIRq
+            QTfB33C8gLtV7o56rY6B7WnvhA5GL2HQmCte3ihwgQm+Nmud0gabocY0dKgAgoGs
+            p6h/jAmqTVOpp67gtQq7EMY/yL+afiezE/AcSuwXs0W6F64uYip6l9BPeBFmhg9+
+            NH6vzKEs2duvAUpjxYER8s5hNhjwkCDnWWorKs6f1vxShGMElZENb/f2RFXH6BKM
+            O7/tGuZ5mcS1myuysk21gMXswCE5mnq5mALALuqZZ9K9PgbrJZrowDefXHehJRYR
+            FFzxq3vu2XXnbcrvSIX16ACc4MF10sxp8KmjSeL3a29O3O/yVawSvT1v1BscoUpr
+            g2n5hci/KAMsPZKwkYxRR+acX3CCnR0BpMeOr3EQYZtY6EimCxjjLTfidbIarc6i
+            lqCO7PovhUaiQU9i54c6Yt9gh3fw4AAWyOCxJGaBV+gWxowB9SPOZ12V0lTUUGqL
+            QW/vy9BOpwS6CglD528MIV9xWwkNusWnQ5Pd7odXN17J0iIVrhM9zmmMDv4ntsSJ
+            cMll2fuIEY5U8k7eN2vko9yNMY+U0TgBgKPE6gwujziyKhbP0vcVHPP817Ot2NRo
+            AQkCEAf5HiBPuQZPp6VFPzWxnmTgJNtC75IMs7aLunlHCgLF+yRZWOGYkWIOUw9E
+            wcduhI/n/dhgNG1a4en7v+aeo12QHa2uH8VFbJaqV8ctRw1Ng3IxqpEw026pYMF3
+            Ft3ixyJJdCA=
+            =ppew
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
+    version: 3.9.0

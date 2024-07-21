@@ -1,0 +1,43 @@
+controller:
+    # Must run at least one copy on node k3s-m1 because there is no horizontal distribution
+    # https://metallb.universe.tf/usage/#local-traffic-policy
+    kind: DaemonSet
+    service:
+        externalTrafficPolicy: Local
+        loadBalancerIP: ENC[AES256_GCM,data:MNq7tALzxsmgA1PhPos=,iv:2Qn8o82wdSOh4wUqWogAVKCpjEjzaK6bkxrtTpCYs0M=,tag:hs6zcymsJW37W71TrkrDkw==,type:str]
+    allowSnippetAnnotations: true
+    config:
+        enable-real-ip: true
+        use-forwarded-headers: true
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T16:58:01Z"
+    mac: ENC[AES256_GCM,data:k2BkUH7mUGPHj/7pzgJmNGS3ubWsjgXKgx3fDCx2K8m8NGLq4efPclf3WZ4GVZCCU7MdvtwxauSrDjnvgdYfqRtMSDrFiXDO+5E9JK0bmo30ftz70nZNr1Jj2CDPauA32JlnZzU7K6sRTkZ5w4hLlRwIpbUsd1dVLS7Uchh6XG8=,iv:dlDnT/aHbZI4+NgdXiltHPqAA3nwkQ7KtZSoheOqvVQ=,tag:cZW8ol5xAxHZpCdBQSfL5A==,type:str]
+    pgp:
+        - created_at: "2024-07-20T14:15:24Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/8DFKctOMu1LMSwQWs1KJgOAl3CIP4AhWQpWL0tA0dQFlT
+            LmcBo7fa+sbKNUeO6uzQcEq2v/5939S9N3DK+gsiuheodRSbeH59wghVTdhljiPv
+            097Ffti0kbhMpJnB+bOcF2hO38xVtYKRIJ/W+AKImTMzexw3uDO+yHUtTXebEBMK
+            ExVEmnqEDSMZvhTghVzDUqxDTp4cPW828530yHJtJp7hx8MpjplUlb/9Jj8k2lD3
+            dMMRSmPbz0dvnVOx0rElvP8ypuhHP7K8lT5mg69G8sH2j5DrSHTzlKk8h+EEEhb1
+            S4rG73bXYdeLX7rx7MCLyjO/2W93aK6xTMVxl8foITlrjCKnFc0P5z5Tm3rYrcw6
+            SY0cHTXVm792R2+K38fCLFO3vtk+eRUweLv1ORhAG9E6T2ZBPdXFc/KSTv1ObWJU
+            a2xh+YGfq0F1sHf7fKZPPw1H+SZhcjJrGTDVLdqO5zhO76nw5Ik9roIHZ1nZSXI+
+            KQIRwV+MKvdFK5dx5CKgWBKtlQpqWjql76Upz4Uq1HiM95SC8eZwX13WZDZ02bCR
+            7EwOu4bDRUstfCF9In/q2/9rbxVFJ2yMSzx1PeyCkv74JcRebI0mVBFCAIdYyzq/
+            ZV0MACnKcbk25dYocs7YoCpABwUK3St7+x2FZ3XyfNaf6+rAYtEP5ntpid2h463U
+            aAEJAhAR2ZihP04PI/rTgME7QIOsG9Miq4pV1Q+N6MTUto0uefqsznC24lq3u7ms
+            JtQJc/ZEemUBrFwNcy/XTZs9vwS6E44eNiPnYclB+KISwKelGVHLSrvLSR2aKwY8
+            jjblsvTG8Yh5
+            =KjyX
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
+    version: 3.9.0

@@ -1,0 +1,60 @@
+replicas: 2
+image:
+    repository: cloudflare/cloudflared
+    tag: latest
+args:
+    - tunnel
+    - --no-autoupdate
+    - --metrics
+    - 0.0.0.0:2000
+    - run
+secret:
+    mountEnv: true
+    stringData:
+        TUNNEL_TOKEN: ENC[AES256_GCM,data:f9SpD5Ah8J2UTLhjiAT7zpYry01Zf5vcisQEbnC8gEvPT8nyFblu6QySMjzJZArT4eC3AMw/ZpesIH9qTdcKiP7sYB6Mj388mv7B2zj0O87qKCj0w9TWQXvyi4AT+z4tSIoLAVdvlvLwkfKbu/ltonkAZ9SjurVKSOLLYo9K41kY/EUr83wYY+AmJQKzuAmcPn28WcHU/e1vNFlAlIkTEueGOiREst/jQC5TEm2wHCuvgSwh,iv:mt41MgXm/4EBec2TqzSYWMr0g0AXpt+bJXQjjtvRZIk=,tag:ygbPGMS72HA/PGP2/bfh6Q==,type:str]
+# livenessProbe:
+#   httpGet:
+#     path: /ready
+#     port: 2000
+#   failureThreshold: 1
+#   initialDelaySeconds: 10
+#   periodSeconds: 10
+# readinessProbe:
+#   httpGet:
+#     path: /ready
+#     port: 2000
+#   failureThreshold: 1
+#   initialDelaySeconds: 10
+#   periodSeconds: 10
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T14:14:51Z"
+    mac: ENC[AES256_GCM,data:Pv5I3XE2ErgWyhkcp+gnFxui/nFwBY8mlEIrPqLjS39F3gkvjcrdPCfOpZxWSzp9bMZ9kbtAByDuR0JN96VOKCIrxSHpb7YPatNOktTZ7/vX1+xJhGPi/eQICTLW+XajuVuAW4E2lEhQLg87vzQySazzhBoj8VeXJzzKVN1Mmfg=,iv:Qmc1KhLqXDq4zpa/E3LzNcaqZwry0MwGU9k28QtpucE=,tag:JAWIPrQiAgaLLujP/2ukIg==,type:str]
+    pgp:
+        - created_at: "2024-07-20T14:14:51Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAAngv04cGJlBDeguKOFLfe6TODgkwRjqhUJ0LgGZDPpnQG
+            9u8yJNIOHkjkZqqyBywszDX3/cM4Xx4Jy7aAWJPB6OhSv2BVl5BscP21kWLnAwA/
+            UlXb1UjcBob26qUxkCA0QAF+D4SPHv8SaX2KXXk2pGlNdHc1bBRnVvzNi9J1kEwQ
+            Pm3n5xUK1+qugcN2oRGiV2iOpMHsS9rPNNwy0x1hEdmgit+zajJG50rv9ogWzv9V
+            Q0tLkLMjlKhLDCnN8zS/LlSj7ivY+JLsfkl+hVi3K2AgINczlxX/wI0JDCi5MJJa
+            mR8JJKXBWyqMKxGVlcKMILZNnbz2NJGwl9Mq6Ws6QmiCTgNMmAIdqTZMSeJ100by
+            Ef+dycV4y9AL/qhMN92RMYBlJOg9MICY4wA0j/l58gBBuWkseAYrE/mn4HVLK0Cj
+            WB4Ii2MKVlS0uKsjjwX4AV7EmpsD5oHXEm20S+8jwWXalBLJAqDrokELeG2ettT4
+            p9X3do94hG5ElPCWbRxTaThtP9V8TbQcUYqcv8ps7uKE+J6qPnRPGR6ACITCVlWB
+            cXodinA21RlfAfN1En1zXZ3Pqwy95dHJ4z8MJ9CYsVW0oaGvBQFemdOwglxY79bY
+            SSLViMEkNdmmcdZQG25Md+yT1U8q0ln97YDdMN9ldiFsg2WJHTr0im25BbqOzrXU
+            aAEJAhByQR2T8Rcq/CKMPCufF6+/UqM+k3/ZxyiNadF/i4Zov26MwHjuORl0F3Ds
+            2asO4aQeK2pnZL0UfIP4fkaBVoXuFtn6cEDV4OC558Bqb0+mCPgUiQtLJyhW1KXi
+            3mtUstT/z7QI
+            =rcw0
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
+    version: 3.9.0

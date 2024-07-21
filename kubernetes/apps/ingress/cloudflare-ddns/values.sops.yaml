@@ -1,0 +1,56 @@
+secret:
+    stringData:
+        CF_APITOKEN: ENC[AES256_GCM,data:hhm6zGjWV5/+nlyRlR/LBDl6G+KvZZzR2oyxhOL+YQEJA83POkB+Aw==,iv:GQykHs0L64Qy70hyNvxwN4v7NDAKk0CKbYXCYLZBmKo=,tag:ydUrD9GY1kXfUVWlB7pbPg==,type:str]
+        CF_ZONES: ENC[AES256_GCM,data:L9MvTI5ZkAS8K58EutXS6NlzAhfFsfLXuRrITqDtpNI=,iv:r/4aWRiTZMazVLnojLW9qojU0agT7wFJHx6GcHq7yJM=,tag:zmldkJoFeDugF1PP1dbmVQ==,type:str]
+configmap:
+    data:
+        CF_HOSTS: uk.ip.{{ .Values.domain }}
+        CF_RECORDTYPES: A
+        LOG_LEVEL: 3
+        INTERVAL: 0
+        DETECTION_MODE: dig-whoami.cloudflare
+        APPRISE: ntfy://ntfy.monitoring/homelab
+cronjobs:
+    - name: cloudflare-ddns
+      schedule: '*/15 * * * *'
+      successfulJobsHistoryLimit: 1
+      failedJobsHistoryLimit: 1
+      # suspend: true
+      restartPolicy: Never
+      image:
+        repository: ghcr.io/hotio/cloudflareddns
+        tag: latest
+      nodeSelector:
+        kubernetes.io/hostname: k3s-m1
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T14:13:50Z"
+    mac: ENC[AES256_GCM,data:hJTlJe8lQSJjstIDRwGgNrw4ZfXlXHa64dZ9lTaetgrvJMu1KReIC9g5p6/ESrPnyhTxomMSof52HREjErxZK9++Ln0V6C53o5CYc4nkeqqONSo8R6uk2T3lFW/kwrVa7aikyzkIWsOaHl+hutd3khq38SK2FQwlAucRmojyv8Y=,iv:AqYDViGAHZkgU6FGrm3YMzOBTXz8qpgrB4sf+zKcTWE=,tag:mrJQVEHoeyIl1ME2sUmrwA==,type:str]
+    pgp:
+        - created_at: "2024-07-20T14:13:50Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/8CrUoV0oMQQtlgfVU1yiU0ruJ/fqojMGPl+IwFFW0ayAY
+            qrl49irDgVHCgHpr3OdRiyu/LTQS3MAn/e6s3OiAcqPvkJtTmTkAFJ2Y27pMVBAQ
+            QCE5VFSp3wr4Xzh2A5yrNBBOMOgin9BdilfNZ95DxEiWgzi55za0oxzl5SxSgMvW
+            PXYXtVII8KSN/owINcZ2K/QReoTcr1hKVe9/CJqKALnLF15eCEeUAsT+HJNGzON2
+            +5hErHDv/y5si0t66JKkjX5kMBukTrI3QfxbKKoW9KiXM7pcHdfcete8OHnnE+eZ
+            6SL3TZGxpQISyGOKK+gLIjaKDY81snLaViYr+1bZFho+tqnUqjQPKELJ/hII63Ja
+            tjxyg1nCCxlR/HtWrziVpH4ZRrWcCE/iuWA6zDT4bX5ZhN1pYrdtXIL2c1by+sLO
+            WMc3R12jf8WPzZxBeM9Z9skuEPBVY1ITGgHYZ9jtGGpVd9h/KRzs/ILvs8a1Pbcw
+            dLa061gxy9Js054XtGwokd0IxHB6OQ5DF87fl8+RH7IJqyO02u6clQu11m/iahv6
+            MTzF9NsYJUBVjZ6ODfGTj4J5Zy2BTs2c9jzkIFavh6jP3WEp6IkpyvLtA+3HLYKn
+            sgtLAePcxUH2+WnwgN2sWrfuj1eOsZMlhyFZZFWG1Y0X04yk5936sSuAcDQDQOnU
+            aAEJAhAHHxKDUrlVx2WhX7Aouf9dAXfvIXpq0NTLxhessy784E/WbQxS1dM0mZAS
+            jKAJ2sfEGLHeOhlVU8JIorIpqMLFjpHhZOAI/+7fItcn0VPsTasgXM697Z/R4RUx
+            +L5pgDS1N2DF
+            =hAO0
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.0

@@ -1,0 +1,104 @@
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: docker.io/redis
+    tag: 7-alpine
+#   pullPolicy: Always
+command: {}
+args: {}
+ports:
+    - containerPort: 6379
+      name: redis
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+    type: LoadBalancer
+    loadBalancerIP: ENC[AES256_GCM,data:afGrbh5eaa42vgtprCs=,iv:IsKo8GpMafvzjNpxmy6dQBVuFC3srihhz1lXfZBGGeE=,tag:1MRuIsvC5Jq90821woJJxw==,type:str]
+    annotations:
+        metallb.universe.tf/allow-shared-ip: db-svc
+configmap: {}
+# config_1: abc
+# config_2: def
+volumeMounts:
+    - name: data
+      mountPath: /data
+volumeClaimTemplates:
+    - name: data
+      accessModes:
+        - ReadWriteOnce
+      storageClass: longhorn-persistent
+      storage: 5Gi
+livenessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    exec:
+        command:
+            - redis-cli
+            - ping
+readinessProbe:
+    initialDelaySeconds: 5
+    exec:
+        command:
+            - redis-cli
+            - ping
+resources:
+    limits:
+        cpu: 500m
+        memory: 256Mi
+    requests:
+        cpu: 25m
+        memory: 64Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector: {}
+tolerations: []
+affinity: {}
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T12:51:40Z"
+    mac: ENC[AES256_GCM,data:JpQ/bWGZmBgYxB+9FPUfJn8cEd/rmirT94+HQLX+qfrW2ZTdfqMRbWv+VhXxUTrPVmffIGOUzLNseWslLqrvMDfIWolPwuQcX50Ol+m/xhM7zVpPIqNV5KgMDHFPnVKdR5C7LMLEEzDsgoQ5Yt+6bvGhyay4dubpC+aFKz+XbN0=,iv:OblklLAfVmMMdYZJBHl5U3J0m0jQgioSoYkishEb4EA=,tag:FFzJjcYIHQhcUZq2l2ZcTA==,type:str]
+    pgp:
+        - created_at: "2024-07-20T12:51:40Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/9FSXTLau7Zkf+5KB3wP4biQBOeWXOUAlBZtOkKYEdArNJ
+            qUW58UtvyMGYwcL9JuzZYa/1ZARZPHitlySNzpJ2HF1L3lkAfauvQt02iFtsa2rd
+            rJLBQ05bg1HPD9zlgYTPmEdSyUUDP5ctclIeMau6Wv7zBehZ972usrYJ85LLfUtK
+            kfz7vJfGx90zYDCLKjjyZoQGOTh0w//qwHwbKCtFkefkpbX44GFsE2lWlWgdNQ+T
+            NBgipCyuYDVMYyCziA3rKS1J6phFfYisIN9rfFXcLSOKeVjO54x4UavII0DtJofN
+            p84e8SHj3D54LGn1EpRl7pMK5si5XqAwn3lSUZXLZgZ798c+Q4rO54Kuu6cUrGTy
+            EUsiFWdvGFflwNVodzUL7ClE7HywZcSTAX7LyKStB0eK50GxNwvNh/mwHpuP3b3U
+            UQzPqmMq6ux2wg9IYy2R/lFLuZNbnK02bdIY5UZX9bpaXmrRvi/Kd2aJdWpzEsyI
+            Oj4zBpkqw6uTvenY0VSrdSsqF2cUipBw5Md2thRNndsu0IHiTzxq+zMERGnE+kWc
+            nzJiDEaqBbWqgYyWcXXPG0EsEgpuyd/PO8OMUorTRjhzA1AEYSHk0UnsE++7X5qa
+            sEzcAmAH5I7+2XbXhjRlHSvQ7PJKhHx67au2wvFbrBKc6dpMbLSc2Oscc8sYb4fU
+            aAEJAhD7i38EMeDetCFl48Yu9AbcPxeE5jw0qMloOV2J9eKHTV9aqc/hq4cIi8lV
+            V5vsbCu7YCQ5xtpYCRI47By6icNU26+3UkOwzFyH1lBmLyV+TdrNGVS+ycxDeSxc
+            NNdFOzdgre/I
+            =vxaa
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
+    version: 3.9.0

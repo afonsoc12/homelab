@@ -1,0 +1,151 @@
+labels:
+    tier: db
+    # label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: docker.io/mariadb
+    tag: 11
+#   pullPolicy: Always
+command: {}
+args: {}
+ports:
+    - containerPort: 3306
+      name: mysql
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+    type: LoadBalancer
+    loadBalancerIP: ENC[AES256_GCM,data:aJDR0WEBmL6KLlHFQ9s=,iv:67IJf9kFOrMZpk0zVM9NgAjKr7OPWVhvI+ekpq5uo9o=,tag:e18mjhSEPmmaFCvFRlMxTw==,type:str]
+    annotations:
+        metallb.universe.tf/allow-shared-ip: db-svc
+secret:
+    stringData:
+        MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:kXj/b6XVZGEQZyr0vGV73FgAhPc=,iv:AGoQY2VXtr03K+xcsz9sqx8qRTeqpxcKmVwu6UPZFiM=,tag:0aUsqDBLKBcbFA40sjG+4Q==,type:str]
+configmap: {}
+# config_1: abc
+# config_2: def
+volumeMounts:
+    - name: data
+      mountPath: /var/lib/mysql
+volumeClaimTemplates:
+    - name: data
+      accessModes:
+        - ReadWriteOnce
+      storageClass: longhorn-persistent
+      storage: 10Gi
+# livenessProbe:
+#   initialDelaySeconds: 15
+#   periodSeconds: 5
+#   exec:
+#     command:
+#       - /bin/bash
+#       - -ec
+#       - |
+#         password_aux="${MYSQL_ROOT_PASSWORD:-}"
+#         if [[ -f "${MYSQL_ROOT_PASSWORD_FILE:-}" ]]; then
+#             password_aux=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
+#         fi
+#         mysqladmin status -uroot -p"${password_aux}"
+# readinessProbe:
+#   initialDelaySeconds: 15
+#   exec:
+#     command:
+#       - /bin/bash
+#       - -ec
+#       - |
+#         password_aux="${MYSQL_ROOT_PASSWORD:-}"
+#         if [[ -f "${MYSQL_ROOT_PASSWORD_FILE:-}" ]]; then
+#             password_aux=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
+#         fi
+#         mysqladmin status -uroot -p"${password_aux}"
+resources:
+    limits:
+        cpu: 1
+        memory: 1Gi
+    requests:
+        cpu: 50m
+        memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector: {}
+tolerations: []
+affinity: {}
+backup:
+    enabled: true
+    schedule: 0 3 * * *
+    rootPasswordKey: MYSQL_ROOT_PASSWORD
+    successfulJobsHistoryLimit: 1
+    failedJobsHistoryLimit: 1
+    config:
+        MODE: MANUAL
+        MANUAL_RUN_FOREVER: "FALSE"
+        CONTAINER_ENABLE_SCHEDULING: "FALSE"
+        CONTAINER_ENABLE_MONITORING: "FALSE"
+        DB_TYPE: mariadb
+        DB_HOST: mariadb
+        DB_NAME: ALL
+        DB_NAME_EXCLUDE: '#mysql50#lost+found,information_schema,mysql,performance_schema,sys'
+        DB_USER: root
+        DB_DUMP_FREQ: "1440"
+        # 3 months
+        DB_CLEANUP_TIME: "129600"
+        CHECKSUM: SHA1
+        COMPRESSION: GZ
+        GZ_RSYNCABLE: "TRUE"
+    affinity:
+        podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                        - key: tier
+                          operator: In
+                          values:
+                            - db
+                  topologyKey: kubernetes.io/hostname
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T13:01:54Z"
+    mac: ENC[AES256_GCM,data:eh35m91L5G4gBqo7ia1PtCRljfBATaIrpNvVBKKKjAuENIK69NB683Y8xv5sl97KWUAYhcspmg9wGDmRULVSZTPKx1IFBkXpVshH94BRdxxUA5d4pDLhe0VBnXuTc6oOtzMV5qNobu+z5rEoi5VpaoqTwrxiep76XDEXQ7OozpE=,iv:rzYdBs/hBM2YB/c/sssggy9QnW1q0BU0MQPEaU1X2tA=,tag:oDocdOUz8G1gAIN5q+vsLg==,type:str]
+    pgp:
+        - created_at: "2024-07-20T13:01:49Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//fNv8pIkYzbHM5ArfanlOy0euFCVgXtxPiMY6y7xI1B7z
+            AeffLUWtnBH+/BL+3fIEPmSN3O1hlERH+MeyZJrnt3q2tKHpZaljNVzm0aEfVzxr
+            kkt0W4ybIgh7tLtKauLjJdtYWFkKvstPqqnLH+TS4P02xbwrcxT9lM/uJa6RgYOD
+            5JflqBGqoCWxz4R7T14iyE96B9pVS7raTRlwTuAZkRNxQsaH7fai+F8d2A1KyHX2
+            yz0tc62rPXWFn+EWP71/ffjtOkwo+C+PAn2m2MOMXOD2WoyQp1i0IW0E0+fs8HeM
+            Mslsfc4EwqjGXy44irbHVFBtV504RJ4cjbijdlPLbq+VCJZE3+L7ILsu6/XM6kf2
+            +PNdMiRB1PTpc1GggOLZco3HZfUTQQ1TtA+bCKKKR3fjUDfZ2/j2LHJ8CqjZKmsp
+            IwjZiyknnxPNM410+iU2AM1H0jwuZXkR9OvjPIYOg+Es0fUTZQDen1jJH1yyPwXQ
+            QHHoS7qS1N+fAU4qyrRyG/fLzpab6GPOssqYnWywQceDRQ6erspKcWHA7XS4nDZD
+            Man0Z0WReaO8Cj/8cj2UDwtJbrDXphyJQp79YZqGfdg0sDAW/5l3QNXu1MPvWJDN
+            RJyuhwE1dw4XHv5J8UOildjFpa3skcoxnylffdf+G+biRTUZLsmffuI50oLXGRrU
+            aAEJAhAH/8BQ3buOGNT7kj5Qz9TpkF9wsImexu1crvtRPLqw9jMc08m7XwTnsKF7
+            L8tisF00SMzpqrfJLU/5sRE9EfMymQojtI4UOvkTmU6dskOBm1zjkxIXZfhJB2YS
+            vX+w8TZPLRga
+            =DVbG
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
+    version: 3.9.0

@@ -1,0 +1,132 @@
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: docker.io/postgres
+    tag: 15
+#   pullPolicy: Always
+command: {}
+args: {}
+ports:
+    - containerPort: 5432
+      name: postgres
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+    type: LoadBalancer
+    loadBalancerIP: ENC[AES256_GCM,data:MhcqGzBdu3qkdoSMpxA=,iv:EtFxXEwN2i73U6IpeNYKnbdFKw15lP8/ijGkZd+im70=,tag:vHEE6HKvW3fVZXaM4GGqeg==,type:str]
+    annotations:
+        metallb.universe.tf/allow-shared-ip: db-svc
+secret:
+    stringData:
+        PGPASSWORD: ENC[AES256_GCM,data:bF2OuUjpyWCAnEpMufv4PW7bYOU=,iv:oFYSAjK+FYJcSgGCg/PlrcVoOZvIMTYolhHYA1AQzsA=,tag:qgdlYFc5LJbNKRaZ/gTfRA==,type:str]
+        POSTGRES_PASSWORD: ENC[AES256_GCM,data:V1JwVBPAvynL5i05/gzpXVnfYhU=,iv:Izz01ui3J+XfMB54Vux453AqjUoD8n6WQHpT3VKksVE=,tag:MvUderHMf3trPlSeZwyd8Q==,type:str]
+configmap: {}
+# config_1: abc
+# config_2: def
+volumeMounts:
+    - name: data
+      mountPath: /var/lib/postgresql/data
+volumeClaimTemplates:
+    - name: data
+      accessModes:
+        - ReadWriteOnce
+      storageClass: longhorn-persistent
+      storage: 5Gi
+livenessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    exec:
+        command:
+            - /bin/bash
+            - -ec
+            - pg_isready -U postgres
+readinessProbe:
+    initialDelaySeconds: 5
+    exec:
+        command:
+            - /bin/bash
+            - -ec
+            - pg_isready -U postgres
+resources:
+    limits:
+        cpu: 1
+        memory: 512Mi
+    requests:
+        cpu: 50m
+        memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector: {}
+tolerations: []
+affinity: {}
+backup:
+    enabled: true
+    schedule: 0 3 * * *
+    rootPasswordKey: POSTGRES_PASSWORD
+    successfulJobsHistoryLimit: 1
+    failedJobsHistoryLimit: 1
+    config:
+        MODE: MANUAL
+        MANUAL_RUN_FOREVER: "FALSE"
+        CONTAINER_ENABLE_SCHEDULING: "FALSE"
+        CONTAINER_ENABLE_MONITORING: "FALSE"
+        DB_TYPE: postgres
+        DB_HOST: postgres
+        DB_NAME: ALL
+        DB_NAME_EXCLUDE: postgres,template0,template1
+        DB_USER: postgres
+        DB_DUMP_FREQ: "1440"
+        # 3 months
+        DB_CLEANUP_TIME: "129600"
+        CHECKSUM: SHA1
+        COMPRESSION: GZ
+        GZ_RSYNCABLE: "TRUE"
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T12:51:14Z"
+    mac: ENC[AES256_GCM,data:i7gs5xTIaEk5Rk6sm5nfkvaX9oc9OV8LMdhFHpBka0K9W82h6cI+dvjEGxAbet9XSDECvXDQCvloe8boEDNjVWpialZFXXBxHJpqeewKABZ/wOM6h2KrHd9FJb+DzZ2rYrGtUy291/twzJalZ/ck3pDf6Ac1HFEqn5N3aP4c77o=,iv:mFoXfxuVX/3AIw3mT6ONGrP3uLnpmXkeacOfNSmLJL8=,tag:d/Hhh+wxtiZRfXFgGeka9Q==,type:str]
+    pgp:
+        - created_at: "2024-07-20T12:49:32Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAAmtJYTK/xZ6InbWQN0yS2Ogfnb73QdW/hYumH0SV66ij4
+            Yrh4p92vxzNNa/JtPPKc69pT13KweYtiZoY8oONue7MoRfkw4OA6mptTdbjd0W8g
+            PthFDQwqNA/05m/QasPQHgul1eZLWpBAprUCQtFNGBCzGMkyQfoeAJNjO9JScfrq
+            kSD5g4ZuG/p8k4Wo69ZpF5r+ZdlTZimDP6Y2Z7Dd/jjKkmUdywHfgmilUePbZZih
+            UUV0hleq2BKu52v03ZSZQhbWd8M06ghkJt0x4S9urvqyxJaaGftvpH4MMf7+6VQC
+            4wPWwf4I/P8Ta80VFsH9+9nm9W6gnzWqOTpwWhQ7tz/Ej3ccRGYxLC6rSHOS18zR
+            ebIKLTNL5jpbyDd5tTpnQgJiP6rmRqT33b103Pi+s6jCS376zw+lULfaa5tIfCUA
+            arStNfaCdTlDimWiGxULn21+OMQV4c5C5mAt0putXuX2scrDJ2le6lhWJfvVr8XT
+            57cqoDXtzc1NyKjBjVUg06PkyKIuQ/LCF51eT7GzBFs1rquLJXucco4pZbgAt0Vg
+            GCUdPxJd1f7yEumfcP0cfAumnhADXbNdlsidFmh7AtcVDC1h872yORc4+lqGGZui
+            EpBEG1KRgPuEzqo44rrLVcg3keVAAeqsDP9r+58udKmuEVMnt5FjRc0DWA/B4PrU
+            ZgEJAhDTSf8nNHji7I45PqrG7XZSpqHemSPp1SpOGdUUC3yqzHw/sVlYF5spiNLl
+            63ZKorEP26uJuOKkbpYgn2FDYYM39jKZgZQ+ckW7yDjSGu2AkbnQM10vk55snrMN
+            Q+SdN+CI8A==
+            =j/5K
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
+    version: 3.9.0

@@ -1,0 +1,53 @@
+longhornUI:
+    # -- Replica count for Longhorn UI.
+    replicas: 1
+ingress:
+    enabled: true
+    ingressClassName: nginx
+    host: ENC[AES256_GCM,data:QJbLGO4mJxbM/DQvSAt9Ht9agQ==,iv:qNJkRz79kPdzZr9StS0nqmdALrL9RvKEQ4uOOlIJmMo=,tag:S4mtOzpKCf4ffH5Y9rRT9Q==,type:str]
+    tls: true
+    tlsSecret: local-wildcard-cert
+    path: /longhorn(/|$)(.*)
+    annotations:
+        nginx.ingress.kubernetes.io/proxy-body-size: 10000m
+        nginx.ingress.kubernetes.io/rewrite-target: /$2
+        # adds 301 redirect with trailing slash
+        nginx.ingress.kubernetes.io/configuration-snippet: |
+            rewrite ^(/longhorn)$ $1/ permanent;
+        # nginx.ingress.kubernetes.io/auth-method: GET
+        nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
+        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:HF1kdNgTTjh8YJx/GjeHbKogW+0sSf7L8rapa1yt/O6jbblhRswg5bfUlNoP,iv:PxyHPGv5P/Ntm4sswr7Ek+JAu75H9DRtQ2/+adDkbV4=,tag:FAi3UYW9Tb+glFNuB0luSQ==,type:str]
+        nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+        nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T20:11:17Z"
+    mac: ENC[AES256_GCM,data:TGvDKfqCDvU4IOUnccgFUHY8+W0ILrkqYh5v+ktIkAmCtW6fNWORWdQap26ibUu/uKumrDZwJol9+XrmrT06ipwykfeDGR6J56INvOmjHnoMQVQ20n/VUaHueVtueThbXmj8a5HHUBCjc+HiirfKMaPkeQwPi99qT0wMPCh9deg=,iv:btT1pO2I72pqwWhUQlOgwxabBtf4x92gzf0S7cYFkwI=,tag:NWTywZObLFGeaxLrLHlS1w==,type:str]
+    pgp:
+        - created_at: "2024-07-20T20:11:17Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//ccRTb/gHKccBu3kXaRM43l0n1tG+qbY3ycVFWJfZ8ehe
+            Qz6RCmzIjPu2/GYv5cvl5x7II3wpK5jLsjPEDYT/udgmBKrWnhORe7NSXLu9eYkK
+            YDzVTnLjplyD9x0aljaCKZICOPO1GlFGxmZ+Dq/bGhsJCLSMa8UjGQuU+6ZyRDG2
+            +s0E+sKRuggKTK3RoUuwPmI+wcXnuOvwGOMNOkB3hchghNoAKcu8UVHWBnYjBSdO
+            +ZGf9mLhkDBSOv+OW8IVDLe4Xw7I79MjZljHVWX5FDx32E30AXn41cY1c85I/AnA
+            d3fs2SsrBfN7SSPezD6GjbtCeALqKPX1SREnaxqIFms4P+TXUU/RZ70n+QgaMd7Z
+            Gc7FfFtt7axgpoEesZNB066OOL5ftpxtbwbsEMcjmqh67+cihslKWMpeJZ9T/im+
+            a2PUXAwEnH04rXERyLXxBmwsqfazkEu+q5CGxSeyz9vVmjST6hdRqPFSqXq0QQUe
+            v8BsNXEgwhD6VuwLsKXWSxWKHBUl99HNEQCb0erIKc/hKbwyn+vPiCuQ13Kxi2iR
+            l7X5k6hDD1yAEG11dq1R100AKouljaKEa1I4vjLuZ3dvXGO46qcRe//h2SBTANWu
+            tBKsznVkxJt3X08oOriUbkxcyharg13a4uBIVp3G5Wm2pX6hSyG9FUeri9NzchzU
+            ZgEJAhA03Lc8Oho1nib6rmGfcQEATjFDuZAJ1BX0wRRTZ2JPr/PU3025dhS5JcUk
+            gIza1T47y441q7YTCRDJ/3txyCZzjGSkfWcvf4FmSmL3iqkYB6wvDUlPH9bSg/Vf
+            rK7icxLFSg==
+            =WkK9
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
+    version: 3.9.0

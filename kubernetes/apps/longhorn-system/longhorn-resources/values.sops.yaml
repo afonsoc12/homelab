@@ -1,0 +1,73 @@
+secrets:
+    - name: longhorn-minio-secret
+      stringData:
+        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:9J26PaFB9hN/B3e+5umx02GHojQ=,iv:ZUIAHRlDD7cI1dHi4HyP39zDGGhse9BXQHbnfGLHz7k=,tag:ECTONO1XMBaEuvKN4gmigA==,type:str]
+        AWS_ENDPOINTS: ENC[AES256_GCM,data:Pu0TJitASkGr8unpLXQRKqOVoK6PCgCrYA==,iv:KZG6Sygz2U0VxPJEVsznO1diL0czDBZPr3oysZDB9aE=,tag:QnrRB9JrWpOVWcVMEyeziw==,type:str]
+        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:NOl+G92+v0l+JhG4g4EKLO7eKuc9sOTkNAT2NF94AD5EjZvwyod2Ag==,iv:e7e0IQZofJffrNg5YOzv1hMBA7QialChc8Q6gEV0QiU=,tag:iqANXeGhAfnrrsLHODkO8A==,type:str]
+resources:
+    - apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: longhorn-persistent
+      allowVolumeExpansion: true
+      provisioner: driver.longhorn.io
+      reclaimPolicy: Retain
+      volumeBindingMode: Immediate
+      parameters:
+        dataLocality: disabled
+        fromBackup: ""
+        fsType: ext4
+        numberOfReplicas: "1"
+        # staleReplicaTimeout: "30"
+        recurringJobSelector: '[ { "name":"bidaily-snapshot", "isGroup":false }, { "name":"weekly-backup", "isGroup":false } ]'
+    - apiVersion: longhorn.io/v1beta2
+      kind: RecurringJob
+      metadata:
+        name: bidaily-snapshot
+      spec:
+        cron: 0 */12 * * *
+        task: snapshot
+        retain: 14
+        concurrency: 3
+    - apiVersion: longhorn.io/v1beta1
+      kind: RecurringJob
+      metadata:
+        name: weekly-backup
+      spec:
+        cron: 30 21 * * 6
+        task: backup
+        # groups:
+        retain: 4
+        concurrency: 4
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T21:07:37Z"
+    mac: ENC[AES256_GCM,data:Uj6dCnLtxCpVg6UsZrJy38hp/uaf7PRMouqGEg25rxn3Nz74GA14vTx7pdIq3Y22pK4xeeMbV7k3TBF+wBgkjFqUSXFqHTuw4b3ft8mEjmIBFdl4l0o53Knzs0CUhnzX8K5YFzKRmi/STJHsrvl4PBB9A1GtZ8cwOj182UWDuBw=,iv:mraeOoOjjVPxHqR+40/n9Xv/FHevhOVU6e0GAe7xTwA=,tag:WrXUde1QObSb3wM1COBZ5g==,type:str]
+    pgp:
+        - created_at: "2024-07-20T21:03:14Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//Y8G3ZUQ89fN8YFPKBKIMl5HQm2SavKdyFb7gitX2jlKA
+            qkMnWyJYXKvIHiqfb+waD9UbLo53J80o3XNwd/L8RJ+kKK9oAwXvYFOyAKWfcTBm
+            9qV391MeQYB3jNCyuI476AMNLpRv6IkgW8IIgolAuIzMjpZ+Tz0f2b918hju6IXd
+            R0dPuaXnJ6gY1elIARr9vqJVa//vpf7Nc/IFzLyydx7eSX6nzBBK4sarBT9AZe42
+            jMJ5FNYAS1+EZv+7yLW+v7nCS+Ljxo1lLHrVfNO+SdlRbKnJiiv3LGAqwQjQBkNO
+            52rBsozVceiiKATxInmhIq9K+1VHkKza6xz2uGp99Vn7XzeuwKnKSIpJfFo+G1Q8
+            eFm0/HAxLgIDPWyGRjJlR1YDkOPaey3WA5cp3W/Am5qOeJ5UzaQomlBo/oBQm8is
+            396JcvUdD3axmKRpftTZEKKpAJCXL/JcfgfjHu7OX783TaxXOD3Gf8Xm1DqAXgVs
+            stGGuED9csQNKbU3f1Jr1RPSVCPL2ZlwHu/IgOrLQwuACBYtqyqJs/qQnyLt5Bul
+            V7CzDNRwK9lqxckjjOybyXwOgRwnwQRYv4oTv/Opr3iem5R/QQhgORIT3J3x+4G3
+            TZLWk7QgbdvmI2Ul2axLTOliyC6T1SJ9Smu0E9MbzTpubJq8y3VGN5w8J3Qu7W/U
+            aAEJAhB2y0cJJsCV/hRZ01GIK3XJwvdF0Yqc7dW9oWWy+aLprybInNBaiaKOVxhY
+            0Lvjz0kIOwbp/MOPBy/WBuUmR5RkTmHt+RxVPcFK0WUs17ksRUl/U4IMeMq4FZfv
+            PU8Gzbvu4AZc
+            =JZmM
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    version: 3.9.0
