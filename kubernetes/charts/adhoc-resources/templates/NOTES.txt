@@ -1,0 +1,8 @@
+The following resources have been installed:
+{{- if .Values.secrets }}
+Secrets:
+{{- range .Values.secrets }}
+- name: {{ .name }}
+{{ end }}
+{{ end }}
+

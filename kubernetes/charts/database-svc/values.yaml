@@ -1,0 +1,123 @@
+nameOverride: ""
+fullnameOverride: ""
+
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+podAnnotations: {}
+  # annot_1: abc
+  # annot_2: def
+
+replicas: 1
+
+image:
+  # repository: nginx
+  tag: latest
+  pullPolicy: Always
+
+#   restartPolicy:
+
+command: {}
+
+args: {}
+
+ports: []
+#  - containerPort: 80
+#    name: http
+#    protocol: TCP
+#    service: true
+
+
+# Uses ports from .ports section, if service is true
+service:
+  annotations: {}
+    # metallb.universe.tf/allow-shared-ip: "db-svc"
+  type: ClusterIP
+  loadBalancerIP:
+  port:
+
+secret: {}
+  # stringData:
+  #   secret_string_1: abc
+  #   secret_string_2: def
+  # data:
+  #   secret_base64_1: ==a
+  #   secret_base64_2: ==b
+
+configmap: {}
+  # mountEnv: false
+  # data:
+  #   config_1: abc
+  #   config_2: def
+
+volumeMounts: {}
+# - name: config
+#   mountPath: "/config"
+#   readOnly: true
+
+volumeClaimTemplates: {}
+# - name:
+#   accessModes:
+#   - ReadWriteOnce
+#   storageClass: storagecls
+#   storage: 1Gi
+
+ingress:
+  enabled: false
+  authelia: false
+  className: "nginx"
+  annotations: {}
+    # nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  tls: []
+  #  - secretName: mydomain-cert
+  #    hosts:
+  #      - chart-example.local
+
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+
+livenessProbe: {}
+
+readinessProbe: {}
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+backup:
+  enabled: false
+  image:
+    repository: tiredofit/db-backup
+    tag: latest
+  args: ["backup-now"]
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  config: {}

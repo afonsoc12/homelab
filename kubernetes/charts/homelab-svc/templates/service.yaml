@@ -1,0 +1,24 @@
+{{- if .Values.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "homelab-svc.fullname" . }}
+  labels:
+    {{- include "homelab-svc.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type | default "ClusterIP" }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  ports:
+    {{- range .Values.ports }}
+    {{- if .service }}
+    - port: {{ default .containerPort $.Values.service.port }}
+      targetPort: {{ .containerPort }}
+      {{- if .name }}
+      name: {{ .name }}
+      {{- end }}
+      protocol: {{ .protocol | default "TCP" }}
+    {{- end }}
+    {{- end }}
+  selector:
+    {{- include "homelab-svc.selectorLabels" . | nindent 4 }}
+{{- end }}

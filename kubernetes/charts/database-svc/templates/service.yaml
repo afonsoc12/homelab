@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "database-svc.fullname" . }}
+  labels:
+    {{- include "database-svc.labels" . | nindent 4 }}
+  annotations:
+  {{- with .Values.service.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type | default "ClusterIP" }}
+  {{- if .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  clusterIP: {{ .Values.service.clusterIP }}
+  ports:
+    {{- range .Values.ports }}
+    {{- if .service }}
+    - port: {{ default .containerPort $.Values.service.port }}
+      targetPort: {{ .containerPort }}
+      {{- if .name }}
+      name: {{ .name }}
+      {{- end }}
+      protocol: {{ .protocol | default "TCP" }}
+    {{- end }}
+    {{- end }}
+  selector:
+    {{- include "database-svc.selectorLabels" . | nindent 4 }}

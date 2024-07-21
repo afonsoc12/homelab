@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "homelab-svc.fullname" . }}
+  labels:
+    {{- include "homelab-svc.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas | default 1 }}
+  {{- if .Values.revisionHistoryLimit }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 1 }}
+  {{- end }}
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "homelab-svc.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+        {{- include "homelab-svc.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.hostNetwork }}
+      hostNetwork: {{ .Values.hostNetwork }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      restartPolicy:  {{ .Values.restartPolicy }}
+      initContainers: {{ tpl (toYaml .Values.initContainers | nindent 8) $ }}
+      containers:
+        - name: {{ .Release.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ required "Must specify image repository" .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            {{- range .Values.ports }}
+            - containerPort: {{ .containerPort }}
+              {{- if .name }}
+              name: {{ .name }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+            {{- end }}
+          env:
+          - name: TZ
+            value: {{ $.Values.tz }}
+          envFrom:
+          {{- if .Values.configmap.mountEnv }}
+          - configMapRef:
+              name: {{ include "homelab-svc.fullname" . }}
+          {{- end }}
+          {{- if (.Values.secret).mountEnv }}
+          - secretRef:
+              name: {{ include "homelab-svc.fullname" . }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- tpl (toYaml . | nindent 12) $ }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- tpl (toYaml . | nindent 12) $ }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- range .Values.additionalContainers }}
+        - {{ tpl (toYaml . | trim | nindent 10) $ }}
+        {{- end }}
+      {{- if .Values.volumes }}
+      volumes:
+      {{- range .Values.volumes }}
+        {{- if and .mountPvc $.Values.pvc }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "homelab-svc.fullname" $ }}-pvc
+        {{- else }}
+        {{- $list := list . -}}
+        {{- toYaml $list | nindent 8 }}
+        {{- end }}
+      {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- tpl (toYaml . | nindent 8) $ }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- tpl (toYaml . | nindent 8) $ }}
+      {{- end }}

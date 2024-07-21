@@ -1,0 +1,37 @@
+
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+issuers: []
+# - name:
+#   server:
+#   email:
+#   # Name of a secret used to store the ACME account private key
+#   privateKeySecretRef:
+#   apiTokenSecretRef:
+#     name: cloudflare-secret
+#     key: api-token
+
+clusterIssuers: []
+# - name:
+#   server:
+#   email:
+#   # Name of a secret used to store the ACME account private key
+#   privateKeySecretRef:
+#   apiTokenSecretRef:
+#     name: cloudflare-secret
+#     key: api-token
+
+secrets: []
+# - name: secret-name
+#   data:
+#     api_key: abc
+#   stringData:
+#     api_key_str: abcdef
+
+certificates: []
+# - name: certificate-name
+#   dnsNames:
+#   - sub.mydomain.example
+#   reflectNamespaces: []

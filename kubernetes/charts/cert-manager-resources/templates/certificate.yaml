@@ -1,0 +1,28 @@
+{{- range .Values.certificates }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "cert-manager-resources.labels" $ | nindent 4 }}
+spec:
+  secretName: {{ .name }}-cert
+  {{- if not .issuerRef }}
+  issuerRef:
+    name: {{ (first $.Values.issuers).name }}
+    kind: Issuer
+  {{- else }}
+  issuerRef: {{- toYaml .issuerRef | nindent 4 }}
+  {{- end }}
+  dnsNames: {{- tpl (toYaml .dnsNames | nindent 4) $ }}
+  secretTemplate:
+    annotations:
+      {{- if .reflectNamespaces }}
+      {{- $ns := join "," .reflectNamespaces | quote }}
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: {{ $ns }}
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: {{ $ns }}
+      {{- end }}
+---
+{{- end }}

@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: reflector
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  sources:
+    - repoURL: https://emberstack.github.io/helm-charts
+      targetRevision: '>=7 <8'
+      chart: reflector
+      helm:
+        valueFiles:
+        - $values/kubernetes/apps/values.sops.yaml
+        - $values/kubernetes/apps/addons/reflector/values.yaml
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      ref: values
+
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: addons

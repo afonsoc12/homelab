@@ -1,0 +1,14 @@
+labels: {}
+
+secrets: []
+  # - name: my-secret
+  #   stringData:
+  #     secret_string_1: abc
+
+resources: []
+  # - apiVersion: storage.k8s.io/v1
+  #   kind: StorageClass
+  #   metadata:
+  #     name: class
+  #   parameters:
+  #     dataLocality: disabled

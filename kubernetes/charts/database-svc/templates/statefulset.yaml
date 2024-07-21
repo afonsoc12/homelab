@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "database-svc.fullname" . }}
+  labels:
+    {{- include "database-svc.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas | default 1 }}
+  serviceName:  {{ include "database-svc.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "database-svc.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+        {{- include "database-svc.selectorLabels" . | nindent 8 }}
+    spec:
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      restartPolicy:  {{ .Values.restartPolicy }}
+      containers:
+        - name: {{ .Release.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ required "Must specify image repository" .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          ports:
+            {{- range .Values.ports }}
+            - containerPort: {{ .containerPort }}
+              {{- if .name }}
+              name: {{ .name }}
+              {{- end }}
+              protocol: {{ .protocol | default "TCP" }}
+            {{- end }}
+          env:
+          - name: TZ
+            value: {{ .Values.tz }}
+          envFrom:
+          {{- if and .Values.configmap }}
+          {{- if or (.Values.configmap.mountEnv) (eq (.Values.configmap.mountEnv | toString) "<nil>") }}
+          - configMapRef:
+              name: {{ include "database-svc.fullname" . }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.secret }}
+          - secretRef:
+              name: {{ include "database-svc.fullname" . }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- tpl (toYaml . | nindent 12) $ }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- tpl (toYaml . | nindent 12) $ }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.volumeClaimTemplates }}
+  volumeClaimTemplates:
+  {{- range .Values.volumeClaimTemplates }}
+    - metadata:
+        name: {{ .name }}
+      spec:
+        accessModes:
+          {{- toYaml .accessModes | nindent 14 }}
+        storageClassName: {{ .storageClass }}
+        resources:
+          requests:
+            storage: {{ .storage }}
+  {{- end }}
+  {{- end }}

@@ -1,0 +1,26 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  sources:
+    - repoURL: https://charts.jetstack.io
+      targetRevision: '>=1 <2'
+      chart: cert-manager
+      helm:
+        valueFiles:
+        - $values/kubernetes/apps/values.sops.yaml
+        - $values/kubernetes/apps/addons/cert-manager/values.yaml
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      ref: values
+
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: addons

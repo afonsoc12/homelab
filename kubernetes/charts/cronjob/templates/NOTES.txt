@@ -1,0 +1,15 @@
+The following resources have been installed:
+
+CronJob:
+{{- range .Values.cronjobs }}
+- name: {{ .name }}
+  schedule: {{ .schedule }}
+{{ end }}
+
+{{- if .Values.secret }}
+Secret: {{ include "cronjob.fullname" . }}
+{{ end }}
+
+{{- if .Values.configmap }}
+ConfigMap: {{ include "cronjob.fullname" . }}
+{{ end }}

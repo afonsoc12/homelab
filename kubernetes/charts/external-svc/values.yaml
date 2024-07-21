@@ -1,0 +1,36 @@
+# Default values for external-svc.
+
+# Labels applied to all templates
+labels: {}
+
+# External server configuration
+server:
+  # ip: 192.168.0.1
+  # port: 8080
+  protocol: TCP
+
+# Ingress configuration
+ingress:
+  enabled: false
+  authelia: false
+  className: "nginx"
+  annotations: {}
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # nginx.ingress.kubernetes.io/proxy-body-size: 10000m
+    # # adds 301 redirect with trailing slash
+    # nginx.ingress.kubernetes.io/configuration-snippet: |
+    #   rewrite ^(/longhorn)$ $1/ permanent;
+  # hosts:
+  #   - host: chart-example.local
+  #     paths:
+  #       - path: /
+  #         pathType: Prefix
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+# Authelia configuration. Must be set if .Values.ingress.authelia is true
+# authelia: {}
+#   # service: authelia.ingress.svc.cluster.local
+#   # url: authelia.com

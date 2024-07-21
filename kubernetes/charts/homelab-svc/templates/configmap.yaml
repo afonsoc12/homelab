@@ -1,0 +1,12 @@
+{{- if .Values.configmap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "homelab-svc.fullname" . }}
+  labels:
+    {{- include "homelab-svc.labels" . | nindent 4 }}
+data:
+  {{- range $key, $value := .Values.configmap.data }}
+  {{ $key }}: {{ tpl ($value | quote) $ }}
+  {{- end }}
+{{- end }}

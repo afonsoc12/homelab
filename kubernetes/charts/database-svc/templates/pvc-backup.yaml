@@ -1,0 +1,15 @@
+{{- if .Values.backup.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "database-svc.fullname" . }}-backup-pvc
+  labels: {{- include "database-svc.labels" . | nindent 4 }}
+spec:
+  {{- with (index .Values.volumeClaimTemplates 0) }}
+  accessModes: {{- toYaml .accessModes | nindent 4 }}
+  storageClassName: {{ .storageClass | nindent 4 }}
+  resources:
+    requests:
+      storage: {{ .storage }}
+  {{- end }}
+{{- end -}}

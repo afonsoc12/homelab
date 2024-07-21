@@ -1,0 +1,16 @@
+The following resources have been installed:
+
+ClusterIssuer:
+{{- range .Values.clusterIssuer }}
+- {{ .name }}
+{{- end }}
+
+Secrets:
+{{- range .Values.secrets }}
+- {{ .name }}
+{{- end }}
+
+Certificates:
+{{- range .Values.certificates }}
+- {{ .name }}
+{{- end }}

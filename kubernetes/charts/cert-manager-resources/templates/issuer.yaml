@@ -1,0 +1,26 @@
+{{- range .Values.issuers }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "cert-manager-resources.labels" $ | nindent 4 }}
+spec:
+  {{- if eq .selfSigned nil }}
+  acme:
+    server: {{ .server }}
+    email: {{ .email }}
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: {{ .name }}-acme
+    solvers:
+    - dns01:
+        cloudflare:
+          apiTokenSecretRef:
+            name: {{ .apiTokenSecretRef.name }}
+            key: {{ .apiTokenSecretRef.key }}
+  {{- else }}
+  selfSigned: {{ toYaml .selfSigned | nindent 4 }}
+  {{- end }}
+---
+{{- end }}

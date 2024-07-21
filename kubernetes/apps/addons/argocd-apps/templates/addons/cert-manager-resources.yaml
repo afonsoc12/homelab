@@ -1,0 +1,21 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager-resources
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:afonsoc12/homelab.git
+    targetRevision: HEAD
+    path: kubernetes/charts/cert-manager-resources
+    helm:
+      valueFiles:
+        - secrets://../../apps/values.sops.yaml
+        - secrets://../../apps/addons/cert-manager-resources/values.sops.yaml
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: addons

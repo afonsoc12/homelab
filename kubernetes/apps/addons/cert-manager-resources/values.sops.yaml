@@ -1,0 +1,142 @@
+issuers:
+    - name: letsencrypt
+      server: https://acme-v02.api.letsencrypt.org/directory
+      # Name of a secret used to store the ACME account private key
+      apiTokenSecretRef:
+        name: cloudflare-api
+        key: API_TOKEN
+    - name: letsencrypt-stg
+      server: https://acme-staging-v02.api.letsencrypt.org/directory
+      # Name of a secret used to store the ACME account private key
+      apiTokenSecretRef:
+        name: cloudflare-api
+        key: API_TOKEN
+secrets:
+    - name: cloudflare-api
+      stringData:
+        API_TOKEN: ENC[AES256_GCM,data:dcSjF5aoNPRyipzQT5QplxoLYaMfO2OP2rDd9ClO4wBw8Adnxl1+ow==,iv:PAbCIW19dQSUpDxBLU+IQp5QgkyUQllodi8fK19urV8=,tag:1/sc8GiKUKd4jm0erZkv6w==,type:str]
+certificates:
+    - name: auth
+      dnsNames:
+        - auth.{{ .Values.domain }}
+      reflectNamespaces:
+        - ingress
+    - name: calibre
+      dnsNames:
+        - calibre.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: firefly
+      dnsNames:
+        - firefly.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: git
+      dnsNames:
+        - git.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: home
+      dnsNames:
+        - home.{{ .Values.domain }}
+      reflectNamespaces:
+        - automation
+        - sandbox
+    - name: local-wildcard
+      dnsNames:
+        - local.{{ .Values.domain }}
+        - '*.local.{{ .Values.domain }}'
+      reflectNamespaces:
+        - automation
+        - databases
+        - homelab
+        - ingress
+        - longhorn-system
+        - monitoring
+        - sandbox
+        - wordpress
+    - name: overseerr
+      dnsNames:
+        - overseerr.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: plex
+      dnsNames:
+        - plex.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: rss
+      dnsNames:
+        - rss.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: srv-wildcard
+      dnsNames:
+        - '*.srv.{{ .Values.domain }}'
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: stocks
+      dnsNames:
+        - stocks.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: wallabag
+      dnsNames:
+        - wallabag.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
+    - name: status
+      dnsNames:
+        - status.{{ .Values.domain }}
+      reflectNamespaces:
+        - monitoring
+    - name: wedding-site-root
+      dnsNames:
+        - '{{ .Values.domainWedding }}'
+      # issuerRef:
+      #   name: letsencrypt-stg
+      #   kind: Issuer
+      reflectNamespaces:
+        - wordpress
+        - sandbox
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2024-07-20T22:12:55Z"
+    mac: ENC[AES256_GCM,data:Ib7d6hWtq24iAKWBdbcR9VyUu1MAjNvzJAUiuoyc8m3+F+mRjsEewvF9grGpFfv6H5qBFnuau4U+ZWzkDPRoNxzbjijsUIy8fJFA7dtG9NQ7beKSQLj8wp++shnBydlSuwLPtm/ZyTSJ9S7Xuto1YuNRFf064cYyFASqWhtC60Y=,iv:PJKf1469vsMZCMi1Kn36Y8z7fzndQ4feFs6Q8asn3Hs=,tag:CYYaCcVDeVA8ztmqMxeufg==,type:str]
+    pgp:
+        - created_at: "2024-07-14T21:33:42Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//f+DGW0ML7Syr6l3BPkSo2O7eAImSoUlVZalwnguYvVp/
+            BRt9/FcEpUtnpVKOBKQfuytgCzqT6v0VwvY3Irn19A70PcDW+QxXB3O79yiFc5u9
+            bVyFHx8U1SS/21CjPiOrYBejR37UNdCG0epMgQ4iIpeG2k1gmcZUZ139nTotG6Nz
+            AY0t4dl/Gnp/dsgR0nSELRGC8m1EIgMfoIr4Kp4VTbhtGHonU0+bsuaFsXqWzb7T
+            5btauQUPEe/NrTHrOrhw/mG1v5ncMlhTWOFDUUodDAl/HBJPFRuJ0jXMRlK8Ovm2
+            nwlqaEEdrPD9BVcsfsDfB7OXZ49I8jnyasSsUIr1Z1aTMj6Sq9VyUBBjZ9P8+hPG
+            hjdqdxVmpqWXIryPFA6Wg50bNltt+gM/kFmRVRhIV4ObFgWt/vnL/vcOChcCwYz6
+            CL2CnnEbsGsVcWbmd9NJsAb4iLdWBnTV8kIHqorp4lWeJMQn61lmu9lXx419+wCg
+            xpl4tnqekKfpXNkFYEo+JKUUN/ZGF0IcivoIedvAfZ88zkB9NFHIIlzPraX7b/77
+            XM4sdX/YuOwQocgowUm8iWAzKRdVIpQxPGMCyoooV+IF4maYEUwOD6l8JB8V/+3Z
+            iZPZ+44r9JzSQ3pMptvnW7iFJ6phvfYQwR22i+VdVeUGkwUV03PmCRIRX+eK3RPU
+            aAEJAhDA08Z8Zumjuit4Y0w4ceJr6FTqpkxWXtNC7Z7jlHvTEYhd1nrY+dvu0Jn2
+            RdsGX4QDXSmEW87a2jmg9f5yhImVt83KerSo3tVB+q6mNfPX/AIN9ykDbnRL7gev
+            M41BFdC5uCrJ
+            =d7yk
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData)$
+    version: 3.9.0

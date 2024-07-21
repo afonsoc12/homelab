@@ -1,0 +1,61 @@
+{{- if .Values.backup.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "database-svc.fullname" $ }}-restore
+  labels:
+    {{- include "database-svc.labels" $ | nindent 4 }}
+spec:
+  {{- with .Values.backup }}
+  schedule: "* * 31 2 *"
+  concurrencyPolicy: {{ .concurrencyPolicy }}
+  failedJobsHistoryLimit: {{ .failedJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ .successfulJobsHistoryLimit }}
+  suspend: true
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            {{- toYaml $.Values.podAnnotations | nindent 12 }}
+          labels:
+            {{- include "database-svc.labels-no-selector" $ | nindent 12 }}
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: db-restore
+              image: {{ required "Must specify image repository" .image.repository }}:{{ .image.tag }}
+              imagePullPolicy: {{ .image.pullPolicy }}
+              command:
+                - sleep
+                - "3600"
+              env:
+              - name: TZ
+                value: {{ $.Values.tz }}
+              - name: DB_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ include "database-svc.fullname" $ }}
+                    key: {{ .rootPasswordKey }}
+              envFrom:
+              - configMapRef:
+                  name: {{ include "database-svc.fullname" $ }}-backup
+              volumeMounts:
+              - name: backup
+                mountPath: backup
+          volumes:
+          - name: backup
+            persistentVolumeClaim:
+              claimName: {{ include "database-svc.fullname" $ }}-backup-pvc
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - topologyKey: kubernetes.io/hostname
+                  labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/instance
+                        operator: In
+                        values:
+                        - {{ include "database-svc.fullname" $ }}
+{{- end }}
+{{- end -}}

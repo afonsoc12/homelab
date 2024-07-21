@@ -1,0 +1,19 @@
+# Default values for metallb.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+# controller contains configuration specific to the MetalLB cluster
+# controller.
+controller:
+    enabled: true
+    # -- Controller log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
+    logLevel: info
+# speaker contains configuration specific to the MetalLB speaker
+# daemonset.
+speaker:
+    enabled: true
+    # command: /speaker
+    # -- Speaker log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
+    logLevel: info
+crds:
+    enabled: true
+    validationFailurePolicy: Fail

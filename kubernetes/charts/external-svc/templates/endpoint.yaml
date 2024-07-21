@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: {{ include "external-svc.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "external-svc.labels" . | nindent 4 }}
+subsets:
+- addresses:
+  - ip: {{ tpl ( .Values.server.ip | quote ) $ }}
+  ports:
+  - port: {{ .Values.server.port }}
+    protocol: {{ .Values.server.protocol }}
