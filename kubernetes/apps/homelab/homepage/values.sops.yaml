@@ -76,10 +76,6 @@ configmap:
                     description: Link aggregator
                     icon: wallabag.png
                     href: https://wallabag.{{ .Values.domain }}
-                - Nextcloud:
-                    description: Media storage
-                    icon: nextcloud.png
-                    href: https://nextcloud.{{ .Values.domain }}
                 - Gitea:
                     description: Git
                     icon: gitea.png
@@ -223,10 +219,6 @@ configmap:
                       type: uptimekuma
                       url: https://status.{{ .Values.domain }}
                       slug: 1
-                - Kubernetes:
-                    description: Kubernetes dashboard
-                    icon: kubernetes.png
-                    href: https://local.{{ .Values.domain }}/kubernetes
                 - AdGuard:
                     description: DNS, DHCP and Adblocker
                     icon: adguard-home.png
@@ -265,7 +257,7 @@ configmap:
                 - ArgoCD:
                     description: Deployments manager
                     icon: argocd.png
-                    href: https://local.{{ .Values.domain }}/argocd
+                    href: https://argocd.local.{{ .Values.domain }}
                 - Kopia:
                     description: Off-site backups manager
                     icon: kopia.png
@@ -364,8 +356,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T16:08:56Z"
-    mac: ENC[AES256_GCM,data:zxZtKiB/MlP7+zlqt9AI/iQwsBNKMsH2xAOQYVcYb+jgJif/t+U3uGImUBu2H+YuyVA2Epqs4gpYyToQUMWNzqxxrVFRG66h7W4DzaViShLlwmDt1OcUWcV+yryS6RzJ3HPDMwfUZW630lIZVXh7KYPfx6dbdEZfmcrszBfeyYs=,iv:WsiNEneGGS3V630ooEKagjYV8wcgphxjWVluN2mayNw=,tag:DxJew/u0zqAPLk7vDZh0EQ==,type:str]
+    lastmodified: "2024-07-23T21:10:07Z"
+    mac: ENC[AES256_GCM,data:B88qUUMr+aOSa0S0I/dLKFXPSTY0BRw4uDE5wsGwSXdAkScl4b44u7LJY6VzlcFVqO1OAuMUuEYWDWp5iNNOATSXjg5mNiwsF9DrNuQ7zRL/Ka3GIctL8RR3d3/6Jvs64gHzrIEYbvn2QQfgbJU/f3k31N0fnNaQZpmxRIu/RsE=,iv:D8yU1XssdJVcEZ9z0uiNLyVh8f97ZzPhD/kc0IXh7R0=,tag:zXhbJUBP0CgZOqB9KlLzHA==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-

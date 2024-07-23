@@ -13,7 +13,7 @@ crds:
 global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: ENC[AES256_GCM,data:1vTu1KtZWbli3eZw6zDAvswsTjjhz+iSMIk=,iv:0qcLFlFWIDEaKtDktGHn+zNk9E8uvY0JnAdhZFaVEo0=,tag:HrL4oXdv6jX2wVUYTFKQUg==,type:str]
+    domain: ENC[AES256_GCM,data:qjt6QNI7WTZIob0eVKlEhR9cbA==,iv:4ssdnVx3/xMrvsgVQnAuVLI4k+uEMMl2uK8KvUBg1A8=,tag:ZHGwxA02d3Apg6lKiqkE6w==,type:str]
     # -- Common labels for the all resources
     additionalLabels: {}
     # app: argo-cd
@@ -32,8 +32,6 @@ configs:
     cm:
         # -- Create the argocd-cm configmap for [declarative setup]
         create: true
-        # -- Argo CD's externally facing base URL (optional). Required when configuring SSO
-        # url: "https://local.mydata247.top"
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
             jqPathExpressions:
@@ -141,9 +139,7 @@ server:
     # -- The number of server pods to run
     replicas: 1
     ingress:
-        # -- Enable an ingress resource for the Argo CD server
         enabled: true
-        # -- Additional ingress annotations
         annotations:
             nginx.ingress.kubernetes.io/backend-protocol: HTTPS
             nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -153,23 +149,12 @@ server:
             nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:yc6e7Arpm1n11ce+rJxbYpFnXv6uuckYfslEPOcpgjYnqGkn1NDH+sdxiEEv,iv:nlVkYa4bkz+RQ7p2ltktb8rmhcXOe/1NhwVhTOixVEo=,tag:iIaBqJL0iARh2b7p/VCusA==,type:str]
             nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
             nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-        # -- Additional ingress labels
-        labels: {}
-        # -- Defines which ingress controller will implement the resource
         ingressClassName: nginx
-        # -- List of ingress hosts
-        ## Argo Ingress.
-        ## Hostnames must be provided if Ingress is enabled.
-        ## Secrets must be manually created in the namespace
-        # hosts:
-        #   - argocd.local.mydata247.top
-        # -- Ingress TLS configuration
-        tls:
+        path: /
+        pathType: Prefix
+        tls: true
+        extraTls:
             - secretName: local-wildcard-cert
-        #   hosts:
-        #     - argocd.example.com
-        # -- Uses `server.service.servicePortHttps` instead `server.service.servicePortHttp`
-        # https: true
 ## Repo Server
 repoServer:
     # -- Repo server name
@@ -276,8 +261,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-21T10:40:47Z"
-    mac: ENC[AES256_GCM,data:AM1UT+wvpPmKHNHuxgSDnbAF+8VUtrdoL8HVZSZxrSSsa+RvPIrIISgHW9gugIw3kD2agcMrUxQDLcljYRidJKnYRdIH0M3gu9rKWQZQzsSTiP8fxRpXT78k2/uHR0bkpFAlEI3qaEDSoi3o9vXcJSG3kb2PTLjo3EgPUe2O/wA=,iv:4rcRG4YHN4YVB2vGH0QOVkNPoGRwsKlPuT3GShnAX+w=,tag:EOEasCNaj/crZqbkV3ueyQ==,type:str]
+    lastmodified: "2024-07-23T21:08:35Z"
+    mac: ENC[AES256_GCM,data:4ZN82YDKkIpiXgCU32FDeTTgBnIRnwQRMCgypgmXx+sb1dP5mjGZqyBo2Srp4yZH75SKOmQPnLqPAbS4EBaQLNajvRALKRQEYPpRm/jjsElYDp6B9foOc+EoRbYZLJxy2hhV6xrNyszY1g1ajqOv4H+2IKOwWzQplDnkBvLfpCE=,iv:WW0pKChCpbgHkumOVHRHSzFxSsL8jWnSpqHWVOYNNy0=,tag:h1vTcCL5b/cAOrYjQJkDiQ==,type:str]
     pgp:
         - created_at: "2024-07-21T10:40:47Z"
           enc: |-
