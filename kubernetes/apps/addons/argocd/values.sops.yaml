@@ -13,7 +13,7 @@ crds:
 global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: ENC[AES256_GCM,data:qjt6QNI7WTZIob0eVKlEhR9cbA==,iv:4ssdnVx3/xMrvsgVQnAuVLI4k+uEMMl2uK8KvUBg1A8=,tag:ZHGwxA02d3Apg6lKiqkE6w==,type:str]
+    domain: ENC[AES256_GCM,data:5CvxQsAbfpaOByiu9qzSgOLxO9ymvzbLnHc=,iv:Ebe8RfGHhxCTBlKtN3qbehSEBnB0inUm30fJ7MtcV1c=,tag:1m1CM+Yp8NkAbLyowtURoQ==,type:str]
     # -- Common labels for the all resources
     additionalLabels: {}
     # app: argo-cd
@@ -261,8 +261,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-23T21:08:35Z"
-    mac: ENC[AES256_GCM,data:4ZN82YDKkIpiXgCU32FDeTTgBnIRnwQRMCgypgmXx+sb1dP5mjGZqyBo2Srp4yZH75SKOmQPnLqPAbS4EBaQLNajvRALKRQEYPpRm/jjsElYDp6B9foOc+EoRbYZLJxy2hhV6xrNyszY1g1ajqOv4H+2IKOwWzQplDnkBvLfpCE=,iv:WW0pKChCpbgHkumOVHRHSzFxSsL8jWnSpqHWVOYNNy0=,tag:h1vTcCL5b/cAOrYjQJkDiQ==,type:str]
+    lastmodified: "2024-07-23T21:15:09Z"
+    mac: ENC[AES256_GCM,data:X1Y9TugcakszPoDG0GJlOZCEjw3Gn4X55a0lRHmxu248o5xj1zY6ErN/1D9fCDPfdU9T9NBg2erWVfqTKkWWAS3yS+d7fH29KW+e5udVdQh+5bobO+KboLd1xNcNysD0Ho7ydetI4mLa2SBcOzAB7gabsuieUg1NvwsFzvHvouY=,iv:T7ChIRrQJFMMJZ+Irbyn9K/nAMfJ6JvKMnHJPLd7wHo=,tag:IaLrrXVGmX137ugzhWfPzA==,type:str]
     pgp:
         - created_at: "2024-07-21T10:40:47Z"
           enc: |-
