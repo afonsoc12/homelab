@@ -25,6 +25,7 @@ resources:
       metadata:
         name: bidaily-snapshot
       spec:
+        name: bidaily-snapshot
         cron: 0 */12 * * *
         task: snapshot
         retain: 14
@@ -45,8 +46,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T21:07:37Z"
-    mac: ENC[AES256_GCM,data:Uj6dCnLtxCpVg6UsZrJy38hp/uaf7PRMouqGEg25rxn3Nz74GA14vTx7pdIq3Y22pK4xeeMbV7k3TBF+wBgkjFqUSXFqHTuw4b3ft8mEjmIBFdl4l0o53Knzs0CUhnzX8K5YFzKRmi/STJHsrvl4PBB9A1GtZ8cwOj182UWDuBw=,iv:mraeOoOjjVPxHqR+40/n9Xv/FHevhOVU6e0GAe7xTwA=,tag:WrXUde1QObSb3wM1COBZ5g==,type:str]
+    lastmodified: "2024-07-25T20:39:16Z"
+    mac: ENC[AES256_GCM,data:6uSLFcHMDG3f37pwZ/xUEuy8pi0ZWTwU5KmrQws4DgQ/SZ9dHXrnfUPyOVbY4pU3f9kE+Orel1hGEqV0qzYFWLphlRef8o02XNHEhAgldP+bX8xTZQyVMtTp7nxZ1AB+OzNJEHClDylYrK/aXUeB1DprNbjcIVhFeOB5dopb9ss=,iv:PZY/GLjGXOcAIL+MjLAZRzd2xE0BzRtduNpfLzLT7+M=,tag:PLFAqpTgUq+H3aQM9OYt+w==,type:str]
     pgp:
         - created_at: "2024-07-20T21:03:14Z"
           enc: |-
