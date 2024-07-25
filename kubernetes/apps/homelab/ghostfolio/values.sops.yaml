@@ -27,10 +27,7 @@ secret:
     stringData:
         ACCESS_TOKEN_SALT: ENC[AES256_GCM,data:QzRFffVl3FNrsjGyYdV5whxc5cSzY4DGIdrIq0huSvyaQbTYsJlbhFP0oFtcqprmvxrHvPxByX+z8oI5tBqNNg==,iv:iErWMMUdjIqp+Dqp+skfCEc0c/LMB/GTooaEoqG5U14=,tag:JSHy8oqoLIdPB/4Q8Joi4A==,type:str]
         JWT_SECRET_KEY: ENC[AES256_GCM,data:A7n0sNBMfcGhXILWN6Xis2pwlcwe/zyx4C9F0JSOqZXLO4IcM2KRA+Jczzh6tz/ESKkTzStNz+nmCHOL+xXjcw==,iv:VhzJLqlWbG9XlEGN3AqeMoBHI2qySlS4fN8LZmEDEEw=,tag:l9FLqFesG307kx7Y6LKrrw==,type:str]
-        DATABASE_URL: ENC[AES256_GCM,data:rxkn/VBBwxalwlGWKbdOv4TmYuQM7yQXPRs2Sm3vYVd4PJPCZsnM5aUM0nYDZJN7aL2nO61aVBA1RasDSVkm4Z2TpC9x/2tioyYipuX48tBkKR9WLV/N7oEI9acH/BGwbZhsz14ySQfAyRg4xw==,iv:dIEnwbalMzAmg6Yp10fIztdW966cstRy8Heph8G+ATM=,tag:dlvtsJVbObyWRiDlHJRDMA==,type:str]
-        POSTGRES_DB: ENC[AES256_GCM,data:1ZeSeu8DVeTRlQ==,iv:SlNHjPAriQlP6RrKgx/+cyTd/nwhRS+ljJxw+l9U9Mg=,tag:BrMFqZx3FW2PrvVnC1v7fQ==,type:str]
-        POSTGRES_USER: ENC[AES256_GCM,data:nI50x2SUWMJYwg==,iv:RrRdL1W4f0cy9OBEa7AYjdufzkax/FJfJf2PDa6kCcU=,tag:nj26siqt1m9wlszKHN6pCw==,type:str]
-        POSTGRES_PASSWORD: ENC[AES256_GCM,data:XTgawlHXdGPrDLuONG42mROZaqQ=,iv:KwZIcp2AQmI6JxbqL7ZJdyz5zwSbxja75GiF3RNtA7Y=,tag:45f2gwgm50hSoWx34GSLrw==,type:str]
+        DATABASE_URL: ENC[AES256_GCM,data:lOMZy2oZugqZTcsVM1u4CkbC7W++GsPDlm7PDGbATr+B127LLndvVlh4A54wOxpjVg4lj19jo/NajrleYIsYAq6ZpztdOgmIgms7nyj5ZYhqK7B5nZ2tHkUhOpuH05DDu1e1extE,iv:8PrLMAaatMQJIXdwPrWLS7JxA73LQ8Lf1OERSve12GI=,tag:/6pxh9+4lazZN+H1xU9/oQ==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -106,8 +103,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T15:24:30Z"
-    mac: ENC[AES256_GCM,data:TcLEUl865y7pEFCGUr8YaRYpnrDEbF3LuLeeFtd9Ab8jqNs8gaVjZp5QSzhH7AjmrVoxa1in9xZVG+dv3q72Ew3OYIJhDrYvWYsJEM0zjwWUsO0gPjS8FK8Ta5nAB6cxnfAxfzOhZRQmqlNiq2hVSw9P1KiSkPR415btfdudk0c=,iv:bzf8YkuWIAPtlUj315AdW3s3Kuk/7wMtMQM92nbMw2A=,tag:ltaNlUo4s7sZhPyYNrIS8A==,type:str]
+    lastmodified: "2024-07-25T20:05:29Z"
+    mac: ENC[AES256_GCM,data:RQxXTrgMNcDGo7PJtL1aMRIAHk30ERscCuchKwbd3RCsScblTx47AOAAio2IvMwDxb8+5Nh5dMapP3wuqtbd9Y1Rinf1uToamNRF6/cT3g8oj5aGwuVpz+x7ABb0RlFP9OFMUnYFk6ZodqMHwPPoJ+M6N/jINBScBcC4hMq5U3E=,iv:BmeK4tHCI4/q+wgfpFiKGIXO3dnqLRsaglQO4qKtSlo=,tag:/hRvJLl4mq4cv8/VT/EP0w==,type:str]
     pgp:
         - created_at: "2024-07-20T15:24:30Z"
           enc: |-
