@@ -80,6 +80,7 @@ backup:
     enabled: true
     schedule: 0 3 * * *
     rootPasswordKey: POSTGRES_PASSWORD
+    concurrencyPolicy: Forbid
     successfulJobsHistoryLimit: 1
     failedJobsHistoryLimit: 1
     config:
@@ -104,8 +105,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T12:51:14Z"
-    mac: ENC[AES256_GCM,data:i7gs5xTIaEk5Rk6sm5nfkvaX9oc9OV8LMdhFHpBka0K9W82h6cI+dvjEGxAbet9XSDECvXDQCvloe8boEDNjVWpialZFXXBxHJpqeewKABZ/wOM6h2KrHd9FJb+DzZ2rYrGtUy291/twzJalZ/ck3pDf6Ac1HFEqn5N3aP4c77o=,iv:mFoXfxuVX/3AIw3mT6ONGrP3uLnpmXkeacOfNSmLJL8=,tag:d/Hhh+wxtiZRfXFgGeka9Q==,type:str]
+    lastmodified: "2024-07-25T20:44:54Z"
+    mac: ENC[AES256_GCM,data:/ShDBLfuQIdRbJ6lUzZaJBJHY7hNafP6Q24431vZBuZaTiphe2g6kFKpc7KyjYQ/N1DVH/rBhfzHoSoolmA7CyyidFH9TiGkFRMgswQLu7R3ocic5ZE8aLdmaxrJEZgNxyrLPTqO43hlz8ck/mqJE5FrGiiwbQ/BN2hG+L0w7b8=,iv:/PDV+iZEpZppUDvXP+L04gaQS+b+w+fpDE2/ZMhff9Y=,tag:kwu2GYlX+2ipnUS1QgUFAQ==,type:str]
     pgp:
         - created_at: "2024-07-20T12:49:32Z"
           enc: |-
