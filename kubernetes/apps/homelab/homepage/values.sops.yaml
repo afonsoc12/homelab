@@ -72,6 +72,10 @@ configmap:
                       url: https://rss.{{ .Values.domain }}
                       username: "{{`{{`}}HOMEPAGE_VAR_FRESHRSS_USERNAME{{`}}`}}"
                       password: "{{`{{`}}HOMEPAGE_VAR_FRESHRSS_PASSWORD{{`}}`}}"
+                - Ghostfolio:
+                    description: Stocks tracker
+                    icon: ghostfolio.png
+                    href: https://stocks.{{ .Values.domain }}
                 - Wallabag:
                     description: Link aggregator
                     icon: wallabag.png
@@ -356,8 +360,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-23T21:10:07Z"
-    mac: ENC[AES256_GCM,data:B88qUUMr+aOSa0S0I/dLKFXPSTY0BRw4uDE5wsGwSXdAkScl4b44u7LJY6VzlcFVqO1OAuMUuEYWDWp5iNNOATSXjg5mNiwsF9DrNuQ7zRL/Ka3GIctL8RR3d3/6Jvs64gHzrIEYbvn2QQfgbJU/f3k31N0fnNaQZpmxRIu/RsE=,iv:D8yU1XssdJVcEZ9z0uiNLyVh8f97ZzPhD/kc0IXh7R0=,tag:zXhbJUBP0CgZOqB9KlLzHA==,type:str]
+    lastmodified: "2024-07-25T20:27:48Z"
+    mac: ENC[AES256_GCM,data:Q18MpOCxajp8uXA6ozdC3n4dH/xr4pS299oPaMSThs3TpGJtl/rWD0k3HXIWHkCoxFlXVybdMsjieHBeMwhYTSrVhX3x5GeDnOzhNYw5FzadTEr/jHED8sPAMWWgPfi4J1gsdvAsOPpowsAdK9cHNztSxDVp0Q2smmZMJ4wmgco=,iv:AD6U5otcDYe0gF61N1HLyxVms2urbRPB+Vm6fv6IQTQ=,tag:vjLNzVXgEqwrD3CcPDTy4Q==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-
