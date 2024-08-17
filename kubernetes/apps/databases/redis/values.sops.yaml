@@ -69,15 +69,27 @@ securityContext: {}
 # runAsUser: 1000
 nodeSelector: {}
 tolerations: []
-affinity: {}
+affinity:
+    podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                namespaceSelector: {}
+                labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - mariadb
+                topologyKey: kubernetes.io/hostname
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T12:51:40Z"
-    mac: ENC[AES256_GCM,data:JpQ/bWGZmBgYxB+9FPUfJn8cEd/rmirT94+HQLX+qfrW2ZTdfqMRbWv+VhXxUTrPVmffIGOUzLNseWslLqrvMDfIWolPwuQcX50Ol+m/xhM7zVpPIqNV5KgMDHFPnVKdR5C7LMLEEzDsgoQ5Yt+6bvGhyay4dubpC+aFKz+XbN0=,iv:OblklLAfVmMMdYZJBHl5U3J0m0jQgioSoYkishEb4EA=,tag:FFzJjcYIHQhcUZq2l2ZcTA==,type:str]
+    lastmodified: "2024-08-17T13:29:18Z"
+    mac: ENC[AES256_GCM,data:hLuWCXdPajyHeGCQ1A1Sf/o9em7Eks0bmOksFHSlHrYaOLOyV7TjNe8DE5bByGx+mLJIrVMolueEEJdCyIkSAepwLoIUobGLAg2jfHS2YpaGj8FmJVt3VKfzAnqBq4sw7Oi4uvC1Jpu5G3EHJDpLlrhvmpRFYxk2j6dXNicy7gg=,iv:qm4t3HPzYoBoM0/hg/F7cImTdoZedvUk2CgnaDL/up8=,tag:BMi+pHmhCSJgWnYOZ0S8dA==,type:str]
     pgp:
         - created_at: "2024-07-20T12:51:40Z"
           enc: |-
