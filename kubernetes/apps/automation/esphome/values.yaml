@@ -33,12 +33,17 @@ service:
 
 volumeMounts:
 - name: config
-  mountPath: "/config"
+  mountPath: /config
+- name: esphome-emptydir
+  mountPath: /config/.esphome
 
 volumes:
 - name: config
   persistentVolumeClaim:
     claimName: esphome-pvc
+- name: esphome-emptydir
+  emptyDir:
+    sizeLimit: 10Gi
 
 pvc:
   storageClassName: longhorn-persistent
