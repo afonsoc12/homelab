@@ -88,6 +88,10 @@ configmap:
                     description: Site stock monitor
                     icon: changedetection-io.png
                     href: https://local.{{ .Values.domain }}/changedetection
+                - DocuSeal:
+                    description: Document Signing
+                    icon: docuseal.png
+                    href: https://sign.local.{{ .Values.domain }}
             - Home Automation:
                 - Home Assistant:
                     description: House brains
@@ -360,8 +364,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-25T20:27:48Z"
-    mac: ENC[AES256_GCM,data:Q18MpOCxajp8uXA6ozdC3n4dH/xr4pS299oPaMSThs3TpGJtl/rWD0k3HXIWHkCoxFlXVybdMsjieHBeMwhYTSrVhX3x5GeDnOzhNYw5FzadTEr/jHED8sPAMWWgPfi4J1gsdvAsOPpowsAdK9cHNztSxDVp0Q2smmZMJ4wmgco=,iv:AD6U5otcDYe0gF61N1HLyxVms2urbRPB+Vm6fv6IQTQ=,tag:vjLNzVXgEqwrD3CcPDTy4Q==,type:str]
+    lastmodified: "2024-09-23T18:54:47Z"
+    mac: ENC[AES256_GCM,data:6kHMpM+X1bpw9jh7R52YzPyv1KYWgkyLI2688T1gR2mP5CBqudbIby+vf0rG6AMq+MtQv9ljH7TVk5QLhki3aau8UmBt0dyW2Pb+mpWe0J0CwmiEe+s4TOuQsONVn5hdkKVWILmgCdqrLYFNJELJVqktQMmo1KdHKuc1k1LZR5I=,iv:YTcvwmqNbpPDxnU2GIDtzsDMGQjNrFwqIm7uKz0grGE=,tag:lkdqs7FKF9rI1iGQ2uTmbA==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-
