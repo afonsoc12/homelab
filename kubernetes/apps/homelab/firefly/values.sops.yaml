@@ -34,10 +34,10 @@ secret:
         DB_USERNAME: ENC[AES256_GCM,data:3zNEhtXweQ==,iv:MTsUdVKBxnlsEc36Vp2ZeP/T5wap22l5hUCK2x31IkY=,tag:R0ZdDXJI4W9UOfzjqLI3Dg==,type:str]
         DB_PASSWORD: ENC[AES256_GCM,data:Kkmz6TtAVEjzxbdELKwDvYzeawQ=,iv:L4NPNVt3VV1j2TlK/POyQ7D+HbH34kylu/BOJZQ/6kY=,tag:kEuH3GgGpVDSkrsUZOoDHQ==,type:str]
         MAIL_FROM: ENC[AES256_GCM,data:7og1bTmWyxs43OeAskZcAZUy0xkS,iv:2ijBEbsY5OeS/9mz65pjDRwUmUMIQkBpq72asNAwgxo=,tag:/PnT4QVeR2oEfq8WwXloBw==,type:str]
-        MAIL_HOST: ENC[AES256_GCM,data:Fixk2VvvfkyyQjz2posnGSAU/1hcucDpX7ivGUPRytMq8sZP/phn5LrfR6e8kQKSnJpIXaGKrsjyPISvTLR47rEAdmoS0QZSbfBs1OdtlVndXLqFJmdbaO8KfjUmS8ZTpZqIDnk9AOAgxWBo+AhZcM3XL+Kwho1Xo/o4g/HsgvGGQ2Q1TOmpQP5cs4n0E9kW+mjNkGtXxFXY/irOtwL3tgOzEtG04mRXBXNGEvKDAcRZT+x7BWWhNjwykJ0ZE8pkcjjTKryvtewbGdUzVyK3Fma2YbsBzN53CaU3KdU80ttq7ClEwKwxmX4zSTkrw+bx7Mio+W8yXxgvMHKsvCNrEivYdOakjolAhrc5uKTpGO/yEIaxCnIpDaXt2cW9/OaoiY+x+GWzUqmDu+bdEsY9WapsGHSOwG2emDJgLX8Q8xfMhgQGtRyfoINo8G2Rcnbp38wnd3Oydp0PSsNwc6CKxXpITpcWcfPp79iW+qzljAA1gMa4Hx2orQVKhBkkeSIf7zwTlr25t/DMWTUZ1x0OfXwF/u6xmu7PfySKYIbyfvUGC9s/GTx2NSYcYqx6iJpwRLvfdFPaBwmbHJp5kq8RjDjFUCLqZdxGQL19hmzwcDz2BM8RACnWoi8GWQOT2mImvjTkI+pyU9RJTa8F8EQ0cCokh7xrLKmF0PrUJw9L/9+7ai5NI5pT/4pMpSHFcjlZyqcBVOScdmixNNiDNtnfNW4nr/iH6CC9w0SbyMJ9Ae4TLsrNVpelgEqZ3doo5zh5PY24oUnmQXtSPu/hdqsdtqny+oOxNvDB7G3CeLkxV0jgeR3M3t0eZMT++CWqkbTmL1XSEMSTOmZS/J3C6IToprOMP3/vRJ09UfLz5ZhZ+uMZT4P5QSFEYg4U42zJ6gRcb24hyse9SQnuUi903hv881sb/Xgxpx5KZMCJKfxlbfWN8/Pj+ImCXtN+K4cle8Tz96Zyzg==,iv:ihsL6yctZlPWvQiN6Nfkx4UORWsZE4EOF8/83CKtAxY=,tag:i3Io7VLF2UDp0gaM/b99FA==,type:str]
-        MAIL_PASSWORD: ENC[AES256_GCM,data:Fm91iQa2CFb4TmWK,iv:kDMOFbiWydufa9RkXLbpSYqNSDHjhg3VqHO19hlLy5U=,tag:fJqcmOSS6ixZY1RpWQ9Y7w==,type:str]
+        MAIL_HOST: ENC[AES256_GCM,data:JqjZfzcirICedikt4QpZLPE=,iv:cnt9DMpNtPw17is+GqB/0DwHq2sj4ayBWNGUFAKBS1w=,tag:bjmAcxWHEp7L7BWNi6or6g==,type:str]
         MAIL_PORT: ENC[AES256_GCM,data:Iok8,iv:hC654tiIeHLX9IRr0gKjgxXovLDCCYLbWfZ2jUI4JSU=,tag:uJLqnoZe2t2bgNXXqhjTNA==,type:str]
-        MAIL_USERNAME: ENC[AES256_GCM,data:nk+SuQcN1cLYugc0hRyTP42uzL9i,iv:FL+acz2/wOrRuX9QDVG0QOn5v6l9u5ba5YwjfiZDh6g=,tag:TJZ5DQnqPGAZcaPlND0Dow==,type:str]
+        MAIL_USERNAME: ENC[AES256_GCM,data:JqIL7K1K,iv:QprFm18Y0JhCBclOsQ3J07gdMb5pMQVr5GLjCfNC9Wk=,tag:+PRFR8ruzVq8Aod90YtXrQ==,type:str]
+        MAIL_PASSWORD: ENC[AES256_GCM,data:TGj7bSDgnF7I6Y9Pgitp4Pl4IZ44PusbnvgTZF8OweimshCcNoCO+IuA7pQacX8jFM8TvQrVCVI3cUeM7W9A1UaF4QTH,iv:6cIJWc7zDhUiuGf54+9F/tq0FJq5FyeuL3OCyXzxsVQ=,tag:jr8xB6Hvdw/ZxIg9TzqTMg==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -153,8 +153,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T15:23:36Z"
-    mac: ENC[AES256_GCM,data:N4PnLPCGxOYvsxyCm0KofZBHu5FFkWVnWlkHSbg3XJ/5KajOU/Rz/sLFdkuUvQNjDSbgIbA+C3lSTiQ4nOZSgBAFp/IYnH2k1eAm1rvVjIpB+CGSsThG+4d7ri8ApjMyJLr4Sy2WUJEm1LL+sv5edZOw2a7gDbF/8XBANxRdQWw=,iv:ke5fWl+Zy72+SRwg0aGNWR7B+i4jzbGOoYQxoojKToU=,tag:k9SS3VSI9WeOvY8jG/gU7g==,type:str]
+    lastmodified: "2024-10-18T23:32:55Z"
+    mac: ENC[AES256_GCM,data:5Um6eqgogn+dn2pdQN8yJjgGO0DCKW4EbbR4TG1oVr87DVY41ldRRTWJyUffXHpUtJJwicQrmbBQ6ywBMOxvGCDqbASXyrrREcIf1bDkvsyGyoInvW/Il4ldK6YyTF3wxBHUzCjev3Wy6WtA4CxlQop3lYbggfccEs9oO3Bs+cM=,iv:jloxEswlQ8Ej8OTgAiYI41Gketb9XMpK+Drs7xJFpFo=,tag:qyjl2nBfCunCiNZMv18ncg==,type:str]
     pgp:
         - created_at: "2024-07-20T15:23:16Z"
           enc: |-
