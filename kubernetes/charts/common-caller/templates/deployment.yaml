@@ -1,0 +1,3 @@
+{{- if eq .Values.workload.type "Deployment"}}
+{{- include "common.deployment" . }}
+{{- end }}

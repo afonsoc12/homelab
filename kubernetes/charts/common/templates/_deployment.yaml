@@ -1,0 +1,43 @@
+{{- define "common.deployment" -}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helm.fullname" . }}
+  labels:
+    {{- include "helm.labels" . | nindent 4 }}
+    {{- with .Values.workload.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- include "helm.annotations" . | nindent 4 }}
+    {{- with .Values.workload.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.workload.replicas | default 1 }}
+  {{- if .Values.workload.revisionHistoryLimit }}
+  revisionHistoryLimit: {{ .Values.workload.revisionHistoryLimit | default 1 }}
+  {{- end }}
+  {{- with .Values.workload.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "helm.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "helm.labels" . | nindent 4 }}
+        {{- with .Values.pod.labels }}
+        {{- toYaml . | nindent 4 }}
+        {{- end }}
+      annotations:
+        {{- include "helm.annotations" . | nindent 4 }}
+        {{- with .Values.pod.annotations }}
+        {{- toYaml . | nindent 4 }}
+        {{- end }}
+    spec:
+      {{- include "common.podSpec" . | nindent 6}}
+{{- end -}}

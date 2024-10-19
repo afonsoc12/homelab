@@ -1,0 +1,236 @@
+# todo: del
+authelia:
+    service: authelia.ingress.svc.cluster.local
+    url: auth.mydata247.top
+
+global:
+  chartNameOverride: ""
+  fullnameOverride: ""
+  labels:
+    global_label: abc
+  annotations:
+    global_annot: abc
+
+# secret:
+#   labels:
+#     secret_label: asdv
+#   annotations:
+#     secret_annotation: asdf
+#   stringData:
+#     secret_string_1: abc
+#     secret_string_2: def
+#   data:
+#     secret_base64_1: ==a
+#     secret_base64_2: ==b
+
+# configmap:
+#   # mountEnv: false
+#   labels:
+#     cm_label: asdv
+#   annotations:
+#     cm_annotation: asdf
+#   data:
+#     config_1: abc
+#     config_2: def
+
+ports:
+ - containerPort: 80
+   name: http
+   protocol: TCP
+   service: true
+
+service:
+  enabled: true
+  labels:
+    svc_label: asdf
+  annotations:
+    svc_annot: adss
+  loadBalancerIP:
+  externalTrafficPolicy:
+  type: ClusterIP
+  port: 1234
+
+# ingress:
+#   enabled: true
+#   authelia: true
+#   labels:
+#     ing_lab: asd
+#   annotations:
+#     nginx.ingress.kubernetes.io/client-max-body-size: "0"
+#     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+#   className: "nginx"
+#   tls: []
+#   #  - secretName: mydomain-cert
+#   #    hosts:
+#   #      - chart-example.local
+
+#   # Will assume the first element in .ports, regardless of service
+#   hosts:
+#     - host: chart-example.local
+#       paths:
+#         - path: /
+#           pathType: Prefix
+
+# One of Deployment (default), Statefulset, Daemonset, CronJob or Job
+workload:
+  type: Deployment # One of Deployment (default), Statefulset, Daemonset, CronJob or Job
+  labels:
+    deploy_lab: asidof
+  annot:
+    deploy_annot: asidof
+# podAnnotations: {}
+#   # annot_1: abc
+#   # annot_2: def
+
+pod:
+  labels:
+    pod_labe: as
+  annotations:
+    pod_annot: asdf
+  replicas: 1
+  revisionHistoryLimit: 0
+  strategy:
+    type: Recreate
+
+  image:
+    # repository: nginx
+    tag: latest
+    pullPolicy: Always
+
+  #   restartPolicy:
+
+  command: {}
+
+  args: {}
+
+  additionalContainers: []
+
+  volumes: {}
+  # - name: config
+  #   projected:
+  #     sources:
+  #     - configMap:
+  #         name: authelia-config
+  #         items:
+  #         - key: "configuration.yml"
+  #           path: "configuration.yml"
+  # - name: config
+  #   mountPvc: yes
+
+  volumeMounts: {}
+  # - name: config
+  #   mountPath: "/config"
+  #   readOnly: true
+
+
+  livenessProbe: {}
+
+  readinessProbe: {}
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  initContainers: []
+
+# pvc: {}
+  # storageClassName: longhorn
+  # accessModes:
+  # - ReadWriteOnce
+  # resources:
+  #   requests:
+  #     storage: 2Gi
+
+
+
+
+# cronjobs: []
+# - name:
+#   labels: {}
+#   podAnnotations: {}
+#   schedule:
+#   concurrencyPolicy:
+#   failedJobsHistoryLimit:
+#   successfulJobsHistoryLimit:
+#   suspend:
+#   image:
+#     # repository: nginx
+#     tag: latest
+#     pullPolicy: Always
+#   restartPolicy:
+#   command: {}
+
+#   args: {}
+
+#   ports: []
+#   #  - containerPort: 80
+#   #    name: http
+#   #    protocol: TCP
+#   #    service: true
+
+#   volumeMounts: {}
+#   # - name: config
+#   #   mountPath: "/config"
+#   #   readOnly: true
+
+#   volumes: {}
+#   # - name: config
+#   #   projected:
+#   #     sources:
+#   #     - configMap:
+#   #         name: authelia-config
+#   #         items:
+#   #         - key: "configuration.yml"
+#   #           path: "configuration.yml"
+
+#   livenessProbe: {}
+
+#   readinessProbe: {}
+
+#   resources: {}
+#     # limits:
+#     #   cpu: 100m
+#     #   memory: 128Mi
+#     # requests:
+#     #   cpu: 100m
+#     #   memory: 128Mi
+
+#   podSecurityContext: {}
+#     # fsGroup: 2000
+
+#   securityContext: {}
+#     # capabilities:
+#     #   drop:
+#     #   - ALL
+#     # readOnlyRootFilesystem: true
+#     # runAsNonRoot: true
+#     # runAsUser: 1000
+
+#   nodeSelector: {}
+
+#   tolerations: []
+
+#   affinity: {}
+
+# dnsConfig: {}

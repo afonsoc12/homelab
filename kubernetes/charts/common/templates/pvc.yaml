@@ -1,0 +1,18 @@
+{{- if .Values.pvc -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "homelab-svc.fullname" . }}-pvc
+  labels:
+    {{- include "homelab-svc.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.pvc.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  storageClassName: {{ .Values.pvc.storageClassName | default "longhorn-persistent" }}
+  {{- with .Values.pvc.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end -}}
