@@ -15,8 +15,8 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - secrets://../../apps/wordpress/wedding-site/values.sops.yaml
+        - secrets://../../apps/homelab/wedding-site/values.sops.yaml
 
   destination:
     name: {{ .Values.spec.destination.name }}
-    namespace: wordpress
+    namespace: homelab
