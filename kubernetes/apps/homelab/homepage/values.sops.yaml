@@ -92,6 +92,10 @@ configmap:
                     description: Document Signing
                     icon: docuseal.png
                     href: https://sign.local.{{ .Values.domain }}
+                - Wedding Site:
+                    description: Wedding Site
+                    icon: https://{{ .Values.wedding_site }}/wp-content/uploads/2023/12/logo.png
+                    href: https://{{ .Values.wedding_site }}
             - Home Automation:
                 - Home Assistant:
                     description: House brains
@@ -364,8 +368,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-09-23T18:54:47Z"
-    mac: ENC[AES256_GCM,data:6kHMpM+X1bpw9jh7R52YzPyv1KYWgkyLI2688T1gR2mP5CBqudbIby+vf0rG6AMq+MtQv9ljH7TVk5QLhki3aau8UmBt0dyW2Pb+mpWe0J0CwmiEe+s4TOuQsONVn5hdkKVWILmgCdqrLYFNJELJVqktQMmo1KdHKuc1k1LZR5I=,iv:YTcvwmqNbpPDxnU2GIDtzsDMGQjNrFwqIm7uKz0grGE=,tag:lkdqs7FKF9rI1iGQ2uTmbA==,type:str]
+    lastmodified: "2024-10-27T15:24:56Z"
+    mac: ENC[AES256_GCM,data:pz/peuo8j8OJs15kTfT0cbUniQLrcjeVXvQiRM6pzn33p9pXXELQbVChvycNrUAJoHpFClF6kNda4ac+vwly2oMT2DEj560CQ2TIb7yqvlowRoq9TveUgKOyQv2p9RxL2FGpLb791SyYoz/Xut1NZYP6SntE0FVYL6l+by8ie2s=,iv:wgQ2FX81aj+oH/i8wvIvQrDP8Z+/ZhFVpK8Alwqf6lY=,tag:FWfM2ryZ1qjrcVYSanlFpA==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-
