@@ -99,23 +99,14 @@ certificates:
         - status.{{ .Values.domain }}
       reflectNamespaces:
         - monitoring
-    - name: wedding-site-root
-      dnsNames:
-        - '{{ .Values.domainWedding }}'
-      # issuerRef:
-      #   name: letsencrypt-stg
-      #   kind: Issuer
-      reflectNamespaces:
-        - wordpress
-        - sandbox
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-21T11:34:54Z"
-    mac: ENC[AES256_GCM,data:p5SdcLgZ2XoOOUTB7/jgNvWk8eyEyiDt3iIoeVzbS8hspA+wmV0QosmoTISlBDt/BEP4Gqjf/MHPD5nRklElSQHWe1+AY0IEecCWuMPYP8a6FfrwfVAuSXboRpJtsprzKuCQwWa+JNAeW0JdnCIUKLoPKuOwHIrrtJpJXtmVbnE=,iv:EzhRJVYo9M0iSgBO1gRmA4MmmGPDZJzLKA/+vQxTsVM=,tag:jkkkSgU/DlfXR8Txt8WDgQ==,type:str]
+    lastmodified: "2024-11-23T12:57:27Z"
+    mac: ENC[AES256_GCM,data:b7MQKZdzd3ZdilLRbCQ2YuS+FMHuq+oMSCZBHI2twaMPXMZ8cCbozrnCaqQj7huATcUKriyizbKRMly5CNOHdK+Q7Hejd6N5LKj7F2jrqPBU3pFplvb2J0S1BODIyF+eBYlwGUwf9KGpf8bomjnSCPyyYEVz/iAbTC+dKkTjkk8=,iv:CJxD8CIe7yRFI98T1Ip7YxLDcOhpsudo8BsV4ThI/r4=,tag:2a26G9BFKkLgnUsRtrplKA==,type:str]
     pgp:
         - created_at: "2024-07-14T21:33:42Z"
           enc: |-
