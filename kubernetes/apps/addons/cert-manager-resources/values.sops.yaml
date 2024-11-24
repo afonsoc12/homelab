@@ -99,14 +99,20 @@ certificates:
         - status.{{ .Values.domain }}
       reflectNamespaces:
         - monitoring
+    - name: sso
+      dnsNames:
+        - sso.{{ .Values.domain }}
+      reflectNamespaces:
+        - sandbox
+        - ingress
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-23T12:57:27Z"
-    mac: ENC[AES256_GCM,data:b7MQKZdzd3ZdilLRbCQ2YuS+FMHuq+oMSCZBHI2twaMPXMZ8cCbozrnCaqQj7huATcUKriyizbKRMly5CNOHdK+Q7Hejd6N5LKj7F2jrqPBU3pFplvb2J0S1BODIyF+eBYlwGUwf9KGpf8bomjnSCPyyYEVz/iAbTC+dKkTjkk8=,iv:CJxD8CIe7yRFI98T1Ip7YxLDcOhpsudo8BsV4ThI/r4=,tag:2a26G9BFKkLgnUsRtrplKA==,type:str]
+    lastmodified: "2024-11-24T15:42:31Z"
+    mac: ENC[AES256_GCM,data:dixZ420yaz0nemrh4ghUqUtICOByAhWgJ4C6TRN1kVvTZdLzNNTbYl6+zfw0pZ2Lc48KgBdQJc2mz+ZyFJcMzbGobLouEE4koCo7y/YEE6myHJxeW03qwsPZ0z/TxGqH7YStAS1n0vCUZDxtFjkfeETCIP5jz/Vvk/6mO10NMCw=,iv:irzTd+vPNXh7ZPaG7mlp7vHuwBDRsEFb8/6qo4TUC6w=,tag:S5/asiFJX0Cdr3To81EEZg==,type:str]
     pgp:
         - created_at: "2024-07-14T21:33:42Z"
           enc: |-
