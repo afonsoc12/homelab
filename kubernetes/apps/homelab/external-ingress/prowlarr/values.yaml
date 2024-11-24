@@ -16,7 +16,7 @@ ingress:
   tls:
   - secretName: local-wildcard-cert
   hosts:
-    - host: local.{{ .Values.domain }}
+    - host: prowlarr.local.{{ .Values.domain }}
       paths:
-        - path: /prowlarr
+        - path: /
           pathType: Prefix

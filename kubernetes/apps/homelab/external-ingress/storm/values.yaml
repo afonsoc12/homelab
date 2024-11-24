@@ -17,7 +17,7 @@ ingress:
   tls:
   - secretName: local-wildcard-cert
   hosts:
-    - host: local.{{ .Values.domain }}
+    - host: storm.local.{{ .Values.domain }}
       paths:
-        - path: /storm
+        - path: /
           pathType: Prefix

@@ -71,17 +71,13 @@ ingress:
   enabled: true
   authelia: true
   className: "nginx"
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^(/node-red)$ $1/ permanent;
   tls:
     - secretName: local-wildcard-cert
   # Will assume the first element in .ports, regardless of service
   hosts:
-    - host: local.{{ .Values.domain }}
+    - host: node-red.local.{{ .Values.domain }}
       paths:
-        - path: /node-red(/|$)(.*)
+        - path: /
           pathType: Prefix
 
 

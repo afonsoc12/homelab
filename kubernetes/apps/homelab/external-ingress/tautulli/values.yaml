@@ -16,7 +16,7 @@ ingress:
   tls:
   - secretName: local-wildcard-cert
   hosts:
-    - host: local.{{ .Values.domain }}
+    - host: tautulli.local.{{ .Values.domain }}
       paths:
-        - path: /tautulli
+        - path: /
           pathType: Prefix

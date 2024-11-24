@@ -87,7 +87,7 @@ configmap:
                 - Change Detection:
                     description: Site stock monitor
                     icon: changedetection-io.png
-                    href: https://local.{{ .Values.domain }}/changedetection
+                    href: https://changedetection.local.{{ .Values.domain }}
                 - DocuSeal:
                     description: Document Signing
                     icon: docuseal.png
@@ -109,7 +109,7 @@ configmap:
                 - Node-RED:
                     description: Automations UI
                     icon: node-red.png
-                    href: https://local.{{ .Values.domain }}/node-red
+                    href: https://node-red.local.{{ .Values.domain }}
                 - Zigbee2MQTT:
                     description: Zigbee devices manager
                     icon: zigbee2mqtt.png
@@ -117,7 +117,7 @@ configmap:
                 - ESPHome:
                     description: Controller for ESP8266 devices
                     icon: esphome.png
-                    href: https://local.{{ .Values.domain }}/esphome
+                    href: https://esphome.local.{{ .Values.domain }}
             - Media:
                 - Plex:
                     description: Plex media server
@@ -130,10 +130,10 @@ configmap:
                 - Tautulli:
                     description: Plex monitoring
                     icon: tautulli.png
-                    href: https://local.{{ .Values.domain }}/tautulli
+                    href: https://tautulli.local.{{ .Values.domain }}
                     widget:
                       type: tautulli
-                      url: http://{{ .Values.ips.hoarder }}:8181/tautulli
+                      url: http://{{ .Values.ips.hoarder }}:8181
                       key: "{{`{{`}}HOMEPAGE_VAR_TAUTULLI_KEY{{`}}`}}"
                 - Overseerr:
                     description: Media requests
@@ -151,7 +151,7 @@ configmap:
                 - Sonarr:
                     description: TV Shows management
                     icon: sonarr.png
-                    href: https://local.{{ .Values.domain }}/sonarr
+                    href: https://sonarr.local.{{ .Values.domain }}
                     widget:
                         type: sonarr
                         fields: ["wanted", "queued", "series"]
@@ -160,7 +160,7 @@ configmap:
                 - Radarr:
                     description: Movies management
                     icon: radarr.png
-                    href: https://local.{{ .Values.domain }}/radarr
+                    href: https://radarr.local.{{ .Values.domain }}
                     widget:
                         type: radarr
                         fields: ["wanted", "missing", "queued", "movies"]
@@ -169,7 +169,7 @@ configmap:
                 - Radarr 4K:
                     description: 4K Movies management
                     icon: radarr.png
-                    href: https://local.{{ .Values.domain }}/radarr-4k
+                    href: https://radarr-4k.local.{{ .Values.domain }}
                     widget:
                         type: radarr
                         fields: ["wanted", "missing", "queued", "movies"]
@@ -182,12 +182,12 @@ configmap:
                     widget:
                         type: bazarr
                         fields: ["missingEpisodes", "missingMovies"]
-                        url: http://{{ .Values.ips.hoarder }}:6767/bazarr
+                        url: http://bazarr.{{ .Values.ips.hoarder }}:6767
                         key: "{{`{{`}}HOMEPAGE_VAR_BAZARR_KEY{{`}}`}}"
                 - Lidarr:
                     description: Music management
                     icon: lidarr.png
-                    href: https://local.{{ .Values.domain }}/lidarr
+                    href: https://lidarr.local.{{ .Values.domain }}
                     widget:
                         type: lidarr
                         fields: ["wanted", "queued", "albums"]
@@ -196,7 +196,7 @@ configmap:
                 - Deluge:
                     description: Torrent downloader
                     icon: deluge.png
-                    href: https://local.{{ .Values.domain }}/deluge
+                    href: https://deluge.local.{{ .Values.domain }}
                     widget:
                         type: deluge
                         url: http://{{ .Values.ips.hoarder }}:8112
@@ -204,14 +204,14 @@ configmap:
                 - Storm:
                     description: Deluge, but pretty
                     icon: storm.png
-                    href: https://local.{{ .Values.domain }}/storm
+                    href: https://storm.local.{{ .Values.domain }}
                 - Prowlarr:
                     description: Torrent indexer
                     icon: prowlarr.png
-                    href: https://local.{{ .Values.domain }}/prowlarr
+                    href: https://prowlarr.local.{{ .Values.domain }}
                     widget:
                         type: prowlarr
-                        url: http://{{ .Values.ips.hoarder }}:9696/prowlarr
+                        url: http://{{ .Values.ips.hoarder }}:9696
                         key: "{{`{{`}}HOMEPAGE_VAR_PROWLARR_KEY{{`}}`}}"
 
             - Admin:
@@ -243,7 +243,7 @@ configmap:
                 - Grafana:
                     description: Dashboards
                     icon: grafana.png
-                    href: https://local.{{ .Values.domain }}/grafana
+                    href: https://grafana.local.{{ .Values.domain }}
                     widget:
                         type: grafana
                         fields: ["dashboards", "datasources", "totalalerts", "alertstriggered"]
@@ -253,11 +253,11 @@ configmap:
                 - Prometheus:
                     description: Alerting TSDB
                     icon: prometheus.png
-                    href: https://local.{{ .Values.domain }}/prometheus
+                    href: https://prometheus.local.{{ .Values.domain }}
                 - Alertmanager:
                     description: Alerts manager
                     icon: alertmanager.png
-                    href: https://local.{{ .Values.domain }}/alertmanager
+                    href: https://alertmanager.local.{{ .Values.domain }}
                 - InfluxDB:
                     description: TSDB with nice UI
                     icon: influxdb.png
@@ -281,11 +281,15 @@ configmap:
                 - Longhorn:
                     description: Kubernetes distributed block storage
                     icon: longhorn.png
-                    href: https://local.{{ .Values.domain }}/longhorn
+                    href: https://longhorn.local.{{ .Values.domain }}
                 - Authelia:
                     description: SSO portal
                     icon: authelia.png
                     href: https://auth.{{ .Values.domain }}
+                - MinIO
+                    description: S3 storage
+                    icon: minio.png
+                    href: https://minio.local.{{ .Values.domain }}
                 # - Prometheus:
                 #     description: Time-series database
                 #     icon: prometheus.png
@@ -368,8 +372,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-23T13:04:51Z"
-    mac: ENC[AES256_GCM,data:+gdDy502wudS2MVE6JSsI83E9qEss5vJmay3Cbai+itEP5bx11WGJKoLbbYeyZFKEdGGmfvOyWrDXv79YqjbOkfH0c6P89l3sqthflPgiWG9uE6+FRgL25XGhvoJeP9HP9ULk9QwzHGESl76Bo9jVk3Dy1SVXct5i14H95jIubE=,iv:9AcK2JPa0Q8QxXrjvOuHfMlgnfi1RhxlSllvmz59OJk=,tag:AP8QadOSvj06VzdqiBADpg==,type:str]
+    lastmodified: "2024-11-24T13:36:17Z"
+    mac: ENC[AES256_GCM,data:0SMOYw5g0ZZVKdgXqa2+HgoN90mxnVB9FTMZsUj7eaMlF8vtJ5JJwvkxLsvBUlkoVQ1r2ktIIBnxOf1JmhZBhq4YifJD/yUsZyYe+Ec9koNxFBbZtwmpROBtri7B1SFcsdVwbztfLyyiBO+3BceWkXYwvHfStlmH0aXnDvz91Yg=,iv:EIExJSrdL0FplUQv1mcYMdVbI9cBspEJ0DJUkIemjZc=,tag:QhwFuywlzKsRbFdkF5lUbQ==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-

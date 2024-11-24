@@ -4,17 +4,13 @@ longhornUI:
 ingress:
     enabled: true
     ingressClassName: nginx
-    host: ENC[AES256_GCM,data:QJbLGO4mJxbM/DQvSAt9Ht9agQ==,iv:qNJkRz79kPdzZr9StS0nqmdALrL9RvKEQ4uOOlIJmMo=,tag:S4mtOzpKCf4ffH5Y9rRT9Q==,type:str]
+    host: ENC[AES256_GCM,data:ReDEo44aPWe+A3y8Os+lhRQsFAGnsK0YQ03gAg==,iv:qqSnaUo/8ISG8gWZIc7MkPt+23sD78tV8F7/eivZ3dM=,tag:vY841YR4VypLYvlkxy/XWQ==,type:str]
     tls: true
     tlsSecret: local-wildcard-cert
-    path: /longhorn(/|$)(.*)
+    path: /
     annotations:
         nginx.ingress.kubernetes.io/proxy-body-size: 10000m
-        nginx.ingress.kubernetes.io/rewrite-target: /$2
-        # adds 301 redirect with trailing slash
-        nginx.ingress.kubernetes.io/configuration-snippet: |
-            rewrite ^(/longhorn)$ $1/ permanent;
-        # nginx.ingress.kubernetes.io/auth-method: GET
+        nginx.ingress.kubernetes.io/auth-method: GET
         nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
         nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:HF1kdNgTTjh8YJx/GjeHbKogW+0sSf7L8rapa1yt/O6jbblhRswg5bfUlNoP,iv:PxyHPGv5P/Ntm4sswr7Ek+JAu75H9DRtQ2/+adDkbV4=,tag:FAi3UYW9Tb+glFNuB0luSQ==,type:str]
         nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
@@ -25,8 +21,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T20:11:17Z"
-    mac: ENC[AES256_GCM,data:TGvDKfqCDvU4IOUnccgFUHY8+W0ILrkqYh5v+ktIkAmCtW6fNWORWdQap26ibUu/uKumrDZwJol9+XrmrT06ipwykfeDGR6J56INvOmjHnoMQVQ20n/VUaHueVtueThbXmj8a5HHUBCjc+HiirfKMaPkeQwPi99qT0wMPCh9deg=,iv:btT1pO2I72pqwWhUQlOgwxabBtf4x92gzf0S7cYFkwI=,tag:NWTywZObLFGeaxLrLHlS1w==,type:str]
+    lastmodified: "2024-11-24T13:27:02Z"
+    mac: ENC[AES256_GCM,data:okENCjRIoAIYABeoEVbUhwixjYplmgEXbn0qBsbkmDNcaEKW4Gy0f1W6hU3He2SDrWjXlmZwUmSsklmlEbhMM1l/Jx+gl1aY16BE0MCHSvrVLg9bNrQSEd9yiZMFj9gMY0S0cUFeomK1tBSnKGhoDTdBlz+FofJvx/36isa716c=,iv:fTYnBjVW/bkW5W0gT6mKG+LCpNKrhRpOpVQsVz/oGs0=,tag:27AOoQg0LYBZH0iwN/JVJQ==,type:str]
     pgp:
         - created_at: "2024-07-20T20:11:17Z"
           enc: |-

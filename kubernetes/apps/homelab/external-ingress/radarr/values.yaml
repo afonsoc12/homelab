@@ -16,7 +16,7 @@ ingress:
   tls:
   - secretName: local-wildcard-cert
   hosts:
-    - host: local.{{ .Values.domain }}
+    - host: radarr.local.{{ .Values.domain }}
       paths:
-        - path: /radarr
+        - path: /
           pathType: Prefix

@@ -36,5 +36,5 @@ ingress:
   hosts:
     - host: minio.local.{{ .Values.domain }}
       paths:
-        - path: /minio(/|$)(.*)
+        - path: /
           pathType: Prefix

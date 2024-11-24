@@ -42,7 +42,7 @@ service:
 configmap:
   mountEnv: true
   data:
-    BASE_URL: local.{{ .Values.domain }}/changedetection
+    BASE_URL: changedetection.local.{{ .Values.domain }}
     FETCH_WORKERS: 8
     USE_X_SETTINGS: 1
 
@@ -66,19 +66,15 @@ ingress:
   enabled: true
   authelia: true
   className: "nginx"
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Host "localhost";
-      proxy_set_header X-Forwarded-Prefix /changedetection;
+
   tls:
    - secretName: local-wildcard-cert
 
   # Will assume the first element in .ports, regardless of service
   hosts:
-    - host: local.{{ .Values.domain }}
+    - host: changedetection.local.{{ .Values.domain }}
       paths:
-        - path: /changedetection(/|$)(.*)
+        - path: /
           pathType: Prefix
 
 

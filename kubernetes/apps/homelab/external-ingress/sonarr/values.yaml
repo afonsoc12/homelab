@@ -16,7 +16,7 @@ ingress:
   tls:
   - secretName: local-wildcard-cert
   hosts:
-    - host: local.{{ .Values.domain }}
+    - host: sonarr.local.{{ .Values.domain }}
       paths:
-        - path: /sonarr
+        - path: /
           pathType: Prefix

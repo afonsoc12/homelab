@@ -5,18 +5,17 @@ ingress:
     ingressClassName: nginx
     # Values can be templated
     annotations:
-        nginx.ingress.kubernetes.io/rewrite-target: /$2
         nginx.ingress.kubernetes.io/auth-method: GET
         nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
         nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:SGi03gMcIIwJzBDQWbLZZHVH5zljenv3eEvCiVnPMLjl+x96xUhA0NfZCWTw,iv:drhsOshCmj1gO7rHFGJAZXAjfdsiJ7JOT3FBiKBX3WE=,tag:pAGTAt4lO3YRqmoOjW5ZCA==,type:str]
         nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
         nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
     labels: {}
-    path: /grafana(/|$)(.*)
+    path: /
     # pathType is only for k8s >= 1.1=
     pathType: Prefix
     hosts:
-        - ENC[AES256_GCM,data:59MKXDtJr9SOVs4vziD4fp1gxw==,iv:w9Uf3aMagdVGlT0F1h9Iyh7sy7pahp/XHoL2JpcYXkg=,tag:slY9uEjQXxxkn08VKmuV9A==,type:str]
+        - ENC[AES256_GCM,data:WYGTIId7oe3I9vIAbZU8SqgaMQ6ZBdQ5FqDI,iv:H8DbErIwIYVY0Nof2baWHV5ZZM2HOSix+Vv1uSUfCOs=,tag:1p/u8a8q+Mz+RYlygvOECg==,type:str]
     tls:
         - secretName: local-wildcard-cert
 persistence:
@@ -112,8 +111,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T19:07:33Z"
-    mac: ENC[AES256_GCM,data:bR8+/DyoauZt+AGG2hY2vYsHh3T+dEONPeeHgWFtr9axD2qntEJwx5oa1ualRe98EencqJ+YY1GFjFzc3za2XVNARKZMvf5/tpycj6s7nMK9oyqYAXF4vht8tx3PlAU+n7+qyNkQxUY76nyJYlmL6JCEgkUgdL5+VLFGnS6avvA=,iv:rGkpyOISQ4TpwocritwN5Cv1eux0+tOShxhgionkLKM=,tag:3t5CiFUZkmCEqQATLrSYiw==,type:str]
+    lastmodified: "2024-11-24T13:23:56Z"
+    mac: ENC[AES256_GCM,data:fsIWlXQHVowUNwFHgoXrK8EtntJZ2cLgbyFVMJqo+CrNVNE3YOIQ/bIipY3APdc/O667ZglWt0leEbM+6Qh6rV3SNWNox/mKUymvFVfqrBx0jaZIl8oW+vuw+U71IwBX5lSHTAg0bJ0FEjkTmFeiTRnDu6hCUelWohrTG05vIkI=,iv:YvYQVd2m9PA9Sak2e8Fo/5gDT6BTVmC07E8JtBhFCIs=,tag:QIlJfAUlY8oEAfe7A1lmMQ==,type:str]
     pgp:
         - created_at: "2024-07-20T19:07:33Z"
           enc: |-

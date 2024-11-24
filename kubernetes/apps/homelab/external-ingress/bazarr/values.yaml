@@ -16,8 +16,8 @@ ingress:
   tls:
   - secretName: local-wildcard-cert
   hosts:
-    - host: local.{{ .Values.domain }}
+    - host: bazarr.local.{{ .Values.domain }}
       paths:
-        - path: /bazarr
+        - path: /
           pathType: Prefix
 
