@@ -20,7 +20,6 @@ spec:
         - app: minio
         - app: overseerr
         - app: plex
-        - app: portainer
         - app: prowlarr
         - app: radarr
         - app: radarr-4k
