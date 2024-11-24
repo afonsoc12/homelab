@@ -15,7 +15,7 @@ spec:
       chart: cert-manager
       helm:
         valueFiles:
-        - $values/kubernetes/apps/values.sops.yaml
+        # - $values/kubernetes/apps/values.sops.yaml
         - $values/kubernetes/apps/addons/cert-manager/values.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
