@@ -286,7 +286,7 @@ configmap:
                     description: SSO portal
                     icon: authelia.png
                     href: https://auth.{{ .Values.domain }}
-                - MinIO
+                - MinIO:
                     description: S3 storage
                     icon: minio.png
                     href: https://minio.local.{{ .Values.domain }}
@@ -372,8 +372,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-24T13:36:17Z"
-    mac: ENC[AES256_GCM,data:0SMOYw5g0ZZVKdgXqa2+HgoN90mxnVB9FTMZsUj7eaMlF8vtJ5JJwvkxLsvBUlkoVQ1r2ktIIBnxOf1JmhZBhq4YifJD/yUsZyYe+Ec9koNxFBbZtwmpROBtri7B1SFcsdVwbztfLyyiBO+3BceWkXYwvHfStlmH0aXnDvz91Yg=,iv:EIExJSrdL0FplUQv1mcYMdVbI9cBspEJ0DJUkIemjZc=,tag:QhwFuywlzKsRbFdkF5lUbQ==,type:str]
+    lastmodified: "2024-11-24T14:03:56Z"
+    mac: ENC[AES256_GCM,data:U5JZvOF6HvbmYBElUHw3MfBT3jdrBwMC26Emj0vm1eK5q0682dVroFWxPHxAOGPQlpVbNuMclNZVNcRSma0dzXXaAvSYAO8B+ozotWnwXAwKo8ZfFLWpICf6vHQscp/8YLFe7L/YkAy5hPLqaOr3D6hcfVlZhYyqE8J85/sbl0s=,iv:ybqfhI3xYQ6Ly9ii54bK7I5jskYLqQ+ybq05r/UXa2c=,tag:3NmbWkvth3BWPUazSSvXbQ==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-
