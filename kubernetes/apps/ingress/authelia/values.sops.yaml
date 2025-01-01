@@ -4,7 +4,7 @@ labels: {}
 replicas: 2
 image:
     repository: authelia/authelia
-    tag: 4.36
+    tag: 4.38
 ports:
     - containerPort: 9091
       service: true
@@ -77,8 +77,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-10-18T23:35:24Z"
-    mac: ENC[AES256_GCM,data:hWDUKmT0OmNh8Y8iF+jbGY5kED9IWisL1UgX9/de9QQGuHQkqrxVQ8ZjbixVtwRAc7EXOq25mQGB+ssiWoWPUXCIhyGqx4tN2buvJ3JqJCnVMgDyaJSzOxfrpUl2fd5NCC9VIvLCoP9uaHS42PZqA3l3fWwrERiUjlu/d3LanlY=,iv:bbsVWxSXGgh0mdSCMZHa6ctNNZ3QYuwXl/ViPG0xLOQ=,tag:QdWZchYT36cQiy9/XUdL3g==,type:str]
+    lastmodified: "2025-01-01T17:00:48Z"
+    mac: ENC[AES256_GCM,data:wXI3RAwgC0s5hqncmbOdHxM/qEMWJFlI9Ea5ZD6OoQd0M7OxVYXITtYGEXGHaLfcUda7vywjuLbHoFRZiFxEZP0bLPMC6hdNJKXZQloCvSULpPtQrpo605pdSy4bvwLhvhLlQkXdjmEn2S7SaZ/xtAO81gUDSTh0MQEwpaiOLoA=,iv:ROuGj1a+fFzdRIWqH72xVgRY/WsrpZxqefsq84YQuC4=,tag:B7F4fJXhgYRpuBbetsYSUw==,type:str]
     pgp:
         - created_at: "2024-07-21T11:09:09Z"
           enc: |-
@@ -102,4 +102,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP|host)$
-    version: 3.9.0
+    version: 3.9.2
