@@ -11,7 +11,7 @@ ingress:
     annotations:
         nginx.ingress.kubernetes.io/proxy-body-size: 10000m
         nginx.ingress.kubernetes.io/auth-method: GET
-        nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
+        nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/authz/auth-request
         nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:HF1kdNgTTjh8YJx/GjeHbKogW+0sSf7L8rapa1yt/O6jbblhRswg5bfUlNoP,iv:PxyHPGv5P/Ntm4sswr7Ek+JAu75H9DRtQ2/+adDkbV4=,tag:FAi3UYW9Tb+glFNuB0luSQ==,type:str]
         nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
         nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
@@ -21,8 +21,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-24T13:27:02Z"
-    mac: ENC[AES256_GCM,data:okENCjRIoAIYABeoEVbUhwixjYplmgEXbn0qBsbkmDNcaEKW4Gy0f1W6hU3He2SDrWjXlmZwUmSsklmlEbhMM1l/Jx+gl1aY16BE0MCHSvrVLg9bNrQSEd9yiZMFj9gMY0S0cUFeomK1tBSnKGhoDTdBlz+FofJvx/36isa716c=,iv:fTYnBjVW/bkW5W0gT6mKG+LCpNKrhRpOpVQsVz/oGs0=,tag:27AOoQg0LYBZH0iwN/JVJQ==,type:str]
+    lastmodified: "2025-01-01T16:53:08Z"
+    mac: ENC[AES256_GCM,data:unsR0BKysymBgK0ngh6N4MC6NZVLwQpv80JvBRk71onounkdo/rkscqX8dJoDLoT20aUyzxb3pNrHve9Rpq+UF7PvvY+/jbKnI/Ig63O2zR5VLDi/+YUwAbSyo6KLqk9VImBPl1zZioan8Jv4YJ4587DkzxMuZmDYoS7lD4qDbk=,iv:945fHR3gjw+HjLn7Hq5+9+1961FiYfIRBt26Ph2gcvE=,tag:V0PVnjQ1KLduziMejPfJMA==,type:str]
     pgp:
         - created_at: "2024-07-20T20:11:17Z"
           enc: |-
@@ -46,4 +46,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
-    version: 3.9.0
+    version: 3.9.2
