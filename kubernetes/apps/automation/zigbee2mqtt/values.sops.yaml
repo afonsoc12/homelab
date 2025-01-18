@@ -12,7 +12,7 @@ strategy:
     type: Recreate
 image:
     repository: koenkk/zigbee2mqtt
-    tag: 1.35.1
+    tag: 2.0.0
     pullPolicy: Always
 ports:
     - containerPort: 8080
@@ -22,9 +22,6 @@ ports:
 # Uses ports from .ports section, if service is true
 service:
     enabled: true
-secret:
-    stringData:
-        configuration.yaml: ENC[AES256_GCM,data:o5nKQztCUuxnxK5azUl355/jtA6dJdaZszGa846ZAtYUBXKLUd5srS1lCHKllLxMTTYOfsVol8JV4f92kXm5Tcj96Arv+klj9fROovkLz8VyqiyddNTiHexTdmz7HSQ72nW6gf1Sk48xjBnYhJMMAF+MV95yRSGMQIKWnVZ1RsPXWrprHBk3G2kz2HNHacqVjG/kleDaJjcjj6O+umiQjgZ8gaY1gHietf8qdGVGreQEp2EzasxMS63Zv+rIvzm5BpdUM40KXq9CXuhtiGZLXJvfmPqqifWcHEpjdOqm63zncoM7GnTGvTjWghvxiK+3YHVw72vzG7TBh3SqIYn7aGAxhFlGgdMHzhJ2mG8m511QV6f/S5JWrqMQUlj9R0zyJDrqZAcxt4b8PAj41ad9mrqDWDK4EJdx07RYcyUQb9+Cx+f2axJXed+LXqgw+DGBpAp9pOimZZxwpSoiYRy7sgl4oK7wPJcCU8QpaYbbz8ZT9rdROQHSpZ1MX/Cba53Xpfp94Jp387S4r+12sUtzpx9oQO7W+gjLuqQCaBKjpVHqun7sNd8S+q/8rwDK4wV6KfxIVexWTHLx9cvvLB8elBjqsrEs7HhPdcir+T9G211R2jgFBtpgm40Kq6sCJM1aJ6LQW9EfYdDLjPzrbl6VYuagidye1ihAtH5SAcRn4xXQc7hjstqm2Gm6P8PVXcRODAG5kXzV3jPNr3IQsTYBmc3JMGRbtcLUDDCx5JqrAvjX7h0eeMWp64iUzSV96g==,iv:YDgT1AkRzPdmr4CuqUN1zdv8XeyE1HYTvT1SX16aHhY=,tag:G0IQ5MChZYnYexrrMnSEYg==,type:str]
 volumeMounts:
     - name: data
       mountPath: /app/data
@@ -90,8 +87,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-21T11:25:16Z"
-    mac: ENC[AES256_GCM,data:hflU+V3RFmC3WfQC2j3CJcUDfD8HmoUNibnAWb1zhNR8BnW7HXfJn1DpTSf6pw17Pd44PWiRZD+CMgfWdsFtOZ2vXaDP2Ybj2IT9CptfPs71JEY7leaLhqXcJLDsOxUyt0CubYA3RW+VBpO4NjmzLoW9k7yTEhPz3uMlO8d4pqs=,iv:SL2oHvzJ0+Y/BFa0TjdrvTXXXe7AQf8xYCtRfp2LyFg=,tag:3fCkEwRTlvQ0fTgF8lF47w==,type:str]
+    lastmodified: "2025-01-09T21:35:29Z"
+    mac: ENC[AES256_GCM,data:jBsPkASfyKJLhQGx6h/h5h2OGkGl+fG8dAUUVdycVfNfXHZZwcSDhjvI7IAnSoR98CSpeO2/ah1qJzRs7Q+U8f/rmcU9IPk3iLKRMsr2iRrQZZ0xm5rfBaxpFQ4QnR4j+u+jj4/aWwbNK3/7/laxnl60DCxIaOMmRqpP5zrDITk=,iv:/UdbzCtE82PY7GABNCTSzeYbGuaiRVLAuzHcmsK04bM=,tag:7/xnllxsBf/0RtDPfq+rrA==,type:str]
     pgp:
         - created_at: "2024-07-21T11:19:53Z"
           enc: |-
@@ -115,4 +112,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    version: 3.9.0
+    version: 3.9.2

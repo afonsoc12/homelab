@@ -178,11 +178,11 @@ configmap:
                 - Bazarr:
                     description: Subtitles management
                     icon: bazarr.png
-                    href: https://local.{{ .Values.domain }}/bazarr
+                    href: https://bazarr.local.{{ .Values.domain }}
                     widget:
                         type: bazarr
                         fields: ["missingEpisodes", "missingMovies"]
-                        url: http://bazarr.{{ .Values.ips.hoarder }}:6767
+                        url: http://{{ .Values.ips.hoarder }}:6767
                         key: "{{`{{`}}HOMEPAGE_VAR_BAZARR_KEY{{`}}`}}"
                 - Lidarr:
                     description: Music management
@@ -247,7 +247,7 @@ configmap:
                     widget:
                         type: grafana
                         fields: ["dashboards", "datasources", "totalalerts", "alertstriggered"]
-                        url: https://local.{{ .Values.domain }}/grafana
+                        url: https://grafana.local.{{ .Values.domain }}
                         username: "{{`{{`}}HOMEPAGE_VAR_GRAFANA_USERNAME{{`}}`}}"
                         password: "{{`{{`}}HOMEPAGE_VAR_GRAFANA_PASSWORD{{`}}`}}"
                 - Prometheus:
@@ -290,18 +290,6 @@ configmap:
                     description: S3 storage
                     icon: minio.png
                     href: https://minio.local.{{ .Values.domain }}
-                # - Prometheus:
-                #     description: Time-series database
-                #     icon: prometheus.png
-                #     href: https://local.{{ .Values.domain }}/prometheus
-                #     widget:
-                #         type: prometheus
-                #         fields: ["targets_up", "targets_down", "targets_total"]
-                #         url: https://local.{{ .Values.domain }}/prometheus
-                # - Alertmanager:
-                #     description: Alert manager
-                #     icon: alertmanager.png
-                #     href: https://local.{{ .Values.domain }}/alertmanager
         settings.yaml: ""
         widgets.yaml: |
             - resources:
@@ -372,8 +360,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-24T14:03:56Z"
-    mac: ENC[AES256_GCM,data:U5JZvOF6HvbmYBElUHw3MfBT3jdrBwMC26Emj0vm1eK5q0682dVroFWxPHxAOGPQlpVbNuMclNZVNcRSma0dzXXaAvSYAO8B+ozotWnwXAwKo8ZfFLWpICf6vHQscp/8YLFe7L/YkAy5hPLqaOr3D6hcfVlZhYyqE8J85/sbl0s=,iv:ybqfhI3xYQ6Ly9ii54bK7I5jskYLqQ+ybq05r/UXa2c=,tag:3NmbWkvth3BWPUazSSvXbQ==,type:str]
+    lastmodified: "2025-01-18T15:11:30Z"
+    mac: ENC[AES256_GCM,data:Krb8SE7KNUCqqbO76enLhajasZhjVz0/qdi4nxhaOdYaydtFrwB7Brm48V8BpJor8FXI0e4Jcwy5aeUpFJw41XWvBgR9ildX6G/xjJqj9N+IgT1EIoZfldAB4NS4RsU7Q7b3MWzDOxrfRvPmSMmY4HbwJrHSp2Rm+uCYuCbKCpU=,iv:TFWitWazQQs745VhYOIT/Klq8lvNH3+6GF/XIZq2LUw=,tag:JJgV+1kSNG8bSLLJYsWRGw==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-
@@ -397,4 +385,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.0
+    version: 3.9.2
