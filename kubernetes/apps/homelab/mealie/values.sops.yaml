@@ -1,0 +1,153 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/mealie-recipes/mealie
+    tag: v2.5.0
+    pullPolicy: Always
+#   restartPolicy:
+command: {}
+args: {}
+ports:
+    - containerPort: 9000
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        POSTGRES_USER: ENC[AES256_GCM,data:ABmIZlbg,iv:06/IfIbFSPMfQC3jbeYYJuxCCwdywmDeYKuMu3MNaJo=,tag:/4KJCSrjuYN3XHuoqdh5pA==,type:str]
+        POSTGRES_PASSWORD: ENC[AES256_GCM,data:L7ZwlcrdqhwJAD8GJDQvJQhnU/Y=,iv:4sEstygyNizroewVl0H94J8+1sr3wyOMimgL/hQxHiI=,tag:jVdxtkrPAqFySt+h349L4A==,type:str]
+        LDAP_QUERY_BIND: ENC[AES256_GCM,data:GtMJen2Hw6zU4L70EdBsMGz6hJo9/UOilOMpmOjWSVUmWuJWdCT1hOH2HXMIOH/fNaE=,iv:tTPClihnvuDB2vVHpdb8s/MVijcc1rcmlFIgSGvQbvU=,tag:5Xco5mDF3BWWguVOZkjVbg==,type:str]
+        LDAP_QUERY_PASSWORD: ENC[AES256_GCM,data:8VGy7ZZ7ed5qeSoPzbOz++cPYTg=,iv:X29AwHZ3y8lihpPQQ3Z7otnso9fqi79d9bL575YJMwk=,tag:rzql0fmzSrkCfFtrgppgew==,type:str]
+        LDAP_USER_FILTER: ENC[AES256_GCM,data:dfr4cCFL3ItTH+nWXtCtwuYg0lNhrT+Ksxd/SB5pb5KTPL+A96+WvE6bELVmcXwnDpTXtMDw,iv:i8v8Z5Fbjemk+DQzh/QnxQL2aYr3gAhSomkuMUAdRas=,tag:pVbxXheMZjXkn5z0DWFyow==,type:str]
+        LDAP_ADMIN_FILTER: ENC[AES256_GCM,data:4Ie1S7RAi1wsCFaGzBNF7cDN53SaFflouiz6vqoYLJgsNON6YA3oPIK+bBzfRury1g+ebnNX2Q==,iv:tmv/kYdcDzeI5w1VDTx3cS5i04JZIodCuxGjl76mji4=,tag:Xkb2d2w4hCDIXKx4GOG6cg==,type:str]
+        SMTP_HOST: ENC[AES256_GCM,data:iA7xFp7RTequVlegjqHf9y4=,iv:qT7Chs7fi1AdgVBkzlX0nwTx87k+zmnZuDHT51T0iQ0=,tag:ifpdE3QvtMMHgRNWw8ce2g==,type:str]
+        SMTP_PORT: ENC[AES256_GCM,data:saLA,iv:ZiYf+NtYteDvsybUrt6Yly43Y76FxhfanP8WHVPa+eE=,tag:by8XRCAdFcq/4SWNgBFRog==,type:str]
+        SMTP_USER: ENC[AES256_GCM,data:HoYQkMw1,iv:n8SwWUQeYrLWCb7uBtGQhMHi0e9vgtAVV1huKePb0d8=,tag:PhUyxoyi4nRXytSK1w6Tkw==,type:str]
+        SMTP_PASSWORD: ENC[AES256_GCM,data:5Vh4wvCmfhATdbkNeR02uPipZ8I+myMOTA/pVJXtTbNlvtBA6zTO26U8ilcs/spTiuehI3GgFWFTJnqZACtsHpAkvFXb,iv:qiia1rNw9qw5HSW9zskDg4xV4tTxm07nNVSLt1t3j+w=,tag:p74P1jwawJlmPKrShqaFug==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        ALLOW_SIGNUP: "false"
+        PUID: 1000
+        PGID: 1000
+        BASE_URL: https://mealie.local.{{ .Values.domain }}
+        DB_ENGINE: postgres
+        POSTGRES_SERVER: postgres.databases
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: mealie
+        LDAP_AUTH_ENABLED: "true"
+        LDAP_SERVER_URL: ldap://lldap.ingress:3890
+        LDAP_BASE_DN: ou=people,{{ .Values_domain_ldap }}
+        LDAP_ID_ATTRIBUTE: uid
+        LDAP_NAME_ATTRIBUTE: displayName
+        LDAP_MAIL_ATTRIBUTE: mail
+        SMTP_FROM_NAME: Mealie
+        SMTP_AUTH_STRATEGY: TLS
+        SMTP_FROM_EMAIL: noreply@{{ .Values.domain }}
+volumeMounts:
+    - mountPath: /app/data
+      name: data
+volumes:
+    - name: data
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Gi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    # annotations:
+    #     nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    #     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls:
+        - secretName: local-wildcard-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: mealie.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector: {}
+tolerations: []
+affinity:
+    podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                namespaceSelector: {}
+                labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - postgres
+                topologyKey: kubernetes.io/hostname
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2025-01-27T00:41:44Z"
+    mac: ENC[AES256_GCM,data:6gr7x4kcMygFHgpPqSeFQ9PXxDFl/UQhc86CNoYg2dIbXsN2nc6rvOnFmRtSRBQWWhoQXJyM8q0EIC/z3KteuijpMLM79tWOaeOLN7x/b5oI/pYrsWw0Vwyx1w61wBV1LvoiRwtEHWvZckL9+6rrdtOKykmg15SrHBRLCx/6Kag=,iv:wXK8fTIbTRK1dZohHnDELzRnHqv5wRfoz5rQJ6BV6gU=,tag:MEveWEL7SrPO270L0IWgvg==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:23:16Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAArFigkI/8M2Bj6mm4S1Gp+n8qcuIOrqlFNXKIDnyA0xOP
+            9FF3PBt4ELvf+WvzwQFSzFBzg26VxpekweEQp/RMY4XdPLpELjlKcqZaYgGCmKTN
+            htb10OFYBtWAI2lyYvkiuumX4X3IUAX1W4+ZVW3X2q8/aWal40knOkYh4CKvrCpV
+            OrvuyNCyn5QGFoKNgL2UScxr+5JUSdp/99A6W4xdXKEuyEmUsNLrjYlQ639EQDvv
+            9exy3f9hgU/Au2/wf4kYQHXMgiBvobZKuMqISCOtiqNtJfvJ5oLolyogN8OzgFt/
+            TdjDaD25zfkROIjyYLaAbWBxHo3ypN/3AISeXNBip6dVlXZQziU2ngNQam/sqPQs
+            fHHBQhZCaGWov7RuKAp5ADM6ZWmjyQ2JPVV6scwB4weuIS1MGV9FP0YlhnRUT29t
+            tCutgVWekThbY1G/0Pk9KhxyM89uZjiUC8/q/xIrP2lc8Z6Ai3cFUyeLWVtUAVFU
+            9JwPvXXgrQtvFV6GOJFKCK+fOJ3vO+60UV68EBV8XIyX0R1e6DFdZeZ/Ny/WU10Q
+            bpzEpjLDc3oE1Ag3gGo0rWPKSqzDFEkSh9ZRRudZvkrJmulI1hyr6pwv77CXuUhO
+            89nugvqD7Va6sH0bugFrnqx5jEisl1bFETbXY+t+4W7JJKB+RRfPMEsx8birXHXU
+            aAEJAhDQHOf8Hjhdv28bZXsqHFiHo2bHuK2eoFg+wA3sLzZ+wJOe3ZHnGCg4vEsj
+            oHv6z+qCpCZ6pRf5wcdq0JlvyqfBk1r0FyRSlAs5hhLCCdyhwWbGYoSKjJUlA/1U
+            UwFrYD6+d1zE
+            =KJGh
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.9.2
