@@ -63,6 +63,10 @@ configmap:
                     description: Expense management
                     icon: firefly.png
                     href: https://firefly.{{ .Values.domain }}
+                - Mealie:
+                    description: Recipes management
+                    icon: mealie.png
+                    href: https://mealie.local.{{ .Values.domain }}
                 - FreshRSS:
                     description: RSS news aggregator
                     icon: freshrss.png
@@ -360,8 +364,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-18T15:11:30Z"
-    mac: ENC[AES256_GCM,data:Krb8SE7KNUCqqbO76enLhajasZhjVz0/qdi4nxhaOdYaydtFrwB7Brm48V8BpJor8FXI0e4Jcwy5aeUpFJw41XWvBgR9ildX6G/xjJqj9N+IgT1EIoZfldAB4NS4RsU7Q7b3MWzDOxrfRvPmSMmY4HbwJrHSp2Rm+uCYuCbKCpU=,iv:TFWitWazQQs745VhYOIT/Klq8lvNH3+6GF/XIZq2LUw=,tag:JJgV+1kSNG8bSLLJYsWRGw==,type:str]
+    lastmodified: "2025-01-27T01:13:31Z"
+    mac: ENC[AES256_GCM,data:L0VOwIuoaMT5ZSsEAHZa9qJkm4YQ0RxbWcY79+EIDDFLwt7Ov+HswUvcV+j4tUE/eFdOtun1XH2Mn7JC8935Wz9ZkTYRaLFspnGMZhK/UqIQbZavOD9WkLIABnmbF/+9TVuY/tEgCI3tW3FKn7PcBdFEKOZWcRMGxbEwhsd7XlU=,iv:2E4i6zKH4JtNijoNnsmg1bCUc9kONrSp9xuBLFqJTz4=,tag:2HYCQv/M8Ywg+p2YqK2NNA==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-

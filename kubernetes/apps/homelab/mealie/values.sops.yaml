@@ -30,10 +30,10 @@ secret:
     stringData:
         POSTGRES_USER: ENC[AES256_GCM,data:ABmIZlbg,iv:06/IfIbFSPMfQC3jbeYYJuxCCwdywmDeYKuMu3MNaJo=,tag:/4KJCSrjuYN3XHuoqdh5pA==,type:str]
         POSTGRES_PASSWORD: ENC[AES256_GCM,data:L7ZwlcrdqhwJAD8GJDQvJQhnU/Y=,iv:4sEstygyNizroewVl0H94J8+1sr3wyOMimgL/hQxHiI=,tag:jVdxtkrPAqFySt+h349L4A==,type:str]
-        LDAP_QUERY_BIND: ENC[AES256_GCM,data:GtMJen2Hw6zU4L70EdBsMGz6hJo9/UOilOMpmOjWSVUmWuJWdCT1hOH2HXMIOH/fNaE=,iv:tTPClihnvuDB2vVHpdb8s/MVijcc1rcmlFIgSGvQbvU=,tag:5Xco5mDF3BWWguVOZkjVbg==,type:str]
+        LDAP_QUERY_BIND: ENC[AES256_GCM,data:cPPoLDFosFr/0N1wIsH5FHG1rKS5efwwjnZ/1JMdS+e6pjjpnYHEU5Tgv0MejODr7+s=,iv:EA1GMetSX3YZKWoKvTLxAC/3hY5XughxPHVACcf9HrI=,tag:K4vksRi7d+KHy/5G48zLzQ==,type:str]
         LDAP_QUERY_PASSWORD: ENC[AES256_GCM,data:8VGy7ZZ7ed5qeSoPzbOz++cPYTg=,iv:X29AwHZ3y8lihpPQQ3Z7otnso9fqi79d9bL575YJMwk=,tag:rzql0fmzSrkCfFtrgppgew==,type:str]
-        LDAP_USER_FILTER: ENC[AES256_GCM,data:dfr4cCFL3ItTH+nWXtCtwuYg0lNhrT+Ksxd/SB5pb5KTPL+A96+WvE6bELVmcXwnDpTXtMDw,iv:i8v8Z5Fbjemk+DQzh/QnxQL2aYr3gAhSomkuMUAdRas=,tag:pVbxXheMZjXkn5z0DWFyow==,type:str]
-        LDAP_ADMIN_FILTER: ENC[AES256_GCM,data:4Ie1S7RAi1wsCFaGzBNF7cDN53SaFflouiz6vqoYLJgsNON6YA3oPIK+bBzfRury1g+ebnNX2Q==,iv:tmv/kYdcDzeI5w1VDTx3cS5i04JZIodCuxGjl76mji4=,tag:Xkb2d2w4hCDIXKx4GOG6cg==,type:str]
+        LDAP_USER_FILTER: ENC[AES256_GCM,data:LhOgmPSIdCPFdoKaXW/aNXEoFal+Yvx0rv2jI2F5aU3DWg73w4XbrW1TymQauH+f7vfojba+,iv:Qtj9iPRQekwy7NWYsT3jHtxPsm9XDMwQpqxbBsPvxGc=,tag:mTymyN8MiBzRHmA+Fcanjg==,type:str]
+        LDAP_ADMIN_FILTER: ENC[AES256_GCM,data:saW03KU2vc+068sXOOub8wzWTcx2jbXP9Bwjqef8EDWCh8YTFdTj/2rcrYT+1hujq78whYLyGQ==,iv:tYjIG0CESe4ibxxEmujqmiPF7s+8Wjl05PzyxodTI2o=,tag:NWXSwLjcJGlHk5+IYeNhdg==,type:str]
         SMTP_HOST: ENC[AES256_GCM,data:iA7xFp7RTequVlegjqHf9y4=,iv:qT7Chs7fi1AdgVBkzlX0nwTx87k+zmnZuDHT51T0iQ0=,tag:ifpdE3QvtMMHgRNWw8ce2g==,type:str]
         SMTP_PORT: ENC[AES256_GCM,data:saLA,iv:ZiYf+NtYteDvsybUrt6Yly43Y76FxhfanP8WHVPa+eE=,tag:by8XRCAdFcq/4SWNgBFRog==,type:str]
         SMTP_USER: ENC[AES256_GCM,data:HoYQkMw1,iv:n8SwWUQeYrLWCb7uBtGQhMHi0e9vgtAVV1huKePb0d8=,tag:PhUyxoyi4nRXytSK1w6Tkw==,type:str]
@@ -51,7 +51,7 @@ configmap:
         POSTGRES_DB: mealie
         LDAP_AUTH_ENABLED: "true"
         LDAP_SERVER_URL: ldap://lldap.ingress:3890
-        LDAP_BASE_DN: ou=people,{{ .Values_domain_ldap }}
+        LDAP_BASE_DN: ou=people,{{ .Values.domain_ldap }}
         LDAP_ID_ATTRIBUTE: uid
         LDAP_NAME_ATTRIBUTE: displayName
         LDAP_MAIL_ATTRIBUTE: mail
@@ -125,8 +125,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-27T00:41:44Z"
-    mac: ENC[AES256_GCM,data:6gr7x4kcMygFHgpPqSeFQ9PXxDFl/UQhc86CNoYg2dIbXsN2nc6rvOnFmRtSRBQWWhoQXJyM8q0EIC/z3KteuijpMLM79tWOaeOLN7x/b5oI/pYrsWw0Vwyx1w61wBV1LvoiRwtEHWvZckL9+6rrdtOKykmg15SrHBRLCx/6Kag=,iv:wXK8fTIbTRK1dZohHnDELzRnHqv5wRfoz5rQJ6BV6gU=,tag:MEveWEL7SrPO270L0IWgvg==,type:str]
+    lastmodified: "2025-01-27T01:12:22Z"
+    mac: ENC[AES256_GCM,data:BMhQArxre88hnvjvqkbfBTB6BrDydO9NX8yosYqDyd9955jBLFSgRBwRmjnzgs+CA2hCUXdEpsTqKbvcMtYqBRRzUMCtGaLZv41XHloyCPrHJar/cb68+3+qXaVvm+KdVD2qj0oqjq9YBfbvthdV3er0cFQ0FRj/86iI95O6+g4=,iv:9SkBYLPo3WRVnEPLPFykIfxPl4uUtfI/miXfRFZhfnI=,tag:boTAgr3we2URETEA4bYzpA==,type:str]
     pgp:
         - created_at: "2024-07-20T15:23:16Z"
           enc: |-
