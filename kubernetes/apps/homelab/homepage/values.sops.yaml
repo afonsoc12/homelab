@@ -90,7 +90,7 @@ configmap:
                     href: https://git.{{ .Values.domain }}
                 - Change Detection:
                     description: Site stock monitor
-                    icon: changedetection-io.png
+                    icon: changedetection.png
                     href: https://changedetection.local.{{ .Values.domain }}
                 - DocuSeal:
                     description: Document Signing
@@ -364,8 +364,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-27T01:13:31Z"
-    mac: ENC[AES256_GCM,data:L0VOwIuoaMT5ZSsEAHZa9qJkm4YQ0RxbWcY79+EIDDFLwt7Ov+HswUvcV+j4tUE/eFdOtun1XH2Mn7JC8935Wz9ZkTYRaLFspnGMZhK/UqIQbZavOD9WkLIABnmbF/+9TVuY/tEgCI3tW3FKn7PcBdFEKOZWcRMGxbEwhsd7XlU=,iv:2E4i6zKH4JtNijoNnsmg1bCUc9kONrSp9xuBLFqJTz4=,tag:2HYCQv/M8Ywg+p2YqK2NNA==,type:str]
+    lastmodified: "2025-01-27T01:17:23Z"
+    mac: ENC[AES256_GCM,data:wpeLNUOpbQlMOaKFr28m0h4MjJMd+d4XiUHDgPV8/I6XyFP6A43fFDtOjf/J0AqW6sUSK9IunEEIPbPVZy1lr2uqrP9tzl1K7BGxAzcntOJX9Yr4987CidoJtsOruMtLxp5cSh3Ct/hEH4auc8QOJUsV4eCrFF7yzLTLSjZjFEc=,iv:i1pPskMP+H8E4MtC8V7QwPYhZQHBpHJtuiCtk6sRHFs=,tag:D+JVcPa4bM4ZNwlqpgsXDg==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-
