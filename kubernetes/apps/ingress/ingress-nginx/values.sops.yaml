@@ -4,7 +4,7 @@ controller:
     kind: DaemonSet
     service:
         externalTrafficPolicy: Local
-        loadBalancerIP: ENC[AES256_GCM,data:MNq7tALzxsmgA1PhPos=,iv:2Qn8o82wdSOh4wUqWogAVKCpjEjzaK6bkxrtTpCYs0M=,tag:hs6zcymsJW37W71TrkrDkw==,type:str]
+        loadBalancerIP: ENC[AES256_GCM,data:fp2xrTbaCWIIns4=,iv:DbmDPdPhqi19l7c+DCS9DP/5wYHE8u7vyvZHbHDpJjc=,tag:h+dNCl0e+lX6ypsmJaxhkg==,type:str]
     allowSnippetAnnotations: true
     config:
         enable-real-ip: true
@@ -15,8 +15,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T16:58:01Z"
-    mac: ENC[AES256_GCM,data:k2BkUH7mUGPHj/7pzgJmNGS3ubWsjgXKgx3fDCx2K8m8NGLq4efPclf3WZ4GVZCCU7MdvtwxauSrDjnvgdYfqRtMSDrFiXDO+5E9JK0bmo30ftz70nZNr1Jj2CDPauA32JlnZzU7K6sRTkZ5w4hLlRwIpbUsd1dVLS7Uchh6XG8=,iv:dlDnT/aHbZI4+NgdXiltHPqAA3nwkQ7KtZSoheOqvVQ=,tag:cZW8ol5xAxHZpCdBQSfL5A==,type:str]
+    lastmodified: "2025-03-26T13:04:49Z"
+    mac: ENC[AES256_GCM,data:wiUQMzSZXsjZZlyly5nZCssH8OQJfbK65Tw1mhuNPiQva5phudOj0Kbzlgam+Ny9N+YKp/U+468gTAyw65ccVs6f3AdjKudw8ZlRC8KL9R2kBQVXYDZpbG37t9Ot/KsXXsNxeDP6npwUCGV/hsH0F4uOjTGVKPdPC3Vy/d3WYNc=,iv:5Gw35lBF3YJw7hVu0VxgCPsbjICBybPsGN8ceKHTyto=,tag:Q1QVK4C3ivBdeN+2/DIZaQ==,type:str]
     pgp:
         - created_at: "2024-07-20T14:15:24Z"
           enc: |-
@@ -40,4 +40,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.0
+    version: 3.9.4
