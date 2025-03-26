@@ -5,10 +5,10 @@ authelia:
     url: ENC[AES256_GCM,data:WLNdLOYKbA/9wV36AXZYXqyd,iv:Bk1qyDxg3QtJFMypmlEBn+pPvu19lM7LCJo4H/tuxvU=,tag:veAPqogdkY46T6p40WHvgw==,type:str]
 tz: ENC[AES256_GCM,data:LhE3STImey6e20aAPg==,iv:2tXbdweWqOwcbp1OWsqWRGLTBBCWA2GUtzNJt7fI7wM=,tag:QAqLmxIYBY38Wm3O9EN7Gw==,type:str]
 ips:
-    hoarder: ENC[AES256_GCM,data:uw8ErBcnUN6k8fH9CWM=,iv:VMtVzAIO0DmoLfsk6wJMzuI9NOzV1G1C2paPTAmC8uk=,tag:Gegwpwc7LovKtoJe0qJUrw==,type:str]
-    rpi_4b: ENC[AES256_GCM,data:L6lmKe54Hi/vxLsyjmk=,iv:ViuU6bJxCBLVqkzzcqlE6r83hZNpXZlT8Z69srbP+IQ=,tag:byhFwbQw+tkNxa7AfvmWow==,type:str]
-    k3s-m1: ENC[AES256_GCM,data:5+7g7sXo50zRTKcmyl8=,iv:UJopKZUv1+2J/xaWxZelO+fZe2FYuJpFx6ZIihfpqjo=,tag:cT0C1bK6ziKzibcseJBiLg==,type:str]
-    unifi: ENC[AES256_GCM,data:dRTdTQP1yRE01xhR,iv:WgIlS2HIBlC7YenuphfnNlT2sSyXDmb/MhHSuP23U64=,tag:F1oqfvnuh6jRPkLhw8RnbA==,type:str]
+    hoarder: ENC[AES256_GCM,data:YrYzHU8tFuzttsg=,iv:gjFms2uXAcpMFmZJoy0SfZrZJNWYiIlgl569rArdTRY=,tag:ncy3yAsOMtJwL8oTgYYVYA==,type:str]
+    rpi_4b: ENC[AES256_GCM,data:C54LfP+zJDqYHzs=,iv:z9TTg2WeyndJYCgUNbRM8aMXIW8rDbm4GdGiXS7LrbY=,tag:dm+3X4DYpI4+GKGOo5y5zQ==,type:str]
+    k3s-m1: ENC[AES256_GCM,data:UESk1bQANCV7FMg=,iv:ov8fD+4ZGoa5O6Wi0s84WJrjdNhC1MGCfmR33XT2X3w=,tag:JhcgG6DCuKnWFCOXygaChg==,type:str]
+    unifi: ENC[AES256_GCM,data:G12cH84Zodt7,iv:N9RsuGXeb0SrtVFktNCeFJqvvRI2PzPHt5VVeh7KqxY=,tag:44/SCzMMQa+0cn/kDe46TQ==,type:str]
 ips_tailscale:
     hoarder: ENC[AES256_GCM,data:AJU8O0TX24QveikUUA==,iv:YVZyNrgEOfr3wkH/2/MrsuO4rNvCMP0wjwPNCl0up8E=,tag:wPsdZHhNZzptbWySj3TESg==,type:str]
 sops:
@@ -17,8 +17,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-27T00:37:57Z"
-    mac: ENC[AES256_GCM,data:MZNNvtNmN3kcRlbxThZKXaCH5ePqMoaCyt/ouitFJZPI8QkNBFlSZdsKQc8AnbaM92paXz7jq9qa8rlGik8Q7mjsYU7l8A0O1ui4k01J0orhs8PtnuSkxnON10oqo3df69S4gRTx5amTJkQkZMm6LTVzzSXpTPqPO/NiitvnroU=,iv:BzDlGKwBHSkubN3HaeVDaQNRrmd78VBS6CCJDq5wtKA=,tag:SHnGjWD7ZlhrAxowrSQsQA==,type:str]
+    lastmodified: "2025-03-26T14:24:29Z"
+    mac: ENC[AES256_GCM,data:o2qiP/b55BAdAMNEF0jKmJcVqQn5PCTDy2jFc4xaHkrQYkOwWEuDPmig1+AypEt86DvYT7nzBcx0AQ9fQY/nAi1yo9JD/jtnNC6zMdoYZlYshqjoogTbQMiIM6dsMciOCT8MF2NeL2q+P2zsilqi5cwBEjQDLAXz07O2C64ZYEo=,iv:Am3VTfztg7GV+7wpQJn94Ou1zfDQhPA/dwzoYH/r1aE=,tag:NfeniTUjE7SrdikbQVWt0g==,type:str]
     pgp:
         - created_at: "2024-07-14T15:58:51Z"
           enc: |-
@@ -42,4 +42,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^*$
-    version: 3.9.2
+    version: 3.9.4

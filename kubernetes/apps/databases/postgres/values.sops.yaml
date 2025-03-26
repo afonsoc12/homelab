@@ -23,7 +23,7 @@ ports:
 service:
     enabled: true
     type: LoadBalancer
-    loadBalancerIP: ENC[AES256_GCM,data:MhcqGzBdu3qkdoSMpxA=,iv:EtFxXEwN2i73U6IpeNYKnbdFKw15lP8/ijGkZd+im70=,tag:vHEE6HKvW3fVZXaM4GGqeg==,type:str]
+    loadBalancerIP: ENC[AES256_GCM,data:ZqmK8amvtvxZSPk=,iv:PRhQnaTFMHGZ9HNJo6zdX/zz3pAtkab6CADjYCFYnyU=,tag:fRpoVb6JWAiq6s/clivOvg==,type:str]
     annotations:
         metallb.universe.tf/allow-shared-ip: db-svc
 secret:
@@ -105,8 +105,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-25T20:44:54Z"
-    mac: ENC[AES256_GCM,data:/ShDBLfuQIdRbJ6lUzZaJBJHY7hNafP6Q24431vZBuZaTiphe2g6kFKpc7KyjYQ/N1DVH/rBhfzHoSoolmA7CyyidFH9TiGkFRMgswQLu7R3ocic5ZE8aLdmaxrJEZgNxyrLPTqO43hlz8ck/mqJE5FrGiiwbQ/BN2hG+L0w7b8=,iv:/PDV+iZEpZppUDvXP+L04gaQS+b+w+fpDE2/ZMhff9Y=,tag:kwu2GYlX+2ipnUS1QgUFAQ==,type:str]
+    lastmodified: "2025-03-26T14:22:48Z"
+    mac: ENC[AES256_GCM,data:2eyyUEybetA0Wwr9S9ur1ZWmbhXOM+iAL/NOvjwYnppmqn+5EznyO/Ypi6hOZZ0XyOWgX+AUv/hl7PFws9tKwUNUoqvsZ01vcsaTfn+A3xCs1zSfIvtJtNdc7T2T4OPA95RIGX4NNKpZRVEy+lraBnwwefTY2Oqam1mmKhn6Cz0=,iv:90r1k92UymVX7jSPN24SEAH+0UxEYwBRcqhlwEYodaU=,tag:fFqbtzPY0jSDk0/veAOasg==,type:str]
     pgp:
         - created_at: "2024-07-20T12:49:32Z"
           enc: |-
@@ -130,4 +130,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.0
+    version: 3.9.4
