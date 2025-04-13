@@ -5,12 +5,12 @@ secret:
         INFLUXDB_V2_ORG: ENC[AES256_GCM,data:owE39Ydyzw==,iv:htW2AQbuJo+3cY0v3rLLeb4CoPjYHflUPjNPm9e+DUM=,tag:ffjA3pQ4MXsX/msMUbJosg==,type:str]
         INFLUXDB_V2_TOKEN: ENC[AES256_GCM,data:0gEgv1sr7P5glNr2uuFh39COYjYiJnCgx36KObSKnXDCiTLYcMpmwQ6RkKYoAO1eWtWkBaJ/6dUUCMMASaxVEwYdxwR2zNIOzqbPhqt7g2OrsuZ7xP2E+Q==,iv:wxC1D/9wPGzLEJIgu1hENUlqzQodUTvVadAKWtpwxqA=,tag:IT5U6Mh7aL6BRsL5XCCzcw==,type:str]
         INFLUXDB_V2_URL: ENC[AES256_GCM,data:EilQ3IHHNoNSuSrp1zxlRkqhu9rjoxo8RBo7i9/y,iv:GzbN5Qr5B0halzmHEeTzpPLLhDNL8B/o5fUGMikLIs4=,tag:3lMu66QYybkWz+b/6iPPkg==,type:str]
-        OCTOPUS_API_KEY: ENC[AES256_GCM,data:EuIcOTzypNuRPl/eo69UEAhAfWHPad2754TqFhxA618=,iv:TAmhRu2FZqV92aoYZsee5T+UCSUC9EOu0ypoCYGntME=,tag:5VCdhjPbUzKRcRR4vqehcQ==,type:str]
-        OCTOPUS_ELECTRICITY_MPAN: ENC[AES256_GCM,data:yNxdqktW8hVqbSH2YQ==,iv:CUFu8zp/Oc7IrrePbyuwKCAv27fxO7BUzVj+AWr/h0M=,tag:13v8nS/5MeCz5qJyI3MXFg==,type:str]
-        OCTOPUS_ELECTRICITY_SN: ENC[AES256_GCM,data:tCy3F4S/heN10A==,iv:/qD2fHJqseVJdzwIRHi9wScRpx0ZMhgX/c6caGVdNIM=,tag:QJOat9WU2/vsbz87j2tlfQ==,type:str]
+        OCTOPUS_API_KEY: ENC[AES256_GCM,data:SoG68wonxv+QLqchD9RYo42t8RASJ4qfgVfdkR5IOZs=,iv:UrSmMJ0llcTTuNGetpqPm7cMvzjGJJ1oNx0arK8OZYo=,tag:BQzXM07k2Eh2J+j7RbsyiQ==,type:str]
+        OCTOPUS_ELECTRICITY_MPAN: ENC[AES256_GCM,data:nFsGqKg/gqxvBfIXwg==,iv:0vmz4b5vbcuGX+xtQLcUM+diyiTgSUJBHAxHq6ePEss=,tag:ciMKbby/1oQ5WsF3D7S1ng==,type:str]
+        OCTOPUS_ELECTRICITY_SN: ENC[AES256_GCM,data:bA0FCnmfcD2PpA==,iv:VBCisSdx+dmdRPISXWmrVv3np3dW7IGnKfkvR9MKDWE=,tag:iH6XyyuGB4mvrAfStHfNzg==,type:str]
 cronjobs:
     - name: octopus-api-consumer
-      schedule: 0 8 * * *
+      schedule: 0 10 * * *
       concurrencyPolicy: Forbid
       failedJobsHistoryLimit: 1
       successfulJobsHistoryLimit: 1
@@ -56,8 +56,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-20T15:18:59Z"
-    mac: ENC[AES256_GCM,data:e3UDxD18T5tmpjnIqYc2c/nm3sCLsSUNXfoBGxNJ9rCcabQ9/aLnLdtgwqDE4GAm9OszTy/XK00RyxnD/mn4vOZAwSbI7nEzwIUkHRHMfEdmocE6jk+90KnGw2kmKyNIA+I1gO2u+ToVWbVGhiXpN+K6LkzIPCwjHDbirTsRg4Y=,iv:F5zrEct4b7EEeoDafPU57Ul5sLae6dRDby5bWg5EDmM=,tag:rAUViZex9PGbpN80ufMLMw==,type:str]
+    lastmodified: "2025-04-13T10:29:54Z"
+    mac: ENC[AES256_GCM,data:jev3xyiySjwtfWiG5ADiUTsiMyYRytj6c83kh9ourQ8QaDfnug2hjxHMjSeB8Dwv2kXaGy8gj6+KJ6vnkgSzuyDwfJ6mO/9HORSKbyKINQBoyWA9gUiGK4U4CBI0vNnLIb7SzFCiLoyq1IhXSbUksGoc8o81gDKcvQBpk83ZTbw=,iv:vz6wJBeHdQCjyw2QcE8Qz5DCWly+cuL+d0+DDCHmipE=,tag:6rh78V0qKftvW0f/iHgH9A==,type:str]
     pgp:
         - created_at: "2024-07-20T15:01:51Z"
           enc: |-
@@ -81,4 +81,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.0
+    version: 3.9.4
