@@ -5,7 +5,7 @@ replicas: 1
 image:
     repository: lscr.io/linuxserver/grocy
 ports:
-    - containerPort: 9283
+    - containerPort: 80
       service: true
 
 service:
