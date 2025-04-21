@@ -7,12 +7,18 @@ image:
 ports:
     - containerPort: 9283
       service: true
+
+service:
+  enabled: true
+
 volumeMounts:
     - name: config
       mountPath: /config
+
 volumes:
     - name: config
       mountPvc: true
+
 pvc:
     storageClassName: longhorn-persistent
     accessModes:
