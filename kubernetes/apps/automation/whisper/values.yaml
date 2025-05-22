@@ -1,0 +1,75 @@
+nameOverride: ""
+fullnameOverride: ""
+
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+podAnnotations: {}
+  # annot_1: abc
+  # annot_2: def
+
+replicas: 1
+revisionHistoryLimit: 0
+
+image:
+  repository: rhasspy/wyoming-whisper
+  tag: stable
+  pullPolicy: Always
+
+args: ["--model", "tiny-int8", "--language", "en"]
+
+ports:
+  - containerPort: 10300
+    name: http
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+secret: {}
+  # stringData:
+  #   secret_string_1: abc
+  #   secret_string_2: def
+  # data:
+  #   secret_base64_1: ==a
+  #   secret_base64_2: ==b
+
+configmap: {}
+  # mountEnv: false
+  # data:
+  #   config_1: abc
+  #   config_2: def
+
+
+livenessProbe: {}
+
+readinessProbe: {}
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# nodeSelector:
+#   kubernetes.io/hostname: k3s-m1
+
+tolerations: []
+
+affinity: {}
