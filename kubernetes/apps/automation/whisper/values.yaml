@@ -14,7 +14,7 @@ revisionHistoryLimit: 0
 
 image:
   repository: rhasspy/wyoming-whisper
-  tag: stable
+  tag: latest
   pullPolicy: Always
 
 args: ["--model", "tiny-int8", "--language", "en"]

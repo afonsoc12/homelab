@@ -14,7 +14,7 @@ revisionHistoryLimit: 0
 
 image:
   repository: rhasspy/wyoming-piper
-  tag: stable
+  tag: latest
   pullPolicy: Always
 
 args: ["--voice", "en_GB-cori-medium"]
