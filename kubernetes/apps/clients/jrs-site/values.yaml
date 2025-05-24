@@ -1,0 +1,83 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghost
+    tag: latest
+    pullPolicy: Always
+#   restartPolicy:
+command: {}
+args: {}
+ports:
+    - containerPort: 2368
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+
+configmap:
+    mountEnv: true
+    data:
+        NODE_ENV: production
+        url: https://{{.Values.domain_jrs }}
+        database__connection__filename: '/var/lib/ghost/content/data/ghost.db'
+volumeMounts:
+    - mountPath: /var/lib/ghost/content
+      name: content
+volumes:
+    - name: content
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Gi
+ingress:
+    enabled: true
+    authelia: false
+    className: nginx
+    annotations:
+        # nginx.ingress.kubernetes.io/client-max-body-size: "0"
+        # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls:
+        - secretName: jrs-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: {{ .Values.domain_jrs }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector:
+    kubernetes.io/hostname: k3s-m2
+tolerations: []
