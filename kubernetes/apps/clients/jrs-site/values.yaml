@@ -11,7 +11,7 @@ revisionHistoryLimit: 0
 strategy:
     type: Recreate
 image:
-    repository: ghost
+    repository: library/ghost
     tag: latest
     pullPolicy: Always
 #   restartPolicy:
@@ -30,7 +30,7 @@ configmap:
     mountEnv: true
     data:
         NODE_ENV: production
-        url: https://{{.Values.domain_jrs }}
+        url: https://{{ .Values.domain_jrs }}
         database__connection__filename: '/var/lib/ghost/content/data/ghost.db'
 volumeMounts:
     - mountPath: /var/lib/ghost/content
@@ -56,7 +56,7 @@ ingress:
         - secretName: jrs-cert
     # Will assume the first element in .ports, regardless of service
     hosts:
-        - host: {{ .Values.domain_jrs }}
+        - host: "{{ .Values.domain_jrs }}"
           paths:
             - path: /
               pathType: ImplementationSpecific
