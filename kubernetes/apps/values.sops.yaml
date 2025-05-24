@@ -1,4 +1,5 @@
 domain: ENC[AES256_GCM,data:9rGM/iEmglyQ9CfXDA==,iv:0dbMg7w+qDIUxOpaPP+NE9SVn8kYKCwrr/YVt65f8Os=,tag:bSO/EClEYd5RTs5+zEmfhQ==,type:str]
+domain_jrs: ENC[AES256_GCM,data:go2X9i3PpF6A30geK8UyMCT+JsKsv6atLcnA,iv:63BSb+iO8lpcQDMo1tPcIavlS2ip6/58Fcdu8YivP7U=,tag:AZKfp3aI5ewfOTD3Lo+acg==,type:str]
 domain_ldap: ENC[AES256_GCM,data:gJFUsiMlCbNviQPUTCulWANu/w==,iv:WawC9nQQITwYxGXLVZwCMIGwxynM2DAhgNVifm6nokU=,tag:jctp5iDAccXLNE8kVRUP5g==,type:str]
 authelia:
     service: ENC[AES256_GCM,data:4n7/ij3ol8WG1jTJkVzRcq1KdSJxeQ4M9LeMJ1GhCujOoA==,iv:idX9U1yoxgrZbraZR2Ly8P6a0kluJOdX9KOzW2kEfgc=,tag:VCqC5nNylu0ABpw2JEagpw==,type:str]
@@ -17,8 +18,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-03-26T14:24:29Z"
-    mac: ENC[AES256_GCM,data:o2qiP/b55BAdAMNEF0jKmJcVqQn5PCTDy2jFc4xaHkrQYkOwWEuDPmig1+AypEt86DvYT7nzBcx0AQ9fQY/nAi1yo9JD/jtnNC6zMdoYZlYshqjoogTbQMiIM6dsMciOCT8MF2NeL2q+P2zsilqi5cwBEjQDLAXz07O2C64ZYEo=,iv:Am3VTfztg7GV+7wpQJn94Ou1zfDQhPA/dwzoYH/r1aE=,tag:NfeniTUjE7SrdikbQVWt0g==,type:str]
+    lastmodified: "2025-05-24T15:19:51Z"
+    mac: ENC[AES256_GCM,data:o292oXImaYDBwGWIE+34yG4dfbvu82MC/elDe+i3f8SFCyzUvrARYO236vjFnTgYk79Y1eoAfyLCsL/L346W+yE61LwTgBRnLGHR2XEzGux3XpChMTapiTGKrTPaLIf0VdXDqHx+5ixmwAigFyUmt73wJQAXBUHxMPM1v7am+l8=,iv:l4SENqL1yFrdenshNkisNTSr5lgpkNf/5lPU1cz42H8=,tag:n4kQAUlE0iVMck/B8YNBZQ==,type:str]
     pgp:
         - created_at: "2024-07-14T15:58:51Z"
           enc: |-

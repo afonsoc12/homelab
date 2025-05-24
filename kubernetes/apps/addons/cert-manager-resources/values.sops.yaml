@@ -105,14 +105,19 @@ certificates:
       reflectNamespaces:
         - sandbox
         - ingress
+    - name: jrs
+      dnsNames:
+        - '{{ .Values.domain_jrs }}'
+      reflectNamespaces:
+        - clients
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-11-24T15:42:31Z"
-    mac: ENC[AES256_GCM,data:dixZ420yaz0nemrh4ghUqUtICOByAhWgJ4C6TRN1kVvTZdLzNNTbYl6+zfw0pZ2Lc48KgBdQJc2mz+ZyFJcMzbGobLouEE4koCo7y/YEE6myHJxeW03qwsPZ0z/TxGqH7YStAS1n0vCUZDxtFjkfeETCIP5jz/Vvk/6mO10NMCw=,iv:irzTd+vPNXh7ZPaG7mlp7vHuwBDRsEFb8/6qo4TUC6w=,tag:S5/asiFJX0Cdr3To81EEZg==,type:str]
+    lastmodified: "2025-05-24T15:36:41Z"
+    mac: ENC[AES256_GCM,data:t9/4Nyx+rzaMblt5XYiVSK5hyFB7VaOKKvPeAac5NkL3UdAkGMHby31qt0o4+lPYp2w0WowfxCoezn0n2hrXx9iIs+4yUxwCYSVzx/g0K6r/y99pgdrCDJyZDynNl1Oy9GqxJEICLdC7OCIRQWceqY9mCXpCRPjh+jKMFCaNzu0=,iv:9xYU3E56VfUGVTn75PJOakGBm5FWczogHxE95KpRzKM=,tag:dgjUxzs3kKrVPLtNlcwXtQ==,type:str]
     pgp:
         - created_at: "2024-07-14T21:33:42Z"
           enc: |-
@@ -136,4 +141,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData)$
-    version: 3.9.0
+    version: 3.9.4
