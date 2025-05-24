@@ -19,3 +19,6 @@ spec:
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: clients
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
