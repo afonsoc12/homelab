@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cloudflare-ddns
+  name: cloudflare-ddns-pt
   namespace: {{ .Release.Namespace }}
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -15,7 +15,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - secrets://../../apps/ingress/cloudflare-ddns/values.sops.yaml
+        - secrets://../../apps/ingress/cloudflare-ddns-pt/values.sops.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: ingress

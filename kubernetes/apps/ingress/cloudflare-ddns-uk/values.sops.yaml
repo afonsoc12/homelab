@@ -11,7 +11,7 @@ configmap:
         DETECTION_MODE: dig-whoami.cloudflare
         APPRISE: ntfy://ntfy.monitoring/homelab
 cronjobs:
-    - name: cloudflare-ddns
+    - name: cloudflare-ddns-uk
       schedule: '*/15 * * * *'
       concurrencyPolicy: Forbid
       successfulJobsHistoryLimit: 1
@@ -29,8 +29,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-25T20:43:54Z"
-    mac: ENC[AES256_GCM,data:QtGYTzDHmVBJaUqgazGf3nBAQLWVCjF43OIOf4UXtxIF7RxE6D2DxWpTeaezqQDb4tZ2acQ3LLMRoEQRdClqqfoTfPv/2jXjjEqo7IEIbM0KnLqQyDcDqZ1Pxaw4q0e6uePip58fa1KazNRlCHT/Oz957Kcap1r5LhS4vb+876M=,iv:oklVXrnQP8Xd1xqaLtMhWfozMD7NG+bCdSh+mNttmL4=,tag:AXbkhRVqAPMS+r2sqT7fiQ==,type:str]
+    lastmodified: "2025-06-13T19:06:17Z"
+    mac: ENC[AES256_GCM,data:i2C75DlGyomGEOJgcEQ/LJUMHCzYUnr7B/7PjHxT+pWZVgbeqaFqXhPJRXG6c0hq0qGG5ypkVsuVCqbDZ/Z8rvF/WOsyzk2Lrg/thu+8MWccH7LKaMxG+x1/gePo1LNWCGOtaKBKV86oI1q66LMPawOVkqRBfhiL+uFp//Aq/uE=,iv:/q6IZtyXLb0TDZFZAVDYpDWiw0gidi4Qgizuoo63beQ=,tag:/OVRynpQXKmIGYeFwapZ1A==,type:str]
     pgp:
         - created_at: "2024-07-20T14:13:50Z"
           enc: |-
@@ -54,4 +54,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.0
+    version: 3.9.4
