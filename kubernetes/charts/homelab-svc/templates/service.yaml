@@ -5,14 +5,18 @@ metadata:
   name: {{ include "homelab-svc.fullname" . }}
   labels:
     {{- include "homelab-svc.labels" . | nindent 4 }}
+  annotations:
+  {{- with .Values.service.annotations }}
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type | default "ClusterIP" }}
   loadBalancerIP: {{ .Values.service.loadBalancerIP }}
   ports:
     {{- range .Values.ports }}
     {{- if .service }}
-    - port: {{ default .containerPort $.Values.service.port }}
-      targetPort: {{ .containerPort }}
+    - port: {{ default .containerPort .port }}
+      targetPort: {{ .name }}
       {{- if .name }}
       name: {{ .name }}
       {{- end }}

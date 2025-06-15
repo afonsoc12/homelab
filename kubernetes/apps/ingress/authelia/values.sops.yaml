@@ -4,7 +4,7 @@ labels: {}
 replicas: 2
 image:
     repository: authelia/authelia
-    tag: 4.38
+    tag: 4.39
 ports:
     - containerPort: 9091
       service: true
@@ -55,18 +55,18 @@ resources:
         cpu: 20m
         memory: 64Mi
 affinity:
-    podAntiAffinity:
+    podAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                namespaceSelector: {}
+            - podAffinityTerm:
                 labelSelector:
                     matchExpressions:
                         - key: app.kubernetes.io/instance
                           operator: In
                           values:
                             - mariadb
+                namespaceSelector: {}
                 topologyKey: kubernetes.io/hostname
+              weight: 1
 configmap:
     mountEnv: false
     data:
@@ -77,8 +77,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-04-21T18:04:21Z"
-    mac: ENC[AES256_GCM,data:FxZLcS2zScTt2eCaH3THyE3vEJmMOKW2yMe5PYCLDQaiqB4yEGux+iPwZ7Ykh7qM3SLgCe+sZ9Jz8H2x0q54hI+AYyNZYMJJeU0EJ7ju7vsbxtG0+EoZSAsof56qbfPWDe3DZbj1Nl2HpmdD8I8PYAown+8q6Bjb5BvN0CfgkXc=,iv:gE4CbZlJeQRh0o+rtrdCeO0Sh8MtlscOPWm60/rK/dQ=,tag:RhgVnUG31LGGd7d3ZSxRBQ==,type:str]
+    lastmodified: "2025-06-15T11:06:04Z"
+    mac: ENC[AES256_GCM,data:ByciiVy2XHK3m1y7oU8eazsWxw2nGH3SO3qOiBo70DX6D2Y4281zws1LsAe0oUO9xv6Q5hkeI2UekxhfqoJ4NnfYiJKuiPeExU0xPZBNof3dftEk/HnpLIHNnvDTWixht6+wUMY/rG1w+SGRqNZpPGspkI1bxqkND+bH9XDYcnE=,iv:JX01zpZOES/hN84c32WPFv51vhJSq3kfIawhDpADk00=,tag:GWmJecTh1DZ9XS2YlKcC9w==,type:str]
     pgp:
         - created_at: "2024-07-21T11:09:09Z"
           enc: |-
