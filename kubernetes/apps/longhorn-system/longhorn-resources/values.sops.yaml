@@ -30,7 +30,7 @@ resources:
         task: snapshot
         retain: 14
         concurrency: 3
-    - apiVersion: longhorn.io/v1beta1
+    - apiVersion: longhorn.io/v1beta2
       kind: RecurringJob
       metadata:
         name: weekly-backup
@@ -46,8 +46,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-25T20:39:16Z"
-    mac: ENC[AES256_GCM,data:6uSLFcHMDG3f37pwZ/xUEuy8pi0ZWTwU5KmrQws4DgQ/SZ9dHXrnfUPyOVbY4pU3f9kE+Orel1hGEqV0qzYFWLphlRef8o02XNHEhAgldP+bX8xTZQyVMtTp7nxZ1AB+OzNJEHClDylYrK/aXUeB1DprNbjcIVhFeOB5dopb9ss=,iv:PZY/GLjGXOcAIL+MjLAZRzd2xE0BzRtduNpfLzLT7+M=,tag:PLFAqpTgUq+H3aQM9OYt+w==,type:str]
+    lastmodified: "2025-06-15T11:55:17Z"
+    mac: ENC[AES256_GCM,data:NMglL3At9R4CRSr8jP2hU5cCv6ivguqUd3B7MifmvaaCiJrjCUUn2iV5gy/Uy9FMY4Q5rSpjtaG34rLqWH2WF8E8IJfN+ALkXIFvPQhUB70tbLRzI01thZ4p8TriI7+i5xeHYyjDLCQx6jyT8WJEe4G4I5VM96/1GGu84lDCZos=,iv:tJO7ZLcgbawoTC360VLe48s75bpAxkhrwfXbA+5BdgY=,tag:QrtuBC+kI0jEn0rqlDHbPg==,type:str]
     pgp:
         - created_at: "2024-07-20T21:03:14Z"
           enc: |-
@@ -71,4 +71,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    version: 3.9.0
+    version: 3.9.4
