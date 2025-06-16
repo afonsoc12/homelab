@@ -1,9 +1,14 @@
 secrets:
     - name: longhorn-minio-secret
       stringData:
-        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:9J26PaFB9hN/B3e+5umx02GHojQ=,iv:ZUIAHRlDD7cI1dHi4HyP39zDGGhse9BXQHbnfGLHz7k=,tag:ECTONO1XMBaEuvKN4gmigA==,type:str]
+        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:sgmeE2lVYQs2pVFfh5urwuXjQIo=,iv:0t+mcLuO3hXXE1VXTtyO+jX/z6arbO0w0ZBu+0qhqic=,tag:vDA0bxIdEfvO8HkuCLW59g==,type:str]
         AWS_ENDPOINTS: ENC[AES256_GCM,data:Pu0TJitASkGr8unpLXQRKqOVoK6PCgCrYA==,iv:KZG6Sygz2U0VxPJEVsznO1diL0czDBZPr3oysZDB9aE=,tag:QnrRB9JrWpOVWcVMEyeziw==,type:str]
         AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:NOl+G92+v0l+JhG4g4EKLO7eKuc9sOTkNAT2NF94AD5EjZvwyod2Ag==,iv:e7e0IQZofJffrNg5YOzv1hMBA7QialChc8Q6gEV0QiU=,tag:iqANXeGhAfnrrsLHODkO8A==,type:str]
+    - name: longhorn-backblaze-secret
+      stringData:
+        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:532PKAjrhKGfXIRI1cahoYBixlvOuoOa2w==,iv:zDsSd3+uaHUz2yZdZv/0KurtOs0rF6MSZgBNDG5pPZk=,tag:iot9ayeNZOdp57udWhhd/w==,type:str]
+        AWS_ENDPOINTS: ENC[AES256_GCM,data:MYBE+Ai9TIlJR1Y3qRpY/bAu++bRILtgwSm1CGJ8+RumJVZa/9FOC7l3xd6vb1KXr9w9jm4=,iv:a5XbicyMuDW9wVniUCmrbHp/2O/wW1ZI0Bdmc8qnej8=,tag:pa4rXvFotY+/JTbS4eTfhA==,type:str]
+        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:F29H8MKsFQYrP204SFKubbnRwDUkUaabtpi6bzbPmQ==,iv:cKLVe8I96b9Emd/Lzk2++f1Ne5hV8jAfmMqmQaivVqI=,tag:z7zg8UwencGIIsh1eIOQAQ==,type:str]
 resources:
     - apiVersion: storage.k8s.io/v1
       kind: StorageClass
@@ -40,14 +45,24 @@ resources:
         # groups:
         retain: 4
         concurrency: 4
+    - apiVersion: longhorn.io/v1beta2
+      kind: RecurringJob
+      metadata:
+        name: daily-backup
+      spec:
+        cron: '* 4 * * *'
+        task: backup
+        # groups:
+        retain: 4
+        concurrency: 4
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-06-15T11:55:17Z"
-    mac: ENC[AES256_GCM,data:NMglL3At9R4CRSr8jP2hU5cCv6ivguqUd3B7MifmvaaCiJrjCUUn2iV5gy/Uy9FMY4Q5rSpjtaG34rLqWH2WF8E8IJfN+ALkXIFvPQhUB70tbLRzI01thZ4p8TriI7+i5xeHYyjDLCQx6jyT8WJEe4G4I5VM96/1GGu84lDCZos=,iv:tJO7ZLcgbawoTC360VLe48s75bpAxkhrwfXbA+5BdgY=,tag:QrtuBC+kI0jEn0rqlDHbPg==,type:str]
+    lastmodified: "2025-06-16T21:28:12Z"
+    mac: ENC[AES256_GCM,data:k+sBghZ2UMxAecaEpqefLgTGVRrbmhGCX+02f59whqblmakRZsNAREIwCCkR56faufpeZn0BpqMQztFF6RaY3CpIPA5u9jfG9gr9R6ocLqkD/HNyrzXJOcGSMQ/qg2+241s82SkfpeG5BSlb0RPlnqC22KJdtpYSGkqCbj+Q/xQ=,iv:QsRne6XpudmZmPD2/PPqosG02UFWd3kc9OwdqHWR4/8=,tag:x7i+XxAIJq/HEq0RQSMjUA==,type:str]
     pgp:
         - created_at: "2024-07-20T21:03:14Z"
           enc: |-
