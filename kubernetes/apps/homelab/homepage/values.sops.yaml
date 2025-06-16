@@ -47,6 +47,8 @@ secret:
         HOMEPAGE_VAR_TAUTULLI_KEY: ENC[AES256_GCM,data:hFBQEt/34yxxvKUUPgUB0SkY6X+muukOOxFqOCbrFCk=,iv:iPLe40AwctpoIVnU4hrz+yWwwH8T7c1Tcr++5YfC7+4=,tag:CsmdMI2nFMdJN1UdH08BRg==,type:str]
 configmap:
     data:
+        custom.css: ""
+        custom.js: ""
         bookmarks.yaml: |
             - Entertainment:
                 - YouTube:
@@ -272,7 +274,7 @@ configmap:
                     href: https://ntfy.local.{{ .Values.domain }}
                 - ArgoCD:
                     description: Deployments manager
-                    icon: argocd.png
+                    icon: argo-cd.png
                     href: https://argocd.local.{{ .Values.domain }}
                 - Kopia:
                     description: Off-site backups manager
@@ -364,8 +366,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-01-27T01:17:23Z"
-    mac: ENC[AES256_GCM,data:wpeLNUOpbQlMOaKFr28m0h4MjJMd+d4XiUHDgPV8/I6XyFP6A43fFDtOjf/J0AqW6sUSK9IunEEIPbPVZy1lr2uqrP9tzl1K7BGxAzcntOJX9Yr4987CidoJtsOruMtLxp5cSh3Ct/hEH4auc8QOJUsV4eCrFF7yzLTLSjZjFEc=,iv:i1pPskMP+H8E4MtC8V7QwPYhZQHBpHJtuiCtk6sRHFs=,tag:D+JVcPa4bM4ZNwlqpgsXDg==,type:str]
+    lastmodified: "2025-06-16T15:54:58Z"
+    mac: ENC[AES256_GCM,data:J4mtF9Yykdw+sCUOVDoHVb8QWMMYTUpANhU/DHwfEe9NhYpVV5HeLOm13hKeE8Mq2msJRnoqxN/mGpg8DXJPwyPIruxsUlMY3T37wZjECflBJQylybW90j/5HiF8C7F2RyZtzsiGTj6l44UdXESPUVZPAV5nRZFWFajjSqQa51g=,iv:HPTuBMUBo8iez3uxy1jo+6YOlWj+naie/cn/irbKjBU=,tag:reYN8gMVKKiDjLYqE9CB7g==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-
@@ -389,4 +391,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.2
+    version: 3.9.4
