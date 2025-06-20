@@ -16,7 +16,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - secrets://../../apps/addons/metallb-resources/values.sops.yaml
+        - ../../apps/addons/metallb-resources/values.yaml
 
   destination:
     name: {{ .Values.spec.destination.name }}
