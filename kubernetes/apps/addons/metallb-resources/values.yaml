@@ -1,18 +1,18 @@
 ipAddressPools:
-    ip-pool-20-lan-uk:
-        - pool: 10.0.10.220-10.0.10.225
-    ip-pool-lan-pt:
-        - 10.10.1.244
+  ip-pool-20-lan-uk:
+    - 10.0.10.220-10.0.10.225
+  ip-pool-lan-pt:
+    - 10.10.1.244
 l2Advertisements:
-    - name: k3s-m1
-      ipAddressPools:
-        - ip-pool-20-lan-uk
-      nodeSelectors:
-        - matchLabels:
-            kubernetes.io/hostname: k3s-m1
-    - name: k3s-m2
-      ipAddressPools:
-        - ip-pool-lan-pt
-      nodeSelectors:
-        - matchLabels:
-            kubernetes.io/hostname: k3s-m2
+  - name: k3s-m1
+    ipAddressPools:
+      - ip-pool-20-lan-uk
+    nodeSelectors:
+      - matchLabels:
+          kubernetes.io/hostname: k3s-m1
+  - name: k3s-m2
+    ipAddressPools:
+      - ip-pool-lan-pt
+    nodeSelectors:
+      - matchLabels:
+          kubernetes.io/hostname: k3s-m2

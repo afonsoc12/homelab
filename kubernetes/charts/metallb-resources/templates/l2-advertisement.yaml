@@ -1,13 +1,19 @@
+{{- range .Values.l2Advertisements }}
+---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: l2-advertisement
-  namespace: addons
+  name: {{ .name }}
 spec:
   ipAddressPools:
-  - ip-pool-20-lan-uk
+{{- range .ipAddressPools }}
+    - {{ . }}
+{{- end }}
+{{- if .nodeSelectors }}
   nodeSelectors:
-  - matchLabels:
-      kubernetes.io/hostname: k3s-m1
-  # - matchLabels:
-  #     kubernetes.io/hostname: k3s-m2
+{{- range .nodeSelectors }}
+    - matchLabels:
+{{ toYaml .matchLabels | indent 8 }}
+{{- end }}
+{{- end }}
+{{- end }}
