@@ -17,7 +17,9 @@ spec:
     {{- if .service }}
     - port: {{ default .containerPort $.Values.service.port }}
       targetPort: {{ .containerPort }}
+      {{- if .nodePort }}
       nodePort: {{ .nodePort }}
+      {{- end }}
       {{- if .name }}
       name: {{ .name }}
       {{- end }}
