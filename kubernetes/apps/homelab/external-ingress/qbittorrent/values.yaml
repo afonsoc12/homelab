@@ -7,7 +7,7 @@ labels:
 # External server configuration
 server:
   ip: "{{ .Values.ips_tailscale.hoarder }}"
-  port: 8112
+  port: 6880
 
 # Ingress configuration
 ingress:
@@ -16,7 +16,7 @@ ingress:
   tls:
   - secretName: local-wildcard-cert
   hosts:
-    - host: deluge.local.{{ .Values.domain }}
+    - host: qbit.local.{{ .Values.domain }}
       paths:
         - path: /
           pathType: Prefix

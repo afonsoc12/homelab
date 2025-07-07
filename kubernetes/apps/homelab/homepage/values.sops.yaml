@@ -41,6 +41,8 @@ secret:
         HOMEPAGE_VAR_OVERSEERR_KEY: ENC[AES256_GCM,data:74VESGK9VfzxG0hbgCV+oE1ZcJi6+25GpbpXwvSg4fkMbVyOBN0hupvC8aLLYdVFfx9geuwIWco+ytE7OH2DsAJReKU=,iv:B6l3H9Xmho1IRvJ8CILfZnJkSVa7rATt7xnE/+s5IX8=,tag:oQkcTJNEzyao/FKxWO442A==,type:str]
         HOMEPAGE_VAR_PLEX_KEY: ENC[AES256_GCM,data:ixFdS9eL8qr0bE1Ik1Jh8f6/OtE=,iv:+DrJ4XHradEDGueKKCBzFpiTdV3dgzHwWbc8ofD8SAE=,tag:v9gavRaBH/tjrLCSjt59pA==,type:str]
         HOMEPAGE_VAR_PROWLARR_KEY: ENC[AES256_GCM,data:1BLTpxd4CTWAO2GrAvPFHO9RTOLwu8BTX0U8UJQyPZw=,iv:scCoiOS6BGcxn5+Q9JKG3agQ8iZAG0idgXyRIYP0bvc=,tag:zhTS5FOwNBRCYY3JkER6RA==,type:str]
+        HOMEPAGE_VAR_QBITTORRENT_USERNAME: ENC[AES256_GCM,data:bKiqPX4=,iv:q+uipT4lhyVaxN4xliXVU3MqsZ3exoFE93Kxb/m1NB4=,tag:Xns4ElStn1HLptEEsq3PnA==,type:str]
+        HOMEPAGE_VAR_QBITTORRENT_PASSWORD: ENC[AES256_GCM,data:MU22Fd4lgEu1HxSooJGCVrHts5A=,iv:KVS976wihlpYDwKFtR0JbikAhbX2uwOtfNXplTQQCEM=,tag:DiqZXffILvGdpZRsJpT9iQ==,type:str]
         HOMEPAGE_VAR_RADARR_4K_KEY: ENC[AES256_GCM,data:x0oC8UYDRT9narlXGDyO85fAiGi0yTxyEYUmmE87hJ8=,iv:VaBIEb3FHK/IZgqQk4XArVNaNX68iTA/pFbTkY48HOo=,tag:1JKroaLVH/Y8A7dTuLB6JA==,type:str]
         HOMEPAGE_VAR_RADARR_KEY: ENC[AES256_GCM,data:uM+xaD60MbBL8cucmCQnK7+bWCkfyGkCLwiYtCJRVDA=,iv:whBvAZErdMEdR1seSkA6YhZ7LBPROurflpMz0h5sgkg=,tag:Yknk6UMjpj9sf3i2pL1Gkw==,type:str]
         HOMEPAGE_VAR_SONARR_KEY: ENC[AES256_GCM,data:MsQCAvqP5cU/KigWQSXi9DpBwRhZ8UiiYP+iWCbQ924=,iv:Z6AzKvEX6gw8Tkc6d8+Tx5OFOaRyk0Qm9WBmcSMUSpw=,tag:2vPrzxyrn5cjQQuVGYS80w==,type:str]
@@ -199,18 +201,16 @@ configmap:
                         fields: ["wanted", "queued", "albums"]
                         url: http://{{ .Values.ips.hoarder }}:8686/lidarr
                         key: "{{`{{`}}HOMEPAGE_VAR_LIDARR_KEY{{`}}`}}"
-                - Deluge:
+                - qBittorrent:
                     description: Torrent downloader
-                    icon: deluge.png
-                    href: https://deluge.local.{{ .Values.domain }}
+                    icon: qbittorrent.png
+                    href: https://qbit.local.{{ .Values.domain }}
                     widget:
-                        type: deluge
-                        url: http://{{ .Values.ips.hoarder }}:8112
-                        password: "{{`{{`}}HOMEPAGE_VAR_DELUGE_KEY{{`}}`}}"
-                - Storm:
-                    description: Deluge, but pretty
-                    icon: storm.png
-                    href: https://storm.local.{{ .Values.domain }}
+                        type: qbittorrent
+                        url: http://{{ .Values.ips.hoarder }}:6880
+                        username: "{{`{{`}}HOMEPAGE_VAR_QBITTORRENT_USERNAME{{`}}`}}"
+                        password: "{{`{{`}}HOMEPAGE_VAR_QBITTORRENT_PASSWORD{{`}}`}}"
+                        enableLeechProgress: true
                 - Prowlarr:
                     description: Torrent indexer
                     icon: prowlarr.png
@@ -366,8 +366,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-06-16T15:54:58Z"
-    mac: ENC[AES256_GCM,data:J4mtF9Yykdw+sCUOVDoHVb8QWMMYTUpANhU/DHwfEe9NhYpVV5HeLOm13hKeE8Mq2msJRnoqxN/mGpg8DXJPwyPIruxsUlMY3T37wZjECflBJQylybW90j/5HiF8C7F2RyZtzsiGTj6l44UdXESPUVZPAV5nRZFWFajjSqQa51g=,iv:HPTuBMUBo8iez3uxy1jo+6YOlWj+naie/cn/irbKjBU=,tag:reYN8gMVKKiDjLYqE9CB7g==,type:str]
+    lastmodified: "2025-07-07T18:16:23Z"
+    mac: ENC[AES256_GCM,data:OhD6866mp5S/PcpVm4eer5wgJLBGbK5fQyOpb1obusSzt6HhHgcEsMl/WD9jXV6k24O9ahP5jwL3Pq3O2+HVeCYfq4OtITaICsgatDc5uMIHMtyEEDIf3AuY9gJLWDn82w/KighPcifMmUoyaaK9iWMhVsDGVs7HSmOV87ZORR8=,iv:5lVuMZWYVo43kvGFcY26os8ryamsOnnYTnJxA6miFgU=,tag:ZttwIo3a5R3fZcX1weJyOg==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-

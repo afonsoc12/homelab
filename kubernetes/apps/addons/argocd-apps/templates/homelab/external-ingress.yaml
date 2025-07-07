@@ -14,17 +14,16 @@ spec:
         - app: adguard
         - app: bazarr
         - app: calibre-web
-        - app: deluge
         - app: kopia
         - app: lidarr
         - app: minio
         - app: overseerr
         - app: plex
         - app: prowlarr
+        - app: qbittorrent
         - app: radarr
         - app: radarr-4k
         - app: sonarr
-        - app: storm
         - app: tautulli
         - app: unifi
         - app: unraid
