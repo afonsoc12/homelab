@@ -117,18 +117,21 @@ cronjobs:
     - name: firefly-cron
       labels: {}
       podAnnotations: {}
-      schedule: 15 * * * *
+      schedule: 5 * * * *
       concurrencyPolicy: Forbid
       failedJobsHistoryLimit: 1
       successfulJobsHistoryLimit: 1
       image:
-        repository: alpine
+        repository: curlimages/curl
         tag: latest
         pullPolicy: Always
       restartPolicy: Never
       command:
-        - wget
-        - http://firefly:8080/api/v1/cron/$(CRON_TOKEN)
+        - sh
+        - -c
+      args:
+        - |
+          curl -vv -H 'accept: application/json' http://firefly:8080/api/v1/cron/$(CRON_TOKEN)
       env:
         - name: CRON_TOKEN
           valueFrom:
@@ -153,8 +156,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-10-18T23:32:55Z"
-    mac: ENC[AES256_GCM,data:5Um6eqgogn+dn2pdQN8yJjgGO0DCKW4EbbR4TG1oVr87DVY41ldRRTWJyUffXHpUtJJwicQrmbBQ6ywBMOxvGCDqbASXyrrREcIf1bDkvsyGyoInvW/Il4ldK6YyTF3wxBHUzCjev3Wy6WtA4CxlQop3lYbggfccEs9oO3Bs+cM=,iv:jloxEswlQ8Ej8OTgAiYI41Gketb9XMpK+Drs7xJFpFo=,tag:qyjl2nBfCunCiNZMv18ncg==,type:str]
+    lastmodified: "2025-09-10T16:57:40Z"
+    mac: ENC[AES256_GCM,data:pAVEqGGCtr8oXQAD5ujcc1m1IMUCHDSeLJQ3q7fmZvCpLJNJI7ZKlRvFLWX8rHam9pq2zMEzNqMBfDfOUjTKlTD4zHR+BNoPRqO6BqdXAourrpI8+syvEjAMyQEyr3RlBUGemgOksCXpAUSpB+DfOqH1edmDjJDS26UeEYN4mks=,iv:JDoHamBwQoAhxqmjG5HdlmMMJYq9kaUUGKkaoX/+3gs=,tag:SfOtTrrdZefCzsFSM6ERQw==,type:str]
     pgp:
         - created_at: "2024-07-20T15:23:16Z"
           enc: |-
@@ -178,4 +181,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.0
+    version: 3.9.4
