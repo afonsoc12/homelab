@@ -29,7 +29,7 @@ secret:
     mountEnv: true
     stringData:
         APP_KEY: ENC[AES256_GCM,data:BRo2b7lCv0TTUSw0B7ch5hCbCM9281cIb5MVVKiCNP8=,iv:iyIdaTrlCJTfYiej/Yp7Kb1wiwaF/tOXs2fKsfaaqpg=,tag:ct+8oA6/e732hplp1S/N9g==,type:str]
-        CRON_TOKEN: ENC[AES256_GCM,data:/0I6wIAB6yX+xsnhXkzHzXdUxWTr0cvcBcFIcic0Tp8=,iv:A7Du1SzQkWfD89J+RuqBAyTLuTPhSVHyS2Ja/4DELk8=,tag:m1zqpGJvQvlzeIAZWJZ//Q==,type:str]
+        CRON_TOKEN: ENC[AES256_GCM,data:o9kdFmuDaUMCeQk83BCKt7noxxILRQDMngQ2u74BOvY=,iv:WmgZuvgFMQlEzatxwbxdLYX+iTkBuq0f1a3GNO3HMKg=,tag:gVyDaLVX9jS0pXbcof9LCw==,type:str]
         DB_DATABASE: ENC[AES256_GCM,data:Ug/cBAwT9w==,iv:O2G6PmkmHiqbzTYYwk5fvVL9B2J0WWc7aZbds0WK4pg=,tag:M9UlY/nGYLha4yN/joOj/A==,type:str]
         DB_USERNAME: ENC[AES256_GCM,data:3zNEhtXweQ==,iv:MTsUdVKBxnlsEc36Vp2ZeP/T5wap22l5hUCK2x31IkY=,tag:R0ZdDXJI4W9UOfzjqLI3Dg==,type:str]
         DB_PASSWORD: ENC[AES256_GCM,data:Kkmz6TtAVEjzxbdELKwDvYzeawQ=,iv:L4NPNVt3VV1j2TlK/POyQ7D+HbH34kylu/BOJZQ/6kY=,tag:kEuH3GgGpVDSkrsUZOoDHQ==,type:str]
@@ -132,10 +132,13 @@ cronjobs:
       args:
         - |
           curl -vv \
-            -H 'accept: application/json' \
+            --fail \
             --retry 5 \
             --retry-delay 5 \
             --retry-connrefused \
+            --connect-timeout 5 \
+            --max-time 15 \
+            -H 'accept: application/json' \
             http://firefly:8080/api/v1/cron/$(CRON_TOKEN)
       env:
         - name: CRON_TOKEN
@@ -161,8 +164,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-09-11T23:08:30Z"
-    mac: ENC[AES256_GCM,data:hgApF2P33GtxIOQMhQSQkO6b+WcrfzPlmC++VUcARcRvPoCBWF4UhNTsqwKD/zOazFQLXF7XeK+XNI1xyD4aEBkePr0s8Lav2NxfKmXTc11cr0A0Y94+/uy6vcnwNnzG2XVOEGtnbwHf2XB3lx9z1r0BqjbSYUv2L/CCSFwNRV4=,iv:5KuYvjNkrXmJg2ipo0Uj4UkPopPF0Wla13oY/00GBrU=,tag:ADFfEc0vZsUq3TybN24R5w==,type:str]
+    lastmodified: "2025-09-26T09:55:00Z"
+    mac: ENC[AES256_GCM,data:QHY6atOOweMCjgp5D0Vt2B/wJfsQfKK/wq7sxe4jqO1MPNCKrq7/j4vIhsFmvnmgB28KZEQBhjaW+KFTcUk9Mh3fIfSc0+FFSPF8V0VON/Sg8/CMKR5b/xBm7sB8nnXHMS4jH9fDisnuNEx6MjjS71MaqxySdq+hDQWCGdPzoc4=,iv:nI0HKnE3rBdlkDzS5yjQLGpM/aSOly+dy5AOOstNvbs=,tag:Nw9Joll5lZo21Jqioq7FQQ==,type:str]
     pgp:
         - created_at: "2024-07-20T15:23:16Z"
           enc: |-
