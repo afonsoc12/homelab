@@ -16,7 +16,7 @@ strategy:
 
 image:
   repository: homeassistant/home-assistant
-  tag: stable
+  tag: 2025.9
   pullPolicy: Always
 
 hostNetwork: true
