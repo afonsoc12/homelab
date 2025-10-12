@@ -8,22 +8,27 @@ cronjobs:
       successfulJobsHistoryLimit: 1
       failedJobsHistoryLimit: 1
       backoffLimit: 0
-      # suspend: true
+      env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+                fieldPath: spec.nodeName
       restartPolicy: Never
       image:
         repository: curlimages/curl
         tag: 8.16.0
       args:
         - -fsS
-        - https://hc-ping.com/$PING_KEY/k3s-cluster
+        - --data-raw=${NODE_NAME}
+        - https://hc-ping.com/${PING_KEY}/k3s-cluster
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-12T12:39:44Z"
-    mac: ENC[AES256_GCM,data:MeDmgcdtudJAEwkW28zR0Z50whnuKVUOhEAjd2cHr/7OcYhZ3ql+UNnFLgKvSM+t28VDXkhZTXrhhuvx2xG1YNrTY/ZCXyN7LbDYsk2O8y5spuxpkY8Qctmq44qvk2422tY1V9ayjcP6aADYcNeM6uH+galm8l7+SiGENmQ3b2k=,iv:JhtWhGtJjWspEh8dh5ulFGpWPPFuEaADN9x+htGXbVI=,tag:oviO5H/sHT/yJoA/l/kj9g==,type:str]
+    lastmodified: "2025-10-12T12:57:46Z"
+    mac: ENC[AES256_GCM,data:5LuWsQP2MvuYS/cnC7LSEcQk/CeF18eyvFXyJnhtbP/HG8i632rBGuNVuBALuqBlDjd6KnMNHDmL0Ith1GtfXHpzvovaVQTn4TUUPLiOGCwZVguSao0yJWZlg+ufYoJW4V2Pl2e8Yl3GuqK26WoIMNaBqbHB5nz7VCi9ZgbDw8Q=,iv:UIXhUCgDjFSXRKae+aavM0mTmquVls/kmP7Pzu6hSNo=,tag:uVUvUabAtQBSa2YMVwlMTg==,type:str]
     pgp:
         - created_at: "2024-07-20T14:13:50Z"
           enc: |-
