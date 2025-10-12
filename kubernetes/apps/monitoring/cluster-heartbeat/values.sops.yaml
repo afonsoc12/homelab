@@ -1,6 +1,6 @@
 secret:
     stringData:
-        PING_KEY: ENC[AES256_GCM,data:iUeArC5u5xjY36b85jjgTwVIwLk6EA==,iv:ehpSPbpWiYwxbZne67ELNILRCbq4ZE27I6D23iaxyws=,tag:kHEiZ4YEyrR8sGJOyD1uOg==,type:str]
+        PING_KEY: ENC[AES256_GCM,data:Ys+dRCEdaOd1ewkQdWFP67bh2cNZ6g==,iv:1YKH16Kw4JHGusmAUc2+0zW0UGAny7moRQre8clZgAk=,tag:xlRE2oIFnRatTQ5HPW6oaA==,type:str]
 cronjobs:
     - name: cluster-heartbeat
       schedule: '* * * * *'
@@ -22,7 +22,7 @@ cronjobs:
         - -c
       args:
         - |
-          curl -fS \
+          curl -vfsS \
           --data-raw=${NODE_NAME} \
           https://hc-ping.com/${PING_KEY}/k3s-cluster
 sops:
@@ -31,8 +31,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-12T13:11:43Z"
-    mac: ENC[AES256_GCM,data:MGHKe5lspYd7Mp0LqfmqLRsPo0h2jCTSwVaWhXy/CahpZJ8ubXpAvYp7lms6GWzoL9oYxLX3TvAmE/j8JQnBaZXdi3CEZzCGi5gIBoZKk6BIv8datE7StWc+d4ZO/hYQrnzI84nW1JyaFuy+auPWJ9cPSoMyMrkYI/Ts9xkm+04=,iv:qPBxmA4A94hMV3d1SSKa1SDyvkKDcW2lj8dS5L+d12I=,tag:3+iekeX0jES+m90f1vgluw==,type:str]
+    lastmodified: "2025-10-12T14:01:30Z"
+    mac: ENC[AES256_GCM,data:EYuACyRsmwOJGNH+dpVDN/2KQmzRAws4aGokzqVYly+7QjuXud1D3qJ87vmM0oQxon9HLQhWLGPWun8zFmgPrckFlCQCC8iQrVbt1HR7rglH4rWoCf1v5AgNi0bGYlTi85ChXshEhZJMxdD0C7IJhJZ4B55z50G0gEVS1Xa64aA=,iv:8ORLdo1/8tR6TTSSLVo6yFW5OgGWMROigApKFX5Chb4=,tag:obGUtqYLKM6v289oewGK+Q==,type:str]
     pgp:
         - created_at: "2024-07-20T14:13:50Z"
           enc: |-
