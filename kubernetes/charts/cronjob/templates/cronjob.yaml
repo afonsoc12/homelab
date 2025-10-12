@@ -17,9 +17,7 @@ spec:
   suspend: {{ .suspend }}
   jobTemplate:
     spec:
-      {{- with .backoffLimit }}
-      backoffLimit: {{ . }}
-      {{- end }}
+      backoffLimit: {{ .backoffLimit | default 1 }}
       template:
         metadata:
           {{- with .podAnnotations }}
