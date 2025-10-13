@@ -30,17 +30,18 @@ server:
     name: server
     replicas: 1
     affinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                namespaceSelector: {}
-                labelSelector:
-                    matchExpressions:
-                        - key: app.kubernetes.io/instance
-                          operator: In
-                          values:
-                            - mariadb
-                topologyKey: kubernetes.io/hostname
+        nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 1
+                  podAffinityTerm:
+                    namespaceSelector: {}
+                    labelSelector:
+                        matchExpressions:
+                            - key: app.kubernetes.io/instance
+                              operator: In
+                              values:
+                                - mariadb
+                    topologyKey: kubernetes.io/hostname
     ingress:
         enabled: true
         ingressClassName: nginx
@@ -79,8 +80,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-13T22:53:33Z"
-    mac: ENC[AES256_GCM,data:2p4OFYRGicheVYskzsnSgZrDA3XAmdkpC0DNqLGUne1SoIn/DkXdrpvEMtZvo3b3xgtQTOYQxmkbV24z1vmX3xBOU9YX1VB551q0D/WcrGgTGBV4tPTIevG4lM2el14UmTKzRBHPHr79yBswJTWzXrcSblZeCqPvJvseu9pIDmM=,iv:bX7tPxPPjSFV42fYBEkXLEn1ME8T8o6LTpsPgSh222w=,tag:CWD+Vib9ORm2svmNAHrKxw==,type:str]
+    lastmodified: "2025-10-13T23:01:14Z"
+    mac: ENC[AES256_GCM,data:1G9kBf4ZtNkpGMDW3AJnRvCWskDODPSTrZm/7Sc5mvC45jZ4c+uJxu3RJJICONV6uGMMdBka5cpDQJ8ZuWd7fJv9lM+/Zgb4bGvGpg41nPNfeX7r9JAjqUvhGr5Z0inobV56Ot9p8GN0wGdXoSnstJcxjpI4N76MLeKKCctBG3E=,iv:mEbcY0xRR+k2IAHf3gCJKqNZYVewgcdbrhrUgwq+ugw=,tag:5cTyCs8tWfR+6w9C0cHLBQ==,type:str]
     pgp:
         - created_at: "2025-10-13T21:25:28Z"
           enc: |-
