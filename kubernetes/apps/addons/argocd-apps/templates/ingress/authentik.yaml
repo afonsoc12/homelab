@@ -11,11 +11,12 @@ spec:
 
   sources:
     - repoURL: https://charts.goauthentik.io
-      targetRevision: '2025.8.4'
+      # targetRevision: '2025.8.4'
       chart: authentik
       helm:
         valueFiles:
-        - $values/kubernetes/apps/values.sops.yaml
+        # Was causing issues decrypting second file
+        # - $values/kubernetes/apps/values.sops.yaml
         - $values/kubernetes/apps/ingress/authentik/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
