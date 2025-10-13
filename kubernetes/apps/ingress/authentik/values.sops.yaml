@@ -1,3 +1,5 @@
+serviceAccount:
+    create: true
 authentik:
     log_level: info
     # don't change this after the first install
@@ -79,8 +81,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-13T21:25:28Z"
-    mac: ENC[AES256_GCM,data:gXy9kr+YUZRzYG4y+wnBs+XS5bk3bFrlcbOGeCOXCEcMjvfv5zXzP16ugr1IIywCFsXuk6FY2hEdf/+8jEoGEuHwFSXz+yG2eyi7FUehvdEvoctornNojNEdlzuoNWZfZYUSP4qdj1+7M8FkxFHuJjkRYMSgQy5Cn4nLfoxcEZk=,iv:yn6o/3gDOnQE5Zc+W/BrUPqMRXLc+EvHDsh1w1ymePQ=,tag:NDD90440TpkX8jae/o7XOQ==,type:str]
+    lastmodified: "2025-10-13T22:48:37Z"
+    mac: ENC[AES256_GCM,data:PNklrXl8hKPkb8ZC/xWuYY8xsEs9M9eEjnuKziP6Q9lV+LAxvzzICpC3Zk6BpjnCXvjoSrLo8shUzlopBOw6TrE3GCTPUo+rFs4bCwbJwXPU3eIsw5210I4LIMaKQILVZQGo/voRWWIifCHxgh6VFy0AhACrTxaAv0k5xWIzaes=,iv:8Zan3vSOLEOfSa+GBmF7pPdTfah9uYk82aNlVFsgWzE=,tag:FI4XqhbcSFDjNl+GvopiYA==,type:str]
     pgp:
         - created_at: "2025-10-13T21:25:28Z"
           enc: |-
