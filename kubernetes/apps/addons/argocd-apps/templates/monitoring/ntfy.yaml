@@ -15,7 +15,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - ../../apps/monitoring/ntfy/values.yaml
+        - secrets://../../apps/monitoring/ntfy/values.sops.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: monitoring
