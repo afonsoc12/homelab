@@ -29,16 +29,19 @@ service:
 secret:
     mountEnv: true
     stringData:
-        NTFY_WEB_PUSH_PUBLIC_KEY: ENC[AES256_GCM,data:rfp3j6Y6/S8e+5Ri1nnvGu2T4KzbNc46zgBfUD2yRr3xMLoSrFT9FZ3OcP5lXViNCB1qO1WyxmyrmDt6HjyxSGvfjs3JPmKFzapninGU4N5nnVYFI+Ww,iv:JD6s9OzuJ62nS6vc9+YH1G/RXC+PgspTuv7hDNyWRb0=,tag:GIgjgyTWvahKlTAk0sMBfg==,type:str]
-        NTFY_WEB_PUSH_PRIVATE_KEY: ENC[AES256_GCM,data:p8IaVgmsXrP+JGR1Y7Oqa0Op/bAROTqATUNX7XcPU4fY32MIWOUr/D9IFA==,iv:CIdGbc+tvfyHr/sBoNqC9LkLjdmc6w319HTIt/vvaE8=,tag:NAsHa969GZ01B9ONQ8iqNw==,type:str]
-        NTFY_WEB_PUSH_EMAIL_ADDRESS: ENC[AES256_GCM,data:dkUeqTsFSP0KzpiS/A==,iv:W0VuOC8kRt2R/1TSOuWtxYv2g2tiBf5AEnjYLqng7Jk=,tag:yv31yUq9+4KaVKdnvdM7iA==,type:str]
+        NTFY_WEB_PUSH_PUBLIC_KEY: ENC[AES256_GCM,data:eDRbCQ4T3eqdCRRWTKwdC1wj61Uq+A7lmf6FYXNWvYF7jJhWTx3+FzNfwRA3rzs5jqlmtfrtaIixR6yt5P37VPOYeAy2nth6/H02xCAXrecMoSLkk5vB,iv:PQQWrdpuj4/I46TF8bm1Fu6FlSbQe0sVsHoCGJKlscM=,tag:boLOyvQRMF+aPvRYx+J0yQ==,type:str]
+        NTFY_WEB_PUSH_PRIVATE_KEY: ENC[AES256_GCM,data:hRz6CvbLgEtSxfw4KeLlaNMucSHll9zv7PzciLaTz2N7cNTIgc3zBv2m3Q==,iv:kq2jIw26HmLfEWhxxHvK620wZT1UE6Kny1C9oGKLMlc=,tag:NTwJNGbjcE/5cn71OoD01w==,type:str]
+        NTFY_WEB_PUSH_EMAIL_ADDRESS: ENC[AES256_GCM,data:vInO+HKSlK1CvX0oPxzFQ3FntIU0qD3gU41oQg==,iv:VRfz55AMDYqPmrmLUyuJ4V25H2e7wy/BoQY3tHd71Vg=,tag:iHTFjshKBe2nnKWYw1jznQ==,type:str]
 configmap:
     mountEnv: true
     data:
+        NTFY_LOG_LEVEL: info
         NTFY_BASE_URL: https://ntfy.local.{{ .Values.domain }}
         NTFY_UPSTREAM_BASE_URL: https://ntfy.sh
-        NTFY_CACHE_FILE: /var/cache/ntfy/cache.db
-        NTFY_WEB_PUSH_FILE: /var/cache/ntfy/webpush.db
+        NTFY_BEHIND_PROXY: "true"
+        NTFY_CACHE_FILE: /data/cache.db
+        NTFY_WEB_PUSH_FILE: /data/webpush.db
+        NTFY_ATTACHMENT_CACHE_DIR: /data/attachments
 volumeMounts:
     - name: cache
       mountPath: /var/cache/ntfy
@@ -71,8 +74,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-14T22:17:10Z"
-    mac: ENC[AES256_GCM,data:Z/+cJLJgy1bpwVgihZJStBH/qkxtHrl5DB7rCQQdTOYxBRU4PV11GlybInb3UmklwbMfMkE3qXEO8vXzePndHWhpZDeTlphCQHyO9yvWJKt+OtqCInUujuTPci2Yp5BpvDojdV/5cPzt6Y+p5SMrcU8w1EGCF4LFMSlqyTHTako=,iv:7t9N5ZL68UdVq1GilzFFYyOC5bMIrH/x0lbWlBkJzyI=,tag:faukVk/EHU2FHiG0/un+8g==,type:str]
+    lastmodified: "2025-10-14T22:55:36Z"
+    mac: ENC[AES256_GCM,data:EZA0kwBZa3GVRimIilRc7eC9c61pcw38k5dzZ8hK84llgLVP+bnP9U4V/y/wQee9trofEw4c/N0Q6EK3vF+rGhF2CTEaxybWFmRNpHgKjnrfCetTzQrOXfxPZiOCijRcCfcr2LbHBin2DISRuC5+m0/C3XynpAiA6eWXfpQtOko=,iv:cEEwh+/1bi0uc7pbpDYE7kgIUurtupYTbqmLj6Bblfg=,tag:U9QaYZYYW4jU0zMwQxpIDQ==,type:str]
     pgp:
         - created_at: "2025-10-14T22:17:10Z"
           enc: |-
