@@ -1,0 +1,99 @@
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+# label_1: abc
+# label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: binwiederhier/ntfy
+    tag: latest
+    pullPolicy: Always
+#   restartPolicy:
+command: {}
+args:
+    - serve
+ports:
+    - containerPort: 80
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        NTFY_WEB_PUSH_PUBLIC_KEY: ENC[AES256_GCM,data:rfp3j6Y6/S8e+5Ri1nnvGu2T4KzbNc46zgBfUD2yRr3xMLoSrFT9FZ3OcP5lXViNCB1qO1WyxmyrmDt6HjyxSGvfjs3JPmKFzapninGU4N5nnVYFI+Ww,iv:JD6s9OzuJ62nS6vc9+YH1G/RXC+PgspTuv7hDNyWRb0=,tag:GIgjgyTWvahKlTAk0sMBfg==,type:str]
+        NTFY_WEB_PUSH_PRIVATE_KEY: ENC[AES256_GCM,data:p8IaVgmsXrP+JGR1Y7Oqa0Op/bAROTqATUNX7XcPU4fY32MIWOUr/D9IFA==,iv:CIdGbc+tvfyHr/sBoNqC9LkLjdmc6w319HTIt/vvaE8=,tag:NAsHa969GZ01B9ONQ8iqNw==,type:str]
+        NTFY_WEB_PUSH_EMAIL_ADDRESS: ENC[AES256_GCM,data:dkUeqTsFSP0KzpiS/A==,iv:W0VuOC8kRt2R/1TSOuWtxYv2g2tiBf5AEnjYLqng7Jk=,tag:yv31yUq9+4KaVKdnvdM7iA==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        NTFY_BASE_URL: https://ntfy.local.{{ .Values.domain }}
+        NTFY_UPSTREAM_BASE_URL: https://ntfy.sh
+        NTFY_CACHE_FILE: /var/cache/ntfy/cache.db
+        NTFY_WEB_PUSH_FILE: /var/cache/ntfy/webpush.db
+volumeMounts:
+    - name: cache
+      mountPath: /var/cache/ntfy
+volumes:
+    - name: cache
+      mountPvc: true
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 200Mi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations: null
+    tls:
+        - secretName: local-wildcard-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: ntfy.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2025-10-14T22:17:10Z"
+    mac: ENC[AES256_GCM,data:Z/+cJLJgy1bpwVgihZJStBH/qkxtHrl5DB7rCQQdTOYxBRU4PV11GlybInb3UmklwbMfMkE3qXEO8vXzePndHWhpZDeTlphCQHyO9yvWJKt+OtqCInUujuTPci2Yp5BpvDojdV/5cPzt6Y+p5SMrcU8w1EGCF4LFMSlqyTHTako=,iv:7t9N5ZL68UdVq1GilzFFYyOC5bMIrH/x0lbWlBkJzyI=,tag:faukVk/EHU2FHiG0/un+8g==,type:str]
+    pgp:
+        - created_at: "2025-10-14T22:17:10Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/+ObUbJ7xWNt0fl5AI+MoKVOnQ+USNNgRFcOlQ5omMit6A
+            fF1Kld+wps1//LbYvoAIu9w18mLwlGZMMVPZn+84bF+T+uu7+sc0XBa7yU/Cvtj3
+            s30y5UeomZ1rJVnRLGrOeBU6XCdBNnLJ16MWA3Oro4X9iT58+UPVvdoK+1+TdiMh
+            yVcq22nPuCBpAGLSMIKUr9FWa+5pSPkbZZ/tG/1vylrv8Wm5ASgA47dJKzHP8YoO
+            Hwfo/XifnG5D+ENMoZSQSW04Zb2Jp6KE92yvQrvMqTZ1UogL5bTBrhaeviVxNVpi
+            MDF+5AsqQsAorehvShYjUP4Y8848mCcFLzUrHgtdFAyUDTFqKGCX3iJUbgm/MziT
+            VSE/fkt9jHDPaBY+jK86/QGzdFoQsG8G/nhBXNhscbulEB5LTJZCL4DR1HAMKnpn
+            iuYyo5AhtR+NlGjym6VneEJny/wMuQ3bWvat8+fZeHbEIXII2Gd5ZP2JZKOoLDPi
+            7+Gd6poo9FTGNegk9h/7S74Z9xW2CK9S8bx0D1ELFwgOG1ZI5eBWuYcnuE9eF1T9
+            QoBj1UT4slp5jfCYLuGz5gOgLa++aR0+El3GYvVs5Wqzaw1/hDp7mvpWQiU8RJcC
+            nHuPPGsslZSzGx8ejKtlReXE9YrafFZpRSldNkLvehR80mhjmanEkBC31vjFcQPU
+            aAEJAhBRJLR/V3CaGgQFQy4z0xJ17k/fwefLLgyimmYL0nE7kkmUcYzI80+BKuaU
+            TuJaq0RbSQiRUqeKepgo0nkEHJUuUSoGtkhgqCfz+yHyqUHAA4y3GNoH9D0+PaR0
+            NYNXjiT6cnEn
+            =zWfQ
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    version: 3.9.4
