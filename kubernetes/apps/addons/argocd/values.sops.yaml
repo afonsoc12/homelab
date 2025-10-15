@@ -75,6 +75,13 @@ configs:
         createSecret: ENC[AES256_GCM,data:+jpz2w==,iv:rHcZTN0ekEVfBLhbLCqgzfOOcgQNaDVN4eIEdPCz4Vw=,tag:9mtjUvZjrBySXVCMz3M5Sw==,type:bool]
         oidc.authentik.clientId: ENC[AES256_GCM,data:ZN2l2BvKBlqN59nIcBlFS33ThrN0L9tAL809zgkteYs/+Wcwi8rgbw==,iv:TqqhMTZI3mIRd/nuXSAmmDBL/3eyS4g/LhHwHac1TJc=,tag:DSDxKu6RDE0TKhkRoRlccw==,type:str]
         oidc.authentik.secret: ENC[AES256_GCM,data:msmApUsCjHhS+ZibA8p5KoVpM2DFXrQEdTYLBSm15rTGfAMFOUf5D+AnZ2e6XewBqScxLZfSZhCrVQmI2iGgg7lQz5Qq8Szqz6Te2wJPknaeT37J5UaDoDC0AGy54ayDJIULnO2nRitm87+NdGSc0e2xoFKTc9D4Q5tQn/bhSQE=,iv:+6LN9UPOATX+AHncKVaaM+Pxw/O5oQqBXXYATDiawyM=,tag:QSUtRjM1T7WDhbNTLB3kxg==,type:str]
+    rbac:
+        # -- Create the argocd-rbac-cm configmap with ([Argo CD RBAC policy]) definitions.
+        # If false, it is expected the configmap will be created by something else.
+        # Argo CD will not work if there is no configmap created with the name above.
+        create: true
+        policy.csv: |
+            g, authentik_admins, role:admin
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 extraObjects: []
@@ -268,8 +275,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-15T00:48:28Z"
-    mac: ENC[AES256_GCM,data:VHk7MDQFZzrO4eni1B9HKPvaKGGC2wsMv/vr+nGtADLYVlf7OuwHuqnkzAl0UjDlbu4NQ9ZB9rSeV2p2/nm2qvmtd28Usrm2ycb6BEsGX5teUVkRnLoWpI3Ce7xV68seklyvVm0wZVp5v/7UY6A/KuC1BA/CEPqQ7v/UQsFpKJo=,iv:yshvMROQuQv+x/si0USlyrf+gT9gtxtU8gKYsBi5Hv4=,tag:ijgqW5z4xjtbmC74k8R7Vg==,type:str]
+    lastmodified: "2025-10-15T00:54:23Z"
+    mac: ENC[AES256_GCM,data:CvrSFzuYR7mW3ByWT+43uM+5rWk6ixrjgjNDi8ndF5j7gyvLYth3ie3cqkyiPILcpzR8tzddE7lEVbuPYZOKqWrZCSHbTieXZf2tGgaSBD6xxGMv8yUs10eKQqOxBLkFwiexAv9BHDbFAn1Fkt/CN/mtqIWssSGvCnpnFLz46Z0=,iv:5TmfxHWL5eiX/YYPR50K30jM1hpyTFxIDbDybkvmGZ4=,tag:lMGinrdwKbn3/fsveTFDOQ==,type:str]
     pgp:
         - created_at: "2025-10-15T00:48:28Z"
           enc: |-
