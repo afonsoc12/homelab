@@ -42,7 +42,6 @@ server:
 worker:
     name: worker
     replicas: 1
-    affinity: {}
 serviceAccount:
     create: true
 prometheus:
@@ -67,8 +66,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-13T23:08:30Z"
-    mac: ENC[AES256_GCM,data:7j7AbSdJPCVb/L3rbBzmeO2m6nDXDkmNoE8/jlhb84eNj1JfolvrxaTfR1m7aWf/lro8J1MfYiO94/DlFOP2SwfyNYBK1N0PHYSJqwYm940qjupc+0+jZfSTQ4ojWYzdM5pGtmAF66GN+GbVLm/fUo+NAjRr9Eo2rgI5aHtnO6A=,iv:IlN07mnCgBBeid13ngObycCMW6JmtEOJ27QF/VpWiF8=,tag:VfaHBTcUqwr7Lo92F/2Ldw==,type:str]
+    lastmodified: "2025-10-13T23:09:56Z"
+    mac: ENC[AES256_GCM,data:qqDu0Yw3ETFfKdQbDktHd59i7zLTHvp6pdNs3N7cGVZrWWajZK7YlwfdSX2gb3EsuvgT5CmvS0vkYvOCNJ1X/iLPKBaTNvBqPxOw5pkiML1hZfFSbU0GX/loMAs2lBlvpNncZoRSeXOyTy2UcXSxMqCxWoJNliAkVffJr7JOcGI=,iv:AutBUmiKI7F2SU6furcI0q4AfnX8WssnL8LedvcSf5A=,tag:stMg17te236Z4pANdxh+wg==,type:str]
     pgp:
         - created_at: "2025-10-13T21:25:28Z"
           enc: |-

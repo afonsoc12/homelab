@@ -13,7 +13,7 @@ crds:
 global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: ENC[AES256_GCM,data:5CvxQsAbfpaOByiu9qzSgOLxO9ymvzbLnHc=,iv:Ebe8RfGHhxCTBlKtN3qbehSEBnB0inUm30fJ7MtcV1c=,tag:1m1CM+Yp8NkAbLyowtURoQ==,type:str]
+    domain: ENC[AES256_GCM,data:Ie2GdmV73YlZ6DuNbmaJiBX0v5dtZ1cw8r0=,iv:p8oH17/M0S7VS6sPrFrS+xbMKiErNsKd697oAmJlL98=,tag:eTsGkRJQ1NDFSbbYaImInQ==,type:str]
     # -- Common labels for the all resources
     additionalLabels: {}
     # app: argo-cd
@@ -37,6 +37,9 @@ configs:
             jqPathExpressions:
             - '.spec.clusterIP'
         helm.valuesFileSchemes: secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import, secrets+age-import-kubernetes, secrets,secrets+literal, https
+        admin.enabled: "false"
+        oidc.config: ENC[AES256_GCM,data:QFITtPW3nSnPEaxsFPhSo9J5WVr54sfBKci73gkoht/uWKfTr7OIUiwCFBbzDSJRRYi57dRVSHgt9agM4GfywDTkc4wkcYxIJg0z1k2cfGt52qm04zSVCuM+Ipxcab8/Z39yJwWICZAsARRbqOghEe7oHpII9nZvcSFny7rwLKDReeQPgEMbU5fdg2IdECbTfBQKQsijIH0bXcqPNSXMd25oWUgSorjOPz/ECdCvB7xEKhblHag5rZ98rhfZ6fkPWRJdoJHY63yxtRRT0quqS8lGyGPhIcZl+8+aIh+s0K2zI0Wp1IroZKQ=,iv:OpEf+dH9l/YWpvYOUYmOvHg8o1Fr8AgFpmiVDItWIis=,tag:S3k/4423Gu4P3Z7n0OFsYw==,type:str]
+        oidc.tls.insecure.skip.verify: "true"
     # Argo CD configuration parameters
     ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/argocd-cmd-params-cm.yaml
     params:
@@ -68,6 +71,10 @@ configs:
         #   generate:
         #     command: ["/bin/sh", "-c"]
         #     args: ["cat *.yaml | yq"]
+    secret:
+        createSecret: ENC[AES256_GCM,data:+jpz2w==,iv:rHcZTN0ekEVfBLhbLCqgzfOOcgQNaDVN4eIEdPCz4Vw=,tag:9mtjUvZjrBySXVCMz3M5Sw==,type:bool]
+        oidc.authentik.clientId: ENC[AES256_GCM,data:ZN2l2BvKBlqN59nIcBlFS33ThrN0L9tAL809zgkteYs/+Wcwi8rgbw==,iv:TqqhMTZI3mIRd/nuXSAmmDBL/3eyS4g/LhHwHac1TJc=,tag:DSDxKu6RDE0TKhkRoRlccw==,type:str]
+        oidc.authentik.secret: ENC[AES256_GCM,data:msmApUsCjHhS+ZibA8p5KoVpM2DFXrQEdTYLBSm15rTGfAMFOUf5D+AnZ2e6XewBqScxLZfSZhCrVQmI2iGgg7lQz5Qq8Szqz6Te2wJPknaeT37J5UaDoDC0AGy54ayDJIULnO2nRitm87+NdGSc0e2xoFKTc9D4Q5tQn/bhSQE=,iv:+6LN9UPOATX+AHncKVaaM+Pxw/O5oQqBXXYATDiawyM=,tag:QSUtRjM1T7WDhbNTLB3kxg==,type:str]
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 extraObjects: []
@@ -146,7 +153,7 @@ server:
             nginx.ingress.kubernetes.io/ssl-passthrough: "true"
             nginx.ingress.kubernetes.io/auth-method: GET
             nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
-            nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:yc6e7Arpm1n11ce+rJxbYpFnXv6uuckYfslEPOcpgjYnqGkn1NDH+sdxiEEv,iv:nlVkYa4bkz+RQ7p2ltktb8rmhcXOe/1NhwVhTOixVEo=,tag:iIaBqJL0iARh2b7p/VCusA==,type:str]
+            nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:FArMyxqgal0NS4Ra/KryakZieZUeR7e9hzv2g4nzjXkUaC6+f7bn0zViPWc3,iv:q8v7O3UnWXk9qNxLARDfGIMmSVRQgIR1fbXIBm1YRZM=,tag:mC8lHWSfk+UAXZcNu/CXOg==,type:str]
             nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
             nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
         ingressClassName: nginx
@@ -242,7 +249,7 @@ repoServer:
         # kubectl create secret generic homelab-sops-gpg --from-file=sops.asc=assets/gpg/private2.gpg
         - name: homelab-sops-gpg
           secret:
-            secretName: homelab-sops-gpg
+            secretName: ENC[AES256_GCM,data:G9mQch2AbzCcWHcMNJSyfA==,iv:RdBtDON7v69L7ZcKsP3kTtVmmYkh4jbkjjB+91BLO3s=,tag:8q+LcFD1U9hX1BAK4iWNzg==,type:str]
 ## ApplicationSet controller
 applicationSet:
     # -- Enable ApplicationSet controller
@@ -261,29 +268,29 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-12-31T13:19:16Z"
-    mac: ENC[AES256_GCM,data:Q4Uo6usYrPi5WftGyPSg2TiI28nZ+Ysr9V5bkWTruNbHvMSKnf7OfOl0qV5JNARvmz29hWQODZKqeu4Y37frDqYRC2V3zRASENNxZtae9Jtc2NT9wudBc+jzphd6k4pOL/SQAbQ6p8pjMl9s9H3MFSbkSd6z6JT7ZwyCJI/G+hc=,iv:mxtE3ZDNBHC8u4mkddDyy07NPKRdnOu0SX5QM9GGNkw=,tag:dI/96GZGMD6HffM9Mtg/PQ==,type:str]
+    lastmodified: "2025-10-15T00:48:28Z"
+    mac: ENC[AES256_GCM,data:VHk7MDQFZzrO4eni1B9HKPvaKGGC2wsMv/vr+nGtADLYVlf7OuwHuqnkzAl0UjDlbu4NQ9ZB9rSeV2p2/nm2qvmtd28Usrm2ycb6BEsGX5teUVkRnLoWpI3Ce7xV68seklyvVm0wZVp5v/7UY6A/KuC1BA/CEPqQ7v/UQsFpKJo=,iv:yshvMROQuQv+x/si0USlyrf+gT9gtxtU8gKYsBi5Hv4=,tag:ijgqW5z4xjtbmC74k8R7Vg==,type:str]
     pgp:
-        - created_at: "2024-07-21T10:40:47Z"
+        - created_at: "2025-10-15T00:48:28Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/+O0l7irNn4K28ZkmDVBEvGj7+o2/LHzGTezKxITkQtn3k
-            F5Dos0R3Y/pXfqMuV4hjcSBIafB90w8i3RykHIDvcq2NBgQnaE+2BtCKqPcG9spb
-            HUHsAflT51nG/XmXxU0IkxWDzcs2Opu7ZbLvK8bTxPww8FWdML/NU7UElGjBZO37
-            BosTubAGHArJDeI2T254kM4M7EMHiWGh7wHYvnIRGcf4dqnL56tG5Rhd3QQcN2Br
-            lTwA/FxbeIy/fcK0tvCOURusZFX3dfGqPJAKBmssO/GghSTKdyqGGeqYcAcaw98B
-            uPWhyHh6KSjjw2LWUl11Y58UtIFafl3vS984xKMnxL0JFth6he+3LxwmDXC9TnWe
-            kGB8I6q8bcSNrVWTUatuBbSDxS0EQrqF7fOCmRhr39+T1OtMksMBSjXLhI/JJQWr
-            QWehawEhIQayiZ07KbdIVDxzE3TMr/5NVAqY4ERYfnDu4qzDWU2sV7ChtjijepeQ
-            ehUIdtxI0qkOeDrI4O819v3VewGiHlLPXKRm88sk4YL8FuA1dzHx/Q3gBjMn+X0p
-            3Mi5dFwRI3eU9tH3oJtnJkozwROWxLVHPT+zvMvATJ8agxuyqLLvslcEFMI8wkTs
-            lDzjKMXBGHyHig2A4qCBS16+wHoOF5VbwGm4ltQV/G/KgMh7bzxATxqg8flWZPjU
-            aAEJAhDw3872JVNAQgtfHYsN7yJM4DWJf2Mc8tjFGqt7drZ4gbFuLnD4JHd8aLZT
-            Mwp8sl1/jh9a6FuanToOXtWfXQdudSowI4UaEYxCff56oRzLWkDXASt46u/Q0D1C
-            KxQh37EWwLt3
-            =gNUK
+            hQIMA5NT/LvuRqeGARAAoikmrB411k2Dl0blqcF/PPFxEGTsXHGqcujdjjzIgmQT
+            +jMZFvEJcPg/XcyFixmysKHFT/gaocYHkMetEAsnauyw4hsrWr8NSEqQnRyr9z4o
+            AYJwg1yJ4R1EFNuHGnQ+3oShbJIi1H0SkTYx9DvnPFMeu2no3bH/1GC2KnPAi7z4
+            T+0q1YHoxFWxc+FHC+9PrNBa6dqo0mf35oucRmiW8toh110Y9Sbap34G54RRAGRO
+            Q9F0az8CJj4B4MVcthSJNxeO5KKaPmLn/YJVQw6IT+zlfXQEBHzB1ARMOLBfOD1X
+            DV0Q6GBqOwd+v9B36n/E3WBRtakIyhFweezGULj5z2QNLCHXHedwvFWgrB4Qf1+G
+            wkTbsV6+oqyQtqcmDNkIEK4qY9vl3ZJbLKN91eWnh+vSYaEGwTcAgq8QDozpTWW9
+            uyj8ePyfopA6vBPiS5MzXivx/mgBfk9YZXoE69tP+Pk9017CmjocrZMGisY64tPQ
+            H6yZMcwJLiC1QSbv6uspufpQqq5IZ/wMvhkO6+3JPP9RgpWq945ntADiUMCdsYBT
+            Z3JGms/2VC83up2f1o2QBZhy9ep1FcftSVXDKJmv5PYXQq7sye7tMkA2sP6VjGLy
+            yz8ee1SdIprILW1NdaUBDWrNLV26VokN2699vRxYpqVKrBL5o5rR+kMl5RZLaOfU
+            aAEJAhDK2fq9zwOwqysxU8vb6lDBLP948rEzqUz6U8KAITuCxbOy5jeZsZWwEOEY
+            FW2CVCq7QiE0gGnZ01E/7mC+ppGT3Hp4Kwxsz3YzqZqyG8VMUbD67gval4BmM8em
+            r45ZYxkCjYCI
+            =ZvLv
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(domain|nginx.ingress.kubernetes.io/auth-signin)$
-    version: 3.9.2
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin|oidc.config|secret|domain)$
+    version: 3.9.4
