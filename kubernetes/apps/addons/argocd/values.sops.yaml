@@ -158,11 +158,6 @@ server:
             nginx.ingress.kubernetes.io/backend-protocol: HTTPS
             nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
             nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-            nginx.ingress.kubernetes.io/auth-method: GET
-            nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
-            nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:FArMyxqgal0NS4Ra/KryakZieZUeR7e9hzv2g4nzjXkUaC6+f7bn0zViPWc3,iv:q8v7O3UnWXk9qNxLARDfGIMmSVRQgIR1fbXIBm1YRZM=,tag:mC8lHWSfk+UAXZcNu/CXOg==,type:str]
-            nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-            nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
         ingressClassName: nginx
         path: /
         pathType: Prefix
@@ -215,13 +210,13 @@ repoServer:
             - -ec
           env:
             - name: HELM_SECRETS_VERSION
-              value: 4.6.0
+              value: 4.6.10
             - name: KUBECTL_VERSION
-              value: 1.30.2
+              value: 1.34.1
             - name: VALS_VERSION
-              value: 0.37.3
+              value: 0.42.4
             - name: SOPS_VERSION
-              value: 3.9.0
+              value: 3.11.0
           args:
             - |
               mkdir -p /gitops-tools/helm-plugins
@@ -275,8 +270,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-15T00:54:23Z"
-    mac: ENC[AES256_GCM,data:CvrSFzuYR7mW3ByWT+43uM+5rWk6ixrjgjNDi8ndF5j7gyvLYth3ie3cqkyiPILcpzR8tzddE7lEVbuPYZOKqWrZCSHbTieXZf2tGgaSBD6xxGMv8yUs10eKQqOxBLkFwiexAv9BHDbFAn1Fkt/CN/mtqIWssSGvCnpnFLz46Z0=,iv:5TmfxHWL5eiX/YYPR50K30jM1hpyTFxIDbDybkvmGZ4=,tag:lMGinrdwKbn3/fsveTFDOQ==,type:str]
+    lastmodified: "2025-10-16T23:09:17Z"
+    mac: ENC[AES256_GCM,data:OTXV96gd5I7X49XtTxtBpzGkzwzxDAo6+aOyDZncSSfrReHZCpWjwpCYrFyCKj8r5kIexUelZvk3Wj1BTCwCJxSkw3niglu+LbvxbX+rAM5OtF+LJfaHzzXWSbrN7qX4o78qVOva+l1B1kF3mjkByFNsclz4i5KdWxb4xWA0Q9o=,iv:bENJVefi6qePQ/clXyFLoTF8CgK+eJH+yV5en3nDSYU=,tag:FzdRpFoeLBjklT/e3dWq3A==,type:str]
     pgp:
         - created_at: "2025-10-15T00:48:28Z"
           enc: |-
