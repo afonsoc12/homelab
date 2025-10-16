@@ -9,14 +9,19 @@ controller:
     config:
         enable-real-ip: true
         use-forwarded-headers: true
+        server-snippet: |
+            # Drop requests where Host header doesn't match TLS SNI
+            if ($host != $ssl_server_name) {
+                return 444;
+            }
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-03-26T13:04:49Z"
-    mac: ENC[AES256_GCM,data:wiUQMzSZXsjZZlyly5nZCssH8OQJfbK65Tw1mhuNPiQva5phudOj0Kbzlgam+Ny9N+YKp/U+468gTAyw65ccVs6f3AdjKudw8ZlRC8KL9R2kBQVXYDZpbG37t9Ot/KsXXsNxeDP6npwUCGV/hsH0F4uOjTGVKPdPC3Vy/d3WYNc=,iv:5Gw35lBF3YJw7hVu0VxgCPsbjICBybPsGN8ceKHTyto=,tag:Q1QVK4C3ivBdeN+2/DIZaQ==,type:str]
+    lastmodified: "2025-10-16T22:58:24Z"
+    mac: ENC[AES256_GCM,data:hJjvveaoTTXDLKefAb3ue0B02rQLk4oytVD+sWi0RH/INJkXA+DUB4yjrH5gB45+uXFLC/gjGq6oVYTxCIIoOx9qy9SAU42cYoaovIVfHNOzuz1SijT8u+t7uf3PWtD48XeVQu0yu48U23AsF2e5xoPiZAlznGks9BSVom2ASNk=,iv:7kEsUi1uEhWw4aOFDg38SgfAuFJhxh0nA9IytvDgCoA=,tag:YCnidH9/zKT2V6A6hC+hJQ==,type:str]
     pgp:
         - created_at: "2024-07-20T14:15:24Z"
           enc: |-
