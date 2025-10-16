@@ -4,6 +4,9 @@ domain_ldap: ENC[AES256_GCM,data:gJFUsiMlCbNviQPUTCulWANu/w==,iv:WawC9nQQITwYxGX
 authelia:
     service: ENC[AES256_GCM,data:4n7/ij3ol8WG1jTJkVzRcq1KdSJxeQ4M9LeMJ1GhCujOoA==,iv:idX9U1yoxgrZbraZR2Ly8P6a0kluJOdX9KOzW2kEfgc=,tag:VCqC5nNylu0ABpw2JEagpw==,type:str]
     url: ENC[AES256_GCM,data:WLNdLOYKbA/9wV36AXZYXqyd,iv:Bk1qyDxg3QtJFMypmlEBn+pPvu19lM7LCJo4H/tuxvU=,tag:veAPqogdkY46T6p40WHvgw==,type:str]
+authentik:
+    service: ENC[AES256_GCM,data:e3utAc/p/4JI5ofd/SpJmRMpUDZA0gQEwZMH+17uTOwg8y6cn45+cndaM06YJoC/dBDjgVKs2sew,iv:2KB25q1XZbPyRy6L/h58j1iWfiqaheMN1SDrK2/aK4g=,tag:UrTHlyJrFq0uMJkQ/2bXQQ==,type:str]
+    url: ENC[AES256_GCM,data:zOQpPKlenL3rzZRaEQPFg28=,iv:xojVpGz9XREbwQFEspqCof28T+dqkVtSuDZkJPQzzc8=,tag:m+EDyqxX8vWHOb73ZTXjHg==,type:str]
 tz: ENC[AES256_GCM,data:LhE3STImey6e20aAPg==,iv:2tXbdweWqOwcbp1OWsqWRGLTBBCWA2GUtzNJt7fI7wM=,tag:QAqLmxIYBY38Wm3O9EN7Gw==,type:str]
 ips:
     hoarder: ENC[AES256_GCM,data:YrYzHU8tFuzttsg=,iv:gjFms2uXAcpMFmZJoy0SfZrZJNWYiIlgl569rArdTRY=,tag:ncy3yAsOMtJwL8oTgYYVYA==,type:str]
@@ -18,8 +21,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-05-24T15:19:51Z"
-    mac: ENC[AES256_GCM,data:o292oXImaYDBwGWIE+34yG4dfbvu82MC/elDe+i3f8SFCyzUvrARYO236vjFnTgYk79Y1eoAfyLCsL/L346W+yE61LwTgBRnLGHR2XEzGux3XpChMTapiTGKrTPaLIf0VdXDqHx+5ixmwAigFyUmt73wJQAXBUHxMPM1v7am+l8=,iv:l4SENqL1yFrdenshNkisNTSr5lgpkNf/5lPU1cz42H8=,tag:n4kQAUlE0iVMck/B8YNBZQ==,type:str]
+    lastmodified: "2025-10-16T23:25:59Z"
+    mac: ENC[AES256_GCM,data:GkDjnMc8apHd2Zw3pzQFMs7qKizQW+BXbwsfLv3cga8vynZ4cZWRqYWwlLKkG73ndMXBq/N8gT0uAnV3EsBRHrcEGBcSMLJ755BIUX20OZW+tvxBLjbmuKKrJlPVd2ev/kb0x5EanMllE7mKnXY8i/aCaBlIgqeeEVZn6KOiweA=,iv:J7+bz2366W0buqgpFLD5dsUQG1bQq+Og/a8CnJydifI=,tag:dLcG5RSGI9FT6kkYupcUbQ==,type:str]
     pgp:
         - created_at: "2024-07-14T15:58:51Z"
           enc: |-
