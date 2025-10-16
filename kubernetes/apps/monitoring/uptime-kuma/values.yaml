@@ -47,7 +47,7 @@ pvc:
 
 ingress:
   enabled: true
-  authelia: true
+  authentik: true
   className: "nginx"
   annotations:
   tls:

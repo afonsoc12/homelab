@@ -81,6 +81,7 @@ pvc: {}
 ingress:
   enabled: false
   authelia: false
+  authentik: false
   className: "nginx"
   annotations: {}
     # nginx.ingress.kubernetes.io/client-max-body-size: "0"
