@@ -3,8 +3,8 @@ revisionHistoryLimit: 0
 strategy:
     type: Recreate
 image:
-    repository: bitnami/wordpress-nginx
-    tag: latest
+    repository: docker.io/wordpress
+    tag: 6.8
     pullPolicy: Always
 ports:
     - containerPort: 80
@@ -74,8 +74,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2025-10-17T00:30:11Z"
-    mac: ENC[AES256_GCM,data:kUSNnwb85pAmlH6pQaTnSCzNeMVctMdZaXyCPgNgIUxIa6tgs5YsTIrEO4alAYYQUhAl3j3ljSRkTm7sAppScg5KLDBJgpoRrLvPmYq0PZonGuaKkAEXET/s+Jwd709DcXn3lIyA7q+AebuXM0E+GCToK0EYCj3QSllf9qU42MU=,iv:xtk68Y8QvC3UpafwBBD0YLm/ZgkO1SDPTOdJxcCGIlY=,tag:xdOfdLkwAJY1adCx7OteOg==,type:str]
+    lastmodified: "2025-10-17T00:32:55Z"
+    mac: ENC[AES256_GCM,data:ABGC3EyujJGIgkLfQ4pawzxwJoQK/DeCgjbyQKsaefwMu9Q3wbGT1c+ezp4CJdMrlQE+1jzOnXzohP05q7Pp2qrf0gkv4HF6j/Zo/PCJ5aFUouMaQPJ1ZkSdcssjs59MF+0sqbUUC/AaEMe0lN9g3ohp0Qonzg8NQpUxrWfidEA=,iv:cDp1qUkJsIqAdP6W2QBcOlN1Bj05onFt8TDqTPHm4C0=,tag:PGBQ8PiMYG8FZoRzOPs7Ng==,type:str]
     pgp:
         - created_at: "2024-07-20T18:54:09Z"
           enc: |-
