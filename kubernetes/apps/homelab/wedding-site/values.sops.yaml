@@ -7,7 +7,7 @@ image:
     tag: latest
     pullPolicy: Always
 ports:
-    - containerPort: 8443
+    - containerPort: 80
       name: http
       protocol: TCP
       service: true
@@ -24,17 +24,12 @@ secret:
 configmap:
     mountEnv: true
     data:
-        BITNAMI_DEBUG: "true"
         PHP_UPLOAD_MAX_FILESIZE: 5G
         PHP_POST_MAX_SIZE: 5G
         # PHP_MAX_EXECUTION_TIME: "1000000"
 volumeMounts:
     - name: data
-      mountPath: /bitnami/wordpress
-    - name: data
-      mountPath: /opt/bitnami/nginx/conf/nginx.conf
-      subPath: nginx.conf
-      readOnly: true
+      mountPath: /var/www/html
 volumes:
     - name: data
       mountPvc: "yes"
@@ -52,7 +47,6 @@ ingress:
     annotations:
         nginx.ingress.kubernetes.io/proxy-body-size: 5G
         ingress.kubernetes.io/proxy-body-size: 5000m
-        nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     tls:
         - secretName: local-wildcard-cert
     # Will assume the first element in .ports, regardless of service
@@ -80,8 +74,8 @@ sops:
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-10-27T14:35:59Z"
-    mac: ENC[AES256_GCM,data:1mRFJe7KLgH6XJWF90zYhfQtoGxPpKZ05RDIAxJpsF6RiLkc/0XKKoT0H0P/D6Whj0Eop9tKrWfhyrOPfIeWXEb77ZwSKDm23yNrEpgl4eI3hPNLDjvEW44IpACgAoU/o2XmPW5QpwaM2634caujP8s6rM37UCHjNbfOUkOKFbk=,iv:MdCw/CbXBH9kKkFDAwwZnoKi4O8eh03ziNdiJhcDHkE=,tag:S3YJRGfROwiffDtMP/QHuA==,type:str]
+    lastmodified: "2025-10-17T00:30:11Z"
+    mac: ENC[AES256_GCM,data:kUSNnwb85pAmlH6pQaTnSCzNeMVctMdZaXyCPgNgIUxIa6tgs5YsTIrEO4alAYYQUhAl3j3ljSRkTm7sAppScg5KLDBJgpoRrLvPmYq0PZonGuaKkAEXET/s+Jwd709DcXn3lIyA7q+AebuXM0E+GCToK0EYCj3QSllf9qU42MU=,iv:xtk68Y8QvC3UpafwBBD0YLm/ZgkO1SDPTOdJxcCGIlY=,tag:xdOfdLkwAJY1adCx7OteOg==,type:str]
     pgp:
         - created_at: "2024-07-20T18:54:09Z"
           enc: |-
@@ -105,4 +99,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.0
+    version: 3.9.4
