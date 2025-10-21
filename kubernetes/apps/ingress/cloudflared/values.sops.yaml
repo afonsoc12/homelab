@@ -2,6 +2,12 @@ replicas: 2
 image:
     repository: cloudflare/cloudflared
     tag: latest
+service:
+    enabled: true
+ports:
+    - containerPort: 2000
+      name: metrics
+      service: true
 args:
     - tunnel
     - --no-autoupdate
@@ -12,28 +18,28 @@ secret:
     mountEnv: true
     stringData:
         TUNNEL_TOKEN: ENC[AES256_GCM,data:f9SpD5Ah8J2UTLhjiAT7zpYry01Zf5vcisQEbnC8gEvPT8nyFblu6QySMjzJZArT4eC3AMw/ZpesIH9qTdcKiP7sYB6Mj388mv7B2zj0O87qKCj0w9TWQXvyi4AT+z4tSIoLAVdvlvLwkfKbu/ltonkAZ9SjurVKSOLLYo9K41kY/EUr83wYY+AmJQKzuAmcPn28WcHU/e1vNFlAlIkTEueGOiREst/jQC5TEm2wHCuvgSwh,iv:mt41MgXm/4EBec2TqzSYWMr0g0AXpt+bJXQjjtvRZIk=,tag:ygbPGMS72HA/PGP2/bfh6Q==,type:str]
-# livenessProbe:
-#   httpGet:
-#     path: /ready
-#     port: 2000
-#   failureThreshold: 1
-#   initialDelaySeconds: 10
-#   periodSeconds: 10
-# readinessProbe:
-#   httpGet:
-#     path: /ready
-#     port: 2000
-#   failureThreshold: 1
-#   initialDelaySeconds: 10
-#   periodSeconds: 10
+    livenessProbe:
+        httpGet:
+            path: /ready
+            port: 2000
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 10
+    readinessProbe:
+        httpGet:
+            path: /ready
+            port: 2000
+        failureThreshold: 3
+        initialDelaySeconds: 5
+        periodSeconds: 10
 sops:
     kms: []
     gcp_kms: []
     azure_kv: []
     hc_vault: []
     age: []
-    lastmodified: "2024-07-25T19:04:54Z"
-    mac: ENC[AES256_GCM,data:Av+LCaoRSQJ0s5AKPPJu83iveD+kdCQWgSBuAUYgK0KUWAblTCoHcNqmew6QM5TeKrHealLuh99718gEr1OzZM6gC09XyUGWvL21aq6EuZYCYirIU8+Tj0k4bYsX5pntwVDlugkMExJpVdUJ54S9fnXqr2I8TCQE/Un/h5/GwJM=,iv:xSr7kIKe5xSUpunUO1/I3+N2d4KrtJA2Lj+jumV2/qI=,tag:eDhVt09m0ZZthbN7su99VQ==,type:str]
+    lastmodified: "2025-10-21T00:13:00Z"
+    mac: ENC[AES256_GCM,data:cY7SwzdPWCTdh+wMGUpEVFnQbZMf8xFr1pPJfGbx/+ubu04HJccHt1gnq87AoExMx/CfMqf4jl6CbgyNH55/rXUsFx7fteITr3WwgbnSaaw6AB6wE3NRxz4qoYNu7mSlIp8HCzmgc8THDKfYkPJQT7PfRnEAD785U9hXHKX+rU0=,iv:ILdgjXJi6uuCGWhhtZuGooieWqwm1H260P0ArkZXoAA=,tag:kuqfMbNzUhTFcICyaICJaA==,type:str]
     pgp:
         - created_at: "2024-07-20T14:14:51Z"
           enc: |-
@@ -57,4 +63,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.0
+    version: 3.9.4
