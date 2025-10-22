@@ -1,0 +1,21 @@
+- name: Pre-requisites
+  import_tasks: pre-requisites.yml
+
+- name: Download k3s binaries
+  import_tasks: download.yml
+
+- name: Raspberry-Pi pre-requisites (if raspberry_pi)
+  import_tasks: raspberrypi_prereq/main.yml
+
+# https://longhorn.io/kb/troubleshooting-volume-with-multipath/
+- name: Ensure /etc/multipath.conf contains the desired blacklist configuration
+  become: true
+  ansible.builtin.blockinfile:
+    path: /etc/multipath.conf
+    backup: true
+    block: |
+      blacklist {
+          devnode "^sd[a-z0-9]+"
+      }
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - DO NOT EDIT"
+  notify: Restart multipathd service

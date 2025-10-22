@@ -1,0 +1,20 @@
+---
+k3s_server_location: /var/lib/rancher/k3s
+systemd_dir: /etc/systemd/system
+server_init_args: >-
+  {% if groups['k3s_masters'] | length > 1 %}
+    {% if ansible_hostname == hostvars[groups['k3s_masters'][0]]['ansible_hostname'] %}
+    {% else %}
+      --server https://{{ apiserver_endpoint }}:6443
+    {% endif %}
+    --token {{ k3s_token }}
+  {% endif %}
+  {{ extra_server_args | default('') }}
+
+server_master_args: >-
+  {% if groups['k3s_masters'] | length > 1 %}
+  {% if ansible_hostname != hostvars[groups['k3s_masters'][0]]['ansible_hostname'] %}
+  --server https://{{ apiserver_endpoint }}:6443
+  {% endif %}
+  --token {{ k3s_token }}
+  {% endif %}

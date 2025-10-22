@@ -1,0 +1,10 @@
+base_apt_repos: {}
+group_apt_repos: {}
+host_apt_repos: {}
+base_apt_packages: []
+group_apt_packages: []
+host_apt_packages: []
+base_pip_packages: []
+group_pip_packages: []
+host_pip_packages: []
+apt_cache_valid_time: 86400

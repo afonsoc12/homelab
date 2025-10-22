@@ -1,0 +1,53 @@
+# ==================================================
+# Role: maintenance/update
+# ==================================================
+group_apt_packages:
+    # Longhorn needs this package to mount RWX
+    - nfs-common
+    - open-iscsi
+    - lshw
+# ==================================================
+# Role: k3s
+# ==================================================
+k3s_version: v1.33.1+k3s1
+extra_server_args: --flannel-iface=tailscale0 --disable traefik --disable servicelb
+extra_agent_args: ""
+# If you define multiple masters you should be providing a loadbalanced
+# apiserver endpoint to all masters here. This default value is only suitable
+# for a non-HA setup, if used in a HA setup, it will not protect you if the
+# first node fails.
+# Also you should define k3s_token so that masters can talk together securely
+apiserver_endpoint: ENC[AES256_GCM,data:NytzmxBSy9UJVkiPzg85fQRyGpf6qbAGfk0CKVSynChpql0RowOq42nwEmbyCEtVxpvaLsI6MEC28Vs/0JBMsfcXe1cUe5M/eDLkPF3c/W5TNw==,iv:Hexk3Evf3PaLpy9wASA7NtyaZG3JiJI/G3S0mP8XgLQ=,tag:ssZykXlE/WZ6lXdfGmM/ow==,type:str]
+k3s_token: ENC[AES256_GCM,data:H9X5yJrbTQgoOelgwgY5ygh1QkKoWvMUIBlwfiDKO3k9B+vtCKC0IvrtUrL8+C1wbDGj4noWWma652S803lwJ8z8uf3uumXYz9Hj4oBOQXJ9Sm0yUCE4cj1qLXVCBxAzMluGKkE8xiyffvtP,iv:1DmN/unLpNZEu4zpI51y3Ld3jUsdXAgk8+ekl+jq/X4=,tag:BmzH+JiRd4xyitvmTK2a5Q==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age: []
+    lastmodified: "2025-10-22T23:10:37Z"
+    mac: ENC[AES256_GCM,data:0BrjVN51nDTfRCBSk0c8Mt3sr8mD2xC0/WD3Ic89wdZ6u5JlT4iL1T5RwpYGnGUIBSNvHsMj3DrLpeRtp4HQExHo3VwG8Mu3cITV3pL8wvrw/pQzghzWXKRS1Nl2C5eiiLcZE/MceqMp0df5d/kIdLuRO6202oQY1RtbmcH94Kg=,iv:287GOKzO48qtnai8jS/Ki2CHSmj/RKAC/AXAkOH42Jc=,tag:I9Ibju3wpbRyNCgmJdGXmw==,type:str]
+    pgp:
+        - created_at: "2025-10-22T23:10:37Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//fVfFuVjm72oAKl3bZaV69wnw4hjnvwEpVjTDUChWuXAD
+            ZMoIE4xwNoJt7TiAhVKtMrxVUdq0Cjk0bb64MpRq8NxpVIMOxPx8jcqVbXKLhYk/
+            rKL5rVzKLQCVzSQIfttiDm/sdxf5t3buMRkxvHcQWLDWYtQpl4a8GfYEzTzq/3og
+            c8TNt94mvRONcoCTUYQQVPGX0fVKXcEeJ2YmmKol4iFCr34tG51yEwxLGuGmrYWP
+            5TmP4S2DwnoGRRzk286iUUvx6X45OMEsVPrHAMElLXMkk6NUMLeC+s7ihjo09Poy
+            iO53JgSElvY8GqFqqlA8EwHjphPBFtOOAugHjOH1ezXPvab5j5DXDUCfFeG/Wql6
+            jXct11jROo0zaF6hwOz75TP6dcxQXTvlCb87Qo5GlMuMq1NAFREdILteQvI8nbAL
+            TDihr4PPi71qYQ0fJs6P9Nh+Vy7YEFRJNNGqN0atNN3PzyQEKTBrSU2gxgc7pvli
+            9ZrrRhGJcqjImfp48S5gM19O8rc6Pl+LHZyauDSFsTR4V+cM24Q8V1Qkg5ovXQfb
+            +Wb5QIWij1pdkZMavOV6B/EcrUwDXO5USv46EZahVJ9KfJlSXEcy45C1/IvlfKeP
+            WSG77t059MSfjxknVUtc+lXMdK7ECbgDSev/CFGG4uZLDZ4MBnQ1wXpxpm4VYCjU
+            aAEJAhAJ0wRLpkd36MtkC3eSmOtXq0mcjbrSYUh+tfPYIHrqaZxYv3i2n9jxvGv1
+            Wozjn1POJVlL7pmBPHZpoDmD4dED/7NWCCyB9a6smh3Iwt3X7QxWncuHfD1TQTS2
+            NRczZTh2I0pH
+            =K9jh
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(k3s_token|apiserver_endpoint)$
+    version: 3.9.4
