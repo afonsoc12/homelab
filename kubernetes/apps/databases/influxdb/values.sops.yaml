@@ -1,0 +1,115 @@
+labels:
+    tier: db
+    # label_2: def
+podAnnotations: {}
+# annot_1: abc
+# annot_2: def
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: docker.io/influxdb
+    tag: 3.5-enterprise
+comand:
+    - influxdb3
+args:
+    - serve
+    - --cluster-id=k3s-cluster
+    - --node-id=$HOSTNAME
+    - --object-store=file
+    - --data-dir=/var/lib/influxdb3/data
+    - --plugin-dir=/var/lib/influxdb3/plugins
+ports:
+    - containerPort: 8181
+      name: influxdb
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    stringData:
+        INFLUXDB3_ENTERPRISE_LICENSE_EMAIL: ENC[AES256_GCM,data:Xq7rVhXmwomHW5xHrk8yKaZhpKVmpelQBejQduHdsyLaIg==,iv:wqNRHSGZmU0Xf2ZgpnUCYdaySJ0CNzM0GOX5MJlUxZk=,tag:0LZD0SXps5p5WYoOYI14qA==,type:str]
+volumeMounts:
+    - name: data
+      mountPath: /var/lib/influxdb3
+volumeClaimTemplates:
+    - name: data
+      accessModes:
+        - ReadWriteOnce
+      storageClass: longhorn-persistent
+      storage: 5Gi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations: {}
+    tls:
+        - secretName: local-wildcard-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: influxdb.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+# livenessProbe:
+#   httpGet:
+#     path: "/ping"
+#     port: "{{ .Values.ports[0].containerPort }}"
+#   initialDelaySeconds: 30
+#   timeoutSeconds: 5
+# readinessProbe:
+#   httpGet:
+#     path: "/ping"
+#     port: "{{ .Values.ports[0].containerPort }}"
+#   initialDelaySeconds: 5
+#   timeoutSeconds: 1
+resources:
+    requests:
+        memory: 128Mi
+        cpu: 0.2
+    limits:
+        memory: 1Gi
+        cpu: 1
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext: {}
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
+# runAsUser: 1000
+nodeSelector: {}
+tolerations: []
+affinity: {}
+backup:
+    enabled: false
+sops:
+    lastmodified: "2025-10-28T19:52:21Z"
+    mac: ENC[AES256_GCM,data:cVBtG1yOWuJfEe1IQhydsaH42hx/nHmJX1QpUQAhtS/jjInvSKiDTK97KTAfrSN4mLa7awHf6aUw5WxbnjFRzeqOouF0n6N+92JvF0jw5jzxjBD86tEcibQPW/OlxLajwsKybC/isrnBGVw7BxR0MwMi8hjLkkoqRz/SBqVzT+o=,iv:g4hP/Ydt707sQk7PSil4vPyxnCcPKYbigjK6NescaOA=,tag:5LmYuR7+vQfWBIajHe8pag==,type:str]
+    pgp:
+        - created_at: "2025-10-28T19:51:38Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//ZhYdNAwE+c009ABvxKAbHK0Jy4ytpPEqhzk/UbQrbZte
+            2U9AWZjw/NzpB32DZb3MfSqwjPLIXlk5uHw/TJ99Bt1xXsN+FuEFXihL9nM2BWdf
+            +U/TCjMXFcmbT2g0ESRGrpxEQWZ8gaO64z8vmGagjcHii+eqpHJ4+hNnoO6J7tpC
+            QcRbHiAxzIvgU07DiIEeo06NFDP/TwQMJwCzLPNlzbP14Yr5Bf9M/UJDClH63raO
+            oKB6pOBcu1QlnJ06CJ3TrgBxBeve8wXZt2z3kQYU8esbApHN2fUmc40y6J39xT8o
+            7AtScuZq6TxdncH0msCTYqhjsz/tAKuCmElg1bzM7CtH5gQ1QnPoP92+qIzlmlCI
+            UMVOMKNmeimb4tQNUV7j05KHLVv00kDbiHKQ6XfuQtm+BnmO2RN7cqyV4gT3lfUD
+            UFjEheAjsrdwndfo+oaGKITwoZr/4fLuDeGN9VDe/e8yiMF9AUTMfKw7uNPC+98b
+            wbV2fIqTbMwemMObMVgWuBdVqAGkT7+b/GEdjYwVOzkn5m6npuj0UVWZX0RIBqIl
+            oxmaH0X8uEa+4F1qPa2MJx9IyenxMXkQ6i/h5Mcq1LgnvPaz57suX8Cw8U6w6kpe
+            iKLB8pCwockroN345DjGlElG4Oo42yrX6Qs6TCLAkiEQHgG1Q05heUVTKz3CdPDU
+            aAEJAhCqgXWa3OkY23bVE/tcO9voD0nTIFpK3WSYCTXJ1NG3fBqFO6YwioUu7EuY
+            za6qN6fHs1en1oDeUfLmbflNbW0wpwHXOYnvdiDR3cpmV29WNCIsjWgmVDilta8y
+            GxCIerP6mH8B
+            =IqNx
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    version: 3.11.0
