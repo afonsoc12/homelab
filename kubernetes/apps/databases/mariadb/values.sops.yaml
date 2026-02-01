@@ -103,11 +103,14 @@ extraContainers:
                 name: mariadb
                 key: MYSQLD_EXPORTER_PASSWORD
       args:
-        - --mysqld.address=mariadb.databases:3306
+        - --mysqld.address=localhost:3306
         - --mysqld.username=mysqld_exporter
-        # - --collect.global_status
-        # - --collect.global_variables
-        # - --collect.info_schema.innodb_metrics
+        - --collect.global_status
+        - --collect.global_variables
+        - --collect.info_schema.innodb_metrics
+        - --collect.info_schema.processlist
+        - --collect.info_schema.tables
+        - --collect.perf_schema.eventsstatements
         # - --collect.slave_status
         # - --collect.auto_increment.columns
         # - --collect.binlog_size
@@ -147,8 +150,8 @@ backup:
                             - db
                   topologyKey: kubernetes.io/hostname
 sops:
-    lastmodified: "2026-02-01T13:20:50Z"
-    mac: ENC[AES256_GCM,data:WFRN7azDEl6YLHzixpRF+g2ve/tyD/3VOXtpyaRulfVXJUNaC9wWv0ybThj7HPhI5a6wdyJScr5Q9/X5oNIqwmjEldeadM/t/ZTEuqBSzZ9iRasF21PdneROL6iDUf1T7T8rmo2dy0yh5CAhKHWF7HTXqd87/X6JEa3O3pCRxDU=,iv:VoF97AnIZPhshDMpWlQLV97TJx+xLRWGGG8Zr+bM1Xw=,tag:iKa/b+qhCpooJkMM9UuTwQ==,type:str]
+    lastmodified: "2026-02-01T14:55:25Z"
+    mac: ENC[AES256_GCM,data:SQXkXgRVP/FebPIl1TyZRKCgJ1W7BGSH2KjNWU0zNkdfvufMMPWN9ij6Vn3BAZ/BTXxnl0iYz6DUVwJEkLgr8ByUyOCGY0ek+L7GEteIh5daT23+pHGzv4Fn0m3mKTKxjaU8gbR+Rn6lPOcoAqFpHYVtwFn8f+LXwQJLrJrlipc=,iv:3Q38yI2AlcqR3Rd57zG067PvyjTRpghpaxgt2XYwXQw=,tag:EGupSLXsEPVpOSg+BuVLow==,type:str]
     pgp:
         - created_at: "2024-07-20T13:01:49Z"
           enc: |-

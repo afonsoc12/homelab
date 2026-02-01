@@ -22,3 +22,6 @@ spec:
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: monitoring
+  syncPolicy:
+    syncOptions:
+    - ServerSideApply=true
