@@ -1,0 +1,25 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: alloy
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: https://grafana.github.io/helm-charts
+      targetRevision: '>=1 <2'
+      chart: alloy
+      helm:
+        valueFiles:
+        - $values/kubernetes/apps/values.sops.yaml
+        - $values/kubernetes/apps/monitoring/alloy/values.yaml
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      ref: values
+
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: monitoring
