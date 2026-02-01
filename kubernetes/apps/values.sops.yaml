@@ -15,14 +15,12 @@ ips:
     unifi: ENC[AES256_GCM,data:G12cH84Zodt7,iv:N9RsuGXeb0SrtVFktNCeFJqvvRI2PzPHt5VVeh7KqxY=,tag:44/SCzMMQa+0cn/kDe46TQ==,type:str]
 ips_tailscale:
     hoarder: ENC[AES256_GCM,data:AJU8O0TX24QveikUUA==,iv:YVZyNrgEOfr3wkH/2/MrsuO4rNvCMP0wjwPNCl0up8E=,tag:wPsdZHhNZzptbWySj3TESg==,type:str]
+    k3s-m1: ENC[AES256_GCM,data:utBqqNTN+x4uXkDRAQ==,iv:iTreLptQaQpwsjrsEqYwrErIeBO/NEnZQggTbbwzRZY=,tag:SGYC0NytVRE8GI5XsH54Rw==,type:str]
+    k3s-m2: ENC[AES256_GCM,data:DEhJbbUWfbqg3z2Z,iv:Ggt6mDCVK7ImNd3+HZieXlT3HsSM3b467QShxOmzS8o=,tag:cvLQg1p8cV/QyzOowcPaLA==,type:str]
+    k3s-oci-m3: ENC[AES256_GCM,data:/TcWXjDFe0YrV0VrJWPc,iv:yCYFUDhMkg+bAZywMBe0Fpgv57J5reYQRgCAT2Nm2cI=,tag:0heN8LVAoLlcyuky86dosw==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-10-16T23:25:59Z"
-    mac: ENC[AES256_GCM,data:GkDjnMc8apHd2Zw3pzQFMs7qKizQW+BXbwsfLv3cga8vynZ4cZWRqYWwlLKkG73ndMXBq/N8gT0uAnV3EsBRHrcEGBcSMLJ755BIUX20OZW+tvxBLjbmuKKrJlPVd2ev/kb0x5EanMllE7mKnXY8i/aCaBlIgqeeEVZn6KOiweA=,iv:J7+bz2366W0buqgpFLD5dsUQG1bQq+Og/a8CnJydifI=,tag:dLcG5RSGI9FT6kkYupcUbQ==,type:str]
+    lastmodified: "2026-01-28T00:22:22Z"
+    mac: ENC[AES256_GCM,data:4F/91tN9dHrUWJ9z+JOaK6KkcPnKe+NSzhWVBIYqU8Dnv+dG1QvKYBREp0JEP5Svdr0Lh7gCnQkap+tmpYjb4HmdEOzuJNxXmKeUoSXZMDJrRCDl6r67mZQX7n9dlRzKrwzL9hJtVcKFwzayc2rATxnJorPXbTVtYr1yuTuH9/U=,iv:KNW+hp1lDwJxNBajYh1WJ6YiCiQZ1N2Ww82B1hlzYzs=,tag:X4uWQwbLLntvWdr/JdWoOA==,type:str]
     pgp:
         - created_at: "2024-07-14T15:58:51Z"
           enc: |-
@@ -46,4 +44,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^*$
-    version: 3.9.4
+    version: 3.11.0

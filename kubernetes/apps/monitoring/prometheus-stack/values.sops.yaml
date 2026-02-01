@@ -1,0 +1,243 @@
+fullnameOverride: promstack
+crds:
+    enabled: true
+    upgradeJob:
+        enabled: true
+        forceConflicts: true
+defaultRules:
+    create: false
+alertmanager:
+    enabled: true
+    config:
+        global:
+            resolve_timeout: 2m
+        route:
+            group_by:
+                - alertname
+                - hostname
+            receiver: discord
+            group_wait: 30s
+            group_interval: 30m
+            repeat_interval: 30m
+            routes:
+                - matchers:
+                    - severity =~ "major|critical"
+                  receiver: discord-critical
+        inhibit_rules:
+            - source_matchers:
+                - severity = critical
+              target_matchers:
+                - severity =~ warning|info
+              equal:
+                - namespace
+                - alertname
+            - source_matchers:
+                - severity = warning
+              target_matchers:
+                - severity = info
+              equal:
+                - namespace
+                - alertname
+            - source_matchers:
+                - alertname = InfoInhibitor
+              target_matchers:
+                - severity = info
+              equal:
+                - namespace
+            - target_matchers:
+                - alertname = InfoInhibitor
+        receivers:
+            - name: discord
+              discord_configs:
+                - webhook_url: ENC[AES256_GCM,data:7mn46Q/VZsZwGTp5gr0HuwWo1iLN+gpMdiGvPqIT+9JwCTrQlnq/l9V4pE1gey3GP2af9vQ9b8XTR/JK9xmKxvNYx1RzjrH3/9GcxvhVaoXrNbQWLr479U12xi4FIGx+K0zQVGwjK0OA4kaMcgVYaDUdoqZztk1W0A==,iv:duLbJoaPJfp6839SDEx90so85zPQaykUPOSf4whT4u4=,tag:gW4irWsdVJfPXf43LlNK+w==,type:str]
+                  send_resolved: true
+                  username: Alertmanager
+                  avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
+                  title: '{{ if eq .Status "firing" }}:x:({{ .Alerts.Firing | len }}){{ else }}:white_check_mark:{{ end }} {{ .GroupLabels.SortedPairs.Values | join " " }}'
+                  message: "{{ range .Alerts }}\n### {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }})\n[:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }})\n[:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})\n"
+            - name: discord-critical
+              discord_configs:
+                - webhook_url: ENC[AES256_GCM,data:i14pWpcTl3iX6ZOwSij4skAMOINQMeavDclyYmxGPgOdhtVyGkZ4XN2/oq8yBtvbep03qaDEDeInWoolRsjCGgYPDEu8Jo4+kLzXhNNiLXDN/svF9ePbf56SSKAgpPEdn68RGj+BIi842UTpoPfgc7bpLemPE1UnQg==,iv:NoW80hwnhsu3iwQult4S6OvTfNdh91Sr2T0hJdZITyo=,tag:mPmoAvYL4VMQEHY1pc5ngQ==,type:str]
+                  send_resolved: true
+    ingress:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+            nginx.ingress.kubernetes.io/auth-method: GET
+            nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
+            nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:BBWpDxME1K43WQMkFue8B2zjcFsid3JAxurNFdV+Ua+O+6mLAfmLV1AYCGp0,iv:UKSDySo8OMtuBg4658ru+TqxD/2IBpxbyjT/pWAZpJY=,tag:6VSRSYutT8i1dTnBEoEJPQ==,type:str]
+            nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+            nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+        hosts:
+            - ENC[AES256_GCM,data:D171khbrqp2LePht6sfII0csZtWzZRJ7JyYfIaSwSQA=,iv:X0G32NjOi2YWXW4zgjSXaFaOWpKKEkB3jtPcYmj67cM=,tag:03cNJMWlvpQLhN4Z9PH1zg==,type:str]
+        tls:
+            - secretName: local-wildcard-cert
+    ## Configuration for creating a ServiceMonitor for AlertManager
+    #
+    serviceMonitor:
+        selfMonitor: true
+    alertmanagerSpec:
+        logFormat: logfmt
+        logLevel: info
+        replicas: 1
+        retention: 120h
+        ## Storage is the definition of how storage will be used by the Alertmanager instances.
+        ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/platform/storage.md
+        ##
+        storage: {}
+        # volumeClaimTemplate:
+        #   spec:
+        #     storageClassName: gluster
+        #     accessModes: ["ReadWriteOnce"]
+        #     resources:
+        #       requests:
+        #         storage: 50Gi
+        #     selector: {}
+        externalUrl: ENC[AES256_GCM,data:xhljnpBXVyFZ0xfDDMLJLXdeKdWoffBZzsAb69CX2nDDZhFtm3IZpw==,iv:DvlQ5KbwVZJOqo7HzYl+qm3wcD0GzBQ/nqbcj5QhJoQ=,tag:/6WjKb5QI+0VsF1qv7sLdQ==,type:str]
+        resources:
+            requests:
+                cpu: 20m
+                memory: 64Mi
+            limits:
+                cpu: 20m
+                memory: 128Mi
+grafana:
+    enabled: false
+kubernetesServiceMonitors:
+    enabled: true
+## Component scraping the kube api server
+##
+kubeApiServer:
+    enabled: true
+## Component scraping the kubelet and kubelet-hosted cAdvisor
+##
+kubelet:
+    enabled: true
+## Component scraping the kube controller manager
+##
+kubeControllerManager:
+    enabled: false
+## Component scraping coreDns. Use either this or kubeDns
+##
+coreDns:
+    enabled: true
+## Component scraping etcd
+##
+kubeEtcd:
+    enabled: false
+    endpoints: []
+## Component scraping kube scheduler
+##
+kubeScheduler:
+    enabled: false
+## Component scraping kube proxy
+##
+kubeProxy:
+    enabled: false
+## Component scraping kube state metrics
+##
+kubeStateMetrics:
+    enabled: true
+## Deploy node exporter as a daemonset to all nodes
+##
+nodeExporter:
+    enabled: true
+prometheus-node-exporter:
+    prometheus:
+        monitor:
+            enabled: true
+            jobLabel: jobLabel
+## Manages Prometheus and Alertmanager components
+##
+prometheusOperator:
+    enabled: true
+    kubeletEndpointsEnabled: false
+    kubeletEndpointSliceEnabled: true
+## Deploy a Prometheus instance
+##
+prometheus:
+    enabled: true
+    ingress:
+        enabled: true
+        ingressClassName: nginx
+        annotations:
+            nginx.ingress.kubernetes.io/auth-method: GET
+            nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
+            nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:6pXP+anmtnmMwZofnF3/uVPhxT0v0aTgMh6RZqDxEd5BZlNDeF+HPS7BDaJ/,iv:b6m3M0qpEH0AfF+448NRAXF4NEpP6n00JJ1eo82pBSs=,tag:pacglrUav2HsdI1VWLVjng==,type:str]
+            nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+            nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+        hosts:
+            - ENC[AES256_GCM,data:Ogy4J7II+M4xqaZk9RGh61hPDka9r9mpfhenkrzK,iv:S1+1wXc/JyzD0SedjfSQWJPpKm6ZtMn+041Pc6jCfZU=,tag:kH8YtI+eaX5PIpuG/hn5Ew==,type:str]
+        tls:
+            - secretName: local-wildcard-cert
+    prometheusSpec:
+        retention: 10d
+        retentionSize: 20GiB
+        walCompression: true
+        logLevel: info
+        resources:
+            requests:
+                cpu: 100m
+                memory: 256Mi
+                # limits:
+                #   cpu: 2
+                #   memory: 4Gi
+        storageSpec:
+            volumeClaimTemplate:
+                spec:
+                    storageClassName: longhorn-persistent
+                    accessModes:
+                        - ReadWriteOnce
+                    resources:
+                        requests:
+                            storage: 25Gi
+        ## List of scrape classes to expose to scraping objects such as
+        ## PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.
+        ##
+        scrapeClasses:
+            - name: cluster-relabeling
+              default: true
+              relabelings:
+                - action: replace
+                  targetLabel: cluster
+                  replacement: k3s-cluster
+                - action: replace
+                  sourceLabels:
+                    - __meta_kubernetes_pod_node_name
+                  targetLabel: hostname
+                # 2. Fallback to endpoint node name if hostname is still empty
+                - action: replace
+                  sourceLabels:
+                    - hostname
+                    - __meta_kubernetes_endpoint_node_name
+                  separator: ;
+                  regex: ^;(.+)$
+                  replacement: $1
+                  targetLabel: hostname
+sops:
+    lastmodified: "2026-02-01T14:23:49Z"
+    mac: ENC[AES256_GCM,data:H1+kQvlaNvYj7INdXq8D/UwXDunZaFoKBS06+fokbK7g7qjUPDl5ssYef6u4IUo+Um1dA/Ntv6P8W1WfqFnDHvZ4xqYC9wxY5xaw2k5L5sHjMrAbq2hAao/hkZsqfLZln7p8aAn+NL8aDf1LBOPTMpr66Gg3Hu3HI1kutWb0c1E=,iv:wE7vIr1Rmr+2sZLIVkzYj0ebAXauzCj2hhFGrNFmppY=,tag:TJgvcsl94Gf7Cihw8oPTUA==,type:str]
+    pgp:
+        - created_at: "2026-02-01T14:23:24Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/8CUeQUNyMUeVvV9VfyCh+o/uW4U/MVexuzN2j2paYoq3l
+            sMtCydafvKMKl3JAsBU4bkCl/Y1ML5CdjGkxmuqtBWPJLIVwrHxojvNRKL3NTdiC
+            al3Hh4Q/Y2A0286Vqe+0FH4a2ePMJvfuGbjOSanj3FL2k3D8M8yv8td/cKV6BmTt
+            m4yR/pvdF8dkANCdPLvApEcOfJxIp3jEFxKj5vQ1actiG2nrVD2VYvOdBbbCAXEf
+            kPzDsMzwi6ZybeeXnCOYzmzT84Y+NxVzkaBk97orn/Zvw4r0qGOOeehnPbO1lou9
+            wSFGhO+V/LcOPudIiHVvuFvmnb8Tkwzc5//OFB6DV9Z40E1dBfaWbVJ+D4y1Ni/p
+            VF9NDWhFTkx16xx8hCGOADJSpzE/xGRoR0dP59L/LHDoCHT474T5BuEEK/hy85nr
+            Yz1J83TIXqzMaxuvXvgDolg5BZDdRZCHcYxR4g+MPXENVEhorVxuUe8itxzcKJ6L
+            edeEC+iK5MbsJeGQWFMuYkShJNiJ9qYuPQhNrAy4IKLdG19+rWr8fMqFl8a6ALIt
+            Ux8JEo669svg6g/Lkt/ifmk5cTIOpWQN0kFz9F7kjAgi82Fsvvc7KQHVVQ9/XjGO
+            8/jo+v+AqZ1EwtUQc6aXW6dgLjKyiXfSM1A4uf/T/mIf8LnSXjmPabytvic83o7U
+            aAEJAhAuJRJE219yIg2FUygO/F79rEzgbNqEjrQ28DcxGHlgb1qsbCE3a01dretP
+            WPEX559C1enHOzG/Bdy438oCpyzJgAFu7Gx3G7HOYpgL4hAcUXDDXQ6EPTBaHFP8
+            81fBEW0lEBhv
+            =jX7H
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|webhook_url|hosts|externalUrl)$
+    version: 3.11.0
