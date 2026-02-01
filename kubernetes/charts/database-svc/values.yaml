@@ -37,6 +37,8 @@ service:
   loadBalancerIP:
   port:
 
+extraContainers: []
+
 secret: {}
   # stringData:
   #   secret_string_1: abc

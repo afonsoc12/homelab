@@ -19,7 +19,10 @@ ports:
       name: mysql
       protocol: TCP
       service: true
-# Uses ports from .ports section, if service is true
+    - containerPort: 9104
+      name: metrics
+      protocol: TCP
+      service: true
 service:
     enabled: true
     type: LoadBalancer
@@ -29,6 +32,7 @@ service:
 secret:
     stringData:
         MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:kXj/b6XVZGEQZyr0vGV73FgAhPc=,iv:AGoQY2VXtr03K+xcsz9sqx8qRTeqpxcKmVwu6UPZFiM=,tag:0aUsqDBLKBcbFA40sjG+4Q==,type:str]
+        MYSQLD_EXPORTER_PASSWORD: ENC[AES256_GCM,data:3q2XAWL49+73Uk9Me3zRMOaeZLk=,iv:wok8Mwmm5jjExQC/2l43xtMpAnu+Fyz1CDEg8XeswcQ=,tag:iU5MUKiryJ4VhBG8M4yZfw==,type:str]
 configmap: {}
 # config_1: abc
 # config_2: def
@@ -85,6 +89,30 @@ securityContext: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+extraContainers:
+    - name: mysqld-exporter
+      image: prom/mysqld-exporter:v0.15.1
+      ports:
+        - containerPort: 9104
+          name: metrics
+          protocol: TCP
+      env:
+        - name: MYSQLD_EXPORTER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+                name: mariadb
+                key: MYSQLD_EXPORTER_PASSWORD
+      args:
+        - --mysqld.address=mariadb.databases:3306
+        - --mysqld.username=mysqld_exporter
+        # - --collect.global_status
+        # - --collect.global_variables
+        # - --collect.info_schema.innodb_metrics
+        # - --collect.slave_status
+        # - --collect.auto_increment.columns
+        # - --collect.binlog_size
+        # - --collect.perf_schema.tableiowaits
+        # - --collect.perf_schema.tablelocks
 backup:
     enabled: true
     schedule: 0 3 * * *
@@ -119,13 +147,8 @@ backup:
                             - db
                   topologyKey: kubernetes.io/hostname
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-03-26T14:22:42Z"
-    mac: ENC[AES256_GCM,data:idb5ASTcDBnqla7a4fgkZfUR9i64xNKacI13gM8B+to+5sxDqCUftzbdAm2oWxShLqsGMq1Ss2komWw3Tj76ae2GYrLVzEiQSlAZKWv/5YgbvRhQj6K+x84sfv0nj3xrGlMITuTc1ALFte7EuoxPWz4emA5CTQfLnmgpjwcWF4M=,iv:TgHNBNhgIIyCaTic+mvfzrAw/a/4SbLeBVFhcHOHdqs=,tag:vcO5uzietagqEJCH2ViDsQ==,type:str]
+    lastmodified: "2026-02-01T13:20:50Z"
+    mac: ENC[AES256_GCM,data:WFRN7azDEl6YLHzixpRF+g2ve/tyD/3VOXtpyaRulfVXJUNaC9wWv0ybThj7HPhI5a6wdyJScr5Q9/X5oNIqwmjEldeadM/t/ZTEuqBSzZ9iRasF21PdneROL6iDUf1T7T8rmo2dy0yh5CAhKHWF7HTXqd87/X6JEa3O3pCRxDU=,iv:VoF97AnIZPhshDMpWlQLV97TJx+xLRWGGG8Zr+bM1Xw=,tag:iKa/b+qhCpooJkMM9UuTwQ==,type:str]
     pgp:
         - created_at: "2024-07-20T13:01:49Z"
           enc: |-
@@ -149,4 +172,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.4
+    version: 3.11.0
