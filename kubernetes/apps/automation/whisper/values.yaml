@@ -17,7 +17,10 @@ image:
   tag: latest
   pullPolicy: Always
 
-args: ["--model", "tiny-int8", "--language", "en"]
+args:
+  - --model=tiny-int8
+  - --language=en
+  - --data-dir=/tmp
 
 ports:
   - containerPort: 10300

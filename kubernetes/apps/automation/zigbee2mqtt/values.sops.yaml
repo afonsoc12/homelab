@@ -45,7 +45,7 @@ pvc:
         - ReadWriteOnce
     resources:
         requests:
-            storage: 250Mi
+            storage: 512Mi
 ingress:
     enabled: true
     authelia: true
@@ -82,13 +82,8 @@ nodeSelector:
 tolerations: []
 affinity: {}
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-09-26T09:58:06Z"
-    mac: ENC[AES256_GCM,data:/2+/vkMFnfuhCx7qNsFYCOUUOu2jBc5kBpktC6YuRD66mAurHtcqxWIN6+gbeiLvP6T05Ku8+HgqZ5OeeO451vHb0CYEICo1GRIYI7KQkMcnJelmWUReDZMljaZXIbT0h930aUXfpxlW1VlWJVvETo907XBtjhVsl5DfYmocxag=,iv:W9xtL6zkWfYcOTJ31LYWAy9Hp2QkS9Tcft+VjNyscTU=,tag:auMVkWy+ti1yMVtcsKK0Kw==,type:str]
+    lastmodified: "2026-02-01T14:40:55Z"
+    mac: ENC[AES256_GCM,data:eMXlArCxi9bvP+VNOT/YDHUps+nub6IhPPgl8CiV3BuWH0TTXaIktsS72H+OQezqNBqyX1XS/WD0D+mwB2vAhcBabRL6mIJ5rXkItBHo+GWWCwIBMtG1WcvVyiZi31prQDqdQdZDlcByfiQrx3Lsf5dDMZ6p8r673eMKYyN5zJg=,iv:8/oygA8OTyWxlEiiOf9d5RaKO+vHAJiSdgwfwYu2ihc=,tag:QjWkLMLgNGVoPRVAXUXvgA==,type:str]
     pgp:
         - created_at: "2024-07-21T11:19:53Z"
           enc: |-
@@ -112,4 +107,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    version: 3.9.4
+    version: 3.11.0
