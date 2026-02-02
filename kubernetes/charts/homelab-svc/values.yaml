@@ -40,7 +40,7 @@ service:
   port:
 
 serviceMonitor:
-  enabled: true
+  enabled: false
   labels: {}
   endpoints:
   - port: metrics
