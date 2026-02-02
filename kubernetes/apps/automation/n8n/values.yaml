@@ -1,0 +1,69 @@
+image:
+  repository: n8nio/n8n
+  tag: latest
+  pullPolicy: Always
+
+# hostNetwork: true
+
+ports:
+  - containerPort: 5678
+    name: http
+    protocol: TCP
+    service: true
+
+service:
+  enabled: true
+
+volumeMounts:
+- name: data
+  mountPath: /home/node/.n8n
+
+volumes:
+- name: data
+  mountPvc: true
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+
+ingress:
+  enabled: true
+  authelia: true
+  className: "nginx"
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: n8n.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 5678
+    initialDelaySeconds: 30
+    periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /healthz/readiness
+    port: 5678
+    initialDelaySeconds: 30
+    periodSeconds: 10
+
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 500Mi
+
+podSecurityContext:
+  fsGroup: 1000
