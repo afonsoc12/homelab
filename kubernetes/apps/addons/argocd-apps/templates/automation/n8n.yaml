@@ -15,7 +15,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - ../../apps/monitoring/n8n/values.yaml
+        - ../../apps/automation/n8n/values.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
-    namespace: monitoring
+    namespace: automation
