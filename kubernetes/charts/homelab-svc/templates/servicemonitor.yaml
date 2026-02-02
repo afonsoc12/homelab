@@ -1,0 +1,53 @@
+{{- if .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "homelab-svc.fullname" . }}
+  labels:
+    release: prometheus-stack
+    {{- include "homelab-svc.labels" . | nindent 4 }}
+    {{- with .Values.serviceMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "homelab-svc.selectorLabels" . | nindent 6 }}
+  endpoints:
+  {{- range .Values.serviceMonitor.endpoints }}
+  - port: {{ .port }}
+    {{- with .targetPort }}
+    targetPort: {{ . }}
+    {{- end }}
+    {{- with .path }}
+    path: {{ . }}
+    {{- end }}
+    {{- with .scheme }}
+    scheme: {{ . }}
+    {{- end }}
+    {{- with .interval }}
+    interval: {{ . }}
+    {{- end }}
+    {{- with .scrapeTimeout }}
+    scrapeTimeout: {{ . }}
+    {{- end }}
+    {{- with .params }}
+    params:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if hasKey . "honorLabels" }}
+    honorLabels: {{ .honorLabels }}
+    {{- end }}
+    {{- if hasKey . "honorTimestamps" }}
+    honorTimestamps: {{ .honorTimestamps }}
+    {{- end }}
+    {{- with .relabelings }}
+    relabelings:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .metricRelabelings }}
+    metricRelabelings:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- end }}
+{{- end }}

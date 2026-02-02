@@ -39,6 +39,14 @@ service:
   type: ClusterIP
   port:
 
+serviceMonitor:
+  enabled: true
+  labels: {}
+  endpoints:
+  - port: metrics
+    interval: 30s
+    path: /metrics
+
 secret: {}
   # stringData:
   #   secret_string_1: abc

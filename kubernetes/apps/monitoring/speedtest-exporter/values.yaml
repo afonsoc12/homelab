@@ -1,0 +1,79 @@
+image:
+  repository: ghcr.io/afonsoc12/telegraf
+  tag: 1.37.1
+  pullPolicy: Always
+
+ports:
+  - containerPort: 9273
+    name: metrics
+    protocol: TCP
+    service: true
+
+service:
+  enabled: true
+  labels:
+    prometheus.io/scrape: "true"
+
+serviceMonitor:
+  enabled: true
+  labels: {}
+  endpoints:
+  - port: metrics
+    interval: 5m
+
+configmap:
+    mountEnv: false
+    data:
+      telegraf.conf: |
+        [agent]
+          debug = true
+
+        [[inputs.exec]]
+          ## Commands array
+          commands = ["speedtest --accept-license --accept-gdpr --format=json"]
+          interval = "5m"
+
+          timeout = "60s"
+          name_prefix = "speedtest_"
+          tag_keys = [
+            "isp",
+            "interface_externalIp",
+            "server_*"
+          ]
+          data_format = "json"
+
+        [[outputs.prometheus_client]]
+          listen = ":9273"
+          metric_version = 1
+          path = "/metrics"
+          expiration_interval = "5m"
+          collectors_exclude = ["gocollector", "process"]
+
+volumeMounts:
+    - name: config
+      mountPath: /etc/telegraf
+
+volumes:
+    - name: config
+      configMap:
+        name: speedtest-exporter
+livenessProbe:
+  httpGet:
+    path: /health
+    port: metrics
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: metrics
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 256Mi
+
+nodeSelector:
+  kubernetes.io/hostname: k3s-m1
