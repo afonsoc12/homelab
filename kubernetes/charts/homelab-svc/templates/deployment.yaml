@@ -6,7 +6,7 @@ metadata:
     {{- include "homelab-svc.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas | default 1 }}
-  revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 3 }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 1 }}
   {{- with .Values.strategy }}
   strategy:
     {{- toYaml . | nindent 4 }}
