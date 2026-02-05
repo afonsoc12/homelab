@@ -1,3 +1,4 @@
+---
 # Default values for external-service.
 
 # Labels applied to all templates
@@ -14,10 +15,9 @@ ingress:
   enabled: true
   authelia: true
   tls:
-  - secretName: local-wildcard-cert
+    - secretName: local-wildcard-cert
   hosts:
     - host: bazarr.local.{{ .Values.domain }}
       paths:
         - path: /
           pathType: Prefix
-

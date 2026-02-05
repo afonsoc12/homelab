@@ -1,32 +1,33 @@
+---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: external-ingress
-  namespace: {{ .Release.Namespace }}
+  namespace: "{{ .Release.Namespace }}"
   labels:
     appset: external-ingress
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   generators:
-  - list:
-      elements:
-        - app: adguard
-        - app: bazarr
-        - app: calibre-web
-        - app: kopia
-        - app: lidarr
-        - app: minio
-        - app: overseerr
-        - app: plex
-        - app: prowlarr
-        - app: qbittorrent
-        - app: radarr
-        - app: radarr-4k
-        - app: sonarr
-        - app: tautulli
-        - app: unifi
-        - app: unraid
+    - list:
+        elements:
+          - app: adguard
+          - app: bazarr
+          - app: calibre-web
+          - app: kopia
+          - app: lidarr
+          - app: minio
+          - app: overseerr
+          - app: plex
+          - app: prowlarr
+          - app: qbittorrent
+          - app: radarr
+          - app: radarr-4k
+          - app: sonarr
+          - app: tautulli
+          - app: unifi
+          - app: unraid
   template:
     metadata:
       name: '{{`{{`}}app{{`}}`}}-external'
@@ -44,7 +45,5 @@ spec:
             - secrets://../../apps/values.sops.yaml
             - ../../apps/homelab/external-ingress/{{`{{`}}app{{`}}`}}/values.yaml
       destination:
-        name: {{ .Values.spec.destination.name }}
+        name: "{{ .Values.spec.destination.name }}"
         namespace: homelab
-
-

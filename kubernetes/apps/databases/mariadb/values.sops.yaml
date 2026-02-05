@@ -10,7 +10,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/mariadb
-    tag: 11
+    tag: 12.1.2
 #   pullPolicy: Always
 command: {}
 args: {}
@@ -150,8 +150,8 @@ backup:
                             - db
                   topologyKey: kubernetes.io/hostname
 sops:
-    lastmodified: "2026-02-01T14:55:25Z"
-    mac: ENC[AES256_GCM,data:SQXkXgRVP/FebPIl1TyZRKCgJ1W7BGSH2KjNWU0zNkdfvufMMPWN9ij6Vn3BAZ/BTXxnl0iYz6DUVwJEkLgr8ByUyOCGY0ek+L7GEteIh5daT23+pHGzv4Fn0m3mKTKxjaU8gbR+Rn6lPOcoAqFpHYVtwFn8f+LXwQJLrJrlipc=,iv:3Q38yI2AlcqR3Rd57zG067PvyjTRpghpaxgt2XYwXQw=,tag:EGupSLXsEPVpOSg+BuVLow==,type:str]
+    lastmodified: "2026-02-04T23:18:05Z"
+    mac: ENC[AES256_GCM,data:RIy6Bksokl5avoV8B3qUnX6wgL7MYJn97lgZzYtHSpa/zp9kqR05tSYjuPYV0BAHvyXuQ7A9b1zhYMP4g/g1GoCNNTJKKZKQry+/xBgVaeHIF0Qell0V5MCZiSp/Unhp9EG/kOm90a66fOqqu5Xv6h+QrVAVAp/km4Wo3MHLXwE=,iv:mcEaFZQ7MGKIwUWPj/wNn2sAB501RmHAOEV+n/9zLYk=,tag:6BTtneqkQLxzLJZqvQGk1Q==,type:str]
     pgp:
         - created_at: "2024-07-20T13:01:49Z"
           enc: |-

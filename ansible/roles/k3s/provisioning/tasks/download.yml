@@ -1,9 +1,10 @@
+---
 - name: Selected k3s version
   debug:
     var: k3s_version
 
 - name: Download k3s binary x64
-  become: yes
+  become: true
   get_url:
     url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
     checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-amd64.txt
@@ -14,7 +15,7 @@
   when: ansible_facts.architecture == "x86_64"
 
 - name: Download k3s binary arm64
-  become: yes
+  become: true
   get_url:
     url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s-arm64
     checksum: sha256:https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/sha256sum-arm64.txt
