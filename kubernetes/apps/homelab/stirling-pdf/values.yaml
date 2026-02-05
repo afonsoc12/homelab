@@ -3,7 +3,7 @@ replicas: 1
 
 image:
   repository: stirlingtools/stirling-pdf
-  tag: 2.0
+  tag: 2.4.4-ultra-lite
 
 strategy:
   type: Recreate
@@ -34,11 +34,11 @@ volumes:
 
 ingress:
   enabled: true
-  authelia: true
+  authelia: false
   className: "nginx"
   annotations: {}
   tls:
-    - secretName: local-wildcard-cert-cert
+    - secretName: local-wildcard-cert
   hosts:
     - host: pdf.local.{{ .Values.domain }}
       paths:
