@@ -1,0 +1,46 @@
+---
+replicas: 1
+
+image:
+  repository: stirlingtools/stirling-pdf
+  tag: 2.0
+
+strategy:
+  type: Recreate
+
+ports:
+  - containerPort: 8080
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+volumeMounts:
+  - name: config
+    mountPath: /configs
+    # readOnly: true
+
+volumes:
+  - name: config
+    emptyDir: {sizeLimit: 2Gi}
+
+# pvc:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 5Gi
+
+ingress:
+  enabled: true
+  authelia: true
+  className: "nginx"
+  annotations: {}
+  tls:
+    - secretName: local-wildcard-cert-cert
+  hosts:
+    - host: pdf.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
