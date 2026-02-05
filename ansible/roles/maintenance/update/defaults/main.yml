@@ -1,3 +1,4 @@
+---
 base_apt_repos: {}
 group_apt_repos: {}
 host_apt_repos: {}

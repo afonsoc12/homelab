@@ -1,3 +1,4 @@
+---
 # Default values for external-service.
 
 # Labels applied to all templates
@@ -17,7 +18,7 @@ ingress:
     nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
   tls:
-  - secretName: local-wildcard-cert
+    - secretName: local-wildcard-cert
   hosts:
     - host: kopia.local.{{ .Values.domain }}
       paths:

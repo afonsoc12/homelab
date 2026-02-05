@@ -1,3 +1,4 @@
+---
 # Default values for external-service.
 
 # Labels applied to all templates
@@ -21,7 +22,7 @@ ingress:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_busy_buffers_size 256k;
   tls:
-  - secretName: calibre-cert
+    - secretName: calibre-cert
   hosts:
     - host: calibre.{{ .Values.domain }}
       paths:

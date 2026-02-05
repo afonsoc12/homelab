@@ -1,6 +1,7 @@
+---
 # ==================================================
 # Role: maintenance/update
 # ==================================================
 group_pip_packages:
-- docker
-- docker-compose
+  - docker
+  - docker-compose

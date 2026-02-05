@@ -1,54 +1,65 @@
-- become: yes
+---
+- become: true
   block:
-  - name: "Add user {{ ansible_user }} to sudoers without requiring password"
-    community.general.sudoers:
-      name: "sudoers-nopass"
-      user: "{{ ansible_user }}"
-      commands: ALL
-      nopassword: true
+    - name: "Add user {{ ansible_user }} to sudoers without requiring password"
+      community.general.sudoers:
+        name: "sudoers-nopass"
+        user: "{{ ansible_user }}"
+        commands: ALL
+        nopassword: true
 
-  - name: apt-get update
-    apt:
-      force_apt_get: true
-      update_cache: true
-      cache_valid_time: "{{ apt_cache_valid_time }}"
-      # changed_when: false
+    - name: Apt-get update
+      apt:
+        force_apt_get: true
+        update_cache: true
+        cache_valid_time: "{{ apt_cache_valid_time }}"
+        # changed_when: false
 
-  - name: apt-get dist-upgrade
-    apt:
-      force_apt_get: true
-      state: latest
-      upgrade: dist
+    - name: Apt-get dist-upgrade
+      apt:
+        force_apt_get: true
+        state: latest
+        upgrade: dist
 
-  - name: apt install (base + group + host)
-    apt:
-      force_apt_get: true
-      name: "{{ base_apt_packages | default([]) + group_apt_packages | default([]) + host_apt_packages | default([]) }}"
-      state: latest
+    - name: Apt install (base + group + host)
+      apt:
+        force_apt_get: true
+        name: >-
+          {{
+            base_apt_packages | default([]) +
+            group_apt_packages | default([]) +
+            host_apt_packages | default([])
+          }}
+        state: latest
 
-  - name: apt clean
-    apt:
-      force_apt_get: true
-      autoclean: true
+    - name: Apt clean
+      apt:
+        force_apt_get: true
+        autoclean: true
 
-  - name: apt autoremove
-    apt:
-      force_apt_get: true
-      autoremove: true
+    - name: Apt autoremove
+      apt:
+        force_apt_get: true
+        autoremove: true
 
-  - name: apt purge
-    apt:
-      force_apt_get: true
-      purge: true
+    - name: Apt purge
+      apt:
+        force_apt_get: true
+        purge: true
 
-  - name: pip install (base + group + host)
-    pip:
-      name: "{{ base_pip_packages | default([]) + group_pip_packages | default([]) + host_pip_packages | default([]) }}"
-      state: latest
+    - name: Pip install (base + group + host)
+      pip:
+        name: >-
+          {{
+            base_pip_packages | default([]) +
+            group_pip_packages | default([]) +
+            host_pip_packages | default([])
+          }}
+        state: latest
 
-  - name: Set cron to update caches
-    cron:
-      name: "Update caches"
-      hour: 4
-      minute: 0
-      job: "apt-get update"
+    - name: Set cron to update caches
+      cron:
+        name: "Update caches"
+        hour: 4
+        minute: 0
+        job: "apt-get update"

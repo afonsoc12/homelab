@@ -1,3 +1,4 @@
+---
 nameOverride: ""
 fullnameOverride: ""
 labels: {}
@@ -9,57 +10,54 @@ podAnnotations: {}
 replicas: 1
 revisionHistoryLimit: 0
 strategy:
-    type: Recreate
+  type: Recreate
 image:
-    repository: library/ghost
-    tag: latest
-    pullPolicy: Always
+  repository: library/ghost
+  tag: latest
+  pullPolicy: Always
 #   restartPolicy:
 command: {}
 args: {}
 ports:
-    - containerPort: 2368
-      name: http
-      protocol: TCP
-      service: true
+  - containerPort: 2368
+    name: http
+    protocol: TCP
+    service: true
 # Uses ports from .ports section, if service is true
 service:
-    enabled: true
+  enabled: true
 
 configmap:
-    mountEnv: true
-    data:
-        NODE_ENV: production
-        url: https://{{ .Values.domain_jrs }}
-        database__connection__filename: '/var/lib/ghost/content/data/ghost.db'
+  mountEnv: true
+  data:
+    NODE_ENV: production
+    url: https://{{ .Values.domain_jrs }}
+    database__connection__filename: '/var/lib/ghost/content/data/ghost.db'
 volumeMounts:
-    - mountPath: /var/lib/ghost/content
-      name: content
+  - mountPath: /var/lib/ghost/content
+    name: content
 volumes:
-    - name: content
-      mountPvc: "yes"
+  - name: content
+    mountPvc: "yes"
 pvc:
-    storageClassName: longhorn-persistent
-    accessModes:
-        - ReadWriteOnce
-    resources:
-        requests:
-            storage: 1Gi
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 ingress:
-    enabled: true
-    authelia: false
-    className: nginx
-    annotations:
-        # nginx.ingress.kubernetes.io/client-max-body-size: "0"
-        # nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    tls:
-        - secretName: jrs-cert
-    # Will assume the first element in .ports, regardless of service
-    hosts:
-        - host: "{{ .Values.domain_jrs }}"
-          paths:
-            - path: /
-              pathType: ImplementationSpecific
+  enabled: true
+  authelia: false
+  className: nginx
+  tls:
+    - secretName: jrs-cert
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: "{{ .Values.domain_jrs }}"
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
 livenessProbe: {}
 readinessProbe: {}
 resources: {}
@@ -79,5 +77,5 @@ securityContext: {}
 # runAsNonRoot: true
 # runAsUser: 1000
 nodeSelector:
-    kubernetes.io/hostname: k3s-m2
+  kubernetes.io/hostname: k3s-m2
 tolerations: []

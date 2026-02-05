@@ -1,7 +1,4 @@
-labels: {}
-  # label_1: abc
-  # label_2: def
-
+---
 replicas: 1
 
 image:
@@ -12,25 +9,25 @@ strategy:
   type: Recreate
 
 ports:
-- containerPort: 80
-  service: true
+  - containerPort: 80
+    service: true
 
 # Uses ports from .ports section, if service is true
 service:
   enabled: true
 
 volumeMounts:
-- name: config
-  mountPath: /config
-  # readOnly: true
+  - name: config
+    mountPath: /config
+    # readOnly: true
 
 volumes:
-- name: config
-  mountPvc: yes
+  - name: config
+    mountPvc: true
 
 pvc:
   accessModes:
-      - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 5Gi
@@ -41,7 +38,7 @@ ingress:
   className: "nginx"
   annotations: {}
   tls:
-  - secretName: rss-cert
+    - secretName: rss-cert
   hosts:
     - host: rss.{{ .Values.domain }}
       paths:

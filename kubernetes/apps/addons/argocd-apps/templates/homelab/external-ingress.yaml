@@ -3,7 +3,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: external-ingress
-  namespace: "{{ .Release.Namespace }}"
+  namespace: {{ .Release.Namespace }}
   labels:
     appset: external-ingress
   finalizers:
@@ -45,5 +45,5 @@ spec:
             - secrets://../../apps/values.sops.yaml
             - ../../apps/homelab/external-ingress/{{`{{`}}app{{`}}`}}/values.yaml
       destination:
-        name: "{{ .Values.spec.destination.name }}"
+        name: {{ .Values.spec.destination.name }}
         namespace: homelab

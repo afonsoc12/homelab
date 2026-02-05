@@ -3,7 +3,19 @@ extends: default
 
 ignore:
   - '*.sops.y?ml'
+  - kubernetes/charts
+  - kubernetes/apps/addons/argocd-apps/templates
+  - .venv/
 
 rules:
   line-length:
-    max: 120
+    max: 160
+  comments:
+    min-spaces-from-content: 1
+  comments-indentation: false
+  document-start: disable
+  braces:
+    max-spaces-inside: 1
+  octal-values:
+    forbid-implicit-octal: true
+    forbid-explicit-octal: true

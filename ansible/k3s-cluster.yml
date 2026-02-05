@@ -1,9 +1,10 @@
+---
 - name: Update servers with base dependencies
   hosts:
-  - k3s_cluster
+    - k3s_cluster
 
   roles:
-  - maintenance/update
+    - maintenance/update
 
 # - name: Docker installation on first master ({{ groups['k3s_masters'][0] }})
 #   hosts:
@@ -13,18 +14,18 @@
 
 - name: Provision and update k3s-cluster
   hosts:
-  - k3s_cluster
+    - k3s_cluster
   roles:
     - k3s/provisioning
 
 - name: k3s configuration master nodes
   hosts: k3s_masters
-  become: yes
+  become: true
   roles:
-  - k3s/master
+    - k3s/master
 
-- name: k3s configuration worker nodes
+- name: K3s configuration worker nodes
   hosts: k3s_workers
-  become: yes
+  become: true
   roles:
-  - k3s/node
+    - k3s/node

@@ -1,3 +1,4 @@
+---
 image:
   repository: n8nio/n8n
   tag: latest
@@ -15,12 +16,12 @@ service:
   enabled: true
 
 volumeMounts:
-- name: data
-  mountPath: /home/node/.n8n
+  - name: data
+    mountPath: /home/node/.n8n
 
 volumes:
-- name: data
-  mountPvc: true
+  - name: data
+    mountPvc: true
 
 pvc:
   storageClassName: longhorn-persistent

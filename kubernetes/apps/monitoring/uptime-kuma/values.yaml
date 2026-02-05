@@ -1,14 +1,4 @@
-nameOverride: ""
-fullnameOverride: ""
-
-labels: {}
-  # label_1: abc
-  # label_2: def
-
-podAnnotations: {}
-  # annot_1: abc
-  # annot_2: def
-
+---
 replicas: 1
 revisionHistoryLimit: 0
 strategy:
@@ -30,17 +20,17 @@ service:
   enabled: true
 
 volumeMounts:
-- name: data
-  mountPath: /app/data
+  - name: data
+    mountPath: /app/data
 
 volumes:
-- name: data
-  mountPvc: true
+  - name: data
+    mountPvc: true
 
 pvc:
   storageClassName: longhorn-persistent
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 2Gi
@@ -51,7 +41,7 @@ ingress:
   className: "nginx"
   annotations:
   tls:
-   - secretName: status-cert
+    - secretName: status-cert
 
   # Will assume the first element in .ports, regardless of service
   hosts:

@@ -1,72 +1,65 @@
-nameOverride: ""
-fullnameOverride: ""
-labels: {}
-# label_1: abc
-# label_2: def
-podAnnotations: {}
-# annot_1: abc
-# annot_2: def
+---
 replicas: 1
 revisionHistoryLimit: 0
 strategy:
-    type: Recreate
+  type: Recreate
 image:
-    repository: ghcr.io/wg-easy/wg-easy
-    tag: 15
-    pullPolicy: Always
+  repository: ghcr.io/wg-easy/wg-easy
+  tag: 15
+  pullPolicy: Always
 #   restartPolicy:
 command: {}
 args: {}
 ports:
-    - containerPort: 51821
-      name: ui
-      protocol: TCP
-      service: true
-    - containerPort: 51820
-      name: vpn
-      protocol: UDP
-      service: true
+  - containerPort: 51821
+    name: ui
+    protocol: TCP
+    service: true
+  - containerPort: 51820
+    name: vpn
+    protocol: UDP
+    service: true
 # Uses ports from .ports section, if service is true
 service:
-    enabled: true
-    type: LoadBalancer
-    annotations:
-        metallb.io/address-pool: ip-pool-lan-pt
+  enabled: true
+  type: LoadBalancer
+  annotations:
+    metallb.io/address-pool: ip-pool-lan-pt
 # configmap:
 #     mountEnv: true
 #     data:
 volumeMounts:
-    - mountPath: /etc/wireguard
-      name: config
-    - mountPath: /lib/modules
-      name: lib
-      readOnly: true
+  - mountPath: /etc/wireguard
+    name: config
+  - mountPath: /lib/modules
+    name: lib
+    readOnly: true
 volumes:
-    - name: config
-      mountPvc: "yes"
-    - name: lib
-      hostPath:
-        path: /lib/modules
+  - name: config
+    mountPvc: "yes"
+  - name: lib
+    hostPath:
+      path: /lib/modules
 pvc:
-    storageClassName: longhorn-persistent
-    accessModes:
-        - ReadWriteOnce
-    resources:
-        requests:
-            storage: 10Mi
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
 ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    annotations: null
-    tls:
-        - secretName: local-wildcard-cert
-    # Will assume the first element in .ports, regardless of service
-    hosts:
-        - host: wg.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: ImplementationSpecific
+  enabled: true
+  authelia: true
+  className: nginx
+  annotations: null
+  tls:
+    - secretName: local-wildcard-cert
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: wg.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
 livenessProbe: {}
 readinessProbe: {}
 resources: {}
@@ -79,12 +72,12 @@ resources: {}
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext:
-    privileged: true
-    capabilities:
-        add:
-            - NET_ADMIN
-            - SYS_MODULE
+  privileged: true
+  capabilities:
+    add:
+      - NET_ADMIN
+      - SYS_MODULE
 nodeSelector:
-    kubernetes.io/hostname: k3s-m2
+  kubernetes.io/hostname: k3s-m2
 tolerations: []
 affinity: {}

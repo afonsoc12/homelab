@@ -1,3 +1,4 @@
+---
 crds:
   create: true
 
@@ -18,7 +19,6 @@ alloy:
         }
       }
 
-      // local.file_match discovers files on the local filesystem using glob patterns and the doublestar library. It returns an array of file paths.
       local.file_match "node_logs" {
         path_targets = [{
             __path__  = "/var/log/syslog",
@@ -36,7 +36,8 @@ alloy:
       }
 
       // discovery.kubernetes allows you to find scrape targets from Kubernetes resources.
-      // It watches cluster state and ensures targets are continually synced with what is currently running in your cluster.
+      // It watches cluster state and ensures targets are continually
+      // synced with what is currently running in your cluster.
       discovery.kubernetes "pod" {
         role = "pod"
         // Restrict to pods on the node to reduce cpu & memory usage

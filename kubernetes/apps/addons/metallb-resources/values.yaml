@@ -1,3 +1,4 @@
+---
 ipAddressPools:
   ip-pool-20-lan-uk:
     - 10.0.10.220-10.0.10.225

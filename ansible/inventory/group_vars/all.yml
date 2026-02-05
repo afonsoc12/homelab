@@ -1,18 +1,17 @@
-
-
+---
 # ==================================================
 # Role: maintenance/update
 # ==================================================
 base_apt_packages:
-- dnsutils
-- wget
-- python3-pip
-- nano
-- cron
-- inetutils-ping
-- iperf3
-- net-tools
-- neofetch
-- rsync
+  - dnsutils
+  - wget
+  - python3-pip
+  - nano
+  - cron
+  - inetutils-ping
+  - iperf3
+  - net-tools
+  - neofetch
+  - rsync
 
 base_pip_packages: []

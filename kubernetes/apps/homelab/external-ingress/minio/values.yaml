@@ -1,3 +1,4 @@
+---
 # Default values for external-service.
 
 # Labels applied to all templates
@@ -32,7 +33,7 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
     nginx.ingress.kubernetes.io/rewrite-target: /
   tls:
-  - secretName: local-wildcard-cert
+    - secretName: local-wildcard-cert
   hosts:
     - host: minio.local.{{ .Values.domain }}
       paths:

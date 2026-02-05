@@ -1,41 +1,42 @@
+---
 all:
-    vars:
-        defaults: "{{ (lookup('community.sops.sops', 'inventory/hosts_secrets.sops.yaml') | from_yaml).defaults }}"
-        hosts: "{{ (lookup('community.sops.sops', 'inventory/hosts_secrets.sops.yaml') | from_yaml).hosts }}"
-        ansible_user: "{{ defaults.user }}"
-        ansible_ssh_private_key_file: "{{ defaults.ssh_key }}"
+  vars:
+    defaults: "{{ (lookup('community.sops.sops', 'inventory/hosts_secrets.sops.yaml') | from_yaml).defaults }}"
+    hosts: "{{ (lookup('community.sops.sops', 'inventory/hosts_secrets.sops.yaml') | from_yaml).hosts }}"
+    ansible_user: "{{ defaults.user }}"
+    ansible_ssh_private_key_file: "{{ defaults.ssh_key }}"
 raspberries:
-    hosts:
-        rpi-4b:
-            ansible_host: "{{ hosts.rpi_4b.ip }}"
-            # ansible_ssh_private_key_file: "{{ hosts.rpi_4b.ssh_key }}"
-        rpi-z2w-hyperion:
-            ansible_host: "{{ hosts.rpi_z2w_hyperion.ip }}"
-            ansible_ssh_private_key_file: "{{ hosts.rpi_z2w.ssh_key }}"
+  hosts:
+    rpi-4b:
+      ansible_host: "{{ hosts.rpi_4b.ip }}"
+      # ansible_ssh_private_key_file: "{{ hosts.rpi_4b.ssh_key }}"
+    rpi-z2w-hyperion:
+      ansible_host: "{{ hosts.rpi_z2w_hyperion.ip }}"
+      ansible_ssh_private_key_file: "{{ hosts.rpi_z2w.ssh_key }}"
 unraid:
-    hosts:
-        hoarder:
-            ansible_host: "{{ hosts.hoarder.ip }}"
-            ansible_user: "{{ hosts.hoarder.user }}"
+  hosts:
+    hoarder:
+      ansible_host: "{{ hosts.hoarder.ip }}"
+      ansible_user: "{{ hosts.hoarder.user }}"
 docker:
-    children:
-        raspberries:
-        unraid:
+  children:
+    raspberries:
+    unraid:
 k3s_masters:
-    hosts:
-        k3s-m1:
-            ansible_host:  "{{ hosts.k3s_m1.ip }}"
-        k3s-m2:
-            ansible_host:  "{{ hosts.k3s_m2.ip_tailscale }}"
-        k3s-oci-m3:
-            ansible_host: "{{ hosts.k3s_oci_m3.ip_tailscale }}"
-            ansible_user: ubuntu
+  hosts:
+    k3s-m1:
+      ansible_host: "{{ hosts.k3s_m1.ip }}"
+    k3s-m2:
+      ansible_host: "{{ hosts.k3s_m2.ip_tailscale }}"
+    k3s-oci-m3:
+      ansible_host: "{{ hosts.k3s_oci_m3.ip_tailscale }}"
+      ansible_user: ubuntu
 k3s_workers:
-    hosts: {}
+  hosts: {}
 k3s_cluster:
-    children:
-        k3s_masters:
-        k3s_workers:
+  children:
+    k3s_masters:
+    k3s_workers:
 hyperion:
-    hosts:
-        rpi-z2w-hyperion:
+  hosts:
+    rpi-z2w-hyperion:

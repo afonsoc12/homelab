@@ -1,13 +1,6 @@
+---
 nameOverride: ""
 fullnameOverride: ""
-
-labels: {}
-  # label_1: abc
-  # label_2: def
-
-podAnnotations: {}
-  # annot_1: abc
-  # annot_2: def
 
 replicas: 1
 revisionHistoryLimit: 0
@@ -51,13 +44,13 @@ volumeMounts:
     name: data
 
 volumes:
-- name: data
-  mountPvc: yes
+  - name: data
+    mountPvc: true
 
 pvc:
   storageClassName: longhorn-persistent
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 100Mi
@@ -68,7 +61,7 @@ ingress:
   className: "nginx"
 
   tls:
-   - secretName: local-wildcard-cert
+    - secretName: local-wildcard-cert
 
   # Will assume the first element in .ports, regardless of service
   hosts:
@@ -83,20 +76,7 @@ livenessProbe: {}
 readinessProbe: {}
 
 resources: {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
 
 podSecurityContext: {}
-  # fsGroup: 2000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000

@@ -1,39 +1,37 @@
-labels: {}
-# label_1: abc
-# label_2: def
+---
 replicas: 1
 image:
-    repository: lscr.io/linuxserver/grocy
+  repository: lscr.io/linuxserver/grocy
 ports:
-    - containerPort: 80
-      service: true
+  - containerPort: 80
+    service: true
 
 service:
   enabled: true
 
 volumeMounts:
-    - name: config
-      mountPath: /config
+  - name: config
+    mountPath: /config
 
 volumes:
-    - name: config
-      mountPvc: true
+  - name: config
+    mountPvc: true
 
 pvc:
-    storageClassName: longhorn-persistent
-    accessModes:
-        - ReadWriteOnce
-    resources:
-        requests:
-            storage: 500Mi
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
 ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    tls:
-        - secretName: local-wildcard-cert
-    hosts:
-        - host: grocy.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: Prefix
+  enabled: true
+  authelia: true
+  className: nginx
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: grocy.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix

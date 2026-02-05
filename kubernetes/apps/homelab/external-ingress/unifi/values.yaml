@@ -1,3 +1,4 @@
+---
 # Default values for external-service.
 
 # Labels applied to all templates
@@ -19,7 +20,7 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
   tls:
-  - secretName: local-wildcard-cert
+    - secretName: local-wildcard-cert
   hosts:
     - host: unifi.local.{{ .Values.domain }}
       paths:
