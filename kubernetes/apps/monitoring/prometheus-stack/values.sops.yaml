@@ -6,6 +6,297 @@ crds:
         forceConflicts: true
 defaultRules:
     create: false
+additionalPrometheusRulesMap:
+    node-exporter:
+        groups:
+            - name: NodeExporter
+              rules:
+                - alert: HostOutOfMemory
+                  expr: sum by (hostname) (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes ) < .10
+                  for: 2m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` is out of memory
+                    description: Memory is at {{ $value | humanizePercentage }} (< 10% left)
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostMemoryUnderMemoryPressure
+                  expr: sum by (hostname) (rate(node_vmstat_pgmajfault[5m]) > 500)
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` under memory pressure
+                    description: Heavy memory pressure, rate of loading memory pages from disk is at {{ $value | humanize }} (pgmajfault > 500/s)
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostUnusualNetworkThroughputIn
+                  expr: sum by (hostname, device) (rate(node_network_receive_bytes_total[5m]) / node_network_speed_bytes) > .80
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` unusual network Ingress throughput
+                    description: Ingress bandwidth is high at {{ $value | humanizePercentage }} (>80%) on interface {{ $labels.device }}
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostUnusualNetworkThroughputOut
+                  expr: (sum by (hostname, device) (rate(node_network_transmit_bytes_total[5m]) / node_network_speed_bytes)) > .80
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` unusual network Egress throughput
+                    description: Egress bandwidth is high at {{ $value | humanizePercentage }} (>80%) on interface {{ $labels.device }}
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostUnusualDiskReadRate
+                  expr: sum by (hostname, device) (rate(node_disk_io_time_seconds_total[5m])) > .80
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    description: Host `{{ $labels.hostname }}` disk is too busy
+                    summary: Disk read rate is at {{ $value | humanizePercentage }} (IO wait > 80%) on device {{ $labels.device }}
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                    # Please add ignored mountpoints in node_exporter parameters like
+                    # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
+                    # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+                - alert: HostOutOfDiskSpace
+                  expr: sum by (hostname, device)(node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"} / node_filesystem_size_bytes < 0.15 and on (hostname, device, mountpoint) node_filesystem_readonly)
+                  for: 2m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` out of disk space
+                    description: Disk is almost full at {{ $value | humanizePercentage }} (< 15% left) on device {{ $labels.device }}
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                    #      - alert: HostOutOfInodes
+                    #   expr: '(node_filesystem_files_free / node_filesystem_files < .10 and ON (hostname, device, mountpoint) node_filesystem_readonly == 0)'
+                    #   for: 2m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host out of inodes (hostname {{ $labels.hostname }})
+                    #     description: "Disk is almost running out of available inodes (< 10% left)"
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                - alert: HostFilesystemDeviceError
+                  expr: sum by(hostname, device, mountpoint) (node_filesystem_device_error{fstype!~"^(fuse.*|tmpfs|cifs|nfs)", device!="none"}) > 0
+                  for: 2m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` has filesystem device error
+                    description: Error stat-ing device {{ $labels.device }}, {{ $labels.mountpoint }} filesystem
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                    #      - alert: HostUnusualDiskReadLatency
+                    #   expr: '(rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 0.1 and rate(node_disk_reads_completed_total[1m]) > 0)'
+                    #   for: 2m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host unusual disk read latency (hostname {{ $labels.hostname }})
+                    #     description: "Disk latency is growing (read operations > 100ms)"
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                    #      - alert: HostUnusualDiskWriteLatency
+                    #   expr: '(rate(node_disk_write_time_seconds_total[1m]) / rate(node_disk_writes_completed_total[1m]) > 0.1 and rate(node_disk_writes_completed_total[1m]) > 0)'
+                    #   for: 2m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host unusual disk write latency (hostname {{ $labels.hostname }})
+                    #     description: "Disk latency is growing (write operations > 100ms)"
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                - alert: HostHighCpuLoad
+                  expr: sum by (hostname) (1 - (avg without (cpu) (rate(node_cpu_seconds_total{mode="idle"}[5m])))) > .80
+                  for: 10m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` high CPU load
+                    description: CPU load is {{ $value | humanizePercentage }} (>80%)
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostCpuStealNoisyNeighbor
+                  expr: avg by (hostname) (rate(node_cpu_seconds_total{mode="steal"}[5m])) > .1
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` CPU steal noisy neighbor
+                    description: CPU steal is at {{ $value | humanizePercentage }} (>10%). A noisy neighbor is killing VM performances or a spot instance may be out of credit
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostCpuHighIowait
+                  expr: avg by (hostname) (rate(node_cpu_seconds_total{mode="iowait"}[5m])) > .10
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` CPU high iowait
+                    description: CPU iowait is at {{ $value | humanizePercentage }} (>10%). Your CPU is idling waiting for storage to respond.
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                    #      - alert: HostUnusualDiskIo
+                    #   expr: 'rate(node_disk_io_time_seconds_total[5m]) > 0.8'
+                    #   for: 5m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host unusual disk IO (hostname {{ $labels.hostname }})
+                    #     description: "Disk usage >80%. Check storage for issues or increase IOPS capabilities. Check storage for issues."
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                    # x2 context switches is an arbitrary number.
+                    # The alert threshold depends on the nature of the application.
+                    # Please read: https://github.com/samber/awesome-prometheus-alerts/issues/58
+                - alert: HostContextSwitchingHigh
+                  expr: (rate(node_context_switches_total[15m])/count without(mode,cpu) (node_cpu_seconds_total{mode="idle"})) / (rate(node_context_switches_total[1d])/count without(mode,cpu) (node_cpu_seconds_total{mode="idle"})) > 2
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host {{ $labels.hostname }} context switching high
+                    description: Context switching is high (twice the daily average during the last 15m)
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostSwapIsFillingUp
+                  expr: sum by (hostname) (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) > .80
+                  for: 2m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` swap is filling up
+                    description: Swap is filling up at {{ $value | humanizePercentage }} (>80%)
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                    # NOT COLLECTED
+                    #      - alert: HostSystemdServiceCrashed
+                    #   expr: '(node_systemd_unit_state{state="failed"} == 1)'
+                    #   for: 0m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host systemd service crashed (hostname {{ $labels.hostname }})
+                    #     description: "systemd service crashed"
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                - alert: HostPhysicalComponentTooHot
+                  expr: sum by (hostname, chip) (node_hwmon_temp_celsius > node_hwmon_temp_max_celsius)
+                  for: 5m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` physical component too hot
+                    description: Physical hardware chip {{ $labels.chip }} too hot
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostNodeOvertemperatureAlarm
+                  expr: sum by (hostname, chip) ((node_hwmon_temp_crit_alarm_celsius > 0) or (node_hwmon_temp_alarm > 0))
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` node overtemperature alarm
+                    description: Physical node temperature alarm triggered for chip {{ $labels.chip }}
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                    #      - alert: HostSoftwareRaidInsufficientDrives
+                    #   expr: '((node_md_disks_required - on(device, instance) node_md_disks{state="active"}) > 0)'
+                    #   for: 0m
+                    #   labels:
+                    #     severity: critical
+                    #   annotations:
+                    #     summary: Host software RAID insufficient drives (hostname {{ $labels.hostname }})
+                    #     description: "MD RAID array {{ $labels.device }} on {{ $labels.hostname }} has insufficient drives remaining."
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                    #      - alert: HostSoftwareRaidDiskFailure
+                    #   expr: '(node_md_disks{state="failed"} > 0)'
+                    #   for: 2m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host software RAID disk failure (hostname {{ $labels.hostname }})
+                    #     description: "MD RAID array {{ $labels.device }} on {{ $labels.hostname }} needs attention."
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                    #      - alert: HostKernelVersionDeviations
+                    #   expr: 'changes(node_uname_info[1h]) > 0'
+                    #   for: 0m
+                    #   labels:
+                    #     severity: info
+                    #   annotations:
+                    #     summary: Host kernel version deviations (hostname {{ $labels.hostname }})
+                    #     description: "Kernel version for {{ $labels.hostname }} has changed."
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                - alert: HostOomKillDetected
+                  expr: sum by (hostname) (increase(node_vmstat_oom_kill[1m]) > 0)
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` OOM kill detected
+                    description: OOM kill detected
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                    #      - alert: HostEdacCorrectableErrorsDetected
+                    #   expr: '(increase(node_edac_correctable_errors_total[1m]) > 0)'
+                    #   for: 0m
+                    #   labels:
+                    #     severity: info
+                    #   annotations:
+                    #     summary: Host EDAC Correctable Errors detected (hostname {{ $labels.hostname }})
+                    #     description: "Host {{ $labels.hostname }} has had {{ printf \"%.0f\" $value }} correctable memory errors reported by EDAC in the last 5 minutes."
+                    # dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                    #      - alert: HostEdacUncorrectableErrorsDetected
+                    #   expr: '(node_edac_uncorrectable_errors_total > 0)'
+                    #   for: 0m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host EDAC Uncorrectable Errors detected (hostname {{ $labels.hostname }})
+                    #     description: "Host {{ $labels.hostname }} has had {{ printf \"%.0f\" $value }} uncorrectable memory errors reported by EDAC in the last 5 minutes."
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                - alert: HostNetworkReceiveErrors
+                  expr: sum by (hostname, device) (rate(node_network_receive_errs_total[2m]) / rate(node_network_receive_packets_total[2m])) > 0.01
+                  for: 2m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` Network Receive Errors
+                    description: Interface {{ $labels.device }} has encountered {{ $value | humanizePercentage }} (>1%) receive errors in the last 2 minutes
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostNetworkTransmitErrors
+                  expr: sum by (hostname, device) (rate(node_network_transmit_errs_total[2m]) / rate(node_network_transmit_packets_total[2m])) > 0.01
+                  for: 2m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` Network Transmit Errors
+                    description: Interface {{ $labels.device }} has encountered {{ $value | humanizePercentage }} (>1%) transmit errors in the last 2 minutes
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                    #      - alert: HostNetworkBondDegraded
+                    #   expr: '((node_bonding_active - node_bonding_slaves) != 0)'
+                    #   for: 2m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host Network Bond Degraded (hostname {{ $labels.hostname }})
+                    #     description: "Bond \"{{ $labels.device }}\" degraded on \"{{ $labels.hostname }}\"."
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                    #      - alert: HostConntrackLimit
+                    #   expr: '(node_nf_conntrack_entries / node_nf_conntrack_entries_limit > 0.8)'
+                    #   for: 5m
+                    #   labels:
+                    #     severity: warning
+                    #   annotations:
+                    #     summary: Host conntrack limit (hostname {{ $labels.hostname }})
+                    #     description: "The number of conntrack is approaching limit"
+                    #     dashboard: "https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}"
+                - alert: HostClockSkew
+                  expr: ((node_timex_offset_seconds > 0.05 and deriv(node_timex_offset_seconds[5m]) >= 0) or (node_timex_offset_seconds < -0.05 and deriv(node_timex_offset_seconds[5m]) <= 0))
+                  for: 10m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` clock skew
+                    description: Clock skew detected. Clock is out of sync. Ensure NTP is configured correctly on this host.
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
+                - alert: HostClockNotSynchronising
+                  expr: (min_over_time(node_timex_sync_status[1m]) == 0 and node_timex_maxerror_seconds >= 16)
+                  for: 2m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Host `{{ $labels.hostname }}` clock not synchronising
+                    description: Clock not synchronising. Ensure NTP is configured on this host.
+                    dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
 alertmanager:
     enabled: true
     config:
@@ -49,16 +340,20 @@ alertmanager:
         receivers:
             - name: discord
               discord_configs:
-                - webhook_url: ENC[AES256_GCM,data:7mn46Q/VZsZwGTp5gr0HuwWo1iLN+gpMdiGvPqIT+9JwCTrQlnq/l9V4pE1gey3GP2af9vQ9b8XTR/JK9xmKxvNYx1RzjrH3/9GcxvhVaoXrNbQWLr479U12xi4FIGx+K0zQVGwjK0OA4kaMcgVYaDUdoqZztk1W0A==,iv:duLbJoaPJfp6839SDEx90so85zPQaykUPOSf4whT4u4=,tag:gW4irWsdVJfPXf43LlNK+w==,type:str]
+                - webhook_url: ENC[AES256_GCM,data:W5hKP7K849OuciQay8abk0n/XAM9rjA85PtF32dMOyB4Rk9tMe6BQNbzykZ96kxP8n+3lLxokkpc0J1I83kyViAnLFtBbJ+DvynDzaVntm2PMCwQMQDtFeJxX3+4c3GpSiHtberTj9XIIeNWtpkWZtc+gxpY9pYj5A==,iv:FqWoqwyPiOMagab4AxW++LeDb/XP79UxgnDYUCz55qk=,tag:WuSGSTBGlqEwzrTBasM0ZA==,type:str]
                   send_resolved: true
                   username: Alertmanager
                   avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
-                  title: '{{ if eq .Status "firing" }}:x:({{ .Alerts.Firing | len }}){{ else }}:white_check_mark:{{ end }} {{ .GroupLabels.SortedPairs.Values | join " " }}'
-                  message: "{{ range .Alerts }}\n### {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }})\n[:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }})\n[:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})\n"
+                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }} ({{ .GroupLabels.hostname }})"
+                  message: "{{ range .Alerts }}\n### {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
             - name: discord-critical
               discord_configs:
                 - webhook_url: ENC[AES256_GCM,data:i14pWpcTl3iX6ZOwSij4skAMOINQMeavDclyYmxGPgOdhtVyGkZ4XN2/oq8yBtvbep03qaDEDeInWoolRsjCGgYPDEu8Jo4+kLzXhNNiLXDN/svF9ePbf56SSKAgpPEdn68RGj+BIi842UTpoPfgc7bpLemPE1UnQg==,iv:NoW80hwnhsu3iwQult4S6OvTfNdh91Sr2T0hJdZITyo=,tag:mPmoAvYL4VMQEHY1pc5ngQ==,type:str]
                   send_resolved: true
+                  username: Alertmanager
+                  avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
+                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }} ({{ .GroupLabels.hostname }})"
+                  message: "{{ range .Alerts }}\n### {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
     ingress:
         enabled: true
         ingressClassName: nginx
@@ -215,8 +510,8 @@ prometheus:
                   replacement: $1
                   targetLabel: hostname
 sops:
-    lastmodified: "2026-02-01T14:23:49Z"
-    mac: ENC[AES256_GCM,data:H1+kQvlaNvYj7INdXq8D/UwXDunZaFoKBS06+fokbK7g7qjUPDl5ssYef6u4IUo+Um1dA/Ntv6P8W1WfqFnDHvZ4xqYC9wxY5xaw2k5L5sHjMrAbq2hAao/hkZsqfLZln7p8aAn+NL8aDf1LBOPTMpr66Gg3Hu3HI1kutWb0c1E=,iv:wE7vIr1Rmr+2sZLIVkzYj0ebAXauzCj2hhFGrNFmppY=,tag:TJgvcsl94Gf7Cihw8oPTUA==,type:str]
+    lastmodified: "2026-02-06T00:36:47Z"
+    mac: ENC[AES256_GCM,data:dp39fEYUDahV27Gj5oedG+3nBqxgpSznZsb/0UCkHiISpYQecWHvAf9Nmvb0wiNHZoSG7S4v7pdiscDVKeSIAmK+GbCKXfrq+CcRvfQ5IeDazpFD/5qexjGPA1T70mWIOMK4UCZfrcbInzb/KTiDHiJ/zguzHL46sWE2t8LIbMY=,iv:mkDIAzg9eWcPhYzrysmX6DyeFv3OBNKfd9C8Ahul7OY=,tag:OYCjsKVCxhVUvQlE8DGZ9w==,type:str]
     pgp:
         - created_at: "2026-02-01T14:23:24Z"
           enc: |-
