@@ -145,7 +145,7 @@ additionalPrometheusRulesMap:
                     # Please read: https://github.com/samber/awesome-prometheus-alerts/issues/58
                 - alert: HostContextSwitchingHigh
                   expr: (rate(node_context_switches_total[15m])/count without(mode,cpu) (node_cpu_seconds_total{mode="idle"})) / (rate(node_context_switches_total[1d])/count without(mode,cpu) (node_cpu_seconds_total{mode="idle"})) > 2
-                  for: 0m
+                  for: 2m
                   labels:
                     severity: warning
                   annotations:
@@ -345,7 +345,7 @@ alertmanager:
                   username: Alertmanager
                   avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
                   title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }} ({{ .GroupLabels.hostname }})"
-                  message: "{{ range .Alerts }}\n### {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
+                  message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
             - name: discord-critical
               discord_configs:
                 - webhook_url: ENC[AES256_GCM,data:i14pWpcTl3iX6ZOwSij4skAMOINQMeavDclyYmxGPgOdhtVyGkZ4XN2/oq8yBtvbep03qaDEDeInWoolRsjCGgYPDEu8Jo4+kLzXhNNiLXDN/svF9ePbf56SSKAgpPEdn68RGj+BIi842UTpoPfgc7bpLemPE1UnQg==,iv:NoW80hwnhsu3iwQult4S6OvTfNdh91Sr2T0hJdZITyo=,tag:mPmoAvYL4VMQEHY1pc5ngQ==,type:str]
@@ -353,7 +353,7 @@ alertmanager:
                   username: Alertmanager
                   avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
                   title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }} ({{ .GroupLabels.hostname }})"
-                  message: "{{ range .Alerts }}\n### {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
+                  message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
     ingress:
         enabled: true
         ingressClassName: nginx
@@ -510,8 +510,8 @@ prometheus:
                   replacement: $1
                   targetLabel: hostname
 sops:
-    lastmodified: "2026-02-06T00:36:47Z"
-    mac: ENC[AES256_GCM,data:dp39fEYUDahV27Gj5oedG+3nBqxgpSznZsb/0UCkHiISpYQecWHvAf9Nmvb0wiNHZoSG7S4v7pdiscDVKeSIAmK+GbCKXfrq+CcRvfQ5IeDazpFD/5qexjGPA1T70mWIOMK4UCZfrcbInzb/KTiDHiJ/zguzHL46sWE2t8LIbMY=,iv:mkDIAzg9eWcPhYzrysmX6DyeFv3OBNKfd9C8Ahul7OY=,tag:OYCjsKVCxhVUvQlE8DGZ9w==,type:str]
+    lastmodified: "2026-02-06T01:03:18Z"
+    mac: ENC[AES256_GCM,data:Q8sP7PMOATZm2gkxchaqpfX1eK77BcrG5Rp4BL+MmBD88sO2zKr4MFmkEQuFEDXSfanW+FR0FearhWHE6w3SUp8kHllqORB3Y2LjEDa7UsaKS4NOApzOIZCHfofWRtcSH2wfg7lz2P1cz7xThaUlTG2uDANapL1X/JxhZ2rRTtk=,iv:41EWHukd8HzfCR31VrutrwKNVWl9lju5kpVN3IpX3ak=,tag:iZK0o3Aaz8nnqhWoQuAOmw==,type:str]
     pgp:
         - created_at: "2026-02-01T14:23:24Z"
           enc: |-
