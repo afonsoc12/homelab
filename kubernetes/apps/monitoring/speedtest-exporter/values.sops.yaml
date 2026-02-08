@@ -1,0 +1,137 @@
+image:
+    repository: ghcr.io/afonsoc12/telegraf
+    tag: 1.37.1
+    pullPolicy: Always
+ports:
+    - containerPort: 9273
+      name: metrics
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+serviceMonitor:
+    enabled: true
+    endpoints:
+        - port: metrics
+          interval: 5m
+configmap:
+    mountEnv: false
+    data:
+        telegraf.conf: |
+            [agent]
+              debug = true
+
+            [[inputs.exec]]
+              ## Commands array
+              commands = [
+                "speedtest --accept-license --accept-gdpr --format=json"
+              ]
+              interval = "5m"
+
+              timeout = "60s"
+              name_prefix = "speedtest_"
+              tag_keys = [
+                "isp",
+                "interface_externalIp",
+                "server_*"
+              ]
+              data_format = "json"
+
+            [[outputs.prometheus_client]]
+              listen = ":9273"
+              metric_version = 1
+              path = "/metrics"
+              expiration_interval = "5m"
+              collectors_exclude = ["gocollector", "process"]
+volumeMounts:
+    - name: config
+      mountPath: /etc/telegraf
+volumes:
+    - name: config
+      configMap:
+        name: speedtest-exporter
+livenessProbe:
+    httpGet:
+        path: /health
+        port: metrics
+readinessProbe:
+    httpGet:
+        path: /health
+        port: metrics
+resources:
+    requests:
+        cpu: 10m
+        memory: 64Mi
+    limits:
+        cpu: 100m
+        memory: 256Mi
+nodeSelector:
+    kubernetes.io/hostname: k3s-m1
+prometheusRule:
+    enabled: true
+    groups:
+        - name: Speedtest
+          rules:
+            - alert: SpeedtestDownloadLow
+              expr: max_over_time(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[15m]) * 8 * 1e-6 < 400
+              for: 0m
+              labels:
+                severity: warning
+              annotations:
+                summary: Speedtest download low on `{{ $labels.hostname }}`
+                description: 'Download bandwidth has been below 400 Mbps for the last 15 minutes. Current value: {{ $value }} Mbps.'
+                dashboard: ENC[AES256_GCM,data:xJSSOoBiaKn+4A2Iw0iOzpKnw6Hyt1YqmIs12KWRlMqAGWmB3zhTFlmWww+acrZtKrPKEuyqbsakAzdpTYdTK3aAy99QXcjHa4JvToNETKPBCp0Wfg==,iv:n84EciERvHV7EKc7otuUOQ+WWTyDvqKvV+LWZmVrZUY=,tag:cFbKcVEXZfyM0UE1hGXtPA==,type:str]
+            - alert: SpeedtestUploadLow
+              expr: max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[15m]) * 8 * 1e-6 < 100
+              for: 0m
+              labels:
+                severity: warning
+              annotations:
+                summary: Speedtest upload low on `{{ $labels.hostname }}`
+                description: 'Upload bandwidth has been below 100 Mbps for the last 15 minutes. Current value: {{ $value }} Mbps.'
+                dashboard: ENC[AES256_GCM,data:W2TXrtzzG1ePiAjt422C5LVcfU8ZgSo6/rQWszQ1aupw9TLK6Pei3/9AhHXRUod36D8ToO4g/SoB780qHKPrDNutC6B1e+2QLzmr4YEt8XeugXCBpQ==,iv:qMxK0M8D/uB/dl9esgpJj+pJNE8eEG+/PaH11f3cSPA=,tag:ADA8dcPC1UyieFkrtUf9DA==,type:str]
+            - alert: SpeedtestLatencyHigh
+              expr: max_over_time(speedtest_exec_ping_latency{hostname="k3s-m1"}[15m]) > 50
+              for: 0m
+              labels:
+                severity: warning
+              annotations:
+                summary: Speedtest latency high on `{{ $labels.hostname }}`
+                description: 'Latency has exceeded 50 ms for the last 15 minutes. Current value: {{ $value }} ms.'
+                dashboard: ENC[AES256_GCM,data:CajcLWoKNDcLvaTtVXgvdF30xda0zAmAqnDS12CFsUFIFJsbBybWxMU8sZr6qnMnj/xmaFgGodD0D5VQW+Pm6Tyf8Y/QaWn0wdJCn6nDbN3407aK9g==,iv:9iu1brkmWlCG5i52JkKYGBfpWqtjxrDRb8YVoid6lkQ=,tag:rv5duBkC6BoyXgaiFeYfEQ==,type:str]
+            - alert: SpeedtestNoRecentData
+              expr: changes(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[15m]) == 0
+              for: 0m
+              labels:
+                severity: critical
+              annotations:
+                summary: No recent speedtest results on `{{ $labels.hostname }}`
+                description: No new speedtest download result has been recorded in the last 15 minutes.
+                dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
+sops:
+    lastmodified: "2026-02-08T22:31:40Z"
+    mac: ENC[AES256_GCM,data:hUmoV3EIxEVUCvxPbOcJ/nJiUabHeoZsS4sq5qqVtMr8AB+udfRAHHLJk6MrEjesQbiPE3CP7z6kkQ+IokxkE9j2Fqh7fA8y+O+d23jlsXU4Ga5qVU37zm/S4Qp7xjplJwogSqueRmqZhJ5T7xiWTesy2ETHZJWUIUSMjllDjRM=,iv:DM1z8rw0pAFsxaWESvEgWlPXejOeuCS6fCCLoG95Pus=,tag:se2+VDwutCzgtHJBC0AKbA==,type:str]
+    pgp:
+        - created_at: "2026-02-08T22:31:40Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAAn6MNskIyPSEvAGWMHSxO82TXMxCrPtN55dOhggByxZ7g
+            sFbgRCdezU9aN2U5d3bU2rm3LS5MTt8D/uzIUj7PIMXE6h63Q9JC68Ts+pqVqkTe
+            AuTSbtTS1TFJIc7f7mTyUrzHmSmQFNa0cHpHrxdoXUH+wTpe/ak3fMxS5PQU8De3
+            09paZ6B1TNjVy/YiKJllEi9rN9XAYtFwXZOpejfYLjbI/3hDZlFzAojzK5VXS2BH
+            CJDDL518m+hAsKf/lvKmNwoopGGl5MWPdk1Mp05a7sbuiyXycf2C+RO+AP+vibpK
+            LYIk9IcQrBHAY1/nY2T/GxjQ4u3gc5zxmnKo+VFX+nxuAq43EihvLCbgXBPH7+3s
+            O2gMRNx5ZeP8XGEMs2m+QQNFLZtdD+7svoI2te48oT6ZNs8jORCaUOVY8eHbl/g8
+            NXmyzhoXDptpF0d7Tt/RJY3trJG5JDkAHqryz8g9/jfM63YzR56i7bgoIn3GUB3F
+            3cA/8iKhxhZeLaK6B9kBFT08hd5TJrmrRG0r4uknHzldVTL36ZOQ9d2Qhl9PBnWp
+            zJ9ReHU56fRX6hs59aykNV09WQH9A3JvpSd9STYiUSLTzRKXLsZAmTsSGxkdDuKv
+            FwiQs9EC3vOfxkbZ6bm+LUcMjGUBBm1wC5iHvgAEknI0ydxjheXczFzKJkQNMvXU
+            aAEJAhDIMtBxkQZNt6uzzzaKrKx6E1ytMVdSk0VlQDdAxUASgroPuGDO7HGEvRBk
+            rTvBanpYEejOKH4ORhh/XN+MQAccZJz/lO6Eb0qh+pvTGRZDTam7gOi0ASnYKj6N
+            20TECPrre2Zb
+            =iGNp
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(dashboard)$
+    version: 3.11.0

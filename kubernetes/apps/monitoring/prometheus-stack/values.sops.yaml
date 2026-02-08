@@ -211,13 +211,13 @@ additionalPrometheusRulesMap:
                     # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
                     # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
                 - alert: HostOutOfDiskSpace
-                  expr: sum by (hostname, device)(node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"} / node_filesystem_size_bytes < 0.15 and on (hostname, device, mountpoint) node_filesystem_readonly)
+                  expr: sum by (hostname, mountpoint)(node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"} / node_filesystem_size_bytes < 0.15 and on (hostname, mountpoint) node_filesystem_readonly)
                   for: 2m
                   labels:
                     severity: warning
                   annotations:
                     summary: Host `{{ $labels.hostname }}` out of disk space
-                    description: Disk is almost full at {{ $value | humanizePercentage }} (< 15% left) on device {{ $labels.device }}
+                    description: Disk {{ $labels.mountpoint }} is almost full at {{ $value | humanizePercentage }} (< 15% left)
                     dashboard: ENC[AES256_GCM,data:WLQ0qwyd0ZaZ4gPai3DpQQ5kXDzKXLq+bCh+YLa6dDFN2U51kifO+8/MQyWYd1zs8qv9ozLiYcnhV9C4fa1G3yfgjDbWmiQGC/8EZOSyvTqEZUAVGbtSZ0kY9sAWVgUOJg==,iv:R61uj/w07ccB1vmcO+RxY/o4LLkJDkiIQSCTjoHagtM=,tag:n5t1iA8Ip9CGcaQKakNlQg==,type:str]
                 - alert: HostFilesystemDeviceError
                   expr: sum by(hostname, device, mountpoint) (node_filesystem_device_error{fstype!~"^(fuse.*|tmpfs|cifs|nfs)", device!="none"}) > 0
@@ -384,7 +384,7 @@ alertmanager:
                   username: Alertmanager
                   avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
                   title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} ({{ .GroupLabels.hostname }}){{ end }}"
-                  message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
+                  message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n{{ if .Labels.hostname }}**Hostname:** `{{ .Labels.hostname }}`\n{{ endif }}**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
             - name: discord-critical
               discord_configs:
                 - webhook_url: ENC[AES256_GCM,data:42z6g0JjowvYhqqLO5z185Ll70bFlp/7VQtJ651xl+ag230Ma0YMMySMxDcM0GfChDSQB+N1fxR93cwFT6k+9Ao7yDwQPfsllp0iBkQEUk+5tjz87V9n1FKEjCSFEIoimlfvpG6ZDeGd+UhaNTSZcr3vq2saB1jtDQ==,iv:zgeiv6LwEpG9N9I5RCuNOUIGnyQrjJNLa3j8UodvZKs=,tag:lu6jhsBG+PArp82FMaMiiQ==,type:str]
@@ -549,8 +549,8 @@ prometheus:
                   replacement: $1
                   targetLabel: hostname
 sops:
-    lastmodified: "2026-02-08T18:17:33Z"
-    mac: ENC[AES256_GCM,data:QiZPGQoOCD8L/nLOFh0a0v6bKZ1HdLBKTlN2bMJ2do5GtWTU6BAw2WkaSuPT/K6GhU28eOcKdCJ6r+WJJqh1JMtV4s8HTCCLRpSaAtqR2fC2WEEljBXSwNGac8XrCz9pDCDOp13e5JldXXRTxbrQPdK9aFV3pZuQXYen1q4bcP0=,iv:i/uR8uMcZPN2Ur0ZejzTIAKDqAl1XdQaYISIXDLImxY=,tag:4bNrcDQGdUft4z4FJ9MN1g==,type:str]
+    lastmodified: "2026-02-08T22:28:50Z"
+    mac: ENC[AES256_GCM,data:+KXNVbeDucM3mjDCU3MnUp8O+/c3IMPacKcj4+C3vgXae8u6XNGDVfjYTswfQOno21Evlih1NhJJMZg3L5xYhf/pDbdUUKfSw79HeS3H8pvH8pOjxP3iomIaqRnBoBhKMBQZreDtA/9viQNaHKcU9pBEFWf+tNI2FFEstXRO1xI=,iv:T+i8geCqaPILNfM7PbQG46M56jPm7WoZ0zXw+wpgrnQ=,tag:ynV6Ac3JBBsM4kUj/+hfGA==,type:str]
     pgp:
         - created_at: "2026-02-08T18:14:38Z"
           enc: |-
