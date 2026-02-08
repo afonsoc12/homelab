@@ -10,12 +10,12 @@ spec:
   project: default
   source:
     repoURL: git@github.com:afonsoc12/homelab.git
-      targetRevision: HEAD
-      path: kubernetes/charts/homelab-svc
-      helm:
-        valueFiles:
-          - secrets://../../apps/values.sops.yaml
-          - secrets://../../apps/monitoring/prometheus-resources/values.sops.yaml
+    targetRevision: HEAD
+    path: kubernetes/charts/prometheus-resources
+    helm:
+      valueFiles:
+        - secrets://../../apps/values.sops.yaml
+        - secrets://../../apps/monitoring/prometheus-resources/values.sops.yaml
 
   destination:
     name: {{ .Values.spec.destination.name }}
