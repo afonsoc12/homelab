@@ -1,0 +1,5 @@
+1. Get the list of ScrapeConfigs deployed:
+  kubectl get scrapeconfig -n monitoring
+
+2. Verify the resources:
+  kubectl describe scrapeconfig -n monitoring

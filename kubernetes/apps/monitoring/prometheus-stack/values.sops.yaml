@@ -7,6 +7,237 @@ crds:
 defaultRules:
     create: false
 additionalPrometheusRulesMap:
+    self:
+        groups:
+            - name: PromStack
+              rules:
+                - alert: PrometheusJobMissing
+                  expr: absent(up{job="promstack-prometheus"})
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Prometheus job is missing
+                    description: A Prometheus job on endpoint {{ $labels.endpoint }} has disappeared
+                - alert: PrometheusTargetMissing
+                  expr: up == 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus target is missing
+                    description: Prometheus job={{ $labels.job }}, hostname={{ $labels.hostname }} has disappeared. An exporter might be crashed.
+                # - alert: PrometheusAllTargetsMissing
+                #   expr: sum by (job) (up) == 0
+                #   for: 0m
+                #   labels:
+                #     severity: critical
+                #   annotations:
+                #     summary: Prometheus all targets missing (instance {{ $labels.instance }})
+                #     description: "A Prometheus job does not have living target anymore.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                # - alert: PrometheusTargetMissingWithWarmupTime
+                #   expr: sum by (instance, job) ((up == 0) * on (instance) group_left(__name__) (node_time_seconds - node_boot_time_seconds > 600))
+                #   for: 0m
+                #   labels:
+                #     severity: critical
+                #   annotations:
+                #     summary: Prometheus target missing with warmup time (instance {{ $labels.instance }})
+                #     description: "Allow a job time to start up (10 minutes) before alerting that it's down.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                - alert: PrometheusConfigurationReloadFailure
+                  expr: prometheus_config_last_reload_successful != 1
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Prometheus configuration reload failure
+                    description: Prometheus configuration reload error
+                - alert: PrometheusTooManyRestarts
+                  expr: changes(process_start_time_seconds{job=~"^promstack.*"}[10m]) > 2
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Prometheus too many restarts on {{ $labels.job}}
+                    description: Prometheus has restarted {{ $value }} times (>2) in the last 10 minutes. It might be crashlooping.
+                - alert: PrometheusAlertmanagerJobMissing
+                  expr: absent(up{job="promstack-alertmanager"})
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Prometheus AlertManager job missing (instance {{ $labels.instance }})
+                    description: A Prometheus AlertManager job on endpoint {{ $labels.endpoint }} has disappeared
+                - alert: PrometheusAlertmanagerConfigurationReloadFailure
+                  expr: alertmanager_config_last_reload_successful != 1
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Prometheus AlertManager configuration reload failure
+                    description: AlertManager configuration reload error
+                # - alert: PrometheusAlertmanagerConfigNotSynced
+                #   expr: count(count_values("config_hash", alertmanager_config_hash)) > 1
+                #   for: 0m
+                #   labels:
+                #     severity: warning
+                #   annotations:
+                #     summary: Prometheus AlertManager config not synced (instance {{ $labels.instance }})
+                #     description: "Configurations of AlertManager cluster instances are out of sync\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                - alert: PrometheusAlertmanagerE2eDeadManSwitch
+                  expr: vector(1)
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus AlertManager E2E dead man switch (instance {{ $labels.instance }})
+                    description: |-
+                        Prometheus DeadManSwitch is an always-firing alert. It's used as an end-to-end test of Prometheus through the Alertmanager.
+                          VALUE = {{ $value }}
+                          LABELS = {{ $labels }}
+                - alert: PrometheusNotConnectedToAlertmanager
+                  expr: prometheus_notifications_alertmanagers_discovered < 1
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus not connected to alertmanager"
+                    description: Prometheus cannot connect the alertmanager
+                # - alert: PrometheusRuleEvaluationFailures
+                #   expr: increase(prometheus_rule_evaluation_failures_total[3m]) > 0
+                #   for: 0m
+                #   labels:
+                #     severity: critical
+                #   annotations:
+                #     summary: Prometheus rule evaluation failures (instance {{ $labels.instance }})
+                #     description: "Prometheus encountered {{ $value }} rule evaluation failures, leading to potentially ignored alerts.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                # - alert: PrometheusTemplateTextExpansionFailures
+                #   expr: increase(prometheus_template_text_expansion_failures_total[3m]) > 0
+                #   for: 0m
+                #   labels:
+                #     severity: critical
+                #   annotations:
+                #     summary: Prometheus template text expansion failures (instance {{ $labels.instance }})
+                #     description: "Prometheus encountered {{ $value }} template text expansion failures\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                # - alert: PrometheusRuleEvaluationSlow
+                #   expr: prometheus_rule_group_last_duration_seconds > prometheus_rule_group_interval_seconds
+                #   for: 5m
+                #   labels:
+                #     severity: warning
+                #   annotations:
+                #     summary: Prometheus rule evaluation slow (instance {{ $labels.instance }})
+                #     description: "Prometheus rule evaluation took more time than the scheduled interval. It indicates a slower storage backend access or too complex query.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                # - alert: PrometheusNotificationsBacklog
+                #   expr: min_over_time(prometheus_notifications_queue_length[10m]) > 0
+                #   for: 0m
+                #   labels:
+                #     severity: warning
+                #   annotations:
+                #     summary: Prometheus notifications backlog (instance {{ $labels.instance }})
+                #     description: "The Prometheus notification queue has not been empty for 10 minutes\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                # - alert: PrometheusAlertmanagerNotificationFailing
+                #   expr: rate(alertmanager_notifications_failed_total[1m]) > 0
+                #   for: 0m
+                #   labels:
+                #     severity: critical
+                #   annotations:
+                #     summary: Prometheus AlertManager notification failing (instance {{ $labels.instance }})
+                #     description: "Alertmanager is failing sending notifications\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                - alert: PrometheusTargetEmpty
+                  expr: prometheus_sd_discovered_targets == 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus target empty
+                    description: Prometheus has no target in service discovery on {{ $labels.config }}
+                # - alert: PrometheusTargetScrapingSlow
+                #   expr: prometheus_target_interval_length_seconds{quantile="0.9"} / on (interval, instance, job) prometheus_target_interval_length_seconds{quantile="0.5"} > 1.05
+                #   for: 5m
+                #   labels:
+                #     severity: warning
+                #   annotations:
+                #     summary: Prometheus target scraping slow (instance {{ $labels.instance }})
+                #     description: "Prometheus is scraping exporters slowly since it exceeded the requested interval time. Your Prometheus server is under-provisioned.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                # - alert: PrometheusLargeScrape
+                #   expr: increase(prometheus_target_scrapes_exceeded_sample_limit_total[10m]) > 10
+                #   for: 5m
+                #   labels:
+                #     severity: warning
+                #   annotations:
+                #     summary: Prometheus large scrape (instance {{ $labels.instance }})
+                #     description: "Prometheus has many scrapes that exceed the sample limit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+                - alert: PrometheusTargetScrapeDuplicate
+                  expr: increase(prometheus_target_scrapes_sample_duplicate_timestamp_total[5m]) > 0
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Prometheus target scrape duplicate
+                    description: Prometheus has many samples rejected due to duplicate timestamps but different values
+                - alert: PrometheusTsdbCheckpointCreationFailures
+                  expr: increase(prometheus_tsdb_checkpoint_creations_failed_total[1m]) > 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus TSDB checkpoint creation failures
+                    description: Prometheus encountered {{ $value }} checkpoint creation failures
+                - alert: PrometheusTsdbCheckpointDeletionFailures
+                  expr: increase(prometheus_tsdb_checkpoint_deletions_failed_total[1m]) > 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus TSDB checkpoint deletion failures
+                    description: Prometheus encountered {{ $value }} checkpoint deletion failures
+                - alert: PrometheusTsdbCompactionsFailed
+                  expr: increase(prometheus_tsdb_compactions_failed_total[1m]) > 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus TSDB compactions failed
+                    description: Prometheus encountered {{ $value }} TSDB compactions failures
+                - alert: PrometheusTsdbHeadTruncationsFailed
+                  expr: increase(prometheus_tsdb_head_truncations_failed_total[1m]) > 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus TSDB head truncations failed
+                    description: Prometheus encountered {{ $value }} TSDB head truncation failures
+                - alert: PrometheusTsdbReloadFailures
+                  expr: increase(prometheus_tsdb_reloads_failures_total[1m]) > 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus TSDB reload failures
+                    description: Prometheus encountered {{ $value }} TSDB reload failures
+                - alert: PrometheusTsdbWalCorruptions
+                  expr: increase(prometheus_tsdb_wal_corruptions_total[1m]) > 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus TSDB WAL corruptions
+                    description: Prometheus encountered {{ $value }} TSDB WAL corruptions
+                - alert: PrometheusTsdbWalTruncationsFailed
+                  expr: increase(prometheus_tsdb_wal_truncations_failed_total[1m]) > 0
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Prometheus TSDB WAL truncations failed
+                    description: Prometheus encountered {{ $value }} TSDB WAL truncation failures
+                - alert: PrometheusTimeseriesCardinality
+                  expr: label_replace(count by(__name__) ({__name__=~".+"}), "name", "$1", "__name__", "(.+)") > 10000
+                  for: 0m
+                  labels:
+                    severity: warning
+                  annotations:
+                    summary: Prometheus timeseries cardinality explosion
+                    description: 'The "{{ $labels.name }}" timeseries cardinality is getting very high: {{ $value }} (>10000)'
     node-exporter:
         groups:
             - name: NodeExporter
@@ -297,237 +528,6 @@ additionalPrometheusRulesMap:
                     summary: Host `{{ $labels.hostname }}` clock not synchronising
                     description: Clock not synchronising. Ensure NTP is configured on this host.
                     dashboard: https://grafana.local.mydata247.top/d/rYdddlPWk/node-exporter?var-hostname={{ $labels.hostname }}
-    prometheus-stack:
-        groups:
-            - name: PromStack
-              rules:
-                - alert: PrometheusJobMissing
-                  expr: absent(up{job="promstack-prometheus"})
-                  for: 0m
-                  labels:
-                    severity: warning
-                  annotations:
-                    summary: Prometheus job is missing
-                    description: A Prometheus job on endpoint {{ $labels.endpoint }} has disappeared
-                - alert: PrometheusTargetMissing
-                  expr: up == 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus target is missing
-                    description: Prometheus job={{ $labels.job }}, hostname={{ $labels.hostname }} has disappeared. An exporter might be crashed.
-                # - alert: PrometheusAllTargetsMissing
-                #   expr: sum by (job) (up) == 0
-                #   for: 0m
-                #   labels:
-                #     severity: critical
-                #   annotations:
-                #     summary: Prometheus all targets missing (instance {{ $labels.instance }})
-                #     description: "A Prometheus job does not have living target anymore.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                # - alert: PrometheusTargetMissingWithWarmupTime
-                #   expr: sum by (instance, job) ((up == 0) * on (instance) group_left(__name__) (node_time_seconds - node_boot_time_seconds > 600))
-                #   for: 0m
-                #   labels:
-                #     severity: critical
-                #   annotations:
-                #     summary: Prometheus target missing with warmup time (instance {{ $labels.instance }})
-                #     description: "Allow a job time to start up (10 minutes) before alerting that it's down.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                - alert: PrometheusConfigurationReloadFailure
-                  expr: prometheus_config_last_reload_successful != 1
-                  for: 0m
-                  labels:
-                    severity: warning
-                  annotations:
-                    summary: Prometheus configuration reload failure
-                    description: Prometheus configuration reload error
-                - alert: PrometheusTooManyRestarts
-                  expr: changes(process_start_time_seconds{job=~"^promstack.*"}[10m]) > 2
-                  for: 0m
-                  labels:
-                    severity: warning
-                  annotations:
-                    summary: Prometheus too many restarts on {{ $labels.job}}
-                    description: Prometheus has restarted {{ $value }} times (>2) in the last 10 minutes. It might be crashlooping.
-                - alert: PrometheusAlertmanagerJobMissing
-                  expr: absent(up{job="promstack-alertmanager"})
-                  for: 0m
-                  labels:
-                    severity: warning
-                  annotations:
-                    summary: Prometheus AlertManager job missing (instance {{ $labels.instance }})
-                    description: A Prometheus AlertManager job on endpoint {{ $labels.endpoint }} has disappeared
-                - alert: PrometheusAlertmanagerConfigurationReloadFailure
-                  expr: alertmanager_config_last_reload_successful != 1
-                  for: 0m
-                  labels:
-                    severity: warning
-                  annotations:
-                    summary: Prometheus AlertManager configuration reload failure
-                    description: AlertManager configuration reload error
-                # - alert: PrometheusAlertmanagerConfigNotSynced
-                #   expr: count(count_values("config_hash", alertmanager_config_hash)) > 1
-                #   for: 0m
-                #   labels:
-                #     severity: warning
-                #   annotations:
-                #     summary: Prometheus AlertManager config not synced (instance {{ $labels.instance }})
-                #     description: "Configurations of AlertManager cluster instances are out of sync\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                - alert: PrometheusAlertmanagerE2eDeadManSwitch
-                  expr: vector(1)
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus AlertManager E2E dead man switch (instance {{ $labels.instance }})
-                    description: |-
-                        Prometheus DeadManSwitch is an always-firing alert. It's used as an end-to-end test of Prometheus through the Alertmanager.
-                          VALUE = {{ $value }}
-                          LABELS = {{ $labels }}
-                - alert: PrometheusNotConnectedToAlertmanager
-                  expr: prometheus_notifications_alertmanagers_discovered < 1
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus not connected to alertmanager"
-                    description: Prometheus cannot connect the alertmanager
-                # - alert: PrometheusRuleEvaluationFailures
-                #   expr: increase(prometheus_rule_evaluation_failures_total[3m]) > 0
-                #   for: 0m
-                #   labels:
-                #     severity: critical
-                #   annotations:
-                #     summary: Prometheus rule evaluation failures (instance {{ $labels.instance }})
-                #     description: "Prometheus encountered {{ $value }} rule evaluation failures, leading to potentially ignored alerts.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                # - alert: PrometheusTemplateTextExpansionFailures
-                #   expr: increase(prometheus_template_text_expansion_failures_total[3m]) > 0
-                #   for: 0m
-                #   labels:
-                #     severity: critical
-                #   annotations:
-                #     summary: Prometheus template text expansion failures (instance {{ $labels.instance }})
-                #     description: "Prometheus encountered {{ $value }} template text expansion failures\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                # - alert: PrometheusRuleEvaluationSlow
-                #   expr: prometheus_rule_group_last_duration_seconds > prometheus_rule_group_interval_seconds
-                #   for: 5m
-                #   labels:
-                #     severity: warning
-                #   annotations:
-                #     summary: Prometheus rule evaluation slow (instance {{ $labels.instance }})
-                #     description: "Prometheus rule evaluation took more time than the scheduled interval. It indicates a slower storage backend access or too complex query.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                # - alert: PrometheusNotificationsBacklog
-                #   expr: min_over_time(prometheus_notifications_queue_length[10m]) > 0
-                #   for: 0m
-                #   labels:
-                #     severity: warning
-                #   annotations:
-                #     summary: Prometheus notifications backlog (instance {{ $labels.instance }})
-                #     description: "The Prometheus notification queue has not been empty for 10 minutes\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                # - alert: PrometheusAlertmanagerNotificationFailing
-                #   expr: rate(alertmanager_notifications_failed_total[1m]) > 0
-                #   for: 0m
-                #   labels:
-                #     severity: critical
-                #   annotations:
-                #     summary: Prometheus AlertManager notification failing (instance {{ $labels.instance }})
-                #     description: "Alertmanager is failing sending notifications\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                - alert: PrometheusTargetEmpty
-                  expr: prometheus_sd_discovered_targets == 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus target empty
-                    description: Prometheus has no target in service discovery on {{ $labels.config }}
-                # - alert: PrometheusTargetScrapingSlow
-                #   expr: prometheus_target_interval_length_seconds{quantile="0.9"} / on (interval, instance, job) prometheus_target_interval_length_seconds{quantile="0.5"} > 1.05
-                #   for: 5m
-                #   labels:
-                #     severity: warning
-                #   annotations:
-                #     summary: Prometheus target scraping slow (instance {{ $labels.instance }})
-                #     description: "Prometheus is scraping exporters slowly since it exceeded the requested interval time. Your Prometheus server is under-provisioned.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                # - alert: PrometheusLargeScrape
-                #   expr: increase(prometheus_target_scrapes_exceeded_sample_limit_total[10m]) > 10
-                #   for: 5m
-                #   labels:
-                #     severity: warning
-                #   annotations:
-                #     summary: Prometheus large scrape (instance {{ $labels.instance }})
-                #     description: "Prometheus has many scrapes that exceed the sample limit\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
-                - alert: PrometheusTargetScrapeDuplicate
-                  expr: increase(prometheus_target_scrapes_sample_duplicate_timestamp_total[5m]) > 0
-                  for: 0m
-                  labels:
-                    severity: warning
-                  annotations:
-                    summary: Prometheus target scrape duplicate
-                    description: Prometheus has many samples rejected due to duplicate timestamps but different values
-                - alert: PrometheusTsdbCheckpointCreationFailures
-                  expr: increase(prometheus_tsdb_checkpoint_creations_failed_total[1m]) > 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus TSDB checkpoint creation failures
-                    description: Prometheus encountered {{ $value }} checkpoint creation failures
-                - alert: PrometheusTsdbCheckpointDeletionFailures
-                  expr: increase(prometheus_tsdb_checkpoint_deletions_failed_total[1m]) > 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus TSDB checkpoint deletion failures
-                    description: Prometheus encountered {{ $value }} checkpoint deletion failures
-                - alert: PrometheusTsdbCompactionsFailed
-                  expr: increase(prometheus_tsdb_compactions_failed_total[1m]) > 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus TSDB compactions failed
-                    description: Prometheus encountered {{ $value }} TSDB compactions failures
-                - alert: PrometheusTsdbHeadTruncationsFailed
-                  expr: increase(prometheus_tsdb_head_truncations_failed_total[1m]) > 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus TSDB head truncations failed
-                    description: Prometheus encountered {{ $value }} TSDB head truncation failures
-                - alert: PrometheusTsdbReloadFailures
-                  expr: increase(prometheus_tsdb_reloads_failures_total[1m]) > 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus TSDB reload failures
-                    description: Prometheus encountered {{ $value }} TSDB reload failures
-                - alert: PrometheusTsdbWalCorruptions
-                  expr: increase(prometheus_tsdb_wal_corruptions_total[1m]) > 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus TSDB WAL corruptions
-                    description: Prometheus encountered {{ $value }} TSDB WAL corruptions
-                - alert: PrometheusTsdbWalTruncationsFailed
-                  expr: increase(prometheus_tsdb_wal_truncations_failed_total[1m]) > 0
-                  for: 0m
-                  labels:
-                    severity: critical
-                  annotations:
-                    summary: Prometheus TSDB WAL truncations failed
-                    description: Prometheus encountered {{ $value }} TSDB WAL truncation failures
-                - alert: PrometheusTimeseriesCardinality
-                  expr: label_replace(count by(__name__) ({__name__=~".+"}), "name", "$1", "__name__", "(.+)") > 10000
-                  for: 0m
-                  labels:
-                    severity: warning
-                  annotations:
-                    summary: Prometheus timeseries cardinality explosion
-                    description: 'The "{{ $labels.name }}" timeseries cardinality is getting very high: {{ $value }} (>10000)'
 alertmanager:
     enabled: true
     config:
@@ -741,8 +741,8 @@ prometheus:
                   replacement: $1
                   targetLabel: hostname
 sops:
-    lastmodified: "2026-02-08T16:03:31Z"
-    mac: ENC[AES256_GCM,data:Em/B3vkDBCAXzimsFJhNnXAiq168OVXGU0VbNaGrSpvkn7s+meI2+LKp05IrFlvruAMalkKqn8NwAssFW1U+/E+aiZ3b+CVEMdo9Gwvtnzv4v/jy7xUEYAkjhQOaZAOYXQtTvcC6XCpPSKZm9JFl6HnGioxqybMzSfNDYdnWCKc=,iv:15PmUggA2ObNcn9OOaBO4lzXeVd/5wSiJK4b29CbNSg=,tag:a6CvfuBSa+Fv1iwrx93CJw==,type:str]
+    lastmodified: "2026-02-08T16:17:06Z"
+    mac: ENC[AES256_GCM,data:NPAS8MFAorsohrCc91zpulc/7KdkcbTVUYKDRjPbxYPUsUgwe2047zoctKS3roY1JEZoQhRe1QWo1OzIe46iy2rih52fL+j2RkRzAVUFZUMnGi6Nc+nfzz53wRblypaI84gTQBgK7BilwMwZpdnksyk7yLnH/OUI4a5ob1ESpRc=,iv:d4Tn8W12MjsFNghewqMpHDCJ/sQZsfXp8JbfQbR1NF0=,tag:fyXlDn7Ec/v1VcU6Vp818g==,type:str]
     pgp:
         - created_at: "2026-02-01T14:23:24Z"
           enc: |-

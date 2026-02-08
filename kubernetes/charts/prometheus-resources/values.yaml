@@ -1,0 +1,157 @@
+labels: {}
+  # label_1: abc
+  # label_2: def
+
+scrapeConfigs: []
+# - name: external-internet
+#   namespace: monitoring
+#   jobName: node-exporter
+#   metricsPath: /metrics
+#   scrapeInterval: 30s
+#   scrapeTimeout: 10s
+#   scheme: http
+#   scrapeClass: default
+#   enableHTTP2: true
+#   enableCompression: true
+#   honorLabels: false
+#   honorTimestamps: true
+#   trackTimestampsStaleness: false
+#   scrapeClassicHistograms: false
+#   scrapeNativeHistograms: false
+#   nativeHistogramBucketLimit: 1000
+#   nativeHistogramMinBucketFactor: 1.1
+#   params:
+#     filter: ["value"]
+#   staticConfigs:
+#     - targets:
+#         - <IP>:<PORT>
+#       labels:
+#         region: europe
+#   dnsSDConfigs:
+#     - names:
+#         - example.com
+#       type: A
+#       port: 8080
+#   kubernetesSDConfigs:
+#     - role: node
+#       apiServer: https://kubernetes.default:443
+#   dockerSDConfigs:
+#     - host: unix:///var/run/docker.sock
+#   relabelings:
+#     - action: replace
+#       sourceLabels: [__meta_kubernetes_node_name]
+#       targetLabel: node
+#     - action: keep
+#       regex: node-exporter
+#       sourceLabels: [__meta_kubernetes_service_name]
+#   metricRelabelings:
+#     - action: drop
+#       regex: go_.*
+#       sourceLabels: [__name__]
+#   sampleLimit: 100000
+#   targetLimit: 1000
+#   labelLimit: 1000
+#   labelNameLengthLimit: 1024
+#   labelValueLengthLimit: 2048
+#   keepDroppedTargets: 1000
+#   fileSDConfigs:
+#     - files:
+#         - /etc/prometheus/targets.yml
+#   gceSDConfigs:
+#     - project: my-project
+#   hetznerSDConfigs:
+#     - authToken:
+#         name: hcloud-secret
+#         key: token
+#   httpSDConfigs:
+#     - url: http://example.com/targets
+#   ionosSDConfigs:
+#     - authToken:
+#         name: ionos-secret
+#         key: token
+#   kumaSDConfigs:
+#     - server: http://kuma-cp:5681
+#   linodeSDConfigs:
+#     - authorization:
+#         credentials:
+#           name: linode-token
+#           key: token
+#   nomadSDConfigs:
+#     - server: http://nomad:4646
+#   openstackSDConfigs:
+#     - identityEndpoint: http://keystone:5000/v3
+#   ovhcloudSDConfigs:
+#     - applicationName: prometheus
+#   puppetDBSDConfigs:
+#     - url: http://puppetdb:8080
+#   scalewaySDConfigs:
+#     - zone: fr-par
+#   digitalOceanSDConfigs:
+#     - authorization:
+#         credentials:
+#           name: do-token
+#           key: token
+#   ec2SDConfigs:
+#     - region: us-east-1
+#   lightSailSDConfigs:
+#     - authorization:
+#         credentials:
+#           name: aws-secret
+#           key: access_token
+#   consulSDConfigs:
+#     - server: consul:8500
+#   azureSDConfigs:
+#     - subscriptionID: 12345678
+#   relabelings:
+#     - action: replace
+#       sourceLabels: [__meta_kubernetes_node_name]
+#       targetLabel: node
+#     - action: keep
+#       regex: node-exporter
+#       sourceLabels: [__meta_kubernetes_service_name]
+#   metricRelabelings:
+#     - action: drop
+#       regex: go_.*
+#       sourceLabels: [__name__]
+#   sampleLimit: 100000
+#   targetLimit: 1000
+#   labelLimit: 1000
+#   labelNameLengthLimit: 1024
+#   labelValueLengthLimit: 2048
+#   keepDroppedTargets: 1000
+#   authorization:
+#     type: Bearer
+#     credentials:
+#       name: prometheus-token
+#       key: token
+#   basicAuth:
+#     username:
+#       name: auth-secret
+#       key: username
+#     password:
+#       name: auth-secret
+#       key: password
+#   oauth2:
+#     clientID:
+#       configMap:
+#         name: oauth2-secret
+#         key: client_id
+#     clientSecret:
+#       name: oauth2-secret
+#       key: client_secret
+#     tokenUrl: http://example.com/token
+#     scopes:
+#       - scope1
+#   bearerToken: "token"
+#   bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+#   proxyUrl: http://proxy.example.com:8080
+#   proxyFromEnvironment: false
+#   noProxy: "localhost,127.0.0.1"
+#   proxyConnectHeader:
+#     User-Agent: ["Prometheus"]
+#   tlsConfig:
+#     insecureSkipVerify: false
+#     caFile: /etc/prometheus/certs/ca.crt
+#     certFile: /etc/prometheus/certs/client.crt
+#     keyFile: /etc/prometheus/certs/client.key
+#     serverName: example.com

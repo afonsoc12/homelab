@@ -1,0 +1,104 @@
+{{- range .Values.scrapeConfigs }}
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: {{ .name }}
+  namespace: {{ .namespace | default "monitoring" }}
+  labels:
+    release: prometheus-stack
+    {{- include "prometheus-resources.labels" $ | nindent 4 }}
+spec:
+  {{- with .jobName }}
+  jobName: {{ . }}
+  {{- end }}
+  {{- with .metricsPath }}
+  metricsPath: {{ . }}
+  {{- end }}
+  {{- with .scrapeInterval }}
+  scrapeInterval: {{ . }}
+  {{- end }}
+  {{- with .scrapeTimeout }}
+  scrapeTimeout: {{ . }}
+  {{- end }}
+  {{- with .scheme }}
+  scheme: {{ . }}
+  {{- end }}
+  {{- with .scrapeClass }}
+  scrapeClass: {{ . }}
+  {{- end }}
+  {{- if hasKey . "enableHTTP2" }}
+  enableHTTP2: {{ .enableHTTP2 }}
+  {{- end }}
+  {{- if hasKey . "enableCompression" }}
+  enableCompression: {{ .enableCompression }}
+  {{- end }}
+  {{- if hasKey . "honorLabels" }}
+  honorLabels: {{ .honorLabels }}
+  {{- end }}
+  {{- if hasKey . "honorTimestamps" }}
+  honorTimestamps: {{ .honorTimestamps }}
+  {{- end }}
+  {{- if hasKey . "trackTimestampsStaleness" }}
+  trackTimestampsStaleness: {{ .trackTimestampsStaleness }}
+  {{- end }}
+  {{- if hasKey . "scrapeClassicHistograms" }}
+  scrapeClassicHistograms: {{ .scrapeClassicHistograms }}
+  {{- end }}
+  {{- if hasKey . "scrapeNativeHistograms" }}
+  scrapeNativeHistograms: {{ .scrapeNativeHistograms }}
+  {{- end }}
+  {{- with .nativeHistogramBucketLimit }}
+  nativeHistogramBucketLimit: {{ . }}
+  {{- end }}
+  {{- with .nativeHistogramMinBucketFactor }}
+  nativeHistogramMinBucketFactor:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .params }}
+  params:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .staticConfigs }}
+  staticConfigs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .dnsSDConfigs }}
+  dnsSDConfigs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .kubernetesSDConfigs }}
+  kubernetesSDConfigs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .dockerSDConfigs }}
+  dockerSDConfigs:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .relabelings }}
+  relabelings:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .metricRelabelings }}
+  metricRelabelings:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .sampleLimit }}
+  sampleLimit: {{ . }}
+  {{- end }}
+  {{- with .targetLimit }}
+  targetLimit: {{ . }}
+  {{- end }}
+  {{- with .labelLimit }}
+  labelLimit: {{ . }}
+  {{- end }}
+  {{- with .labelNameLengthLimit }}
+  labelNameLengthLimit: {{ . }}
+  {{- end }}
+  {{- with .labelValueLengthLimit }}
+  labelValueLengthLimit: {{ . }}
+  {{- end }}
+  {{- with .keepDroppedTargets }}
+  keepDroppedTargets: {{ . }}
+  {{- end }}
+{{- end }}

@@ -41,7 +41,6 @@ service:
 
 serviceMonitor:
   enabled: false
-  create: false
   labels: {}
   endpoints:
   - port: metrics

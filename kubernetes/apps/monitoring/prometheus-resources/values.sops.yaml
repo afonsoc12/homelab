@@ -1,0 +1,43 @@
+scrapeConfigs:
+    - name: node-exporter-lan-uk
+      namespace: monitoring
+      metricsPath: /metrics
+      staticConfigs:
+        - targets:
+            - ENC[AES256_GCM,data:Js9N0s6XQZSxe73mBYmiBNwP,iv:xI3+qQty4L6EVgq9pwCSWw6QAquA1dWQkJBV+iuW4ts=,tag:vSqx89tly6rMOqTm9siITg==,type:str]
+      relabelings:
+        - action: replace
+          targetLabel: job
+          replacement: node-exporter
+        - action: replace
+          targetLabel: hostname
+          replacement: hoarder
+        - action: labeldrop
+          regex: cluster
+sops:
+    lastmodified: "2026-02-08T17:49:58Z"
+    mac: ENC[AES256_GCM,data:ISFG6onzblbvNckhxEqjC71Db0+QSkA7Pdr2fh3TgkcbmQdIRQGYG4QjUeNshrYxV6OHo7W1LdU1L9ij/1RUJZEOVXv1sEL1mwMAiE5ndOc69SlMk+r82ZyslE1UPSeigI8JLYJ8WKrpj1Uaa1feq0OLlYCUGcr8JSPFrOtHWp8=,iv:5+sPtF8H8dofFmQmVrTEZNX3gEeA85e1KYGQgf8EftY=,tag:X7tks1A3QTZCeMeSSWqaMA==,type:str]
+    pgp:
+        - created_at: "2026-02-08T17:49:58Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//R5UXx0Es3IImPiNjsOGGNeeS1nRjen45Xo2c7sEPHR//
+            rykloBpeoHC7VUcUo9JJaKIMNbV/Yu52ksN8ers1T8PpcXYsmthPI/l9QELZ8/FW
+            ZGOzbkdvyr2wonjuaoYUP87e/gOxrAGNfAAMwSrZKnKbEsP3pB4IKsFvUWVqekHe
+            Cb1hlclUCX7JFORIqq8+M+TKCyc8Jp03Fgo9QwZi87T/SuqXbQyoUaR/PojW6zKw
+            9ravwx9yHTxt7FTSuNOh0f5lZYOkjB2rmnsuHTQ8gTr1lgcY9R/CiXr8j8jEQLgh
+            HF2jbmK3Rn0dbwh+IuTmkeGQWJEkwwwUhQ7+QK0ZnFlmiMixrSIMLsDDs8paez5d
+            JGilMrPFAC6zIy4Z01O1PrrdhjxxIUlgT4vRwtf4wDDkTUhPhKIwYQqR5KlTvMNc
+            8LwTYNQilSMC07zJw9nJDf5VscYD1SQ8SVXhDCd/aFS2sL+/w+Itkw1J4VNzQnUf
+            f13CMX1qwK9cfCdxmVUls0XY+uSrfRANltGVWvaNZp6+KbLmiULKcbvuKD8kSZF4
+            8KK0Ar+LvXwYCJuE1Cvrwv+4cdYvAQRFlq2RTWCq7pdqslVlIqMrehX/3xw9PNhM
+            sINkmi+MMP6QjV85myhh/lPG+HTbZvpPm6x/OSRlDZE+e7MhaCVcDwnSCq9bciTU
+            aAEJAhAZJ8jT0SjjS7HIhWovGxLgOUfynGHkwZ2t/AqjBFYiXPCW4xzjUT264o4q
+            o+qIYnaVier6uZoGqYlJBvD22Jx4e2QSYp9nX2rQMbBqHESOB/K+tbpIU4pxBR0q
+            QL40TP7hBIUU
+            =Nps5
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(targets)$
+    version: 3.11.0

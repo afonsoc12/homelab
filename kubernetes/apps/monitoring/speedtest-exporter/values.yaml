@@ -15,7 +15,6 @@ service:
 
 serviceMonitor:
   enabled: true
-  create: true
   endpoints:
     - port: metrics
       interval: 5m
