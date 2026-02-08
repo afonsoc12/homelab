@@ -108,7 +108,7 @@ additionalPrometheusRulesMap:
                   expr: sum by (hostname) (1 - (avg without (cpu) (rate(node_cpu_seconds_total{mode="idle"}[5m])))) > .80
                   for: 10m
                   labels:
-                    severity: warning
+                    severity: critical
                   annotations:
                     summary: Host `{{ $labels.hostname }}` high CPU load
                     description: CPU load is {{ $value | humanizePercentage }} (>80%)
@@ -117,7 +117,7 @@ additionalPrometheusRulesMap:
                   expr: avg by (hostname) (rate(node_cpu_seconds_total{mode="steal"}[5m])) > .1
                   for: 0m
                   labels:
-                    severity: warning
+                    severity: critical
                   annotations:
                     summary: Host `{{ $labels.hostname }}` CPU steal noisy neighbor
                     description: CPU steal is at {{ $value | humanizePercentage }} (>10%). A noisy neighbor is killing VM performances or a spot instance may be out of credit
@@ -283,7 +283,7 @@ additionalPrometheusRulesMap:
                   expr: ((node_timex_offset_seconds > 0.05 and deriv(node_timex_offset_seconds[5m]) >= 0) or (node_timex_offset_seconds < -0.05 and deriv(node_timex_offset_seconds[5m]) <= 0))
                   for: 10m
                   labels:
-                    severity: warning
+                    severity: critical
                   annotations:
                     summary: Host `{{ $labels.hostname }}` clock skew
                     description: Clock skew detected. Clock is out of sync. Ensure NTP is configured correctly on this host.
@@ -292,7 +292,7 @@ additionalPrometheusRulesMap:
                   expr: (min_over_time(node_timex_sync_status[1m]) == 0 and node_timex_maxerror_seconds >= 16)
                   for: 2m
                   labels:
-                    severity: warning
+                    severity: critical
                   annotations:
                     summary: Host `{{ $labels.hostname }}` clock not synchronising
                     description: Clock not synchronising. Ensure NTP is configured on this host.
@@ -340,19 +340,19 @@ alertmanager:
         receivers:
             - name: discord
               discord_configs:
-                - webhook_url: ENC[AES256_GCM,data:W5hKP7K849OuciQay8abk0n/XAM9rjA85PtF32dMOyB4Rk9tMe6BQNbzykZ96kxP8n+3lLxokkpc0J1I83kyViAnLFtBbJ+DvynDzaVntm2PMCwQMQDtFeJxX3+4c3GpSiHtberTj9XIIeNWtpkWZtc+gxpY9pYj5A==,iv:FqWoqwyPiOMagab4AxW++LeDb/XP79UxgnDYUCz55qk=,tag:WuSGSTBGlqEwzrTBasM0ZA==,type:str]
+                - webhook_url: ENC[AES256_GCM,data:CDBw4o3AdwU3Zx0KQX+xkVQNDWxO5cDh0NnFIwgZQXo2NXeUC/c/qBp9S3RjVw96yvV0NPs9ZU0gUdL3hyWGHoBefHq0HUp52nkPZ9tmFGkc8b2Ck89bKOj3RTEa4bnWBt2iv2CepOnRT89ZPD82RrGLyvZOLAdJd9b2G5/e0WuSlGIE1m4JqEh580MpE1azAoNU6nJ1JdXR2dD+nolJarSwIv3JPQiv5/MFtswR8nwWr6ePIrNJuyUYkJ1yoTGDhr7FxDNPDWTycaLI1CYtCfDFVJtP2Gst2eZ6wkOqnQSG2B2XQExQ3mlmOmf1ymLD27gXmbWc/H2jypf1XxvjGqCZgTgyuMNpefW7yAs2wA==,iv:t/CCR6eJHlRCGUN8b6qjHU/FSIawIf3jjNKydxOKTjg=,tag:mvDBOQSBwYWRxvoFkcAIVw==,type:str]
                   send_resolved: true
                   username: Alertmanager
                   avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
-                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }} ({{ .GroupLabels.hostname }})"
+                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} ({{ .GroupLabels.hostname }}){{ end }}"
                   message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
             - name: discord-critical
               discord_configs:
-                - webhook_url: ENC[AES256_GCM,data:i14pWpcTl3iX6ZOwSij4skAMOINQMeavDclyYmxGPgOdhtVyGkZ4XN2/oq8yBtvbep03qaDEDeInWoolRsjCGgYPDEu8Jo4+kLzXhNNiLXDN/svF9ePbf56SSKAgpPEdn68RGj+BIi842UTpoPfgc7bpLemPE1UnQg==,iv:NoW80hwnhsu3iwQult4S6OvTfNdh91Sr2T0hJdZITyo=,tag:mPmoAvYL4VMQEHY1pc5ngQ==,type:str]
+                - webhook_url: ENC[AES256_GCM,data:q4WzuM3+uREhq+3hAtQTdAwbfJsn5b6oxQZXtEsgVV5zGdFFOyL828KV752dJq0rriunaMHetaO8IJc99decdCoWtQ6UJwXprNZ8Ry+oc1+FNq9dXW3FbcfHc9fF5heB/ushyrULGEaKrZEUHmCx/zShEGrcxwfjNmO//YZRyhVTfibNtzoMRtWEe0q9RWHr/7p58tk0xeI/jdtF6gohkcO2NxIY7HsMS57aZeFEDrgftkPY7Xu9FgBEMAcXXQ18r5/wJSUGxjcYnR2recSK/kvxUkMsxelHQCkOI4ESOHeoTYWrfsuKcBoY6jXniw2BlpzRA8rqd92bMhLMSsZ5wULQCZBorp4gQh9pQLAbdA==,iv:IK6S9UbIkVjP7eia8sWGcObMnkGV73faaH1UpNwlAW4=,tag:7Rvmwo9gD6qBDAfxiOEMhw==,type:str]
                   send_resolved: true
                   username: Alertmanager
                   avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
-                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }} ({{ .GroupLabels.hostname }})"
+                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} ({{ .GroupLabels.hostname }}){{ end }}"
                   message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
     ingress:
         enabled: true
@@ -510,8 +510,8 @@ prometheus:
                   replacement: $1
                   targetLabel: hostname
 sops:
-    lastmodified: "2026-02-06T01:03:18Z"
-    mac: ENC[AES256_GCM,data:Q8sP7PMOATZm2gkxchaqpfX1eK77BcrG5Rp4BL+MmBD88sO2zKr4MFmkEQuFEDXSfanW+FR0FearhWHE6w3SUp8kHllqORB3Y2LjEDa7UsaKS4NOApzOIZCHfofWRtcSH2wfg7lz2P1cz7xThaUlTG2uDANapL1X/JxhZ2rRTtk=,iv:41EWHukd8HzfCR31VrutrwKNVWl9lju5kpVN3IpX3ak=,tag:iZK0o3Aaz8nnqhWoQuAOmw==,type:str]
+    lastmodified: "2026-02-08T11:26:34Z"
+    mac: ENC[AES256_GCM,data:6n+N/Le2hScTKxtcSUa+ZXMuhM8MEDus4XLBVS6Ye7vt+87mPUUCracGcGnAcdM5QN0DEDTqUkmCN8AluzktHa8BW++cIHY7pawH+WZpgxTixvmyOC2lQJRlYMymK6tG9mLtsBgUmLb4sdK3KMT7VbzJDrwlS7jWHupRuZY3KVw=,iv:6HjUzSxI64KVynimFbWPwFXZfcvWpve0KqACX8kojBU=,tag:HGVMP6TXolTHSlHOjYfFBw==,type:str]
     pgp:
         - created_at: "2026-02-01T14:23:24Z"
           enc: |-
