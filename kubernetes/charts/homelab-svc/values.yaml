@@ -41,11 +41,28 @@ service:
 
 serviceMonitor:
   enabled: false
+  create: false
   labels: {}
   endpoints:
   - port: metrics
-    interval: 30s
+    interval: 15s
     path: /metrics
+
+prometheusRule:
+  enabled: false
+  labels: {}
+  groups: []
+  # - name: app-rules
+  #   interval: 30s
+  #   rules:
+  #   - alert: AppAlert
+  #     expr: metric > 10
+  #     for: 5m
+  #     labels:
+  #       severity: warning
+  #     annotations:
+  #       summary: "App alert triggered"
+  #       description: "This is an alert from the app"
 
 secret: {}
   # stringData:

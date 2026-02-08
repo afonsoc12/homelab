@@ -12,12 +12,10 @@ ports:
 
 service:
   enabled: true
-  labels:
-    prometheus.io/scrape: "true"
 
 serviceMonitor:
   enabled: true
-  labels: {}
+  create: true
   endpoints:
     - port: metrics
       interval: 5m
@@ -31,7 +29,9 @@ configmap:
 
       [[inputs.exec]]
         ## Commands array
-        commands = ["speedtest --accept-license --accept-gdpr --format=json"]
+        commands = [
+          "speedtest --accept-license --accept-gdpr --format=json"
+        ]
         interval = "5m"
 
         timeout = "60s"
@@ -79,3 +79,44 @@ resources:
 
 nodeSelector:
   kubernetes.io/hostname: k3s-m1
+
+prometheusRule:
+  enabled: true
+  groups:
+    - name: Speedtest
+      rules:
+        - alert: SpeedtestDownloadLow
+          expr: max_over_time(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[15m]) * 8 * 1e-6 < 400
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Speedtest download low on `{{ $labels.hostname }}`"
+            description: "Download bandwidth has been below 400 Mbps for the last 15 minutes. Current value: {{ $value }} Mbps."
+
+        - alert: SpeedtestUploadLow
+          expr: max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[15m]) * 8 * 1e-6 < 100
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Speedtest upload low on `{{ $labels.hostname }}`"
+            description: "Upload bandwidth has been below 100 Mbps for the last 15 minutes. Current value: {{ $value }} Mbps."
+
+        - alert: SpeedtestLatencyHigh
+          expr: max_over_time(speedtest_exec_ping_latency{hostname="k3s-m1"}[15m]) > 50
+          for: 0m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Speedtest latency high on `{{ $labels.hostname }}`"
+            description: "Latency has exceeded 50 ms for the last 15 minutes. Current value: {{ $value }} ms."
+
+        - alert: SpeedtestNoRecentData
+          expr: changes(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[15m]) == 0
+          for: 0m
+          labels:
+            severity: critical
+          annotations:
+            summary: "No recent speedtest results on `{{ $labels.hostname }}`"
+            description: "No new speedtest download result has been recorded in the last 15 minutes."

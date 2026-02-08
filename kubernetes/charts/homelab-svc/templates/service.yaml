@@ -5,6 +5,9 @@ metadata:
   name: {{ include "homelab-svc.fullname" . }}
   labels:
     {{- include "homelab-svc.labels" . | nindent 4 }}
+    {{- if and .Values.serviceMonitor.enabled (not .Values.serviceMonitor.create) }}
+    prometheus.io/scrape: "true"
+    {{- end }}
   annotations:
   {{- with .Values.service.annotations }}
   {{- toYaml . | nindent 4 }}
