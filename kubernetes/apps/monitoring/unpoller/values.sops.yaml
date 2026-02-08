@@ -6,7 +6,8 @@ image:
     repository: ghcr.io/unpoller/unpoller
     tag: latest
 ports:
-    - containerPort: 9130
+    - name: metrics
+      containerPort: 9130
       service: true
 # Uses ports from .ports section, if service is true
 service:
@@ -47,8 +48,8 @@ serviceMonitor:
         - port: metrics
           interval: 30s
 sops:
-    lastmodified: "2026-02-08T17:54:25Z"
-    mac: ENC[AES256_GCM,data:ycNVWvaZr26ri8Z2LN2ZUScqcptcHUrdMIVFIcMfsC/U/SfOHtq3UL/GImIy1/XM1EoB0E7dDm4sDfEcuBAnuYgbp0JQuRPTA1rf/e/R3vU+jLmif7/otMegpfPFkrpFP+yIpo13c8W/rQAnKowW+nSKdwc1qNPsX0GsTwPLye4=,iv:kEyXeDQPLOEa/BX/gWqlDgCmElTfUvxZmfJI++S2f6k=,tag:u7LF0wOoA38EaFLWWW7r6w==,type:str]
+    lastmodified: "2026-02-08T18:24:09Z"
+    mac: ENC[AES256_GCM,data:Eq6SmCOg5uromvw+l/ghxy0R1RmeiZaXB5Sc3XlGxb4FQRDdpmueCz/rdIFRV4NRpU0d/5YPnAOj+oDTgMWWcnJenQDTey8jd0FJtzX7OYqSboiZt1SHHW+u5PbVP4fWOzUFriEn/VijPLlqZSOVzl3NBAokJiYxHWveKYiwfZg=,iv:CgiGJ37/pymj3iYDfOXdBhmHrm8ejnScJ8wThx8jJKQ=,tag:YbPo0xadFd16XJ94pm/27A==,type:str]
     pgp:
         - created_at: "2024-07-20T19:13:41Z"
           enc: |-
