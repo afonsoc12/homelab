@@ -1,6 +1,6 @@
 image:
     repository: ghcr.io/afonsoc12/telegraf
-    tag: 1.37.1
+    tag: 1.37.1-dev
     pullPolicy: Always
 ports:
     - containerPort: 9273
@@ -127,8 +127,8 @@ prometheusRule:
                 description: No new speedtest download result has been recorded in the last 15 minutes.
                 dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
 sops:
-    lastmodified: "2026-02-09T23:29:39Z"
-    mac: ENC[AES256_GCM,data:UDFlPBupkQp0zgpkW8jQ4kzKsx18FMgUmLWOVskG0MryYpcShFAa5xWQAJYvV5iRHVlPwg6UaGa3sw3AQaQvSe8NLaZ63pxewDLf1neriIDKSFouXMneVNM4FgqJIhFlDMwtuljuE8vA6BZ63mK0y7dypNUjTlpBL3JPscWpfQ0=,iv:mmJkuZxbbjvNnOYK5GKNLTES+9lUfQbWdppHN9Kfyj0=,tag:VniFtvkPJx66b1+Rzg/jjA==,type:str]
+    lastmodified: "2026-02-09T23:31:43Z"
+    mac: ENC[AES256_GCM,data:JffkFhCcknT9zflUj6emjUOahUni0dOrWq5xypnbMzsU1fbBx0IcOIHXxyl5YN/uDaentov/bpInxDE/sxqWEDIRokUT/1QGdd/MU9HWRi8z+NZH4XW5b5+lsrDBk27RAvYKcVoQ82kIdO9eeSE0TQwo/jsHUaJ9MoTpKZvWxRU=,iv:YM7wu5QE9sKqntgkQlNdUGSeIKspqesa9jql6rAM+Tw=,tag:oEzVj01iHNUWrk/Gq4eNGQ==,type:str]
     pgp:
         - created_at: "2026-02-08T22:31:40Z"
           enc: |-
