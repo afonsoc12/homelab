@@ -24,7 +24,7 @@ configmap:
             [[inputs.exec]]
               ## Commands array
               commands = [
-                '''sh -c 'speedtest --accept-license --accept-gdpr --format=json --server-id $(speedtest --servers -f json | jq -r ".servers | map(select(.name != \"Hyperoptic Limited\")) | .[:5] | .[(now*1000|floor)%length].id")''''
+                '''sh -c "speedtest --accept-license --accept-gdpr --format=json --server-id $(speedtest --servers -f json | jq -r \".servers | map(select(.name != \\\"Hyperoptic Limited\\\")) | .[:5] | .[(now*1000|floor)%length].id\")"'''
               ]
               interval = "5m"
 
@@ -127,8 +127,8 @@ prometheusRule:
                 description: No new speedtest download result has been recorded in the last 15 minutes.
                 dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
 sops:
-    lastmodified: "2026-02-13T01:05:04Z"
-    mac: ENC[AES256_GCM,data:Dn5nwjMcUUVfwTBlg/BC18qjqZOJmtoMIB0ren8wC7Q9C8joeMBF2n1akJGEL9DPZXUjt8mx/IScb4Ca5pjNSwR9FT00QfdiYOveYH80B6CWqh9AgXoCQ923nhj+hqgc7gDc8Eu3XhRl07Yw4ewDDUgRhtwCs9KP5qHtmtaQfnQ=,iv:ppVmP42B9wFt9+osGboJnZuRV+oE3m0LRCTmMxTYYAo=,tag:W33iVzllBPqor7Pv9+CtUQ==,type:str]
+    lastmodified: "2026-02-13T21:18:46Z"
+    mac: ENC[AES256_GCM,data:GVl6DtBWybeqwkZNYUsXw3x78RiX6HgcS2KZp5HE/NVUgcJ/lymJ8wKu6Fu7plGcqNg2nGvXcIlBbVzQe2P1zmaJfGX4MUTYYJe8OTuR6uXgE4+ftGdAj2c0cZS/CPlGWZWEXk9VTa3fbXVqCXo5QfKHrJvlkJU5OHuhik4iaf0=,iv:M9N3X3LLIL667lseamhXr8BiHF8EbvNi0E0wH7lHyXg=,tag:NYsHInvdSLeWCZGqECx17A==,type:str]
     pgp:
         - created_at: "2026-02-08T22:31:40Z"
           enc: |-
