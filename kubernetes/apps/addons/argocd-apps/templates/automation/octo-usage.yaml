@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: octopus-api-consumer
+  name: octo-usage
   namespace: {{ .Release.Namespace }}
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -15,7 +15,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - secrets://../../apps/automation/octopus-api-consumer/values.sops.yaml
+        - secrets://../../apps/automation/octo-usage/values.sops.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: automation
