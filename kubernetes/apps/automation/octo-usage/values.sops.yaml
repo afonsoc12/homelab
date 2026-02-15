@@ -10,7 +10,7 @@ secret:
         POSTGRES_PASSWORD: ENC[AES256_GCM,data:jC1vUXTJxY2u6Dznk4fySZC/gac=,iv:kUWj+xDETDLOsp1mtqAdTAfglPJFi5TcyoX6AUxc99A=,tag:V9RhXr29w2GPx6J91KXPdg==,type:str]
         POSTGRES_DB: ENC[AES256_GCM,data:YZU0bsHa4dewAw==,iv:WFyplvD+InFIK9PR6W+7gC0QM1TTTVI+pQEIvu0QRNQ=,tag:8fVsMKY5RwkZmIMVbvFC5w==,type:str]
 cronjobs:
-    - name: octopus-api-consumer
+    - name: octo-usage
       schedule: 0 10 * * *
       concurrencyPolicy: Forbid
       failedJobsHistoryLimit: 1
@@ -31,8 +31,8 @@ cronjobs:
             cpu: 50m
             memory: 64Mi
 sops:
-    lastmodified: "2026-02-15T01:30:02Z"
-    mac: ENC[AES256_GCM,data:rpLU0mWhQ77R73O6HsBqO+QBU/F3z7caJsEzz5byKpGaElAoQo2mfDOlDblosA0f6xeTg2H6xFWGtSIq8d6cQXvvu2u0hpVWHKsQi5DLvci2Joe2v3wUYNYsAnLFlblxXqViNXvBmHmiEcOcmW2QNJqQMEPhu9g35IHEUcihEhg=,iv:meiNH58SXNjbsOmosXuJJpvDRnU2IPmTSg1vAWUVRbI=,tag:UghbHeWxYGkzkjTJeZ7RuA==,type:str]
+    lastmodified: "2026-02-15T01:34:06Z"
+    mac: ENC[AES256_GCM,data:2iMqfWVXtLMRiJVKlt0CmNMLzbHqngsNp+UjHvld4S59BT45xbSErUDUK6Dp45iSTJS0yPs1L7LlHvpUnZ1vRKjml6QCYAErash4G1F6foOryJT85OjCbaB/K4EAZKFyH/LftlMEdpN9f4HmEre+ZMrdSVvPvRhHCwZUjUFsSss=,iv:sfH770tLZxD3VPdNLOa5FHqUOryc2bDVR/vtgSw0U/o=,tag:HOigUlcd9r7lsQ0PAGgZVA==,type:str]
     pgp:
         - created_at: "2024-07-20T15:01:51Z"
           enc: |-
