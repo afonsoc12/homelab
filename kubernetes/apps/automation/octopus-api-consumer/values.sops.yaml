@@ -1,48 +1,28 @@
 labels: {}
 secret:
     stringData:
-        INFLUXDB_V2_BUCKET: ENC[AES256_GCM,data:+NPKhKPndw==,iv:p6jf3+SJXfgXkzmut904z4abh4PpW5QDZdeiOaHEN4E=,tag:NMGtUHHp8E7S1YIVF0ny6Q==,type:str]
-        INFLUXDB_V2_ORG: ENC[AES256_GCM,data:owE39Ydyzw==,iv:htW2AQbuJo+3cY0v3rLLeb4CoPjYHflUPjNPm9e+DUM=,tag:ffjA3pQ4MXsX/msMUbJosg==,type:str]
-        INFLUXDB_V2_TOKEN: ENC[AES256_GCM,data:0gEgv1sr7P5glNr2uuFh39COYjYiJnCgx36KObSKnXDCiTLYcMpmwQ6RkKYoAO1eWtWkBaJ/6dUUCMMASaxVEwYdxwR2zNIOzqbPhqt7g2OrsuZ7xP2E+Q==,iv:wxC1D/9wPGzLEJIgu1hENUlqzQodUTvVadAKWtpwxqA=,tag:IT5U6Mh7aL6BRsL5XCCzcw==,type:str]
-        INFLUXDB_V2_URL: ENC[AES256_GCM,data:EilQ3IHHNoNSuSrp1zxlRkqhu9rjoxo8RBo7i9/y,iv:GzbN5Qr5B0halzmHEeTzpPLLhDNL8B/o5fUGMikLIs4=,tag:3lMu66QYybkWz+b/6iPPkg==,type:str]
         OCTOPUS_API_KEY: ENC[AES256_GCM,data:SoG68wonxv+QLqchD9RYo42t8RASJ4qfgVfdkR5IOZs=,iv:UrSmMJ0llcTTuNGetpqPm7cMvzjGJJ1oNx0arK8OZYo=,tag:BQzXM07k2Eh2J+j7RbsyiQ==,type:str]
-        OCTOPUS_ELECTRICITY_MPAN: ENC[AES256_GCM,data:nFsGqKg/gqxvBfIXwg==,iv:0vmz4b5vbcuGX+xtQLcUM+diyiTgSUJBHAxHq6ePEss=,tag:ciMKbby/1oQ5WsF3D7S1ng==,type:str]
+        OCTOPUS_ELECTRICITY_MPAN: ENC[AES256_GCM,data:ZPD/K78sstZt2+BUFQ==,iv:ufQKAxP9pnZZDkCWimC+Yw9IYmZScnR/RuNzYZFqOH0=,tag:11YIBgVcPMX1z8k7Q0edAA==,type:int]
         OCTOPUS_ELECTRICITY_SN: ENC[AES256_GCM,data:bA0FCnmfcD2PpA==,iv:VBCisSdx+dmdRPISXWmrVv3np3dW7IGnKfkvR9MKDWE=,tag:iH6XyyuGB4mvrAfStHfNzg==,type:str]
+        POSTGRES_HOST: ENC[AES256_GCM,data:6eyWYEXuJQHvMvSTUSzJ/b+7,iv:wHFZ/j2vHyyKtCASSIV3kwLXrU6wkFRf6/E2Ahwv1tw=,tag:MzRviTBKH92Gh+RzvkGuzQ==,type:str]
+        POSTGRES_PORT: ENC[AES256_GCM,data:L+JAgQ==,iv:4MPatqTQ/8qlaOmupmTHlQ4Y50OBUsg30sqeZwsoFb8=,tag:6Ka9znOJH/vWmmVbsKyLLQ==,type:int]
+        POSTGRES_USER: ENC[AES256_GCM,data:kxqi+Szs3zHrKA==,iv:00lsnDO4kjxT1gp1Q0ZcRxb8/sVtR0qBO27dLIb4EtE=,tag:uM4mGX5BT8T4p168r7WFew==,type:str]
+        POSTGRES_PASSWORD: ENC[AES256_GCM,data:jC1vUXTJxY2u6Dznk4fySZC/gac=,iv:kUWj+xDETDLOsp1mtqAdTAfglPJFi5TcyoX6AUxc99A=,tag:V9RhXr29w2GPx6J91KXPdg==,type:str]
+        POSTGRES_DB: ENC[AES256_GCM,data:YZU0bsHa4dewAw==,iv:WFyplvD+InFIK9PR6W+7gC0QM1TTTVI+pQEIvu0QRNQ=,tag:8fVsMKY5RwkZmIMVbvFC5w==,type:str]
 cronjobs:
     - name: octopus-api-consumer
       schedule: 0 10 * * *
       concurrencyPolicy: Forbid
       failedJobsHistoryLimit: 1
       successfulJobsHistoryLimit: 1
-      # backoffLimit: 0
+      backoffLimit: 0
       image:
-        repository: ghcr.io/afonsoc12/octopus-api-consumer
-        tag: develop
+        repository: ghcr.io/afonsoc12/octo-usage
+        tag: latest
         pullPolicy: Always
       restartPolicy: Never
-      command: []
       args:
-        - --period-start=1970-01-01
-      ports: []
-      #  - containerPort: 80
-      #    name: http
-      #    protocol: TCP
-      #    service: true
-      volumeMounts: {}
-      # - name: config
-      #   mountPath: "/config"
-      #   readOnly: true
-      volumes: {}
-      # - name: config
-      #   projected:
-      #     sources:
-      #     - configMap:
-      #         name: authelia-config
-      #         items:
-      #         - key: "configuration.yml"
-      #           path: "configuration.yml"
-      livenessProbe: {}
-      readinessProbe: {}
+        - --infer
       resources:
         limits:
             cpu: 50m
@@ -51,13 +31,8 @@ cronjobs:
             cpu: 50m
             memory: 64Mi
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-04-13T10:29:54Z"
-    mac: ENC[AES256_GCM,data:jev3xyiySjwtfWiG5ADiUTsiMyYRytj6c83kh9ourQ8QaDfnug2hjxHMjSeB8Dwv2kXaGy8gj6+KJ6vnkgSzuyDwfJ6mO/9HORSKbyKINQBoyWA9gUiGK4U4CBI0vNnLIb7SzFCiLoyq1IhXSbUksGoc8o81gDKcvQBpk83ZTbw=,iv:vz6wJBeHdQCjyw2QcE8Qz5DCWly+cuL+d0+DDCHmipE=,tag:6rh78V0qKftvW0f/iHgH9A==,type:str]
+    lastmodified: "2026-02-15T01:30:02Z"
+    mac: ENC[AES256_GCM,data:rpLU0mWhQ77R73O6HsBqO+QBU/F3z7caJsEzz5byKpGaElAoQo2mfDOlDblosA0f6xeTg2H6xFWGtSIq8d6cQXvvu2u0hpVWHKsQi5DLvci2Joe2v3wUYNYsAnLFlblxXqViNXvBmHmiEcOcmW2QNJqQMEPhu9g35IHEUcihEhg=,iv:meiNH58SXNjbsOmosXuJJpvDRnU2IPmTSg1vAWUVRbI=,tag:UghbHeWxYGkzkjTJeZ7RuA==,type:str]
     pgp:
         - created_at: "2024-07-20T15:01:51Z"
           enc: |-
@@ -81,4 +56,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.4
+    version: 3.11.0
