@@ -32,6 +32,13 @@ configs:
     cm:
         # -- Create the argocd-cm configmap for [declarative setup]
         create: true
+        resource.inclusions: |
+            - apiGroups:
+              - discovery.k8s.io/v1
+              kinds:
+              - EndpointSlice
+              namespaces:
+              - homelab
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
             jqPathExpressions:
@@ -265,13 +272,8 @@ notifications:
     # -- Notifications controller name string
     name: notifications-controller
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-10-16T23:09:17Z"
-    mac: ENC[AES256_GCM,data:OTXV96gd5I7X49XtTxtBpzGkzwzxDAo6+aOyDZncSSfrReHZCpWjwpCYrFyCKj8r5kIexUelZvk3Wj1BTCwCJxSkw3niglu+LbvxbX+rAM5OtF+LJfaHzzXWSbrN7qX4o78qVOva+l1B1kF3mjkByFNsclz4i5KdWxb4xWA0Q9o=,iv:bENJVefi6qePQ/clXyFLoTF8CgK+eJH+yV5en3nDSYU=,tag:FzdRpFoeLBjklT/e3dWq3A==,type:str]
+    lastmodified: "2026-02-19T22:05:26Z"
+    mac: ENC[AES256_GCM,data:IkahYvZX1dC9WVogJTFfTEflpgEOcRU2BaphGpKkrbr7DWB3IfNrATi8jX5XGPiSKS/edc7yczO1XCEv+I3ODFWDVT6XXiVhoaDuWYIH6wgtAMfUFndErkmoBPOFJIus14/xBsFUe/ZQqk1BgqQXyc/5bBElarBNcPY4IKDybXQ=,iv:Dc577qxO/R+Vx+God0u6irVT59vFuMnoLPQuCe9AgnM=,tag:qlKDdbPeoy2h029KUAkQKQ==,type:str]
     pgp:
         - created_at: "2025-10-15T00:48:28Z"
           enc: |-
@@ -295,4 +297,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin|oidc.config|secret|domain)$
-    version: 3.9.4
+    version: 3.11.0
