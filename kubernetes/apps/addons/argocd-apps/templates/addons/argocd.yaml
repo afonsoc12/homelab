@@ -16,7 +16,7 @@ spec:
       helm:
         valueFiles:
         - $values/kubernetes/apps/values.sops.yaml
-        - $values/kubernetes/apps/addons/argocd/values.yaml
+        - $values/kubernetes/apps/addons/argocd/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values
