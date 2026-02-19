@@ -11,7 +11,7 @@ spec:
 
   sources:
     - repoURL: https://argoproj.github.io/argo-helm
-      targetRevision: '>=3 <4'
+      targetRevision: '>=9 <10'
       chart: argo-cd
       helm:
         valueFiles:
