@@ -51,4 +51,4 @@ spec:
         - group: discovery.k8s.io
           kind: EndpointSlice
           jsonPointers:
-          - /endpoints/conditions
+          - /endpoints/0/conditions
