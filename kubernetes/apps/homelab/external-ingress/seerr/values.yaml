@@ -15,9 +15,9 @@ ingress:
   enabled: true
   authelia: true
   tls:
-    - secretName: overseerr-cert
+    - secretName: seerr-cert
   hosts:
-    - host: overseerr.{{ .Values.domain }}
+    - host: seerr.{{ .Values.domain }}
       paths:
         - path: /
           pathType: Prefix

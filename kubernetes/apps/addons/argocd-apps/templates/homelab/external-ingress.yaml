@@ -18,7 +18,7 @@ spec:
           - app: kopia
           - app: lidarr
           - app: minio
-          - app: overseerr
+          - app: seerr
           - app: plex
           - app: prowlarr
           - app: qbittorrent
