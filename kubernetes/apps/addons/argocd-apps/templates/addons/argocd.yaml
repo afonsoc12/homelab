@@ -12,7 +12,7 @@ spec:
   sources:
     - repoURL: https://argoproj.github.io/argo-helm
       targetRevision: '>=3.35 <4'
-      chart: argocd
+      chart: argo-cd
       helm:
         valueFiles:
         - $values/kubernetes/apps/values.sops.yaml
