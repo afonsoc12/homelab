@@ -47,3 +47,8 @@ spec:
       destination:
         name: {{ .Values.spec.destination.name }}
         namespace: homelab
+      ignoreDifferences:
+        - group: discovery.k8s.io
+          kind: EndpointSlice
+          jsonPointers:
+          - /endpoints/conditions

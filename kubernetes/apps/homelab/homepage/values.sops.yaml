@@ -38,7 +38,7 @@ secret:
         HOMEPAGE_VAR_GRAFANA_USERNAME: ENC[AES256_GCM,data:/J2Xev8=,iv:ZT59IQOyLb/kLaNutcSIdT9x7G0a5HTGykJduRjd/6s=,tag:WMc+u5AWkXiNVg0StFw/kQ==,type:str]
         HOMEPAGE_VAR_HOMEASSISTANT_KEY: ENC[AES256_GCM,data:pgUXb6Y9CcWtO6Se6i+4VerzGhOI9qCPT+9sm9QypgGZMWdLbYWC6hFBdGl+cYD60mSVA4pT6YlLJqLG3DT4pPE9z77SyGBkhmMSMGj6Ngv/nW0wVIP1b9c/Y4o3fNLs8cIn11kBFtwdU3ucdqnlsJcTJvb/iSq9yqy4BmIrRUU8VRCFclwkYO0ML2/KI9j4Yxz3Ev9LGqsB4muXQWgrWHYnd82MFuheqMbeqoDUjaFEWUPna1Ln,iv:Xoa0tztbS2Mj8tyfCV7ElGmzt0hm36gg/GbMoSnw7dw=,tag:scOJzJythUudzndbrNnBVg==,type:str]
         HOMEPAGE_VAR_LIDARR_KEY: ENC[AES256_GCM,data:TbQ8EuV6K+JVFLs4C68yruNt0FT2VfsobkaLIMMMP8A=,iv:sVxPwmaXh9saHydwO/7Hm/+CY9yvcp4+TNMTU8hx0/M=,tag:dT69a6Tc9ol7gWK5+txeEA==,type:str]
-        HOMEPAGE_VAR_OVERSEERR_KEY: ENC[AES256_GCM,data:74VESGK9VfzxG0hbgCV+oE1ZcJi6+25GpbpXwvSg4fkMbVyOBN0hupvC8aLLYdVFfx9geuwIWco+ytE7OH2DsAJReKU=,iv:B6l3H9Xmho1IRvJ8CILfZnJkSVa7rATt7xnE/+s5IX8=,tag:oQkcTJNEzyao/FKxWO442A==,type:str]
+        HOMEPAGE_VAR_SEERR_KEY: ENC[AES256_GCM,data:1xcVRLWBJ2bbVau5JOB/0T6rtYxNDBpem4sUT1m2EmCNVmjjQnBsxfef7VUC+VsjF7TjFv7uCh6mSi6EJki/0jjCkvY=,iv:Uo4/mDzTvB35gfg+iY2cCe4h3F9e/sEetPITQS2IP1Q=,tag:WQbLyewbRB7KyLMaqPuwGA==,type:str]
         HOMEPAGE_VAR_PLEX_KEY: ENC[AES256_GCM,data:ixFdS9eL8qr0bE1Ik1Jh8f6/OtE=,iv:+DrJ4XHradEDGueKKCBzFpiTdV3dgzHwWbc8ofD8SAE=,tag:v9gavRaBH/tjrLCSjt59pA==,type:str]
         HOMEPAGE_VAR_PROWLARR_KEY: ENC[AES256_GCM,data:1BLTpxd4CTWAO2GrAvPFHO9RTOLwu8BTX0U8UJQyPZw=,iv:scCoiOS6BGcxn5+Q9JKG3agQ8iZAG0idgXyRIYP0bvc=,tag:zhTS5FOwNBRCYY3JkER6RA==,type:str]
         HOMEPAGE_VAR_QBITTORRENT_USERNAME: ENC[AES256_GCM,data:bKiqPX4=,iv:q+uipT4lhyVaxN4xliXVU3MqsZ3exoFE93Kxb/m1NB4=,tag:Xns4ElStn1HLptEEsq3PnA==,type:str]
@@ -143,14 +143,14 @@ configmap:
                       type: tautulli
                       url: http://{{ .Values.ips.hoarder }}:8181
                       key: "{{`{{`}}HOMEPAGE_VAR_TAUTULLI_KEY{{`}}`}}"
-                - Overseerr:
+                - Seerr:
                     description: Media requests
-                    icon: overseerr.png
-                    href: https://overseerr.{{ .Values.domain }}
+                    icon: seerr.png
+                    href: https://seerr.{{ .Values.domain }}
                     widget:
                       type: overseerr
                       url: http://{{ .Values.ips.hoarder }}:5055
-                      key: "{{`{{`}}HOMEPAGE_VAR_OVERSEERR_KEY{{`}}`}}"
+                      key: "{{`{{`}}HOMEPAGE_VAR_SEERR_KEY{{`}}`}}"
                 - Calibre:
                     description: Ebooks library
                     icon: calibre-web.png
@@ -361,13 +361,8 @@ dnsConfig:
     nameservers:
         - '{{ .Values.ips.rpi_4b }}'
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-07-07T18:31:05Z"
-    mac: ENC[AES256_GCM,data:a8WMqngJ5ZHGavRwZ5dbsxSRSgCe0oBa2HeBuRbev/7sbjtBpK0zfRmODVBQeGfrHPwvcONIrxdOZyWhbYAA77gPMrwaOqwqJXWRjbtKVfu6YEbeQ8xo2d91BGLBVcXUJtSvgF4W2StMCcuMFaQnG2U5G9q7MyGWMXdehNRKU7A=,iv:T1Kc33wGqPMJLpccJeqc+96oGHYxHe7yKrfQtBWZQBo=,tag:aH+mqx3Ne4s1rqOZzF/P2Q==,type:str]
+    lastmodified: "2026-02-19T23:18:16Z"
+    mac: ENC[AES256_GCM,data:+ej7h13wC209Z061Yjx9LcT3QI42JJJzyTSdZ8DeJyZr3IXGsBluKQS8KUmvHdat2rlrKDzNjjla6OQzA94VgKNSoVuTPmtI9E5qSjsUOHnbedmM/jJYrQHogXN30jna+1Pz/tbq/Fh+dv8tEW+8ph25TArZ/LdqRr9/B14kcI8=,iv:KGO67ti+eDSVEvDdTaFlD5kz8lnButUjXwnN56fuMJU=,tag:KSE3l+fbHgOpJhH7E8OkIQ==,type:str]
     pgp:
         - created_at: "2024-07-20T15:52:00Z"
           enc: |-
@@ -391,4 +386,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.4
+    version: 3.11.0
