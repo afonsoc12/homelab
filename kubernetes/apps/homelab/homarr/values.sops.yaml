@@ -1,0 +1,80 @@
+image:
+    repository: ghcr.io/homarr-labs/homarr
+    tag: latest
+ports:
+    - containerPort: 7575
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        SECRET_ENCRYPTION_KEY: ENC[AES256_GCM,data:PbYLrV7xvCYrY6Rm64bGxjp21/ySmRmKlJk037icTVW2IHXl5qtfeoa9Nte8BladHoTV8r45Ud3xdd6GpvLonQ==,iv:MAjuZgq/K5VH20WUf3nEoboErM82i4niWnH4wVFZfYM=,tag:SkgeoTToYp6f5EWkQfu3Vg==,type:str]
+volumeMounts:
+    - mountPath: /appdata
+      name: data
+volumes:
+    - name: data
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 10Mi
+ingress:
+    enabled: true
+    # authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: homarr.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+livenessProbe: {}
+readinessProbe: {}
+resources:
+    requests:
+        cpu: 100m
+        memory: 64Mi
+    limits:
+        cpu: 100m
+        memory: 128Mi
+tolerations: []
+affinity: {}
+dnsConfig:
+    nameservers:
+        - '{{ .Values.ips.rpi_4b }}'
+sops:
+    lastmodified: "2026-02-23T22:18:02Z"
+    mac: ENC[AES256_GCM,data:tXkRqlsUSVCEGqxaBv2OCyNYIo1K609/Wh7KhStaCLRGaBKRHtiTyLOZ5jptWqbSe2NYEUsRVWYieX5WKT5Hhxrd+zt73+FnHSimc+Zdg5Wo9FeG2D6xFSztJRw7X6SNolbN5l3mwaTkh8YvGyiNyPlDwd9vTQxER4vFaEJY7j4=,iv:D4Oncm0S+Ykv6hwXuZb4ABFwFAyh7KS0uKMG85b+WRY=,tag:tTMyTpiazckw6Eg3bWuJKw==,type:str]
+    pgp:
+        - created_at: "2024-07-20T15:52:00Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//fJhbBiMtQeGPj4XJZoUAFeg0JT/UBDtuBmGoEscMMYA4
+            +PPHSz0hTQyIaJKDeFxlMy8+y4u48wb9V+oPUK88OhfXSkG8sH+xkYyCK3QTVYEt
+            jkmtG781ZQ8q5c1OqWIg/mf7C12Toqit0PuRaFg3irwu9oGUd77/Ma1NPqUwP5Ph
+            HASXXbRLvk3PyuH590ckY4OyXgCpg6tcUCbaXqQ8N37+O5u+KnTQXM3j7ZAKD2fW
+            d5bKqPdjv97rBkW5s0UJoWRQ7v43hxyc3E/UaaKmxKGm+4xXxjfp6YqvM5UQ7oSq
+            1uBoKCuIsw7cFJjzw1cKXCM0jwuB0nSs+XeXJmP8jwUMBKt+vyhWv2835v9nc23r
+            orMF8NezkS+x+LFL3wt/+sA5UH41nOLl7KVv0ud4TZ9qSBR2iA1QUxnIsZ7piK50
+            /EawCiohtLYP1DayXUCJj1EFoUI872gmZ6oPOO86icrVhWzzbBXHU7s4EnUWy5Wl
+            JHTfQC21wj5+BAty24KMIfjkP9d+n6eZ4X2/+430wkIYYQbZ+ws1frKDgalTACAk
+            Z0G2t1JzG4gRpRzvUdDeSBdhyg8x7aKpjB8itHOdKKRf9G1bLiDuuH98HQwXMhye
+            LCQo7CipU4JxYmcjCwsjFvrDnkqlCHEJOFaOK2ZWpiZe+uXsG+eYYxpA4RhyUjPU
+            aAEJAhAjuYzxmg7mMB8HSrQu/ylzGZH/QbNoZTTjv0cVRW9lhpJ93EpINo60Z4Wf
+            KWXnalq8zKzZSn+gubE9ST/30lmabSyzb6csJp5Q9t3WEBluxZABdHLarO0b4s8j
+            dUII8Ykrle9O
+            =5Vky
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    version: 3.12.0
