@@ -3,7 +3,7 @@ replicas: 1
 
 image:
   repository: stirlingtools/stirling-pdf
-  tag: 2.4.4-ultra-lite
+  tag: 2.5.3-ultra-lite
 
 strategy:
   type: Recreate
