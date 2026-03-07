@@ -22,17 +22,13 @@ cronjobs:
         - -c
       args:
         - |
+          sleep 2
           curl -vfsS \
           --data-raw=${NODE_NAME} \
           https://hc-ping.com/${PING_KEY}/k3s-cluster
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-10-12T14:01:30Z"
-    mac: ENC[AES256_GCM,data:EYuACyRsmwOJGNH+dpVDN/2KQmzRAws4aGokzqVYly+7QjuXud1D3qJ87vmM0oQxon9HLQhWLGPWun8zFmgPrckFlCQCC8iQrVbt1HR7rglH4rWoCf1v5AgNi0bGYlTi85ChXshEhZJMxdD0C7IJhJZ4B55z50G0gEVS1Xa64aA=,iv:8ORLdo1/8tR6TTSSLVo6yFW5OgGWMROigApKFX5Chb4=,tag:obGUtqYLKM6v289oewGK+Q==,type:str]
+    lastmodified: "2026-03-07T01:06:08Z"
+    mac: ENC[AES256_GCM,data:GUHPFRnYr/7It6PC75Bjdvidv+Z3KOiCWC29uB0Oq0SViY6IUgEZIiNYlEQ6iCbKzAJmR6bSUMufgzHos20b+WQboKWHmZq5kDBGietIQV1MebXSxzCgSWNo9TUvtf+FF53Up3lhOUls8MA2utfKohzawdBGy6fRb8lbER8nWh8=,iv:9RtKDOtUciAAeRGP6VnRTrUiQ3LxznY9x0yzoAK4Psg=,tag:cXhLfVEeEV214TyLQwAgRQ==,type:str]
     pgp:
         - created_at: "2024-07-20T14:13:50Z"
           enc: |-
@@ -56,4 +52,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.4
+    version: 3.12.1
