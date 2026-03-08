@@ -1,6 +1,17 @@
 longhornUI:
     # -- Replica count for Longhorn UI.
     replicas: 1
+# Remove to stop memory leaks, after 1.11.1 is released
+image:
+    longhorn:
+        manager:
+            tag: v1.11.0-hotfix-1
+        instanceManager:
+            tag: v1.11.0-hotfix-1
+    preUpgradeChecker:
+        upgradeVersionCheck: false
+    upgradeCheck:
+        enabled: false
 ingress:
     enabled: true
     ingressClassName: nginx
@@ -16,13 +27,8 @@ ingress:
         nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
         nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2024-11-24T13:27:02Z"
-    mac: ENC[AES256_GCM,data:okENCjRIoAIYABeoEVbUhwixjYplmgEXbn0qBsbkmDNcaEKW4Gy0f1W6hU3He2SDrWjXlmZwUmSsklmlEbhMM1l/Jx+gl1aY16BE0MCHSvrVLg9bNrQSEd9yiZMFj9gMY0S0cUFeomK1tBSnKGhoDTdBlz+FofJvx/36isa716c=,iv:fTYnBjVW/bkW5W0gT6mKG+LCpNKrhRpOpVQsVz/oGs0=,tag:27AOoQg0LYBZH0iwN/JVJQ==,type:str]
+    lastmodified: "2026-03-08T11:46:17Z"
+    mac: ENC[AES256_GCM,data:okmfn5f8vyMSsxZDoPUoz1qV7shvlJK/AsyRdgihCLr7F65agKUVDVc6vE5uou7WOcfG8btdWTkYk1y/3lDgSmFZqX/M1AEcJDChqmQHmzMV31NZBo2PWtj1IqZ8Nu2wTZHaEJOZGcV/U880UVTDU6478GK6yCF1ldLpxLKdjms=,iv:TqDR/paqRvfQSCAy9spVJKqUxVL2GHUrn/kcuZU+pr0=,tag:PNT6WJCon/wHmwxvNYNa5Q==,type:str]
     pgp:
         - created_at: "2024-07-20T20:11:17Z"
           enc: |-
@@ -46,4 +52,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
-    version: 3.9.0
+    version: 3.12.1
