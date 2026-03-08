@@ -12,7 +12,7 @@ strategy:
     type: Recreate
 image:
     repository: koenkk/zigbee2mqtt
-    tag: 2.6.1
+    tag: 2.9.1
     pullPolicy: Always
 ports:
     - containerPort: 8080
@@ -82,8 +82,8 @@ nodeSelector:
 tolerations: []
 affinity: {}
 sops:
-    lastmodified: "2026-02-01T14:40:55Z"
-    mac: ENC[AES256_GCM,data:eMXlArCxi9bvP+VNOT/YDHUps+nub6IhPPgl8CiV3BuWH0TTXaIktsS72H+OQezqNBqyX1XS/WD0D+mwB2vAhcBabRL6mIJ5rXkItBHo+GWWCwIBMtG1WcvVyiZi31prQDqdQdZDlcByfiQrx3Lsf5dDMZ6p8r673eMKYyN5zJg=,iv:8/oygA8OTyWxlEiiOf9d5RaKO+vHAJiSdgwfwYu2ihc=,tag:QjWkLMLgNGVoPRVAXUXvgA==,type:str]
+    lastmodified: "2026-03-08T12:06:55Z"
+    mac: ENC[AES256_GCM,data:o+xuyKvSxEc5QGaxgdPIrZu+d7aE6ZAWqt+s98tRRJn8aByAsp3zbvRYfsDd/vtaabv79BkIHkdMijWvBEYzvd71BBtFbtigGMOe95H0bSixowi/5VlNRqBHhwKv4fD1P77R5kkitKqvSHr4WPVlEYhG0a5A+THHEJAsO/fB708=,iv:u2Uu70JppXv/JDqvdJnF5s0prvq/9ZrSAZlZTEJPOak=,tag:F81+tqB1DgoQC8w5/UTQ6g==,type:str]
     pgp:
         - created_at: "2024-07-21T11:19:53Z"
           enc: |-
@@ -107,4 +107,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    version: 3.11.0
+    version: 3.12.1
