@@ -8,10 +8,11 @@ image:
             tag: v1.11.0-hotfix-1
         instanceManager:
             tag: v1.11.0-hotfix-1
-    preUpgradeChecker:
-        upgradeVersionCheck: false
-    upgradeCheck:
-        enabled: false
+preUpgradeChecker:
+    upgradeVersionCheck: false
+upgradeCheck:
+    enabled: false
+# End Remove
 ingress:
     enabled: true
     ingressClassName: nginx
@@ -27,8 +28,8 @@ ingress:
         nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
         nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
 sops:
-    lastmodified: "2026-03-08T11:46:17Z"
-    mac: ENC[AES256_GCM,data:okmfn5f8vyMSsxZDoPUoz1qV7shvlJK/AsyRdgihCLr7F65agKUVDVc6vE5uou7WOcfG8btdWTkYk1y/3lDgSmFZqX/M1AEcJDChqmQHmzMV31NZBo2PWtj1IqZ8Nu2wTZHaEJOZGcV/U880UVTDU6478GK6yCF1ldLpxLKdjms=,iv:TqDR/paqRvfQSCAy9spVJKqUxVL2GHUrn/kcuZU+pr0=,tag:PNT6WJCon/wHmwxvNYNa5Q==,type:str]
+    lastmodified: "2026-03-08T13:27:02Z"
+    mac: ENC[AES256_GCM,data:IHbkWoTj/d7rpsktBVSJCI4FcOIaIdZ9WyYfE7c9+A1Efd/g8+OZ5LrYaCGVXX038RLL7PVSVA3CWEalnYY4Cd0UaDmlBNvBqgeuOFfFKuaMhv2MC+doKKWYThZnWBR6JbwvrB6KDxtEZhDQFxfZN8FyhkonDjbvOMAw/+Hrp3g=,iv:OV43G8ac+29QSfD5lmVfMnr6cm3FIUJCwvWd+EZpY8U=,tag:GXeKrLHqvhxVPaSoM6itYQ==,type:str]
     pgp:
         - created_at: "2024-07-20T20:11:17Z"
           enc: |-
