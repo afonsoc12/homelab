@@ -26,7 +26,7 @@ configmap:
               commands = [
                 '''sh -c "speedtest --accept-license --accept-gdpr --format=json --server-id $(speedtest --servers -f json | jq -r \".servers | map(select(.name != \\\"Hyperoptic Limited\\\")) | .[:5] | .[(now*1000|floor)%length].id\")"'''
               ]
-              interval = "5m"
+              interval = "10m"
 
               timeout = "60s"
               name_prefix = "speedtest_"
@@ -73,62 +73,62 @@ prometheusRule:
         - name: Speedtest
           rules:
             - alert: SpeedtestDownloadCritical
-              expr: max_over_time(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[15m]) * 8 * 1e-6 < 50
+              expr: max by (hostname) (max_over_time(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 50
               for: 0m
               labels:
                 severity: critical
               annotations:
                 summary: Speedtest download critical on `{{ $labels.hostname }}`
-                description: 'Download bandwidth has been below 50 Mbps for the last 15 minutes. Current value: {{ $value }} Mbps.'
+                description: 'Download bandwidth has been below 50 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
                 dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
             - alert: SpeedtestDownloadLow
-              expr: max_over_time(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[15m]) * 8 * 1e-6 < 400
+              expr: max by (hostname) (max_over_time(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 400
               for: 0m
               labels:
                 severity: warning
               annotations:
                 summary: Speedtest download low on `{{ $labels.hostname }}`
-                description: 'Download bandwidth has been below 400 Mbps for the last 15 minutes. Current value: {{ $value }} Mbps.'
+                description: 'Download bandwidth has been below 400 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
                 dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
             - alert: SpeedtestUploadCritical
-              expr: max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[15m]) * 8 * 1e-6 < 50
+              expr: max by (hostname) (max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 50
               for: 0m
               labels:
                 severity: critical
               annotations:
                 summary: Speedtest upload critical on `{{ $labels.hostname }}`
-                description: 'Upload bandwidth has been below 50 Mbps for the last 15 minutes. Current value: {{ $value }} Mbps.'
+                description: 'Upload bandwidth has been below 50 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
                 dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
             - alert: SpeedtestUploadLow
-              expr: max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[15m]) * 8 * 1e-6 < 400
+              expr: max by (hostname) (max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 400
               for: 0m
               labels:
                 severity: warning
               annotations:
                 summary: Speedtest upload low on `{{ $labels.hostname }}`
-                description: 'Upload bandwidth has been below 100 Mbps for the last 15 minutes. Current value: {{ $value }} Mbps.'
+                description: 'Upload bandwidth has been below 100 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
                 dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
             - alert: SpeedtestLatencyHigh
-              expr: max_over_time(speedtest_exec_ping_latency{hostname="k3s-m1"}[15m]) > 50
+              expr: max by (hostname) (max_over_time(speedtest_exec_ping_latency{hostname="k3s-m1"}[30m])) > 50
               for: 0m
               labels:
                 severity: warning
               annotations:
                 summary: Speedtest latency high on `{{ $labels.hostname }}`
-                description: 'Latency has exceeded 50 ms for the last 15 minutes. Current value: {{ $value }} ms.'
+                description: 'Latency has exceeded 50 ms for the last 30 minutes. Current value: {{ $value }} ms.'
                 dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
             - alert: SpeedtestNoRecentData
-              expr: sum by (hostname) (changes(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[15m])) == 0
+              expr: sum by (hostname) (changes(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[30m])) == 0
               for: 0m
               labels:
                 severity: warning
               annotations:
                 summary: No recent speedtest results on `{{ $labels.hostname }}`
-                description: No new speedtest download result has been recorded in the last 15 minutes.
+                description: No new speedtest download result has been recorded in the last 30 minutes.
                 dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
 sops:
-    lastmodified: "2026-02-13T21:18:46Z"
-    mac: ENC[AES256_GCM,data:GVl6DtBWybeqwkZNYUsXw3x78RiX6HgcS2KZp5HE/NVUgcJ/lymJ8wKu6Fu7plGcqNg2nGvXcIlBbVzQe2P1zmaJfGX4MUTYYJe8OTuR6uXgE4+ftGdAj2c0cZS/CPlGWZWEXk9VTa3fbXVqCXo5QfKHrJvlkJU5OHuhik4iaf0=,iv:M9N3X3LLIL667lseamhXr8BiHF8EbvNi0E0wH7lHyXg=,tag:NYsHInvdSLeWCZGqECx17A==,type:str]
+    lastmodified: "2026-03-11T20:08:56Z"
+    mac: ENC[AES256_GCM,data:6Zybzq05AhgrJ1AhGit8GsDAAgw6iw2AQlh85bsWixj6RsfGFJ9ulsCxXLpeSycV69P2MdgSd4sVVvACw3vJfMgE1s+5UNC3wQ7mmXbKeZVZEepnHnF3mLPnMEnm/oe78DG6GG0/dryxLj5V6e5JVuZLRRoGJke1yx2GKHW+VHo=,iv:zvntZJlMRXdzPzXdmoUrvVCJBBrt99tBjRzNpOsqDqw=,tag:fwVblKdmpqpaWnZLam7dSQ==,type:str]
     pgp:
         - created_at: "2026-02-08T22:31:40Z"
           enc: |-
@@ -152,4 +152,4 @@ sops:
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(dashboard)$
-    version: 3.11.0
+    version: 3.12.1
