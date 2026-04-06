@@ -11,6 +11,7 @@ podAnnotations: {}
 
 replicas: 1
 revisionHistoryLimit: 1
+enableServiceLinks: false
 strategy:
   type: Recreate
 

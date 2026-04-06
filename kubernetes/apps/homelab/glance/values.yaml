@@ -1,0 +1,420 @@
+image:
+  repository: glanceapp/glance
+  tag: latest
+  pullPolicy: Always
+
+restartPolicy: Always
+command: {}
+args: {}
+
+ports:
+  - containerPort: 8080
+    name: http
+    protocol: TCP
+    service: true
+
+service:
+  enabled: true
+
+configmap:
+  data:
+    glance.yml: |
+      server:
+        port: 8080
+      pages:
+        $include: home.yml
+    home.yml: |
+      - name: Glance
+        columns:
+          - size: small
+            widgets:
+              - type: calendar
+                first-day-of-week: monday
+
+              - type: rss
+                limit: 10
+                collapse-after: 3
+                cache: 12h
+                feeds:
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
+                    limit: 4
+                  - url: https://ciechanow.ski/atom.xml
+                  - url: https://www.joshwcomeau.com/rss.xml
+                    title: Josh Comeau
+                  - url: https://samwho.dev/rss.xml
+
+          - size: full
+            widgets:
+              - type: group
+                widgets:
+                  - type: hacker-news
+                  - type: lobsters
+
+              - type: videos
+                channels:
+                  - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+                  - UCsBjURrPoezykLs9EqgamOA # Fireship
+                  - UCVD_yTne2yXMlc8-gumGLcQ # TechHut
+                  - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
+
+              - type: group
+                widgets:
+                  - type: reddit
+                    subreddit: homelab
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: selfhosted
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: ukpersonalfinance
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: fireuk
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: dataengineering
+                    show-thumbnails: true
+
+          - size: small
+            widgets:
+              - type: weather
+                location: Bristol, United Kingdom
+                units: metric
+                hour-format: 24h
+
+              - type: markets
+                markets:
+                  - symbol: SPY
+                    name: S&P 500
+                  - symbol: BTC-USD
+                    name: Bitcoin
+                  - symbol: NVDA
+                    name: NVIDIA
+                  - symbol: AAPL
+                    name: Apple
+                  - symbol: MSFT
+                    name: Microsoft
+
+              - type: releases
+                cache: 1d
+                repositories:
+                  - glanceapp/glance
+                  - go-gitea/gitea
+                  - immich-app/immich
+                  - homebridge/homebridge
+
+      - name: Markets
+        columns:
+          - size: small
+            widgets:
+              - type: markets
+                title: Crypto
+                markets:
+                  - symbol: BTC-GBP
+                    name: Bitcoin
+                  - symbol: ETH-GBP
+                    name: Ethereum
+                  - symbol: SOL-GBP
+                    name: Solana
+
+              - type: markets
+                title: ETFs
+                markets:
+                  - symbol: VWRP.L
+                    name: VWRP – All World Acc
+                  - symbol: VEUR.L
+                    name: VEUR – Europe Acc
+                  - symbol: VUKG.L
+                    name: VUKG – UK Acc
+                  - symbol: VUSA.L
+                    name: VUSA – S&P 500 Acc
+
+          - size: full
+            widgets:
+              - type: markets
+                title: Indexes
+                markets:
+                  - symbol: ^GSPC
+                    name: S&P 500
+                  - symbol: ^FTSE
+                    name: FTSE 100
+                  - symbol: ^NDX
+                    name: Nasdaq 100
+                  - symbol: ^GDAXI
+                    name: DAX
+                  - symbol: ^N225
+                    name: Nikkei 225
+
+          - size: small
+            widgets:
+              - type: markets
+                title: Stocks
+                markets:
+                  - symbol: AAPL
+                    name: Apple
+                  - symbol: NVDA
+                    name: NVIDIA
+                  - symbol: TSLA
+                    name: Tesla
+
+      - name: News
+        columns:
+          - size: small
+            widgets:
+              - type: calendar
+                first-day-of-week: monday
+
+              - type: rss
+                limit: 10
+                collapse-after: 3
+                cache: 1h
+                feeds:
+                  - url: https://selfh.st/rss/
+                    title: selfh.st
+                    limit: 6
+
+          - size: full
+            widgets:
+              - type: hacker-news
+
+              - type: group
+                widgets:
+                  - type: reddit
+                    subreddit: homelab
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: selfhosted
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: ukpersonalfinance
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: fireuk
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: dataengineering
+                    show-thumbnails: true
+
+          - size: small
+            widgets:
+              - type: rss
+                limit: 10
+                collapse-after: 3
+                cache: 2h
+                feeds:
+                  - url: https://www.theverge.com/rss/index.xml
+                    title: The Verge
+                  - url: https://feeds.arstechnica.com/arstechnica/index
+                    title: Ars Technica
+
+      - name: Homelab
+        columns:
+          - size: full
+            widgets:
+              - type: bookmarks
+                groups:
+                  - title: Services
+                    links:
+                      - title: FireflyIII
+                        description: Expense management
+                        icon: di:firefly
+                        url: https://firefly.{{ .Values.domain }}
+                      - title: Mealie
+                        description: Recipes management
+                        icon: di:mealie
+                        url: https://mealie.local.{{ .Values.domain }}
+                      - title: FreshRSS
+                        description: RSS news aggregator
+                        icon: di:freshrss
+                        url: https://rss.{{ .Values.domain }}
+                      - title: Ghostfolio
+                        description: Stocks tracker
+                        icon: di:ghostfolio
+                        url: https://stocks.{{ .Values.domain }}
+                      - title: Wallabag
+                        description: Link aggregator
+                        icon: di:wallabag
+                        url: https://wallabag.{{ .Values.domain }}
+                      - title: Gitea
+                        description: Git
+                        icon: di:gitea
+                        url: https://git.{{ .Values.domain }}
+                      - title: Change Detection
+                        description: Site stock monitor
+                        icon: di:changedetection
+                        url: https://changedetection.local.{{ .Values.domain }}
+                      - title: DocuSeal
+                        description: Document Signing
+                        icon: di:docuseal
+                        url: https://sign.local.{{ .Values.domain }}
+                      - title: Wedding Site
+                        description: Wedding Site
+                        icon: https://mariana-afonso.local.{{ .Values.domain }}/wp-content/uploads/2023/12/logo.png
+                        url: https://mariana-afonso.local.{{ .Values.domain }}
+                  - title: Home Automation
+                    links:
+                      - title: Home Assistant
+                        description: House brains
+                        icon: di:home-assistant
+                        url: https://home.{{ .Values.domain }}
+                      - title: Node-RED
+                        description: Automations UI
+                        icon: di:node-red
+                        url: https://node-red.local.{{ .Values.domain }}
+                      - title: Zigbee2MQTT
+                        description: Zigbee devices manager
+                        icon: di:zigbee2mqtt
+                        url: https://z2m.local.{{ .Values.domain }}
+                      - title: ESPHome
+                        description: Controller for ESP8266 devices
+                        icon: di:esphome
+                        url: https://esphome.local.{{ .Values.domain }}
+                  - title: Media
+                    links:
+                      - title: Plex
+                        description: Plex media server
+                        icon: di:plex
+                        url: https://plex.{{ .Values.domain }}
+                      - title: Tautulli
+                        description: Plex monitoring
+                        icon: di:tautulli
+                        url: https://tautulli.local.{{ .Values.domain }}
+                      - title: Seerr
+                        description: Media requests
+                        icon: di:overseerr
+                        url: https://seerr.{{ .Values.domain }}
+                      - title: Calibre
+                        description: Ebooks library
+                        icon: di:calibre-web
+                        url: https://calibre.{{ .Values.domain }}
+                  - title: Media Management
+                    links:
+                      - title: Sonarr
+                        description: TV Shows management
+                        icon: di:sonarr
+                        url: https://sonarr.local.{{ .Values.domain }}
+                      - title: Radarr
+                        description: Movies management
+                        icon: di:radarr
+                        url: https://radarr.local.{{ .Values.domain }}
+                      - title: Radarr 4K
+                        description: 4K Movies management
+                        icon: di:radarr
+                        url: https://radarr-4k.local.{{ .Values.domain }}
+                      - title: Bazarr
+                        description: Subtitles management
+                        icon: di:bazarr
+                        url: https://bazarr.local.{{ .Values.domain }}
+                      - title: Lidarr
+                        description: Music management
+                        icon: di:lidarr
+                        url: https://lidarr.local.{{ .Values.domain }}
+                      - title: qBittorrent
+                        description: Torrent downloader
+                        icon: di:qbittorrent
+                        url: https://qbit.local.{{ .Values.domain }}
+                      - title: Prowlarr
+                        description: Torrent indexer
+                        icon: di:prowlarr
+                        url: https://prowlarr.local.{{ .Values.domain }}
+                  - title: Admin
+                    links:
+                      - title: UniFi OS
+                        description: Controller Management
+                        icon: di:unifi
+                        url: https://unifi.local.{{ .Values.domain }}
+                      - title: UniFi Network
+                        description: Network controller
+                        icon: di:unifi-controller
+                        url: https://unifi.local.{{ .Values.domain }}/network
+                      - title: Uptime Kuma
+                        description: Status page
+                        icon: di:uptime-kuma
+                        url: https://status.{{ .Values.domain }}
+                      - title: AdGuard
+                        description: DNS, DHCP and Adblocker
+                        icon: di:adguard-home
+                        url: https://adguard.local.{{ .Values.domain }}
+                      - title: Grafana
+                        description: Dashboards
+                        icon: di:grafana
+                        url: https://grafana.local.{{ .Values.domain }}
+                      - title: Prometheus
+                        description: Alerting TSDB
+                        icon: di:prometheus
+                        url: https://prometheus.local.{{ .Values.domain }}
+                      - title: Alertmanager
+                        description: Alerts manager
+                        icon: di:alertmanager
+                        url: https://alertmanager.local.{{ .Values.domain }}
+                      - title: InfluxDB
+                        description: TSDB with nice UI
+                        icon: di:influxdb
+                        url: https://influxdb.local.{{ .Values.domain }}
+                      - title: ntfy
+                        description: Notifications manager
+                        icon: di:ntfy
+                        url: https://ntfy.local.{{ .Values.domain }}
+                      - title: ArgoCD
+                        description: Deployments manager
+                        icon: di:argo-cd
+                        url: https://argocd.local.{{ .Values.domain }}
+                      - title: Kopia
+                        description: Off-site backups manager
+                        icon: di:kopia
+                        url: https://kopia.local.{{ .Values.domain }}
+                      - title: lldap
+                        description: LDAP identity provider
+                        icon: di:lldap
+                        url: https://ldap.local.{{ .Values.domain }}
+                      - title: Longhorn
+                        description: Kubernetes distributed block storage
+                        icon: di:longhorn
+                        url: https://longhorn.local.{{ .Values.domain }}
+                      - title: Authelia
+                        description: SSO portal
+                        icon: di:authelia
+                        url: https://auth.{{ .Values.domain }}
+                      - title: MinIO
+                        description: S3 storage
+                        icon: di:minio
+                        url: https://minio.local.{{ .Values.domain }}
+
+
+volumeMounts:
+  - mountPath: /app/config
+    name: config
+
+volumes:
+  - name: config
+    configMap:
+      name: glance
+
+ingress:
+  enabled: true
+  authelia: true
+  className: nginx
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+
+livenessProbe: {}
+readinessProbe: {}
+resources: {}
+podSecurityContext: {}
+securityContext: {}
+
+nodeSelector:
+  kubernetes.io/hostname: k3s-m1
+
+tolerations: []
+affinity: {}
+
+dnsConfig:
+  nameservers:
+    - '{{ .Values.ips.rpi_4b }}'
