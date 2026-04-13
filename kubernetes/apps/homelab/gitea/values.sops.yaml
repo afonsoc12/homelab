@@ -26,11 +26,11 @@ ingress:
     annotations:
         nginx.ingress.kubernetes.io/auth-method: GET
         nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
-        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:yz1RvNdrNfHNzXiq+cQS9px3etGKgacZ+WJc1teh0Gn+xAcbe4C0f4V/hm90,iv:lD72+Pexx9D3kqXWjICQ2aBDpyLAAJDtOite6S7Zcjk=,tag:UA4m2h104sPdijk5QkxAnA==,type:str]
+        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:Psj7XnVeLo0wx/H6BOPi36c0ZRtaZo5612DPB9GnxCET9T7zmPYSYmujGWQU,iv:vOMtrO2ZoNnCKZOSowMKagmCTmwwIzEyZXq96/dvTw4=,tag:6t/5zNhJs2uXyzaRckbYAg==,type:str]
         nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
         nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
     hosts:
-        - host: ENC[AES256_GCM,data:ZSbmonCGM/LbNUWYK6mcQio=,iv:w4qZaFjC9o5Ba7NdBIa/UJWIq6Sj4XsziRVXr3WMoXc=,tag:/ee6fsP+AHsZY5cH2chjpQ==,type:str]
+        - host: ENC[AES256_GCM,data:g8qKE3P0NTs9u0kq28Y7V7k=,iv:7BaSk0KdNC2QbTzJXyWYHQ1d4kjA6Z2LGKbRlwfun0I=,tag:vxRp/JT0O3nFTMywuaMlxA==,type:str]
           paths:
             - path: /
               pathType: Prefix
@@ -50,14 +50,14 @@ gitea:
             HOST: mariadb.databases
             NAME: gitea
             USER: gitea
-            PASSWD: ENC[AES256_GCM,data:ryVmHqTXK8i8IznAxKY1Kf59EMI=,iv:NdKyrv0hYekqKEZulw9MwLShTk+hvtMsDw3dL+yyjnA=,tag:CvXdS6nHuB9c7t82v4ZNeA==,type:str]
+            PASSWD: ENC[AES256_GCM,data:jzD7VNm1o6/hEoldlwn/DhTYH08=,iv:krASRbNl3sC9SlOP1qJ2AbNddjp15laQrHwFwv4XPL8=,tag:la4tNK/r3/YMz3tLOov2Cg==,type:str]
         task:
             QUEUE_TYPE: channel
             #  APP_NAME: "Gitea: Git with a cup of tea"
             #  RUN_MODE: dev
             #
         server:
-            SSH_DOMAIN: ENC[AES256_GCM,data:uJ7gwv3CBEy3IPqwQuMkD++feHux,iv:gGSBtcvSspDdFeBXfc87/0+s2BGIwahSlnzR9Iaz5/c=,tag:t7OZ8A3GwkZukIs6BhsSHw==,type:str]
+            SSH_DOMAIN: ENC[AES256_GCM,data:XFfbGNQv/794PZdw7ZMGqCikwm5G,iv:0qYI+eQk2KnJbReOw2QfiHSRyynZn2maytGWRZK7Mkg=,tag:CSfg0hmVbfvphYnloIsbJA==,type:str]
             # rootful image
             SSH_PORT: 22
             # rootless image
@@ -94,34 +94,30 @@ postgresql-ha:
 redis-cluster:
     enabled: false
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2024-07-20T21:28:50Z"
-    mac: ENC[AES256_GCM,data:ogdfWqZuhDvQNx5VxMaFlHngtUIMiO9qUqduygpRD1y1sajeQHNAp8FLA57UVH8TZP+sWqk7J+stg4ktkDWbUWirVedYLurcodmtiz5/wC6EhvZOh2styvjm0OEblwYZLG7vxInYfiO2NT85KJ+jZitpLYYBD5StEUhiv8nz0ZE=,iv:Nji9P144wjg8pkOnFqmYAmIAULTTD0L4pJLvx37O2PA=,tag:Dh8wMgkCkHuKcAph8i6BZw==,type:str]
+    lastmodified: "2026-04-13T20:28:42Z"
+    mac: ENC[AES256_GCM,data:91ZU30ClSFwqAx111Cw2qQs78f+rmnN5giunKQP2+eu4hBc4JcHAbEfZ7lKNCF2OVl+yxNqnpObeONMsdHVErl0hpwMkI4XNCyG+3pzoXcH6AJBb3IaE9fbBMiRB+600xIr3nqM5BK7VW8dG5hauRBoUCRiKIR9wy093UVDpcT8=,iv:GGeP7PhW/J0u2vdDdTm9HPvQNM5pUMDR0DJndPqo1Og=,tag:84eC2H1Sk1wL0FzSK2fcRA==,type:str]
     pgp:
-        - created_at: "2024-07-20T15:33:19Z"
+        - created_at: "2026-04-13T20:28:42Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/7BAt8cAkvYMSHrXFuRPSKROQoiJ2FGcZ1hlwADXGvuKpI
-            4eZHNvzqGFhYDHmbnWBWBH9wrPvAPl4/0GXG2+8EQzb+poVXgt/xUgRr+rkgI5m+
-            9qzHQZJzmzapsDATPK0UBxc9sTYL1ptC4L8PwuTOA1XAEz0efovAb8VSBbpmdsAo
-            CqZ9b88wacpLH0c1Hmvtkx5dzk0QYYCWNNkEZ9swrdmNAgXhL2oMd5NxPLfnjSwh
-            G368IG5zeBWedEOS7DQus7vPogTot83GPaRJPa9ifUCfUDzox7/uSMCfuuMaaxxQ
-            gYyUUYC3UOTer3S6ei75CuAPw/+CpOosYzp+I6mJQhHU2OGv0t+W4yF2TJiTZQTw
-            uShW9K6Mos0+LEWYvFzOCe/6zWWLCSlICEd11ZgEX33RFbDoz80wF8umymVWInHy
-            1elpKrCw3KdEXYAHuTCcFSu5hf+mcACkAHxQ496i9rd5p4Xqa+rlnkduhJO7U8OZ
-            KrDLnxDFLqvaAntO6YcOQglGkERwkiUrOnxtWI7CxxQCCOwafVt9Jmj3B5jQNx2+
-            RuSEY7MPmPQERSJo8j05Hez0P/HgUcuWgHAbw0aJjWrmHDTGvay0trzE/3samvnU
-            hNQLKfYgil60N3g7bR+scr7G8oE64Htt540zhqKxefXVMdSXfhnIvT0IYtwe88zU
-            aAEJAhBlTDJRotX8KrxwBbuv1f900C9SaMs8KXZ3FC+VmeySJjjxKl+gMNP029xd
-            T3aXMPr4Rby3etBgcmDg/ESjIcQ4SIlcP0yh2bGLXepqgZFGLV00TS0qYE4fYlEM
-            eGr6J1Vcq8qL
-            =fKsc
+            hQIMA5NT/LvuRqeGAQ//bMALeA7DjD1aT37a7QfiRuRPxLGxCuVbRKYf60T/l3SH
+            Fgxnchk/ieo3maTwrCVwHh9XR2eMfY/CBis3s/mWIehoGbxoT9UGQBBo7hnBt5Rw
+            iVnHER8jP7Az843z0sO1T2rOPns4dbtTNZ+mXlxMGEJvEMtbYt4BAxXpPx7KsuY8
+            OcsnCBMM+hNtL1g7zsOx6wLc8NPm6RjVUVhKLFrXOI4PWbq9ZDEUMJSKmcntePtm
+            ReNmdbZ7fP9tCzCaiwRgY9H6VkalQ3ViKSKn1Qloxh1O67WnXHhHaivSckAtl3AR
+            yitHrSxatf19IcNuHNu4YWfKSk3n6MhayHcuP3S3lwh+MIPiZYsdVEsgJA+ueHto
+            +xqzcnCJfsy22CBZO8zteZwqoaLgyaG2JYQzLhAX8Sh62AlYZIAXM1LIfSf0avFo
+            7qn/uuuNsXuLoYWGUg978qPtyqSgcTbCX1VZHPen7seKBE25JNn7tfXiccR5WuJi
+            rrowSgqj/noC0hH690IYaS57EEks7IEbn5DHwUiSzcGvAFRIhoJE5lMkG7Yg3EVj
+            oybYnhGh98x3g9G702kb61ashAPfmInhSPkmFFvVQNznAfvBC85zSKzG1TwDEO+/
+            8oIqLgzW+XDqJ4ecjOhJo1wYNt8YjLI0Q0O5Xw6eDIiH6txH+Dck/I8OaUuwyq3U
+            aAEJAhCTeEY5G8Z/UgSG3x3EGbllQiIQ2Jh/L44FLgI5YceR36cjbqkxqd4dzb9A
+            oXwrAx7qhXIK7nYQa2MZdh6GFJUpaGwZWN/UygIiYltN/ADT4Z4SVHPa9SENf5nc
+            U96ogizKeEnO
+            =/gQC
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host|PASSWD|SSH_DOMAIN)$
-    version: 3.9.0
+    mac_only_encrypted: true
+    version: 3.12.2

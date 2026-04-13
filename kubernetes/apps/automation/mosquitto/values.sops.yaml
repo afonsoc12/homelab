@@ -12,11 +12,11 @@ ports:
 service:
     enabled: true
     type: LoadBalancer
-    loadBalancerIP: ENC[AES256_GCM,data:HPjFVHsnjfaL0No=,iv:CtZnU7fDAu0TS2KYH9a4yJc74arZCpoViETc3Ho0A88=,tag:X+o/jEojvenQpQinepWCSw==,type:str]
+    loadBalancerIP: ENC[AES256_GCM,data:+mj/ruOqx9zDHg8=,iv:rtUewbUK8257WXCebqLe2oj9LtHQghChnQY9Z9XBQuY=,tag:Of9PKhJypM70hsrlZRiZtw==,type:str]
 secret:
     mountEnv: false
     stringData:
-        pwfile: ENC[AES256_GCM,data:F6XMRxQkvY2LE1tE68LPfXg9SN7JwgEB4o8XzKT1+nPaLwpRDvqdLTrNBtWq5YbSsmzKtF8tNyW8C2SqMBy4CXRUmEdh37Q89sc04GtvJDy1qbfat2v2S13p1CY/DUJDU4Ak0zdgO7lnvfPWRrc3uxXuitiFpMs=,iv:dhA9HyACOrSB/Vm+P01gpBUqbYdBS3z6evep6lBR8O0=,tag:Nsxe06NLdKO+rXDIbyrv7g==,type:str]
+        pwfile: ENC[AES256_GCM,data:VCz5j1NyFyf/TR3dCq0fM6h/CFVGKqzZo+JfQGq/XSF55VIMYwe35e81SEQ/PlazvNEs2/4lrBV9k3GJ/5bMs7Cm2Elrp1zmcLEEF4YLwsyhZfu1lM+Jlq4THonmFgJcnb+Nczc1PEIh3/8Gg4qql1JyQUScsqM=,iv:148nNTFeGjgOsueNFiTR0K0SXo6AUx8iUQu5mYCTlJc=,tag:w7q1WfOtkUzIEoNjUCHB1w==,type:str]
 configmap:
     mountEnv: false
     data:
@@ -52,34 +52,30 @@ volumes:
             - key: pwfile
               path: pwfile
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-04-13T10:30:37Z"
-    mac: ENC[AES256_GCM,data:fuiQKXeImSDvpKXYqssWrZd/9IZxKAzXC4hHRgMgomL6PVA0+7QbAw2PikwGQYDY0WQyLeFd1VElPctCi2MONynej9TibfId6T0HRFKn8MEA40Vo7oHl2wxBjGI+BGqEFqzSVxm/ZmTSeYtcLYM/JiN4VkVm8F8wdb6Qv2YEQLo=,iv:l31vCDuYZCI4z4sZoIhdr3eifEczEfKheu7HqHAW1o0=,tag:gmJWWBGehNde/Wa/Q5t4SQ==,type:str]
+    lastmodified: "2026-04-13T20:28:40Z"
+    mac: ENC[AES256_GCM,data:uD1Qq9SX8k6dHB49VVDtyd+Dn5WhRq1aYwUjZ5oAmyvlCo7+lFz2jFq39xgB1EP85umYTiAzaCIsG8Q9zoL0XkCycDWeeJpO4PbMuL2MhrZrTV2xtmtgj/SFf/oczjGDyLMdGulQo8+BrbmqoThiHsYCs5Z9BDTcv5g1YuRnQNw=,iv:hp0egFLtfasl/gNPME0Puc7sJWCsrEAbGFZuIO37EtM=,tag:dIWII7qz6vsbI9fm0gQtBg==,type:str]
     pgp:
-        - created_at: "2024-07-20T14:53:29Z"
+        - created_at: "2026-04-13T20:28:40Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/+JF86sKEiYCr1SJ9q2QWvrR4NxhO6FXpYvj42/HVxMShu
-            OPsDpqp6I3YziWcrCieP7KoETwrRggk3pWHQVQ1ENu4ZZWWhDixhFmBOOQAcE1Px
-            i0C3wObIQgWKXW6OfMO80S7ZxRXfqLGEaw3QWfq1J1dqdSQ4gi/1Z/dGCd3SzLk2
-            KL58rOZVXqexPiZ7lGtVFJFX7eKPVZxt+66y+pl2Sm7S/76RkQx0dQnZTWjPa9t5
-            vLqgN8US4Ja7cfWCvDocsyA/xrB3Km1WjBrhJE3gFHd6NB8EV44g/JplT27Qp9yC
-            94OY3HgZm/uPK5YhgLOW1xG0S+VEZC+LhtKsop0UZk6tsF6dfO0tXua0PW1Vu9RQ
-            EYtDHxBzIVwulT+3BNhgbbW9QqOOK10n0V+wXrZSP9UgX1Qj6soR9rHgKhn19qie
-            PB4UGZJu54BmLxN7H8K2gFWrvXiqWXBVv+lLFDEQS2y5NYlrg6DF5TIrK06H6rRF
-            qopTiUS8scDu5L3h0AytUNrYu+hVdw2aIV8hSnwVeGGcPGCW8kiTQwHUEE514kLn
-            2100XxQzbECVY9j0Or3ulpn/xADv7RiBnSgdMl1/d28puxBLcISt7BrAa8s+suwz
-            eJAkc5Bm7rmlB3rwGYz9sGI/dFEuc3pIpuZ+kqxbCelnXWJXiXw5NYpoA/R+MTDU
-            aAEJAhDl4LMh3qCsdHlCum05E1kWhoZNGL9CuVDfbsYulIqYBj9fKv/MijuZRD+Z
-            p3qbMDMCu+yMidlQGZuk0zpA8VDID6GJLzh/GADXILdyRNnLmWCwrNmOWfNcJi3X
-            X9wz7mNmfmwR
-            =0ImY
+            hQIMA5NT/LvuRqeGAQ//bpWEC5+8nbMXxT65R05Axc/KY6BHZEa3DKVt4Xu3S34j
+            uiYSaOTOqHnk9mHFfJCG1a0Jexj7Q24WjlxZY/j8RuLhrG607jaM6yKbqZ7TLRLE
+            wlIYwG0i6fl/lMqbfC3gPo0FMGSU7tuSKJLrHrzXbVGsb/9fAy21WB+xbkbqndwe
+            y0CElcGAe9dijsMsV/ubZrcWDmaNXahD9HI34n1u+Ev/gvJqb3RPNaGZlUrmKk+s
+            slggEZrZ5ZggvMJk0+LGP6/HAJZhgNhTrfQ3wGzfA2SiQ4n7/wdRngjWgl0TkRdN
+            r4BQBRKeJRR4CkOvhCDYel4yA7jE3QaFqgy5gMmD/u8OUBJf7rMzKhmYi55PX1Sd
+            mXS7ymjY2bFwwP2aryq1caZ2xVepyGfA00h2d1teaGTDZM8Svy8f8EUxf3m8OKZp
+            fNf8fSb2VEX43ZUqxZqOj9+k0EXkc2lWFy1EJcrFf3yMcbsfpd6Dpak8je7vX4aG
+            7BdLJ5wNGizAKOLug+01mq5oDs2y9fyIukjzschMV19VyjnNxylW151vUqRQIasS
+            +fBwAWhmuNtyDJXutY0dU010KF89adjcAogrREZnpZg6h9Dv0viGBDfE8wtQpmqR
+            HBWogi1IUvqRunQC5ha3D81kpt7EzdxStmVjZEV66uwPSvCXsW3pPgjBN8clYw/U
+            aAEJAhBDlZubMWD3iiynLfaRhWCb5ahRbEbkN9i2qFHgP8nlmigdsOX5OPp5G8Ns
+            ac4a5rw6PBsiLZ/aDh9kDHNIU1tGry41V7B8jd7xOWEm2YKGGLk9PA20QJnmWzzM
+            UKX0W92AkJOZ
+            =WIFx
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData|loadBalancerIP)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2

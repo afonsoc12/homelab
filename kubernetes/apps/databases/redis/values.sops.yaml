@@ -23,7 +23,7 @@ ports:
 service:
     enabled: true
     type: LoadBalancer
-    loadBalancerIP: ENC[AES256_GCM,data:XJ7ug/QheREnhqs=,iv:n3geJWn5Xf/Ec/kaVjKsnm3Fh4sLNsT+XLpuLUXZV9E=,tag:+URu/DPY5wB8eNxGZucFcQ==,type:str]
+    loadBalancerIP: ENC[AES256_GCM,data:csrcaUM9/26WXCI=,iv:gh6fskXLggDRrQqWebXuLfDIZNcCtS5tU489TtsxuTA=,tag:iLbOpC0SF76U2eEy1zVRWg==,type:str]
     annotations:
         metallb.universe.tf/allow-shared-ip: db-svc
 configmap: {}
@@ -83,34 +83,30 @@ affinity:
                             - mariadb
                 topologyKey: kubernetes.io/hostname
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-03-26T14:22:55Z"
-    mac: ENC[AES256_GCM,data:ODhYjEW3+L5JvOAnPq6ml7x6N2D8ekKyWSoEyncOWtirCeH3pwWoBy0Mhj1TCg73ljp9uILjuhaIU1Tsdlb8G6/ocB5yOfwDRgqSh5T/6ue8IsJEPUU3oU9b4uxJ5sc3hcqaPTck1QEdlBmuqgzsSGdoDzkIVOnTaaEX/LUNAWo=,iv:kBBdWBlUXfZF4C6UQQLKVKnRO2Vvi9sh88GFKBzpxXA=,tag:K//KZT9WTCejWcveFQTEcA==,type:str]
+    lastmodified: "2026-04-13T20:28:41Z"
+    mac: ENC[AES256_GCM,data:Kh+zO3YdTlnJVObROwTqoTIDF22Bbu7n8iwO1MkopyAyzF1iYiGlJ5tHilqdpaQ0x8nAXxYTV8B/uj6PhbDIwJsK3zMX3Iri2fDtDImjF5RvuG2Y6JmhOEzDZw3TulqX+Kp9eraNjOmNdje73O6LzJYb0GELC1xchxGb1iHUhTI=,iv:BxsJythBut+FbbIuWTCZLYgu0LJPcMQp4qvNTQVoASQ=,tag:0aUgq2HKi8kSxc0M6d4iuQ==,type:str]
     pgp:
-        - created_at: "2024-07-20T12:51:40Z"
+        - created_at: "2026-04-13T20:28:41Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/9FSXTLau7Zkf+5KB3wP4biQBOeWXOUAlBZtOkKYEdArNJ
-            qUW58UtvyMGYwcL9JuzZYa/1ZARZPHitlySNzpJ2HF1L3lkAfauvQt02iFtsa2rd
-            rJLBQ05bg1HPD9zlgYTPmEdSyUUDP5ctclIeMau6Wv7zBehZ972usrYJ85LLfUtK
-            kfz7vJfGx90zYDCLKjjyZoQGOTh0w//qwHwbKCtFkefkpbX44GFsE2lWlWgdNQ+T
-            NBgipCyuYDVMYyCziA3rKS1J6phFfYisIN9rfFXcLSOKeVjO54x4UavII0DtJofN
-            p84e8SHj3D54LGn1EpRl7pMK5si5XqAwn3lSUZXLZgZ798c+Q4rO54Kuu6cUrGTy
-            EUsiFWdvGFflwNVodzUL7ClE7HywZcSTAX7LyKStB0eK50GxNwvNh/mwHpuP3b3U
-            UQzPqmMq6ux2wg9IYy2R/lFLuZNbnK02bdIY5UZX9bpaXmrRvi/Kd2aJdWpzEsyI
-            Oj4zBpkqw6uTvenY0VSrdSsqF2cUipBw5Md2thRNndsu0IHiTzxq+zMERGnE+kWc
-            nzJiDEaqBbWqgYyWcXXPG0EsEgpuyd/PO8OMUorTRjhzA1AEYSHk0UnsE++7X5qa
-            sEzcAmAH5I7+2XbXhjRlHSvQ7PJKhHx67au2wvFbrBKc6dpMbLSc2Oscc8sYb4fU
-            aAEJAhD7i38EMeDetCFl48Yu9AbcPxeE5jw0qMloOV2J9eKHTV9aqc/hq4cIi8lV
-            V5vsbCu7YCQ5xtpYCRI47By6icNU26+3UkOwzFyH1lBmLyV+TdrNGVS+ycxDeSxc
-            NNdFOzdgre/I
-            =vxaa
+            hQIMA5NT/LvuRqeGAQ//fQrMeo7lOXznjwgbOrhdi9dvjNjCJzQ8bDlL99SeQ2KM
+            ePSUtOjAyUppZ+3OHKMb3pZCHnTPAcGx/c1DfaczHyS0qMMMbIIUGD303QPpwbF1
+            Oj2WVbTD/HA5w9Ur4ls5Hr0arTLxenwd7IVNj4lpd6AQO77CrQN5sI3PH/VXOTsf
+            d40CLJMJvNqKWK0kbjmBGCUohjU/lgyUgsDv02M5is0bE+1k7Qv/uHtxMwLgNMDv
+            GmhY1D39h1aF2UOQRCkhKtHUVBNubx1nv6OGErRX2+r3QJVzVWt1rZInSGrG7N2f
+            tIjmkMwm4V05WvyuIqogg0D8e3yDB5Go3NqozRZvTDosXUD7609P0VM4TB93WpTq
+            nkVov4TuPThjc2QNsm4HXoiZQsEYRbQdjTyKjZWSPe1ACVGQTFd7yLHXcAMEd1Oa
+            8BP9ZjGsexb6owQwlLxohNTRPEeZwgrjQJU77LYeB2yZ8SWkfj15dhkdbIc9sad7
+            jnqpacBczHRDF3pDXqVCZnFES6a6uWP4ytoPtaVwU0yg0y8HdYM0MH3TIJRboVQE
+            lUEO9cZOh4/vZIod0gEaPo/4Fx/Bvnt64VwbOOvjth5nXzN5oeIkZJ2stiA1f+ch
+            fB5d+oAlWpjyvknNP6AcTUChWnIWk63h53WdP0Ozi9xBj+ieQulfjdISe3ujz1zU
+            ZgEJAhDaBXzOGXbZGzfo7JgVHzyFB7OGsQhiaRHLnJ5IzoFlDxPZexPGOXgc0Ezj
+            r3riOlU8AsXnViE/uTSc8qMtwG5UgL0Egen+gcTY800WHbYiQIrBQQX8MHR/AIr3
+            s5utHzQmqA==
+            =3AdY
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2

@@ -13,7 +13,7 @@ crds:
 global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: ENC[AES256_GCM,data:Ie2GdmV73YlZ6DuNbmaJiBX0v5dtZ1cw8r0=,iv:p8oH17/M0S7VS6sPrFrS+xbMKiErNsKd697oAmJlL98=,tag:eTsGkRJQ1NDFSbbYaImInQ==,type:str]
+    domain: ENC[AES256_GCM,data:Y1oFD9jucFKz83aB3TXtlpvL5SEQwViH/Fw=,iv:XXXU4Z4Pc0hlL3+oWols36oH+OAvodVw1yNU33P7A8c=,tag:fThCXY/WJ3UzIZdMnby9Rg==,type:str]
     # -- Common labels for the all resources
     additionalLabels: {}
     # app: argo-cd
@@ -34,7 +34,7 @@ configs:
         create: true
         helm.valuesFileSchemes: secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import, secrets+age-import-kubernetes, secrets,secrets+literal, https
         admin.enabled: "false"
-        oidc.config: ENC[AES256_GCM,data:QFITtPW3nSnPEaxsFPhSo9J5WVr54sfBKci73gkoht/uWKfTr7OIUiwCFBbzDSJRRYi57dRVSHgt9agM4GfywDTkc4wkcYxIJg0z1k2cfGt52qm04zSVCuM+Ipxcab8/Z39yJwWICZAsARRbqOghEe7oHpII9nZvcSFny7rwLKDReeQPgEMbU5fdg2IdECbTfBQKQsijIH0bXcqPNSXMd25oWUgSorjOPz/ECdCvB7xEKhblHag5rZ98rhfZ6fkPWRJdoJHY63yxtRRT0quqS8lGyGPhIcZl+8+aIh+s0K2zI0Wp1IroZKQ=,iv:OpEf+dH9l/YWpvYOUYmOvHg8o1Fr8AgFpmiVDItWIis=,tag:S3k/4423Gu4P3Z7n0OFsYw==,type:str]
+        oidc.config: ENC[AES256_GCM,data:ZI6MTrYsnG5t4y+JQA6nAfJB3K4kDpBAM9APR+y7Br+rs0HYzb1lVr5iZkVuFldLqP+HzdpmPaaktsY5gWcjHhAm03dAOM7a4NEUJcagLTiABMWs5yDOL3zXf8bb836uYVyPZNhPojaCYF9kSQScqz1SWu/+jgJbbaogV3JeDUjACTS9XGUsr8bcYMQ1oivW3uJmBGFrfXHKcK5+3YztMHAQvrN80Cjetlgh7l/a9LGUfbEVYwYbgSphjmhYzEy76Fn6nMMyTWONgVsk+PyQbHZZ7Xt1vHk8ByMC3UqZkjy5XtXojTDWXMc=,iv:oGcrZK+6l4mVy0rQCB4yhK1WRDUDCGag7LU1gnYq5WM=,tag:pMtoiVKF20J++llLxzyTvw==,type:str]
         oidc.tls.insecure.skip.verify: "true"
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
@@ -127,9 +127,9 @@ configs:
         #     command: ["/bin/sh", "-c"]
         #     args: ["cat *.yaml | yq"]
     secret:
-        createSecret: ENC[AES256_GCM,data:+jpz2w==,iv:rHcZTN0ekEVfBLhbLCqgzfOOcgQNaDVN4eIEdPCz4Vw=,tag:9mtjUvZjrBySXVCMz3M5Sw==,type:bool]
-        oidc.authentik.clientId: ENC[AES256_GCM,data:ZN2l2BvKBlqN59nIcBlFS33ThrN0L9tAL809zgkteYs/+Wcwi8rgbw==,iv:TqqhMTZI3mIRd/nuXSAmmDBL/3eyS4g/LhHwHac1TJc=,tag:DSDxKu6RDE0TKhkRoRlccw==,type:str]
-        oidc.authentik.secret: ENC[AES256_GCM,data:msmApUsCjHhS+ZibA8p5KoVpM2DFXrQEdTYLBSm15rTGfAMFOUf5D+AnZ2e6XewBqScxLZfSZhCrVQmI2iGgg7lQz5Qq8Szqz6Te2wJPknaeT37J5UaDoDC0AGy54ayDJIULnO2nRitm87+NdGSc0e2xoFKTc9D4Q5tQn/bhSQE=,iv:+6LN9UPOATX+AHncKVaaM+Pxw/O5oQqBXXYATDiawyM=,tag:QSUtRjM1T7WDhbNTLB3kxg==,type:str]
+        createSecret: ENC[AES256_GCM,data:zhJopg==,iv:HbMBROma+IQptJB5fzMbyYiceFVtdTdnIxhjnOM6ibo=,tag:XicfJ/NXXUl4t9nZTjJdAg==,type:bool]
+        oidc.authentik.clientId: ENC[AES256_GCM,data:ZUkeEz1E9b/ANKJ1hxfsPlgPWW0gC8dYnSGQo5/FZ3GCis00T+PDIg==,iv:V1s5VbxNOxALUuHAdaiyuJNuJJfvyq6XCQ8+qTOTGpY=,tag:7cDmtw5i9aZoH5jczKokPQ==,type:str]
+        oidc.authentik.secret: ENC[AES256_GCM,data:a3Yg73/x12Mjxe3yIp1sYTJIcR5Yhfeoe6hzSr8lmPDUi8957fJ7sfMBQvX5P8tJijYkj13a4HW3ZTOIm9hL6F+VQExEhYdD9ujBGUeulV3SfSOTfMQC7BWDVXNv1LV5gPyXoiZQNfXJ+WY7ktBv2rJ+NORk63BD3PbOZM6r5XI=,iv:tKWLTKXpBy76VYOVf5q49IZ2q6DwLMmn+8IqIpCrCRA=,tag:0LgXbs1gsM/XYsdDNMG6Aw==,type:str]
     rbac:
         # -- Create the argocd-rbac-cm configmap with ([Argo CD RBAC policy]) definitions.
         # If false, it is expected the configmap will be created by something else.
@@ -304,7 +304,7 @@ repoServer:
         # kubectl create secret generic homelab-sops-gpg --from-file=sops.asc=assets/gpg/private2.gpg
         - name: homelab-sops-gpg
           secret:
-            secretName: ENC[AES256_GCM,data:G9mQch2AbzCcWHcMNJSyfA==,iv:RdBtDON7v69L7ZcKsP3kTtVmmYkh4jbkjjB+91BLO3s=,tag:8q+LcFD1U9hX1BAK4iWNzg==,type:str]
+            secretName: ENC[AES256_GCM,data:QctXOcnrE7+Mtn2NBc9BhA==,iv:vsQFI2MLPlHFnujGS63nYdxlpdAioXnic/zDaWNfuO4=,tag:RWyf596Gi5DDoBqrOIE3KA==,type:str]
 ## ApplicationSet controller
 applicationSet:
     # -- Enable ApplicationSet controller
@@ -318,29 +318,30 @@ notifications:
     # -- Notifications controller name string
     name: notifications-controller
 sops:
-    lastmodified: "2026-02-19T23:38:13Z"
-    mac: ENC[AES256_GCM,data:00uZKuLfWsjffsPyLBotuJ5d4eRKmIePIh9Me78JKSLyFRADPziOjWJTh8gaVQSEYE1lGAJ3JIwQGiHMZmsuTPBG0h4KdogA1V8KGROU6rqSda99gNR9JTk22IxMPh4t7ndxM+e0k6mb0Z5WodvDkqV3zqUdYF9mJFzUVFjxIXc=,iv:RXVXesyLHNG+WvbmmO293Tcqo3HPmz4rJgrULDutb4A=,tag:+t01DltTMFcIFVDSzSmo7w==,type:str]
+    lastmodified: "2026-04-13T20:28:40Z"
+    mac: ENC[AES256_GCM,data:oHrw0nrSo3fLNnlnT5ueF2zgdk1M1LJqjUgn/mB8Jcz9BDLfTza6HzC4Yvu3JbViy87m2L2L4wnhzQaukM4sjLkwafmypg53fKCtxJX2PZGg8vLiINMyY0hMXjNO3h2CruUy8QiIA3HkkDcKvezjMb8Cn+rhEF2rEakH0cIrOE8=,iv:sbshVjTyyzQLPFnQsL5sziDZYQZl5ZNdXkjuMeWdP/E=,tag:hC4C1rgev3hV8Te5OaRq5Q==,type:str]
     pgp:
-        - created_at: "2025-10-15T00:48:28Z"
+        - created_at: "2026-04-13T20:28:40Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAoikmrB411k2Dl0blqcF/PPFxEGTsXHGqcujdjjzIgmQT
-            +jMZFvEJcPg/XcyFixmysKHFT/gaocYHkMetEAsnauyw4hsrWr8NSEqQnRyr9z4o
-            AYJwg1yJ4R1EFNuHGnQ+3oShbJIi1H0SkTYx9DvnPFMeu2no3bH/1GC2KnPAi7z4
-            T+0q1YHoxFWxc+FHC+9PrNBa6dqo0mf35oucRmiW8toh110Y9Sbap34G54RRAGRO
-            Q9F0az8CJj4B4MVcthSJNxeO5KKaPmLn/YJVQw6IT+zlfXQEBHzB1ARMOLBfOD1X
-            DV0Q6GBqOwd+v9B36n/E3WBRtakIyhFweezGULj5z2QNLCHXHedwvFWgrB4Qf1+G
-            wkTbsV6+oqyQtqcmDNkIEK4qY9vl3ZJbLKN91eWnh+vSYaEGwTcAgq8QDozpTWW9
-            uyj8ePyfopA6vBPiS5MzXivx/mgBfk9YZXoE69tP+Pk9017CmjocrZMGisY64tPQ
-            H6yZMcwJLiC1QSbv6uspufpQqq5IZ/wMvhkO6+3JPP9RgpWq945ntADiUMCdsYBT
-            Z3JGms/2VC83up2f1o2QBZhy9ep1FcftSVXDKJmv5PYXQq7sye7tMkA2sP6VjGLy
-            yz8ee1SdIprILW1NdaUBDWrNLV26VokN2699vRxYpqVKrBL5o5rR+kMl5RZLaOfU
-            aAEJAhDK2fq9zwOwqysxU8vb6lDBLP948rEzqUz6U8KAITuCxbOy5jeZsZWwEOEY
-            FW2CVCq7QiE0gGnZ01E/7mC+ppGT3Hp4Kwxsz3YzqZqyG8VMUbD67gval4BmM8em
-            r45ZYxkCjYCI
-            =ZvLv
+            hQIMA5NT/LvuRqeGARAAsUjDhwxQlR+uUsVMWPUYmDltUJJg+Gpq8Lcscnl3SjeI
+            uGyjzOYz03G2LitpHcMaPsnuR8OhDdsRNhh3UpONkTd7PzGrw3eb1lNS+l6KeRHd
+            UrXeXDlrvwvMSiTEMuFDmwW81Gyd4GQyQ/A746RHDE7CYZd2+D4IcyOe9Byo7+Iz
+            7eQisbz/uj9TSFVGG9fTrMQ7/oQRHluESQ7SZWihyOpK0+jWymRqcab+218YYCxX
+            2vUKpE25g1sDUg31p6//Cmj+/6lXtpXe3cgGN6d5ktlyJAjz0KX+hq5XjvhqVni9
+            SIpiwUVmoCAxfa9q0WZ2O0Dn1VWVsIBFB+b1imxpyMAFS9ZXeR1jw1kjeATrMEuP
+            UCqP15upMrW3AICG4hReVNMme0Dr7m/PnTGsGqzCpqta0KWoachaOoRO4nrTycFd
+            uSMDyvvwSUqY1sNnUJsOWQjsgLtnbGJrw+mkM+y1FdOgD5UTWmYFNiwEKiqhXEOy
+            s5FRlVUmlRRjTYTMLz4fPGuloSc8n6vKA7Zu1ibSYy475nqPtmY7BI4HYUkSyWLd
+            rcSarLhmf/TbxfQq4AawiRM8Ok0kkmvUTvcZyyIsSges7msZF0eXLwJlp5I2ievb
+            G2Emf2j9GKAbhUcXx7k8iAZQLUGGPXWwmeTgdsVEYFOCJfuhv98a0dU05JZQQPDU
+            aAEJAhDJqcDWKrvN7KcMK/cr29pX6JHACknzZMsq/lcW8FLy54EEgiFsQi0eF/h3
+            NIdHZssO+sifgvMZeYq3Kjjo7CAbaQD06FvR8DUo80tpZDG0d0vQcfh/rlMN3kdW
+            V/7fpycG2VVd
+            =npjI
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin|oidc.config|secret|domain)$
-    version: 3.11.0
+    mac_only_encrypted: true
+    version: 3.12.2

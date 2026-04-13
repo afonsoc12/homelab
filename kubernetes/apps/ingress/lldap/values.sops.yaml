@@ -19,9 +19,9 @@ service:
 secret:
     mountEnv: true
     stringData:
-        LLDAP_JWT_SECRET: ENC[AES256_GCM,data:sYiBnp8Rkclqn7olNkitTziZGoPnCpD6Zdz4PQP1WyWGo1MxpoGbD0Wo6y1QAJBYUoJYdqn/5ykMW2JRNEfw8Q==,iv:HpaRFcOZxbFnP2absNrWWQDoEscWKl4aSulHenw5FSU=,tag:JhBi9T1igpHujzsZz0exNw==,type:str]
-        LLDAP_LDAP_BASE_DN: ENC[AES256_GCM,data:y7FRxiYaJNLvQvDXcTwQKyyCAw==,iv:pL4k/HiOfHEgd+2sAW0ekVlMF/Bd2enBQaJV3H9XGnc=,tag:AvaXjD7ASJQTUL1uQX6vSA==,type:str]
-        LLDAP_LDAP_USER_PASS: ENC[AES256_GCM,data:k2QBQeKb/EQclU8b2wHAhUSz898=,iv:ZiQn39oZg1DFajCY6Osj5mZr6DiwisvyM6o+b78Jt0M=,tag:Rg9fZUY91rNESLk/g/QmpQ==,type:str]
+        LLDAP_JWT_SECRET: ENC[AES256_GCM,data:jcK3i1MwyB9F5yED3QYVvBc/UCfoOyl/QrEAeh5xLmi+Q0ooEQyZIwEU1cJRD+Nfv3DRhLjAn16QDHgvMLyTFQ==,iv:VhPI6bbDY9lzdRTazTU+z0RQiOhtahb4copyEjBhR5Y=,tag:r9hVcR/0PdQ8BPwnmJN47Q==,type:str]
+        LLDAP_LDAP_BASE_DN: ENC[AES256_GCM,data:fWM2igKaNKv5JbA4wC8Y60l/gA==,iv:egEeaVWUSV5qs8Zj7oCQL4t6nquerbG/mkGenCrUNTI=,tag:e0EExfsAhZu+KLjXkwa4Gw==,type:str]
+        LLDAP_LDAP_USER_PASS: ENC[AES256_GCM,data:m7IlRyS+8nSycthoZjP8AAwVm/0=,iv:N1BFmWJCuyTzqHxHUvLmq/xc107SwZH1X28mjIbsMjg=,tag:9Ml2SALZnC4Q6xyk7w8uMw==,type:str]
 volumeMounts:
     - name: data
       mountPath: /data
@@ -69,34 +69,30 @@ ingress:
 #     cpu: 20m
 #     memory: 64Mi
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2024-07-20T14:18:21Z"
-    mac: ENC[AES256_GCM,data:UeG7vjp+mu7V2NI23G8shhiY7aPzjXfxd0T85djKg/MnB3b5X/DSIBpm67+79UCU8URSP2Bvt1E+HLWykMTFaWZ3NmhO07zJnkgTg3eZ4wm0oLsi9AU0FgYmKdPvrBIZ2QfkKVqZC3HkUDz9WPell0h2VnCXqADYK9dh/6coxwc=,iv:XZuCY8WHSgMVDiNi3ePjagzzOYalKUaXPdigtOLZkLs=,tag:grjp0qDNlW55IQd5dJLWOw==,type:str]
+    lastmodified: "2026-04-13T20:28:44Z"
+    mac: ENC[AES256_GCM,data:lCNMi8ysudMVa1G6BO9nQ6iakLUeoVqwuNphVm8KEmfmWyeF3WYe0NlS9AS7Yho7aXUMf6vu4rSXJZEheX0bAkaFmMoTS/jDv0o+Utl8C3j2tUmtgF6YJzDAxPnnWj1rK66P7/5NqVRJLJA+rXATGJzqflFa9RVcGgtlQagLs8I=,iv:8S7xTplXLVDBBTOVBlIHdxtE5DILCAFMQaJKaHtqijM=,tag:oqRpCPl8r0YsEKeozvdLaQ==,type:str]
     pgp:
-        - created_at: "2024-07-20T14:18:21Z"
+        - created_at: "2026-04-13T20:28:44Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQILA5NT/LvuRqeGAQ/yAxWa/vcGqLB/jRuePcLm8Vs00bmIvVfqHvsM4PDW+j1R
-            P78wtZFPOHLLyFPgjJ2Pm2w9n/IJDKUwb4s72k2QvrV1W+BCmwnMSuhgHoElEIRq
-            QTfB33C8gLtV7o56rY6B7WnvhA5GL2HQmCte3ihwgQm+Nmud0gabocY0dKgAgoGs
-            p6h/jAmqTVOpp67gtQq7EMY/yL+afiezE/AcSuwXs0W6F64uYip6l9BPeBFmhg9+
-            NH6vzKEs2duvAUpjxYER8s5hNhjwkCDnWWorKs6f1vxShGMElZENb/f2RFXH6BKM
-            O7/tGuZ5mcS1myuysk21gMXswCE5mnq5mALALuqZZ9K9PgbrJZrowDefXHehJRYR
-            FFzxq3vu2XXnbcrvSIX16ACc4MF10sxp8KmjSeL3a29O3O/yVawSvT1v1BscoUpr
-            g2n5hci/KAMsPZKwkYxRR+acX3CCnR0BpMeOr3EQYZtY6EimCxjjLTfidbIarc6i
-            lqCO7PovhUaiQU9i54c6Yt9gh3fw4AAWyOCxJGaBV+gWxowB9SPOZ12V0lTUUGqL
-            QW/vy9BOpwS6CglD528MIV9xWwkNusWnQ5Pd7odXN17J0iIVrhM9zmmMDv4ntsSJ
-            cMll2fuIEY5U8k7eN2vko9yNMY+U0TgBgKPE6gwujziyKhbP0vcVHPP817Ot2NRo
-            AQkCEAf5HiBPuQZPp6VFPzWxnmTgJNtC75IMs7aLunlHCgLF+yRZWOGYkWIOUw9E
-            wcduhI/n/dhgNG1a4en7v+aeo12QHa2uH8VFbJaqV8ctRw1Ng3IxqpEw026pYMF3
-            Ft3ixyJJdCA=
-            =ppew
+            hQIMA5NT/LvuRqeGAQ//Xq97lEJ1yUgZRZDhtNsEfB7nbqdQ9UdPm94DpDUzyPWM
+            +G94FWP22E2DCOAgvwYk8G2s5++hps3HDX2RiOGKtf3z3iTZB2hx+ysnVNOpfkLa
+            vrx1jmN6IUYMS10stBf+7eg+cWdRFawYGuoiKJZ+3lJCKly+E8J/l3flE2Bme7dq
+            8T+Q1axwzTkmIt4X9QXF4Ak5D34Wi9eTBFmkyy6p21UxXnsXtCIdG6OpGfFBDyv1
+            aXZVuvtZgBxxcj9+sAj7IqJbJZgnUMTbO7cQSEcdtyn8tdqJBLJLOXJ/COlHVvxB
+            a4R0Y8uLAT2SMJAiRM/k3LMFmWwdXjNqK4zJREMu1pA8KUSoaDx7s3VUjAYu1wLk
+            JTvl26eb63D7f3RYKSJqG/lTU5ZyZ7ItP8g+j9wWgFbaXxOSgywRsgmq9s+JVCeW
+            kohiuj5weO+nGNesUpGORaSPWb7JkfSy9Ett4XfYc1L0Q3KTBCDaMjM2Ckm2375E
+            C91nMIrxYLJjRP+gmqq7aP1qOEwFKmTIcUG+QZ3Qsy81Te24Lm3Zlbz0O2TgXQO4
+            8GfpwrqTr9lcWzeXXvuJN2l0aiRCblh2ooAwqAefbnKFBgFXQmnB9SzHUDnmJKcw
+            bpTqlvtRoiaVqAa9vEzAltnwV9t1TmyFbVVfhalrf965sE8OqEbMJhLfib37cpbU
+            ZgEJAhB1RULNEvYyO/zfZjOIF6OCJKsSsTfn0SWiFGa8zfBrMuxe9oPQ2QPoRna5
+            paVQJrGIxc1k7KwYSh/vBkYSk7IRUpL5YXDFSQH+EyCFt8H15dOM58fOIePVBSnf
+            uVymHiEmeQ==
+            =SxCO
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.0
+    mac_only_encrypted: true
+    version: 3.12.2

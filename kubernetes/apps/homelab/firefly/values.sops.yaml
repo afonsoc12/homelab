@@ -28,16 +28,16 @@ service:
 secret:
     mountEnv: true
     stringData:
-        APP_KEY: ENC[AES256_GCM,data:BRo2b7lCv0TTUSw0B7ch5hCbCM9281cIb5MVVKiCNP8=,iv:iyIdaTrlCJTfYiej/Yp7Kb1wiwaF/tOXs2fKsfaaqpg=,tag:ct+8oA6/e732hplp1S/N9g==,type:str]
-        CRON_TOKEN: ENC[AES256_GCM,data:o9kdFmuDaUMCeQk83BCKt7noxxILRQDMngQ2u74BOvY=,iv:WmgZuvgFMQlEzatxwbxdLYX+iTkBuq0f1a3GNO3HMKg=,tag:gVyDaLVX9jS0pXbcof9LCw==,type:str]
-        DB_DATABASE: ENC[AES256_GCM,data:Ug/cBAwT9w==,iv:O2G6PmkmHiqbzTYYwk5fvVL9B2J0WWc7aZbds0WK4pg=,tag:M9UlY/nGYLha4yN/joOj/A==,type:str]
-        DB_USERNAME: ENC[AES256_GCM,data:3zNEhtXweQ==,iv:MTsUdVKBxnlsEc36Vp2ZeP/T5wap22l5hUCK2x31IkY=,tag:R0ZdDXJI4W9UOfzjqLI3Dg==,type:str]
-        DB_PASSWORD: ENC[AES256_GCM,data:Kkmz6TtAVEjzxbdELKwDvYzeawQ=,iv:L4NPNVt3VV1j2TlK/POyQ7D+HbH34kylu/BOJZQ/6kY=,tag:kEuH3GgGpVDSkrsUZOoDHQ==,type:str]
-        MAIL_FROM: ENC[AES256_GCM,data:7og1bTmWyxs43OeAskZcAZUy0xkS,iv:2ijBEbsY5OeS/9mz65pjDRwUmUMIQkBpq72asNAwgxo=,tag:/PnT4QVeR2oEfq8WwXloBw==,type:str]
-        MAIL_HOST: ENC[AES256_GCM,data:JqjZfzcirICedikt4QpZLPE=,iv:cnt9DMpNtPw17is+GqB/0DwHq2sj4ayBWNGUFAKBS1w=,tag:bjmAcxWHEp7L7BWNi6or6g==,type:str]
-        MAIL_PORT: ENC[AES256_GCM,data:Iok8,iv:hC654tiIeHLX9IRr0gKjgxXovLDCCYLbWfZ2jUI4JSU=,tag:uJLqnoZe2t2bgNXXqhjTNA==,type:str]
-        MAIL_USERNAME: ENC[AES256_GCM,data:JqIL7K1K,iv:QprFm18Y0JhCBclOsQ3J07gdMb5pMQVr5GLjCfNC9Wk=,tag:+PRFR8ruzVq8Aod90YtXrQ==,type:str]
-        MAIL_PASSWORD: ENC[AES256_GCM,data:TGj7bSDgnF7I6Y9Pgitp4Pl4IZ44PusbnvgTZF8OweimshCcNoCO+IuA7pQacX8jFM8TvQrVCVI3cUeM7W9A1UaF4QTH,iv:6cIJWc7zDhUiuGf54+9F/tq0FJq5FyeuL3OCyXzxsVQ=,tag:jr8xB6Hvdw/ZxIg9TzqTMg==,type:str]
+        APP_KEY: ENC[AES256_GCM,data:I1n8zpgnc1DmKFMupWQ9FDgOvx23x+JAVQHGH37qbEU=,iv:AbgN9sYw5rdBZ7mDvz9+bfpKygT+X1t8UHP3zDynr7s=,tag:Ld99zbaDZ+//Bf57ypBW4Q==,type:str]
+        CRON_TOKEN: ENC[AES256_GCM,data:999Bl9mzUIhG3IF+gq+sJ7u55nQd4lspwY6RrHZKdKs=,iv:TpXeAIEKqoEL/xTXasBNkWOi0jLiyro8DdV/H65own4=,tag:A9LoMzHSb+WQHliHM09tFA==,type:str]
+        DB_DATABASE: ENC[AES256_GCM,data:a8F10MajnA==,iv:qdaIak47u3cGcgRCes4/d1IfZUe8/R3tpB/QoO1l6jg=,tag:Nt8ycGN/aX5TbtLyZcA7/A==,type:str]
+        DB_USERNAME: ENC[AES256_GCM,data:pxowDE5OLA==,iv:mhV5coWoZlpRB7zEOoRBMD09Pj7V8xE6gYjJQwm9Ctc=,tag:SfGYPuefUtD8cr8I36MZxA==,type:str]
+        DB_PASSWORD: ENC[AES256_GCM,data:8H/TCt+LAZkj6QlHsQI8SQYj8cM=,iv:q2r6JwvM7imEBgRwsL5O3vtY+PnXak4Xs0V+2a5xtyw=,tag:v5/fR/tbTwsm0GCa0OPrMQ==,type:str]
+        MAIL_FROM: ENC[AES256_GCM,data:jAWAp83bMuUuRRTSNPh45KIJh2Gv,iv:JUgdeul2xptlC4+J8l/o4IQfb50fA3/iBHF6QbSyM9I=,tag:mBXg2RNE9KxL9TtS3i+abw==,type:str]
+        MAIL_HOST: ENC[AES256_GCM,data:EUKana+wcIdPa5g9dF7tg0w=,iv:pApe2O5lL6sagTQsPFey5G9hebtELmGmtEuUTwbIRWU=,tag:zH33NPQT5536zRc7gQ/+og==,type:str]
+        MAIL_PORT: ENC[AES256_GCM,data:NF5a,iv:Vgp9pcDuaw0Jc3WdO+udLc4bojqORJ2nYeJYsohZrCE=,tag:IoM8nshGPA1eXcyp3EwtGg==,type:str]
+        MAIL_USERNAME: ENC[AES256_GCM,data:kZf4W7QT,iv:L/fU/Rcm/stOGfE/GacHuz3tsTix5ElY9C/X19oLKWA=,tag:53F+s9/fhb2fMA8iZdJgkA==,type:str]
+        MAIL_PASSWORD: ENC[AES256_GCM,data:EivbRkfsgjaYTEi8VEZLroT7/xAzE6FcWehqvWg28IPhFd1gFSJF0wwOPbx54S6Piar2H3UOqr342xgd/eEUY9UdXtlD,iv:Ge0D7XlziljeU/uQzGOuGR6jcUvzPFnA0TVnWS/zgiY=,tag:nO394t+jggYlwLkbQNA17A==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -159,34 +159,30 @@ cronjobs:
                                 - '{{ $.Release.Name }}'
                     topologyKey: kubernetes.io/hostname
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-09-26T09:55:00Z"
-    mac: ENC[AES256_GCM,data:QHY6atOOweMCjgp5D0Vt2B/wJfsQfKK/wq7sxe4jqO1MPNCKrq7/j4vIhsFmvnmgB28KZEQBhjaW+KFTcUk9Mh3fIfSc0+FFSPF8V0VON/Sg8/CMKR5b/xBm7sB8nnXHMS4jH9fDisnuNEx6MjjS71MaqxySdq+hDQWCGdPzoc4=,iv:nI0HKnE3rBdlkDzS5yjQLGpM/aSOly+dy5AOOstNvbs=,tag:Nw9Joll5lZo21Jqioq7FQQ==,type:str]
+    lastmodified: "2026-04-13T20:28:41Z"
+    mac: ENC[AES256_GCM,data:DINVkm7pa6GSNGg3QSguptmFvTvtsYutwR+K5HyIKmGWE39IjVE6nKvAKm9+t5pwiN8yqCe+98B+paKgBPgLIj1syyBfP6YLAqhyiAGeeKrdtqovza5iomEhS+OHD16QlV57ndhly1KqPCRxBvecowlTOfmuPCyyEI29+VUL7Rw=,iv:KLzYtfHz41dx4YffWk4W6nh8lNdf2e4x0cWY3MjBqac=,tag:gLZJNx2Hv3Dp3KUbrDAqqA==,type:str]
     pgp:
-        - created_at: "2024-07-20T15:23:16Z"
+        - created_at: "2026-04-13T20:28:41Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAArFigkI/8M2Bj6mm4S1Gp+n8qcuIOrqlFNXKIDnyA0xOP
-            9FF3PBt4ELvf+WvzwQFSzFBzg26VxpekweEQp/RMY4XdPLpELjlKcqZaYgGCmKTN
-            htb10OFYBtWAI2lyYvkiuumX4X3IUAX1W4+ZVW3X2q8/aWal40knOkYh4CKvrCpV
-            OrvuyNCyn5QGFoKNgL2UScxr+5JUSdp/99A6W4xdXKEuyEmUsNLrjYlQ639EQDvv
-            9exy3f9hgU/Au2/wf4kYQHXMgiBvobZKuMqISCOtiqNtJfvJ5oLolyogN8OzgFt/
-            TdjDaD25zfkROIjyYLaAbWBxHo3ypN/3AISeXNBip6dVlXZQziU2ngNQam/sqPQs
-            fHHBQhZCaGWov7RuKAp5ADM6ZWmjyQ2JPVV6scwB4weuIS1MGV9FP0YlhnRUT29t
-            tCutgVWekThbY1G/0Pk9KhxyM89uZjiUC8/q/xIrP2lc8Z6Ai3cFUyeLWVtUAVFU
-            9JwPvXXgrQtvFV6GOJFKCK+fOJ3vO+60UV68EBV8XIyX0R1e6DFdZeZ/Ny/WU10Q
-            bpzEpjLDc3oE1Ag3gGo0rWPKSqzDFEkSh9ZRRudZvkrJmulI1hyr6pwv77CXuUhO
-            89nugvqD7Va6sH0bugFrnqx5jEisl1bFETbXY+t+4W7JJKB+RRfPMEsx8birXHXU
-            aAEJAhDQHOf8Hjhdv28bZXsqHFiHo2bHuK2eoFg+wA3sLzZ+wJOe3ZHnGCg4vEsj
-            oHv6z+qCpCZ6pRf5wcdq0JlvyqfBk1r0FyRSlAs5hhLCCdyhwWbGYoSKjJUlA/1U
-            UwFrYD6+d1zE
-            =KJGh
+            hQIMA5NT/LvuRqeGARAAnHhys/6GWctl77OGWvkukp+tk4gljQT7qfQjNb8vuuDa
+            sHIqEsiaoR+XId9kL/6zy1w1G7y1giJ0PndwD4UMCrrkTyHQxG8JaLrIeGgq9mMN
+            jk36QRwTenZVtsJE4CcCyLhe7eXlnbTp3+g3YCCLik3UyFishLqpzx4Rq3Et+KDf
+            DpQZCvEBnhmsYWhr0odZQqWTksceFVbLetp8OnlWhzfPpJm0WkuIQ3m9Ur0ZZLfA
+            6PMyVIVY9t7sMiW92mYmaEk05e21tg8Aqz9BqJlKP8F/DHh5h5q8Eec2gJp5gkFF
+            jAyole6o0SrXausXRyuEqJGDuDAZXz9lk0YDw6t+leQHz8kERxE0O2T+Lq7L9lgV
+            0ECV5v2Jy8oTWU/4N75cHQ56Fdl4xkLVrdo4SOQlnz1nX0JOArh3qemXeok2kNWi
+            vgPEJsLzIvfupiDJp0BJTNX1eh5ZcaBg1phB2X+V6dyDA9avCyTUffg5kcS7VvNA
+            a5hoPEdpp/ev8b8lJLqhdDKcB7UB3Ds2rzAeTs3P3BBdd/W0DecNCdrZuwkOhHoC
+            pLWg9D2+CPfQ0YD9/wzw0VAQlvKlu8kNysj6JE/xWYZF0KQPjjFmqpknxeSNdEHM
+            dlDXu+KX1JqXQKzPYbYzcBDZQGKGa6HpNrgz249riOQn40OaLNM37cWhckeisyXU
+            aAEJAhBg09VtEOVahCsu2Tqxk3Id4fZ8Zs/osTY9YA5MUFSWqqtRD4HOAwhzzXrR
+            o4UO9TIlYODkw7u/rUVCKd2XLqjIR/w0prP4+PsmZAmDj0/gk6FckCkbnjAWrxS3
+            T5SKZWpO5SM7
+            =WQ5L
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2

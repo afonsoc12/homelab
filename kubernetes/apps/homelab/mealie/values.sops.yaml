@@ -28,13 +28,13 @@ service:
 secret:
     mountEnv: true
     stringData:
-        POSTGRES_USER: ENC[AES256_GCM,data:ABmIZlbg,iv:06/IfIbFSPMfQC3jbeYYJuxCCwdywmDeYKuMu3MNaJo=,tag:/4KJCSrjuYN3XHuoqdh5pA==,type:str]
-        POSTGRES_PASSWORD: ENC[AES256_GCM,data:L7ZwlcrdqhwJAD8GJDQvJQhnU/Y=,iv:4sEstygyNizroewVl0H94J8+1sr3wyOMimgL/hQxHiI=,tag:jVdxtkrPAqFySt+h349L4A==,type:str]
-        OIDC_ADMIN_GROUP: ENC[AES256_GCM,data:k6K3qGnFGn8w8hgN,iv:9ByoIXx2ReK2eMAyF/pW95iryl5z+CxXa5+/24x61So=,tag:Lu3tYQdth2CmjJGeVDA+7A==,type:str]
-        OIDC_USER_GROUP: ENC[AES256_GCM,data:9DjChdPx7KhHMtc=,iv:gHxpPwm/ix7WLP8pm+IxW6EFdAguRHKYX3TeWO3lzeo=,tag:3MQMnsbYz4a1nZPGi9jhRw==,type:str]
-        OIDC_CLIENT_ID: ENC[AES256_GCM,data:OQ27CMLqUv/6IHdSzn4f+qINvGLb4GkKdN1gFDj+2ukMEGge5C/T+Q==,iv:k9l6t04RZqbQmASN1vN1tLx8ggeytdBxWwiQuPtgq7U=,tag:Fi1OYLHInqj+F/yiMFwHtg==,type:str]
-        OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:w0EQaysxi7D2bxRk0Y7oIE1bsCx0QxWG5LDEPMhsiDDojZzcUYE0rk9j18VRzjh908o6MBK2pGnX5YsEvrKF5RpqtygDraI7zvLynW1Ru+oXLEL8QLOc4d4VYdK0tpwetnmp/IiNRXgmRknJVajjRMTo0w7+dRWE99FS1qU3WWk=,iv:gDeDhro5FvAvaTyXAxWfCHl1rkYx0mgrz7WzQ4KMvGM=,tag:mdYGO8gsIyLeVfE/Vc1Nng==,type:str]
-        OIDC_CONFIGURATION_URL: ENC[AES256_GCM,data:Og52mpUyUf2KMw+fOcuAu7DFiaGbzoZCgJQJRnzXgUjGkeq7Erb+t5VEHVRyOaJyamybK3EYwWcYDmXj9rpxcdCmjX5TKzEba8sWAbTA8w==,iv:r2fyjCn96c5n5EBaUf48wysFUDhMX7SPweHe5zk1xq0=,tag:o0LwHbteML4TPOIA0X66Iw==,type:str]
+        POSTGRES_USER: ENC[AES256_GCM,data:Hp+v5BAC,iv:ndcw5cbeu/oLhlnTPzdoqyjkkM8EGDmaKBGIojQtRFk=,tag:uHo3bXf/37BcB0l1xeBrog==,type:str]
+        POSTGRES_PASSWORD: ENC[AES256_GCM,data:8rW7BuZ2XtyYMEeGfY8AVpcDK0E=,iv:DaAr3aZVrAQFLbspkv8devCQYWutycMbvUAKkHqPqec=,tag:dAo5GI9vNxHuA4tJAgJt+g==,type:str]
+        OIDC_ADMIN_GROUP: ENC[AES256_GCM,data:QHr+755AMJzK3M3Z,iv:/XMc8LuOVf5hGwrTwTuyaf54deF0+yKicPO7L/X+ab0=,tag:BP99MF9wqfxip/LwTNexMw==,type:str]
+        OIDC_USER_GROUP: ENC[AES256_GCM,data:rTeiPr4mMVogQf0=,iv:CXCerbl6f9zaWkQCiQB79gSV/23dG3PpcPetzMWaWlg=,tag:lxXHBRsGtGUXL+UrOu2jmg==,type:str]
+        OIDC_CLIENT_ID: ENC[AES256_GCM,data:P3FVVOLbKdBIZZewCPxq0XIGg3lLplP6K+NF18BPU3zIKLCLH4eV0A==,iv:XfhbBkUDpUWevci0LKVS8Yd9cNwzObdCezw8HIPnIkQ=,tag:/90NG3t/TiGx/Lzb3MUIqA==,type:str]
+        OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:Ym+jBcHJRwi0/ZcFvfMhsgwWchCAgm1r6F1GKZJs1A9aRq5emLu5ehjNk3+gLKYo0Y4nyrZJW+oBoP5zfufmMtyrGPP4VEocPGpNyDLItAWXLCgz37YV2AI7Esa4Lh5X9pQ48A6xpUWf8UthGk7K4mII/s/QQJjhde6eg7nO2MY=,iv:ragbnrTYsF0C/PQuhHRpAokSW+xoBGkauWbVltm4vV0=,tag:WJJTGOwsiw/yObVEFBnlIA==,type:str]
+        OIDC_CONFIGURATION_URL: ENC[AES256_GCM,data:EPrjKn3cw1b4oRmki5OiM+PD1QP4CFYw7xIKSIr+HHesiha6J6gfpWnk7ewZXOhrMaOXEQg3YX1NzVyBLEqUMePU1QcquCYUiHyp5vDC7Q==,iv:Xzn5OxpieL5LZ+PYMNU5kx+HvEKWKFgT6GtZWsHHVLQ=,tag:5QkKkG9CSBQXcqkU68KyMA==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -110,34 +110,30 @@ affinity:
                             - postgres
                 topologyKey: kubernetes.io/hostname
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-10-13T20:24:36Z"
-    mac: ENC[AES256_GCM,data:Obuj4BWgdQlcno2bxzPUiaj6182hALGcs+Sbp7ktOR2Wbaro1eMKmJJ0uqSfUDBG5KhxJTtZ+6SihMDwSIrE3leKNVgkzba8V5tbwZw2mx9P844oHupHsAPMPwRkg8c9y1OpihGfq9HvvmjXMXLTBL/y1VvK7m251zF3Srp2kfw=,iv:XrIYukGTzkMUEJ/XU2iTwY2Zh3YdlrA4B/rnDqy1DP0=,tag:IAh7jUEgYdsIjSwld36ldw==,type:str]
+    lastmodified: "2026-04-13T20:28:42Z"
+    mac: ENC[AES256_GCM,data:uUfNP+STeFyslsQR7YvO1fC9uZJi5eifjjNp3m/M9CRTdZEUPsDTi7Ku38ynLBagbKdN9qA7FTPfbDxqWi45PGVeeX0qlskRk1Ba4IcRNss5i4rGqp9QizU9mQOQVYAfz5ViJ2/bY/2PIhUDcvn25EdRk1UKAA09n6i4+ClPVNI=,iv:+2opa9Uz/aALX/qbDoBEeiDfCyLIAnqTCxJQks0OsjQ=,tag:0zF1hKBtUVf8ljGI8A8HFg==,type:str]
     pgp:
-        - created_at: "2024-07-20T15:23:16Z"
+        - created_at: "2026-04-13T20:28:42Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAArFigkI/8M2Bj6mm4S1Gp+n8qcuIOrqlFNXKIDnyA0xOP
-            9FF3PBt4ELvf+WvzwQFSzFBzg26VxpekweEQp/RMY4XdPLpELjlKcqZaYgGCmKTN
-            htb10OFYBtWAI2lyYvkiuumX4X3IUAX1W4+ZVW3X2q8/aWal40knOkYh4CKvrCpV
-            OrvuyNCyn5QGFoKNgL2UScxr+5JUSdp/99A6W4xdXKEuyEmUsNLrjYlQ639EQDvv
-            9exy3f9hgU/Au2/wf4kYQHXMgiBvobZKuMqISCOtiqNtJfvJ5oLolyogN8OzgFt/
-            TdjDaD25zfkROIjyYLaAbWBxHo3ypN/3AISeXNBip6dVlXZQziU2ngNQam/sqPQs
-            fHHBQhZCaGWov7RuKAp5ADM6ZWmjyQ2JPVV6scwB4weuIS1MGV9FP0YlhnRUT29t
-            tCutgVWekThbY1G/0Pk9KhxyM89uZjiUC8/q/xIrP2lc8Z6Ai3cFUyeLWVtUAVFU
-            9JwPvXXgrQtvFV6GOJFKCK+fOJ3vO+60UV68EBV8XIyX0R1e6DFdZeZ/Ny/WU10Q
-            bpzEpjLDc3oE1Ag3gGo0rWPKSqzDFEkSh9ZRRudZvkrJmulI1hyr6pwv77CXuUhO
-            89nugvqD7Va6sH0bugFrnqx5jEisl1bFETbXY+t+4W7JJKB+RRfPMEsx8birXHXU
-            aAEJAhDQHOf8Hjhdv28bZXsqHFiHo2bHuK2eoFg+wA3sLzZ+wJOe3ZHnGCg4vEsj
-            oHv6z+qCpCZ6pRf5wcdq0JlvyqfBk1r0FyRSlAs5hhLCCdyhwWbGYoSKjJUlA/1U
-            UwFrYD6+d1zE
-            =KJGh
+            hQIMA5NT/LvuRqeGARAAjLBcXBPLM/SFlm+N0Jea9h9quQRov4kPbxuM0uwwpwOO
+            aBJoLsZCSkQWrjiuiLpoZs6fbkgzD8OiIAuzUGYQxyaFlnTZFZBzmAWl0LMveoeA
+            JVJJVu5Tr0x1fVn66gWRcymzZ4Jsz4hpuKOMUUmJRxmE52lRfKFjM0/GnjW9f0FO
+            6O9JZnCMlCqxGHUJyTtq8UCEfNwSICTEfOnfrm3pjc5wmK/LFQ4wRzqCXStAo5La
+            /4d+Gmc44KCCPRqFu7e2Vo3bp+nXYhjmhtrbyULk+JsIgY5ZBGx0hqNSr04FUm6e
+            g3KObm2BCEGRjy4X1AMUWboC5fNEDGequxPCMhaqAHlCZ/Odfc19mbpzkdCrPLJB
+            wokcI1MFhY8FEJdmE8YLiu2f07Qn+ZQmWC5TIRoEuiaY5krH6qzNvxaeJ5vfCjko
+            4UKZdtcn/7cto8p7fiTYSeUNzFn7YIuHn9iM/r7GFAZnX5ymCt1orGbum0BdRGIb
+            iJjUCaue180ypAvLNqu4bmUL1Mrf0XRsQJCz1bMGI7xGDdZ2menMGFm53uSpDL0/
+            sThzekIjoabIS7OF6s1uWRvJXsFVtZ4a9Vh8bbUDUvwq0mT0kS/LOPYVgDBtMc3U
+            B5QZlOCPL8RjW81qMiRkCpzV0W/G0STFoQnepjWwHT8r5kz6dmTkJC5YX3uUR2fU
+            aAEJAhBeUpxdU895KDTLsYRXTTaF26Pqo+m615xrGDnAEggGgwTj3xnLchQQd1Kq
+            nxHfQV98edtMetK4Qejg/2k94BJli2ccWnpzQx+FtM/XR9GdNxIaxjuHRvA0Q69J
+            dUZ0IDMoBazS
+            =y/n/
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2

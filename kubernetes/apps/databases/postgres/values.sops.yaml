@@ -23,13 +23,13 @@ ports:
 service:
     enabled: true
     type: LoadBalancer
-    loadBalancerIP: ENC[AES256_GCM,data:ZqmK8amvtvxZSPk=,iv:PRhQnaTFMHGZ9HNJo6zdX/zz3pAtkab6CADjYCFYnyU=,tag:fRpoVb6JWAiq6s/clivOvg==,type:str]
+    loadBalancerIP: ENC[AES256_GCM,data:cNGJoiBoZhASWGI=,iv:v2IA2kukdZ61k6UGXPK0IiRfwDvvW+LNbuTB6khf6xQ=,tag:ESwuR6AtbpIyR54Pie9b8A==,type:str]
     annotations:
         metallb.universe.tf/allow-shared-ip: db-svc
 secret:
     stringData:
-        PGPASSWORD: ENC[AES256_GCM,data:bF2OuUjpyWCAnEpMufv4PW7bYOU=,iv:oFYSAjK+FYJcSgGCg/PlrcVoOZvIMTYolhHYA1AQzsA=,tag:qgdlYFc5LJbNKRaZ/gTfRA==,type:str]
-        POSTGRES_PASSWORD: ENC[AES256_GCM,data:V1JwVBPAvynL5i05/gzpXVnfYhU=,iv:Izz01ui3J+XfMB54Vux453AqjUoD8n6WQHpT3VKksVE=,tag:MvUderHMf3trPlSeZwyd8Q==,type:str]
+        PGPASSWORD: ENC[AES256_GCM,data:GlJvzCREQu9eNmk4TF4x42x3KEw=,iv:/Xeew83BQfqWByRfFXoBoLT4CtAVptSHN2R1HynJG4M=,tag:pFYkZkH65iLCkRCFLi9J4A==,type:str]
+        POSTGRES_PASSWORD: ENC[AES256_GCM,data:fSJv4FXZ7rF1tLoSH/WxRDbFSRw=,iv:4PBjgwUhFwTjCevhM9W+Xy5Urm4SlmOutE1JM1s9Z10=,tag:gpvmBhQnCgcaz26M/OROXA==,type:str]
 configmap: {}
 # config_1: abc
 # config_2: def
@@ -100,34 +100,30 @@ backup:
         COMPRESSION: GZ
         GZ_RSYNCABLE: "TRUE"
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-03-26T14:22:48Z"
-    mac: ENC[AES256_GCM,data:2eyyUEybetA0Wwr9S9ur1ZWmbhXOM+iAL/NOvjwYnppmqn+5EznyO/Ypi6hOZZ0XyOWgX+AUv/hl7PFws9tKwUNUoqvsZ01vcsaTfn+A3xCs1zSfIvtJtNdc7T2T4OPA95RIGX4NNKpZRVEy+lraBnwwefTY2Oqam1mmKhn6Cz0=,iv:90r1k92UymVX7jSPN24SEAH+0UxEYwBRcqhlwEYodaU=,tag:fFqbtzPY0jSDk0/veAOasg==,type:str]
+    lastmodified: "2026-04-13T20:28:41Z"
+    mac: ENC[AES256_GCM,data:vQnQ1aysK6NTGSNYMNl4FQnpSfsAPjjYeQzFwWVC+3W0kfJ6miAEZWcHNI866/epCFamU7WicxzwxAo42vY40YAEwnMWQpUIR//11ClL9GnV8Epj2gorYghzueyIukZkoPPEz3n/apBWHHpRMV64dwdsjuXlBd2kqGzJWs8Skpg=,iv:zfdjqsEnq7qwNHpiV9zL/1nqD/LYUevL/b/VT2R+Nnc=,tag:nG8i+N9sUymaE8CEkVkmLA==,type:str]
     pgp:
-        - created_at: "2024-07-20T12:49:32Z"
+        - created_at: "2026-04-13T20:28:41Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAmtJYTK/xZ6InbWQN0yS2Ogfnb73QdW/hYumH0SV66ij4
-            Yrh4p92vxzNNa/JtPPKc69pT13KweYtiZoY8oONue7MoRfkw4OA6mptTdbjd0W8g
-            PthFDQwqNA/05m/QasPQHgul1eZLWpBAprUCQtFNGBCzGMkyQfoeAJNjO9JScfrq
-            kSD5g4ZuG/p8k4Wo69ZpF5r+ZdlTZimDP6Y2Z7Dd/jjKkmUdywHfgmilUePbZZih
-            UUV0hleq2BKu52v03ZSZQhbWd8M06ghkJt0x4S9urvqyxJaaGftvpH4MMf7+6VQC
-            4wPWwf4I/P8Ta80VFsH9+9nm9W6gnzWqOTpwWhQ7tz/Ej3ccRGYxLC6rSHOS18zR
-            ebIKLTNL5jpbyDd5tTpnQgJiP6rmRqT33b103Pi+s6jCS376zw+lULfaa5tIfCUA
-            arStNfaCdTlDimWiGxULn21+OMQV4c5C5mAt0putXuX2scrDJ2le6lhWJfvVr8XT
-            57cqoDXtzc1NyKjBjVUg06PkyKIuQ/LCF51eT7GzBFs1rquLJXucco4pZbgAt0Vg
-            GCUdPxJd1f7yEumfcP0cfAumnhADXbNdlsidFmh7AtcVDC1h872yORc4+lqGGZui
-            EpBEG1KRgPuEzqo44rrLVcg3keVAAeqsDP9r+58udKmuEVMnt5FjRc0DWA/B4PrU
-            ZgEJAhDTSf8nNHji7I45PqrG7XZSpqHemSPp1SpOGdUUC3yqzHw/sVlYF5spiNLl
-            63ZKorEP26uJuOKkbpYgn2FDYYM39jKZgZQ+ckW7yDjSGu2AkbnQM10vk55snrMN
-            Q+SdN+CI8A==
-            =j/5K
+            hQIMA5NT/LvuRqeGAQ//alEQ7bnZ2uMzZ47rqd+kEDwr5JZ7uneSHLu7CTLMovlE
+            EAx4tDv/Li/XzMPuUbW0LOdQWyMqAHdKOav3SNCv0wBeEoIULz0O2RZ73yX0Z+Xe
+            29F8pXQwnBMC7iPayLZ91UmsYd5idPXCjptqqoht//Ix+cBtuwu7yA67NoU+ZrvS
+            B3HQyahLNGDHRpDMywRfq0KLH3/bCl1y7wYLTLpgWxdlMsk/vBRHkhHgpbxar3NU
+            Tk44aot0z3T3EA+1Xk0AIDzF+7K1PL659JQADGMuP8BMlXnssDQwwmQdBDKmogL/
+            vesMwnfXAJ65TM9Ttew8Q/9FEJhOCUGCoSawIVBjhO+XXPoibmgUmGcqndu0a+ci
+            +9LQx6bAT3nIdG0iRxIIF8X6zFQ1hyjFQvsKfi4gsNehP0GfFrjdUZs/S97Hg3zy
+            fEodNZkMUXlc7gKQU587W/JWSLSnxgdE//m3MybaQ8h0KfD9ZQgVlIEqwEpgEKaY
+            iJ2J8TlIDm/XNcH8sDMbJtDSkT/Gn83IVCzNQDDUZYtd6xKT7t5IwuF5gISqfCIA
+            nyV92h1/piFAys9nFbcZYfYMbQHjwMBHokTJ6YSoE8ib3GoheL3P5cUXg55aWH2K
+            528G8YNV1biPB1xrovZtiD30yV5cdsDmVkzFR/wjJ/tkfzRWsru4d70hPG3BiVDU
+            aAEJAhCaY25w5E7gqCxRcxA0mOf8JPJBUFsrKPk6cFP8vYrXgR5uKKbzJAWcXGNT
+            FyHFMOtZBrUu3uQl0kpEuiWDLqts573myPKxHESlGwEHDd+wKymt1ea19MYzP7a/
+            ujQtQx9pkiBT
+            =8HEs
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2

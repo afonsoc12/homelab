@@ -28,9 +28,9 @@ service:
 secret:
     mountEnv: true
     stringData:
-        SYMFONY__ENV__DATABASE_NAME: ENC[AES256_GCM,data:rig/wQ0gW8I=,iv:TbY3y2TuVegZiypYHw3a3HAUBJJaWhQRe895O4Ng17c=,tag:UVplJWwuWEpbqMf00DLctQ==,type:str]
-        SYMFONY__ENV__DATABASE_PASSWORD: ENC[AES256_GCM,data:ipmFYHD4oItQvEo9OI2+gfY9GWo=,iv:K6iTRNfhXKjWKnyOjPT0ZSbut6xdYPJYpG2mLl+ASmU=,tag:HAmNSCLNoerh17esRkUAcg==,type:str]
-        SYMFONY__ENV__DATABASE_USER: ENC[AES256_GCM,data:J2KQmA7n5oY=,iv:fMDMaGu31QXYX7yta37pzmMUjAhB2QRpYFZbAk21k3w=,tag:6OhEjm3ysQcoEcUnwwnNmw==,type:str]
+        SYMFONY__ENV__DATABASE_NAME: ENC[AES256_GCM,data:OTI7L5YtxD8=,iv:3bFw98E2xxpjgsj1VrIeuRB2LItb33AB/71r2Sqa1vU=,tag:6GIOSQSdMy3BQ6E3Wz9xsQ==,type:str]
+        SYMFONY__ENV__DATABASE_PASSWORD: ENC[AES256_GCM,data:dg8EKcEH4H9ffbhPUJ0tvOrB+Qg=,iv:Uxk/xRpOB8PY2aOJVrKhq/Qi7GOqs7r5KwfTUepSR4Y=,tag:T6RqeHzomF5zehkfc39hDw==,type:str]
+        SYMFONY__ENV__DATABASE_USER: ENC[AES256_GCM,data:bBw1gaqBzCI=,iv:nh0UeS1Arty9F5w/uJ2ZTQ8TotwYP6Id0gcYSiKL47A=,tag:PgGt+u/bXgfcHBbxxasdpw==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -94,34 +94,30 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2024-07-20T15:38:20Z"
-    mac: ENC[AES256_GCM,data:uOUxoIh/7zGGWlKRbRAvNft9Cj+E+TLV78YQ/8BpJomnCq8CmkZd8yjVidyiWjKUdFASCOn/SPwxE/wH3l8AlB5bjQcUFIfTxKHTbcCmceSKZNTZjSfDkUfBmP+iTb8ltMptJ/w8U+r02Lgv9zVnTox6DLGaLK66IbSQ9VV4IXU=,iv:sVe1vyRV4IXkgqBWzF+CivWK45QelEECms2YFM7fzMY=,tag:h7Sny9W39X7UCcFDyyNIMw==,type:str]
+    lastmodified: "2026-04-13T20:28:43Z"
+    mac: ENC[AES256_GCM,data:zNAyZJu5RRfeEM4Cxp+aGGZ6kOjFsT1QL2Vy/tfVnbR3DyV2zCZx3YOUDXO3NZm50dW4qHj1blwVjPXn5GeKdx1FZVLurmEwYidbpv2dO0kDxXgUzUm89R1w+hJynnrWwvGFn6mWsKxXmzuj86ZtVk+dWwc/mrQvStEdzUBqcxg=,iv:ZgRSydeN8IPYuivNLk5DjGkho3nO2uESSgOVOCqkdbQ=,tag:Q+yuAcl8HPZVuFcaRpVg8A==,type:str]
     pgp:
-        - created_at: "2024-07-20T15:38:20Z"
+        - created_at: "2026-04-13T20:28:43Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/6Axkor7nJ+IV1PwhaFHYPGqPYUlWPf+4zFarcG1N9dpb4
-            Rfaw+G7AFCRiFp6n9CGFVq9ZZMQNZJTH7Bh+ngwQM6GrWpffapw1zMjwTMWhXnkH
-            2O1S8KnSOSgJ+OSpTOrpwENCpqx5VNPqDfOA1xh986J8DzeqdJzqA/IZgv1XDgSB
-            KieJPR+yRPCdHGDs/WcJBENvtFAErYfdB2WZQTPiOkTFvmJ+CpR4MagxEIxEYzF9
-            1IyARThlnPiOYb3BvOZ1PzKb90+E4MWzlRMmZzIVkmXy9KV/1z2DoClZEbTJslNh
-            TaeGbgdBAxdUXdftULGVUVJc1lEPRNm4M2+ol6Kf96p6OwfEB9MiTc8x+hr1ifjl
-            WccorsiRJirsQVkDo/GpnTWMXK4lW02aa/Akkj6x59QH8cNdEcWFIHIpwlsTjnfq
-            IkgxhZoahgt+etw3zGQJfMCviDqTdrJcnZCKWVG3rorDKe6+VrBFXsGMfHTDIhxA
-            k3TuG5f9Xr859Oa/BPFFcl9wlr0O7p1u6DyN0CM0Ekm/r9NmVt3ednL0GG6IDhmS
-            AeY2WRSnJODuTgBU6alfqjdx0ZcrIU+PS83bGGMyvxiAQkqCGhgBZusPv9Q28f3+
-            HipiqwJQYNKbzn8uRKf7oXWDHIO4L/da4XLysrkBHTfXYExdoHm/YDT0md8VUO3U
-            aAEJAhDloBcCz358YnSnZgt5+wdcUvkeAQ7tdzTLEXZIxfchKO4zL5/aWtQSoEA8
-            e8NwVg/hn7hNcQIGujHGgNk4r6hzKYRk9+j+lYHr3D/1PZokZasD7/YDqJvQMoFR
-            gHw/5Lshvgta
-            =vyFq
+            hQIMA5NT/LvuRqeGAQ/+JwuMw7aiA05e/iFIwGt0RbjNLT+nehP6UIMsZlr7l+5b
+            xiZxXwpli15cTCpUdhNgFffceQ7EyjG4Kr5wUmT4L0Y+Rgl7XN6elix7SGGJgbz5
+            wQ7x7ENvG3+614yvd1QD0/jQptBFj2gKjUpsVRcGEtbCagvd7zem/rDvJYCr9gIK
+            O62YUtXLFiZMQaTuBrFakoUgBRIjCj4GG6pwjotOuFNrinRZ9GpaJYBp8zGKOX3L
+            mlAafGAXKyelM+0JRoiGU6WrX4IbfebibB7T04BqUdGidhSJIVf8/fSUZhECK9p+
+            TPEOqEcPW9BgCecdCZA3KQHwh1O1Mdn4ksWA1RsYuMwcL1Ilf2Y9306dDa7U16MG
+            jL98D4aXtdw/Pfo3BCH+xOkPU2PsOQPwsnR1sGFkwIm7LP73kmfRWZTz3+Z/KYt9
+            eLdR2kD+oAeb123ADS5fTNAbuqefTiNnx3ZZMPjcUtzU6t0Azf2Z4TQCUJDocURL
+            7gxvUR7xYqfUmb/yguiil/0iNdYgwhlxH8d3IIivAxBabFgnlx996v23bbuRyeX3
+            p9fd/aH8IRpRPMJdzauhisciaURsFTStWj69Vz5rqHqYOS+mE6xp3CHiN+R2AHpy
+            ABAPkFlGv+q47zCVOzbfQwsRWKrhfczGa++e1z7UokYl3jHXcngYJyE0mAmdNf3U
+            aAEJAhDlfvCv8zAJ07CRzjhrWkhe/CrZHNCXQa2lwaUbnRUfg0ctko9y2ORSH8Gd
+            StlHnVes6UOcH6pGBq/gF2yq9uQAbcJyQAAm1tCZYJ4yR4vgC2MgFkB26YVDUjXh
+            r11th5Hhv57g
+            =T9k/
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.0
+    mac_only_encrypted: true
+    version: 3.12.2

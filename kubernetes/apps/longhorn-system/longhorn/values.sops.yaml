@@ -16,7 +16,7 @@ upgradeCheck:
 ingress:
     enabled: true
     ingressClassName: nginx
-    host: ENC[AES256_GCM,data:ReDEo44aPWe+A3y8Os+lhRQsFAGnsK0YQ03gAg==,iv:qqSnaUo/8ISG8gWZIc7MkPt+23sD78tV8F7/eivZ3dM=,tag:vY841YR4VypLYvlkxy/XWQ==,type:str]
+    host: ENC[AES256_GCM,data:3ZZUp26LHuGTqIgDdL991yhmz3Fdvm82LK6/IQ==,iv:UdqfNG4Rcav7n+hp8SAj0KYHXEgOJPMVStV3vEM9RFE=,tag:EHNGU52HphU7fh4J5A3zyQ==,type:str]
     tls: true
     tlsSecret: local-wildcard-cert
     path: /
@@ -24,33 +24,34 @@ ingress:
         nginx.ingress.kubernetes.io/proxy-body-size: 10000m
         nginx.ingress.kubernetes.io/auth-method: GET
         nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
-        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:HF1kdNgTTjh8YJx/GjeHbKogW+0sSf7L8rapa1yt/O6jbblhRswg5bfUlNoP,iv:PxyHPGv5P/Ntm4sswr7Ek+JAu75H9DRtQ2/+adDkbV4=,tag:FAi3UYW9Tb+glFNuB0luSQ==,type:str]
+        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:W/UIJ2b6+0vJN5ACXYcV6ko/nUOnaD4ivKyqKYYLCL3qUWiGV3n9gZYcJEYD,iv:7/T92jiQuva3x6Men7eLel0wKokBJfGYalT7FPDX/kE=,tag:D8QdemgkhIOI1aBetVPu/A==,type:str]
         nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
         nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
 sops:
-    lastmodified: "2026-03-08T13:27:02Z"
-    mac: ENC[AES256_GCM,data:IHbkWoTj/d7rpsktBVSJCI4FcOIaIdZ9WyYfE7c9+A1Efd/g8+OZ5LrYaCGVXX038RLL7PVSVA3CWEalnYY4Cd0UaDmlBNvBqgeuOFfFKuaMhv2MC+doKKWYThZnWBR6JbwvrB6KDxtEZhDQFxfZN8FyhkonDjbvOMAw/+Hrp3g=,iv:OV43G8ac+29QSfD5lmVfMnr6cm3FIUJCwvWd+EZpY8U=,tag:GXeKrLHqvhxVPaSoM6itYQ==,type:str]
+    lastmodified: "2026-04-13T20:28:44Z"
+    mac: ENC[AES256_GCM,data:HuC/yalQcU966/PvxxhybZKWFcQFISLmINVfoedaRH6mLt57rzuGJ2Eq3vUkvhWdT0RBudUFPAdgLgwb2Q2riLD7TXcTT7pyfi5tD3Ov/wwjfhLLe0DrxARBN7PHVYN0aTmaYqdEBPkfiqugAPzq5Bk1iLOmY3QbBWa6ocmutWc=,iv:95JkoLTyzkE8+Z22OA+0wHue+2bFrKwwEvSo2S9PoIA=,tag:xo3FaYE7Vlj9sgUDcFiUZw==,type:str]
     pgp:
-        - created_at: "2024-07-20T20:11:17Z"
+        - created_at: "2026-04-13T20:28:44Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//ccRTb/gHKccBu3kXaRM43l0n1tG+qbY3ycVFWJfZ8ehe
-            Qz6RCmzIjPu2/GYv5cvl5x7II3wpK5jLsjPEDYT/udgmBKrWnhORe7NSXLu9eYkK
-            YDzVTnLjplyD9x0aljaCKZICOPO1GlFGxmZ+Dq/bGhsJCLSMa8UjGQuU+6ZyRDG2
-            +s0E+sKRuggKTK3RoUuwPmI+wcXnuOvwGOMNOkB3hchghNoAKcu8UVHWBnYjBSdO
-            +ZGf9mLhkDBSOv+OW8IVDLe4Xw7I79MjZljHVWX5FDx32E30AXn41cY1c85I/AnA
-            d3fs2SsrBfN7SSPezD6GjbtCeALqKPX1SREnaxqIFms4P+TXUU/RZ70n+QgaMd7Z
-            Gc7FfFtt7axgpoEesZNB066OOL5ftpxtbwbsEMcjmqh67+cihslKWMpeJZ9T/im+
-            a2PUXAwEnH04rXERyLXxBmwsqfazkEu+q5CGxSeyz9vVmjST6hdRqPFSqXq0QQUe
-            v8BsNXEgwhD6VuwLsKXWSxWKHBUl99HNEQCb0erIKc/hKbwyn+vPiCuQ13Kxi2iR
-            l7X5k6hDD1yAEG11dq1R100AKouljaKEa1I4vjLuZ3dvXGO46qcRe//h2SBTANWu
-            tBKsznVkxJt3X08oOriUbkxcyharg13a4uBIVp3G5Wm2pX6hSyG9FUeri9NzchzU
-            ZgEJAhA03Lc8Oho1nib6rmGfcQEATjFDuZAJ1BX0wRRTZ2JPr/PU3025dhS5JcUk
-            gIza1T47y441q7YTCRDJ/3txyCZzjGSkfWcvf4FmSmL3iqkYB6wvDUlPH9bSg/Vf
-            rK7icxLFSg==
-            =WkK9
+            hQIMA5NT/LvuRqeGARAAhK7eUKXjQDwQMjPXOuQ6zQdbnfGcqlOY3zOQN8cWtcYD
+            PHP79f13Ffk4RUmepOqu/PReNXl+OdfXczU2m6ovlfUzlzy95T54AjSCg5Np9fto
+            PLkqmCOo4XHAIdkX2JVG8lJ+c3AdpIxdQ1cOQ3bHKZXWB4Mol3wZ3t6x4qyx9L4h
+            MDP/B60LlhLVQ6lTJKQEMiMbLLWyrtFR/jIGfgxStbdBZPBDlwSK7714OUzXeoGK
+            Z3sACq1VMNhDhZDQYh/KxwXg+eMp0U5nA6Z8tg0OM80QBmYqZeLu3aateTObfy1V
+            9DIG2+0qzUdkGyK8PZzyrZZFhK7lJyH8N/YM4M1mDbNAarmkQUzs+ubje5TNvU8Z
+            cwTuEzRVXNcjRNW/7AW8zAvOxmmAp1xRkSEDJOP6tQc7+LrvYubitlSbefDweOkT
+            g6mQX8r7I1+EF/anVp7+xZL2ZQBM93h5vql28nsugv+31sDVQ1gtYdis+xiZ7KR1
+            4b3zJpzpsEVh4Nxt53bbB4Z61DuuP7CqRSPPC5ZDtEJeGF0ZFhIq09F4WBfJSmg5
+            /6TSPItZpR4/7Y5QFLb4UJoKauUj0UF+zY/izNKYjgr7c3oFQ5O1vsiA4pTkdaub
+            E5NkjbtnzaUmM3eEH6YIZIZENjDSlS+xR3jj1BE3MBq6YQZutCaEind5aPRtK6nU
+            ZgEJAhCDZl47ztI7uhHVssDaRc3rIZgSWWHEXmD95qBCmpZHZU/5CZhkqBsBk11B
+            xq8RlLqYRLcGyzSUyGqLTmFqUF/hyFj+GQyfOZ//hhbR7CAaAUIN9pG8imyhngpg
+            2f7rXsPX4Q==
+            =Iw4Z
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
-    version: 3.12.1
+    mac_only_encrypted: true
+    version: 3.12.2

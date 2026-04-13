@@ -28,8 +28,8 @@ service:
 secret:
     mountEnv: true
     stringData:
-        VPN_USER: ENC[AES256_GCM,data:CMcFjhYF2wi0aKU8xvZc04K2LwQMyadY,iv:91M58r8gwBtwuy7WSMEgUv3D8HK1vpts1N5PmbDD+mM=,tag:AYTVEWG4cG+L0rUYf6ydRA==,type:str]
-        VPN_PASS: ENC[AES256_GCM,data:LJUKyhqA2rVcQHz74M+Vaca5TMKdNISD,iv:pP/uDgxk9SMA9Y244EhFH9nDmdHc3MXqZMlU7u5QYhk=,tag:nbuGGZJBy3luwhfpCdfxMw==,type:str]
+        VPN_USER: ENC[AES256_GCM,data:suIa6Zmg20bqLOKZuejIGSTALO5SGE3M,iv:zYofW9Eexr4RdvhyxyujOgVfATJmUUG/VICUVKhP+LU=,tag:C0FYnylQ9jcndIrpojBMMg==,type:str]
+        VPN_PASS: ENC[AES256_GCM,data:oE0Vom8Xmikwi5UKzsMkckU2NFGXjNVj,iv:13PWpjbKx+YmWBYxU3xTlV+YVsI3qXcFPeuGEzpD6wA=,tag:U/rWF4sK+WKk4QZDC30F5Q==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -106,34 +106,30 @@ initContainers:
           ls -alh
           echo "Will use file /config/$SURFSHARK_CONFIG"
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2024-07-20T16:00:27Z"
-    mac: ENC[AES256_GCM,data:ZgtgoqCWHfLuouWO3DIyi+nQj6C1nRnEa/JxEEke2icN4SeuLik7KLxue32jaYTp+DLxIYHEL/ay6/wVrks8xFE1+P6NM7VpY/Z0jj+W+ejvS+Z48lHh8C2XU8ody3kBsvflIxyOGZ+1upbTv+4MGU0PFv98AZaeEE/qVUQQfCs=,iv:0hdxkf9DHeXnmtX89JS0NNH/H1g+Nejta0r3OGsVaEU=,tag:10DU2SXXkX8245kuCUN9Sg==,type:str]
+    lastmodified: "2026-04-13T20:28:42Z"
+    mac: ENC[AES256_GCM,data:ZLmBJ/aQhn+KHImtDIkeq6WaQ+n8CbvMNBFT6qTISh372ZAhIPk3FLTOBYkq/2rmFn2mjWiG03tGxSdRsdxExLRiaoJ4P/cVmqu5PV3AvOyQB8mRwimQuDNgXjcULx2ZOMa7oN42IBHRoKXssjw/RxCiMBao1cP0YyrtJ44Phrw=,iv:mj5g4lao4TDpaxEP6lyKfPCiLSKZhkOvckmwS7HgFJc=,tag:2ZSLkz/wsyuFhzeb12EYTw==,type:str]
     pgp:
-        - created_at: "2024-07-20T15:37:57Z"
+        - created_at: "2026-04-13T20:28:42Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/8DZxpWteFVuJrJjYQh2iEKVp+q2cNsoAXxjp/E4kyKTRi
-            V0F2Q2voS9dxiu66qknPMYiewnucLXsmFHfxhoW5G3c4TAfRhp16xxRDHEaelwZP
-            T8ldbqAFXeza4B5K/DOiEbH1e/Ux3Wj2Q6CjZNLEIWRXyGVGdZpl7hM1jdHAhYmY
-            y9B/bodAzDEwh0mN6U1ILAMW2TM4sXH66/17udINUqsv6tmZAi5KrNEAQIySQngH
-            zr2JEB+aHh6ta3xmd6UOSxdhmKBQJEV0zUqyYHfyl1WIWF1lFUVx2RLbukW/leoO
-            3Esm34AZ18AsDDXlB9g8riHBXdhRFeV7YhzeQav8pTTV9kyXnR1E8fiT1pzPxbwZ
-            gQ+g/AwX5YNxS5sgVyyi2liGKthJmnQWC3ovx3MqAqQkbiBeG/ZZDzaKpLRoilJ3
-            PfgcpBjYOAKn/EFnYvvAy2TkL8qGfSPW4In0bloKm+qyqtjGSPLx9kFf7ktGzrcW
-            1HCRGOfo7AIbTz0/nq5zq5WI3oDcwEV4nEcssT38OF1jwUaGT7t37E7SDhgKW+Xz
-            FWrSp0oVb9oJh+bDSTXj78IxMlT2980rW2nZGHu3hVrNL2Fmf0NGMvWaqjtgkl4r
-            3lDmsriMSDUcDOrONRSKmRu1/RTQXI9TX3ygTjIFA36we9Cc9KgHCaduZNH++UTU
-            aAEJAhAzZWyJ3voMZ3WgEgl5S76nFRYpUlF6vceWBLtlS7N0tObMwJ5/QkDxoCum
-            FAd0Jv3qkfAvw+FLAzq+/4uRuGe+WHECRwiCln9aN+IPeDXoc6SD7ojMvKYEDz7O
-            B6w+6BZajg/r
-            =cmle
+            hQIMA5NT/LvuRqeGAQ//TWpbVC8d57kCiem4NjnC+7jno8BG/tT2AI4HihKxTD3U
+            Xu+GA0Y7g3ETFRhfBFfq747vdbQzf6mBeuGqoHRRgg7f4JPP4AqtDxy15Asli9vj
+            g6wdbjzuNdMDCNktbz52tUEHzH4XWKgb7bXtHLLvRLbVCJABNxH0SpOodM/R6Ei6
+            9NT2bsM9TGgdP5zfKe4xbj5K38LcNu89qXqLKvIxFsP3qgvuSDHKxobHos3G25CI
+            3MXlOwl8GIo/+JyJaX3Moh+QUamiReoG1Vl6IPZD88Evs69Prjh5yBNUX6/wUD0b
+            npU4Ww/Sopf2Kl4G+nIkG61y6v1ioFDkCYBwUr2vmQeQt9Bme5trNhdLDMzEBeJO
+            BvA1hGBCh+0wOR4/zXwfYJOdIWgX3qZjvkSm5cN2IvUBgIZaqZqZ/KiHmHJgmL+I
+            wmnWGWtQbdbR0Lub3M5u/O8MC8fYJGkW0Ua8iOJN10JlJGFNwkETD2C5Dy1WOMLG
+            qF5jdvh0GqsN2KFuhZIiWvo+2LC0/B+CbFGyvTujtr5mNv12NhzTEsmg91zfwHsV
+            Z3WNHfsLyubFuAMwa862JpTsBP9d7g+EIUNhwj51LG5nlidiRRsREHrnSOyxVv11
+            RxcpPyWlV1nIZ9da2PlGkE42mFfDax2GptZn9W8PRkCGK393rrjiwnFn1yE9uAvU
+            aAEJAhAAwmMVBR3hEACbYjGh/kjri3fqxnp2XDThfgzWsp6Zy81WrLjn51k08VdH
+            s9usPpBNo76x0XNtW06i32U1yfWNSMMQxc+i+wLRM3ttXBcAs43+7Qmd6cWZkqnj
+            E4/rj7oM/QE9
+            =n5O+
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.0
+    mac_only_encrypted: true
+    version: 3.12.2

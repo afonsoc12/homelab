@@ -1,14 +1,14 @@
 secrets:
     - name: longhorn-minio-secret
       stringData:
-        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:sgmeE2lVYQs2pVFfh5urwuXjQIo=,iv:0t+mcLuO3hXXE1VXTtyO+jX/z6arbO0w0ZBu+0qhqic=,tag:vDA0bxIdEfvO8HkuCLW59g==,type:str]
-        AWS_ENDPOINTS: ENC[AES256_GCM,data:Pu0TJitASkGr8unpLXQRKqOVoK6PCgCrYA==,iv:KZG6Sygz2U0VxPJEVsznO1diL0czDBZPr3oysZDB9aE=,tag:QnrRB9JrWpOVWcVMEyeziw==,type:str]
-        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:NOl+G92+v0l+JhG4g4EKLO7eKuc9sOTkNAT2NF94AD5EjZvwyod2Ag==,iv:e7e0IQZofJffrNg5YOzv1hMBA7QialChc8Q6gEV0QiU=,tag:iqANXeGhAfnrrsLHODkO8A==,type:str]
+        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:7x8Z6ksQDrTK2liaCw7LShiGi7w=,iv:LtyxaFTNxp5wUGg5w1KthZciPD8ksqpkzqsQdsj0hFA=,tag:16MyKIjc1zCY/Wvje/2QoQ==,type:str]
+        AWS_ENDPOINTS: ENC[AES256_GCM,data:BXxUZB04dF0o4sapaGoihdv1OyjD6Fl6rQ==,iv:fzL+ZRWRIvon3ERG3sQbzhe29lUK4VSDw2B9LicTJHA=,tag:/VOhTwxRSZAUTJoi5iqpqw==,type:str]
+        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:qnnOEOlv7/lVLbeYQKYJ3rY7u9B3ASngtsU3PpQC+PVUVSCKWtxWsA==,iv:Vip6Ea6WzBfSzPjGUfWP7f4sMKjlppf8zxwZtLZJhOY=,tag:WoM5V5d55MV/sj/pp6ljmQ==,type:str]
     - name: longhorn-backblaze-secret
       stringData:
-        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:532PKAjrhKGfXIRI1cahoYBixlvOuoOa2w==,iv:zDsSd3+uaHUz2yZdZv/0KurtOs0rF6MSZgBNDG5pPZk=,tag:iot9ayeNZOdp57udWhhd/w==,type:str]
-        AWS_ENDPOINTS: ENC[AES256_GCM,data:RoHhjcXTXu8I19/KgTXGd0WazHVOW4cM4ZgiIEAYLKQBAxSCiG1JvMk=,iv:/C5Bq2P9ScHuudHNjH5mkR2dp6oS9dPsIyF3fZIymEw=,tag:h4lEynr0AvY/e+CXxBx0Lw==,type:str]
-        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:F29H8MKsFQYrP204SFKubbnRwDUkUaabtpi6bzbPmQ==,iv:cKLVe8I96b9Emd/Lzk2++f1Ne5hV8jAfmMqmQaivVqI=,tag:z7zg8UwencGIIsh1eIOQAQ==,type:str]
+        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:akRv8qJwmkLfuswtEDvL945BsGZH5ubKiw==,iv:1O0/dwz6XCRdT1ONtuuQWLEvIC7ds9YNZav168qQ/80=,tag:pzyYWo86mzpAvAxenzZcFQ==,type:str]
+        AWS_ENDPOINTS: ENC[AES256_GCM,data:YIWNPbjE/0FhfNxZd3aoDUdfRLSVwUtUQJG0y4yHQJc0a95yJh3Ji3A=,iv:3uFkimG2LjwxJt0HDvKDGqsdhRUh3ah367NF6w4gQjU=,tag:c2zUd8sqXkXBpsTBX0sqaQ==,type:str]
+        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:Mr6O0sxAkxStNqgVVhKVREs4hPCgdPm0QXKnFTK85w==,iv:sNSO72nbY5b7/9yPlC2m3ZYD5nyzQlkw01oHrYijanw=,tag:NjclRGxEb6wil02CAhXyfw==,type:str]
 resources:
     - apiVersion: storage.k8s.io/v1
       kind: StorageClass
@@ -56,34 +56,30 @@ resources:
         retain: 4
         concurrency: 4
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-06-16T22:14:20Z"
-    mac: ENC[AES256_GCM,data:LjkPGE1uBw22SdEHqFjjZd1mXghHhEP9MY+Wmi0ZtO5u5i/zo6E8BWpRIQ6OSAQATS1uOOlrj3Ed1KBBejlVufF3t+iWpOnPaV16z/9zd1DKRJ/9ntgmIwWPQarjIK6y6td14jYvPXHc1FrL67pOr9jbaYzEfwVVzeyHBL/afEQ=,iv:37NH/YHCH0BAE/NXTki941L5QaLv1p/hPZ+VVXZEbJ4=,tag:7+DAvLkJqUkv0ySl9TMqVg==,type:str]
+    lastmodified: "2026-04-13T20:28:44Z"
+    mac: ENC[AES256_GCM,data:vB0OQV3pvONJfOzB9L2O7RxUSaaTxlXBAS6K2Av3HZgdJtIpZ+YpaH8U6oa4zCRYa5cCKzND0LhGgUP6bdXFYqDeF0hkyPbum0MWpV1XNmWrJDOpoYlW/RnG4vDIN/YBEEQt3DDwXW3tc74QWXlAO65RvD8exDlqgMAoIq0wDH8=,iv:SQmBmt5AeNNxcMiz9BT22XWAETSQqhwfZqNLAh6y2Jw=,tag:QF0HzZK/ICCyKiYkI54F9g==,type:str]
     pgp:
-        - created_at: "2024-07-20T21:03:14Z"
+        - created_at: "2026-04-13T20:28:44Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//Y8G3ZUQ89fN8YFPKBKIMl5HQm2SavKdyFb7gitX2jlKA
-            qkMnWyJYXKvIHiqfb+waD9UbLo53J80o3XNwd/L8RJ+kKK9oAwXvYFOyAKWfcTBm
-            9qV391MeQYB3jNCyuI476AMNLpRv6IkgW8IIgolAuIzMjpZ+Tz0f2b918hju6IXd
-            R0dPuaXnJ6gY1elIARr9vqJVa//vpf7Nc/IFzLyydx7eSX6nzBBK4sarBT9AZe42
-            jMJ5FNYAS1+EZv+7yLW+v7nCS+Ljxo1lLHrVfNO+SdlRbKnJiiv3LGAqwQjQBkNO
-            52rBsozVceiiKATxInmhIq9K+1VHkKza6xz2uGp99Vn7XzeuwKnKSIpJfFo+G1Q8
-            eFm0/HAxLgIDPWyGRjJlR1YDkOPaey3WA5cp3W/Am5qOeJ5UzaQomlBo/oBQm8is
-            396JcvUdD3axmKRpftTZEKKpAJCXL/JcfgfjHu7OX783TaxXOD3Gf8Xm1DqAXgVs
-            stGGuED9csQNKbU3f1Jr1RPSVCPL2ZlwHu/IgOrLQwuACBYtqyqJs/qQnyLt5Bul
-            V7CzDNRwK9lqxckjjOybyXwOgRwnwQRYv4oTv/Opr3iem5R/QQhgORIT3J3x+4G3
-            TZLWk7QgbdvmI2Ul2axLTOliyC6T1SJ9Smu0E9MbzTpubJq8y3VGN5w8J3Qu7W/U
-            aAEJAhB2y0cJJsCV/hRZ01GIK3XJwvdF0Yqc7dW9oWWy+aLprybInNBaiaKOVxhY
-            0Lvjz0kIOwbp/MOPBy/WBuUmR5RkTmHt+RxVPcFK0WUs17ksRUl/U4IMeMq4FZfv
-            PU8Gzbvu4AZc
-            =JZmM
+            hQIMA5NT/LvuRqeGAQ//UovQGlYWG5LqKM1SsOoaCBrJv3HYGnK7JXImWvufZMEf
+            LFFpESFGIbZ9DBApoUZ+eUocxR3ZMiQOOH0v3ckhsmgnOhqUXxi+V/eun0kELvv7
+            z2q2+EILM+tT3xP+AHEirD/ToYKvkH6Mp3beYduK+cQ1ey0T/gvl6KhfumLaB3IX
+            lvWyqsNFOgpxtv15aznbwNNamZVvC0GnpZJalMTWtj0Tt5+dnKZ4sCxmlglSdb9F
+            hTitgr5VQomF0uh/l/0a4nRgxB0iXsIzkrAGisglPmpKneg0vBKwHpH4icBRAvKD
+            fR5ey/SG4faiTWriCU1ddYXLWvmWbDhOY48AYa5CYqjf9d71tITTHBdREPVSarat
+            95d8yi2RwD/ixVmHtKS1qhMXkDUDiMJqyRDwU2IDrhL/SAY3Ziv8nPMoKlbXx94m
+            doSvFxLo1fSo495iTQKqZE2SqXmIOmEZ9DY0dl2DaAyWFYY8Hah4wx4hSTAeWRQ5
+            LA89XZsn4ct9LNRJ6J+fVNIQSlSeevbVqqrIo8ehR3FbmPpUHPcbIO80lF7m02ew
+            FMaZGBom8gGeFCOuhYwdxi4lpf3W3oidQfbQlZLVNOOm1VZgK92cbKPu/B+FJZws
+            2avM2YLDPKUWITCgyApdST/0PvBUompcw5tREdQ030S74KMp7ri5VcAoF8boFknU
+            aAEJAhCvJpWlJmxVoNZl91h6G9S46WqKC0khQ+8uUdr2TFq2Wvy7oH+bRcFdn0D4
+            neVESYJq2m6M+CGCEKEFt39yn3y3HEKqvx5d9kZxNo0tZ3hzoWpcKAOb/UWGQra4
+            74o8ojtfxE12
+            =4BMz
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2

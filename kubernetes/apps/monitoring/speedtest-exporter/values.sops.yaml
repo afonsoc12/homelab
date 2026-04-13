@@ -80,7 +80,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest download critical on `{{ $labels.hostname }}`
                 description: 'Download bandwidth has been below 50 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
-                dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
+                dashboard: ENC[AES256_GCM,data:LG1wAlgrRv6M0jwC5ExRVWVXNYijA/Lrqjpy+bDsy01bGGBw1NKL6adlMGooxp0mck62pd8/XlvWMSiFrbDkBd4hDudysPE9QpJdi0Rt3jR37DtSDg==,iv:5LnMhavoyMlEBsFbtOedkCbZyzP7UKnpPdmDv9IRp+8=,tag:foBFipsfgQRrIn1pjIARmw==,type:str]
             - alert: SpeedtestDownloadLow
               expr: max by (hostname) (max_over_time(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 400
               for: 0m
@@ -89,7 +89,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest download low on `{{ $labels.hostname }}`
                 description: 'Download bandwidth has been below 400 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
-                dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
+                dashboard: ENC[AES256_GCM,data:C9aacEpdLoAVU2zsudftpwMWq6uBv7cx9CFgiumSU6vuapiBZPCXowuekuXdMOQvUeoIFvbhoaBX54+4EKbqr51A9P+TBFq/ynbKbOIvtMR750eMBg==,iv:zPN5njbXNpzEYeLqjolO44yUfH47C2ePslgfuLtvj/0=,tag:Ncurz8Mq2CQrgbc4+ekGjw==,type:str]
             - alert: SpeedtestUploadCritical
               expr: max by (hostname) (max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 50
               for: 0m
@@ -98,7 +98,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest upload critical on `{{ $labels.hostname }}`
                 description: 'Upload bandwidth has been below 50 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
-                dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
+                dashboard: ENC[AES256_GCM,data:+KUB7nxGhK4J1JoJqQKtLghCKrHcASfVPeg50q/AKILePbXQpUxkD/EA31EdTIZi450pwBjTMqqBi9zOPYCVAsQBug8HPk5xIcOp4pVmzEsokvxmeg==,iv:7Ke6LXGVZK7FgXZtwGBiDSn/ArKEcOOT2lTz/CP3CoU=,tag:R4hILFA3YHr1oxJfct3gQg==,type:str]
             - alert: SpeedtestUploadLow
               expr: max by (hostname) (max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 400
               for: 0m
@@ -107,7 +107,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest upload low on `{{ $labels.hostname }}`
                 description: 'Upload bandwidth has been below 100 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
-                dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
+                dashboard: ENC[AES256_GCM,data:kl7sXAFPYADxw4p44pX6UytJ+JuT4eOMQfyPUaH6x8+8HnBaMS87FnO3mw5extI1GDZAAqBvcS2Ss0UVP5D0kdRpHChpU1mtxNZYySSkHRaRd2oDDQ==,iv:pgwoQgWCEfGn7ipZbhcDHsSrFE0y96J9WbdTYRBzK/4=,tag:n5sltj91BgExHFI7kMGJjg==,type:str]
             - alert: SpeedtestLatencyHigh
               expr: max by (hostname) (max_over_time(speedtest_exec_ping_latency{hostname="k3s-m1"}[30m])) > 50
               for: 0m
@@ -116,7 +116,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest latency high on `{{ $labels.hostname }}`
                 description: 'Latency has exceeded 50 ms for the last 30 minutes. Current value: {{ $value }} ms.'
-                dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
+                dashboard: ENC[AES256_GCM,data:FU6Fk8hVBW0+D/l/TdsO0oHQ2nl8v4JyTQqwBCX71FSNGY6g4Val7jG/JqBFXm1CjU4RrmpEAQOIJ/dKovcFcJqL1d+MfOTsJM9dt7jfDqUBYfAUhw==,iv:H2Idk/EGTydhZOqz4CSIZyhm7nXziw/GFe+wJ/Upn9Q=,tag:fQdCAHshZ2XWLQzhydufnw==,type:str]
             - alert: SpeedtestNoRecentData
               expr: sum by (hostname) (changes(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[30m])) == 0
               for: 0m
@@ -125,31 +125,32 @@ prometheusRule:
               annotations:
                 summary: No recent speedtest results on `{{ $labels.hostname }}`
                 description: No new speedtest download result has been recorded in the last 30 minutes.
-                dashboard: ENC[AES256_GCM,data:eV0a+qVWjdq6ktgOJ1SeFBRbuuXZ/pcQm8vAmiGBXc4cshtqkS/O7tv6CqP6TzJpeQSlE/OhsDvmXLpP/j8jQMJ2NTDX2Z9tk3sLgI+/Ly59pEjgiA==,iv:wF1wP9d5B576LU//6a8mu9Ori++l7HyZBvopQ6VaAYo=,tag:Zb7oZa4uAR1bUOw7l8UpaQ==,type:str]
+                dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
 sops:
-    lastmodified: "2026-03-11T20:08:56Z"
-    mac: ENC[AES256_GCM,data:6Zybzq05AhgrJ1AhGit8GsDAAgw6iw2AQlh85bsWixj6RsfGFJ9ulsCxXLpeSycV69P2MdgSd4sVVvACw3vJfMgE1s+5UNC3wQ7mmXbKeZVZEepnHnF3mLPnMEnm/oe78DG6GG0/dryxLj5V6e5JVuZLRRoGJke1yx2GKHW+VHo=,iv:zvntZJlMRXdzPzXdmoUrvVCJBBrt99tBjRzNpOsqDqw=,tag:fwVblKdmpqpaWnZLam7dSQ==,type:str]
+    lastmodified: "2026-04-13T20:28:45Z"
+    mac: ENC[AES256_GCM,data:laG3YYYSbhOh8RzUEGzg+vko05MgdMvQCKS+MZhBlfCA2TXSFro1RSJxXM5V7nLg7yK6Hut7r88b+MlM6iFOrFqLZuwVeXMvQZm+bmj+Y5y+6gCGUHitxHQDog3wQ1fvop6Ckxlk1NWC0Ef8uSugTP7AsoCfKlaVqNZqPJ5nKqw=,iv:fcEiEMXpSqRkFUbF1Hl06//qWJYgXDhn61OATskK1nw=,tag:jApnpw7KkXLJhfIOuSlXbg==,type:str]
     pgp:
-        - created_at: "2026-02-08T22:31:40Z"
+        - created_at: "2026-04-13T20:28:45Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAn6MNskIyPSEvAGWMHSxO82TXMxCrPtN55dOhggByxZ7g
-            sFbgRCdezU9aN2U5d3bU2rm3LS5MTt8D/uzIUj7PIMXE6h63Q9JC68Ts+pqVqkTe
-            AuTSbtTS1TFJIc7f7mTyUrzHmSmQFNa0cHpHrxdoXUH+wTpe/ak3fMxS5PQU8De3
-            09paZ6B1TNjVy/YiKJllEi9rN9XAYtFwXZOpejfYLjbI/3hDZlFzAojzK5VXS2BH
-            CJDDL518m+hAsKf/lvKmNwoopGGl5MWPdk1Mp05a7sbuiyXycf2C+RO+AP+vibpK
-            LYIk9IcQrBHAY1/nY2T/GxjQ4u3gc5zxmnKo+VFX+nxuAq43EihvLCbgXBPH7+3s
-            O2gMRNx5ZeP8XGEMs2m+QQNFLZtdD+7svoI2te48oT6ZNs8jORCaUOVY8eHbl/g8
-            NXmyzhoXDptpF0d7Tt/RJY3trJG5JDkAHqryz8g9/jfM63YzR56i7bgoIn3GUB3F
-            3cA/8iKhxhZeLaK6B9kBFT08hd5TJrmrRG0r4uknHzldVTL36ZOQ9d2Qhl9PBnWp
-            zJ9ReHU56fRX6hs59aykNV09WQH9A3JvpSd9STYiUSLTzRKXLsZAmTsSGxkdDuKv
-            FwiQs9EC3vOfxkbZ6bm+LUcMjGUBBm1wC5iHvgAEknI0ydxjheXczFzKJkQNMvXU
-            aAEJAhDIMtBxkQZNt6uzzzaKrKx6E1ytMVdSk0VlQDdAxUASgroPuGDO7HGEvRBk
-            rTvBanpYEejOKH4ORhh/XN+MQAccZJz/lO6Eb0qh+pvTGRZDTam7gOi0ASnYKj6N
-            20TECPrre2Zb
-            =iGNp
+            hQIMA5NT/LvuRqeGAQ/+Lf7dC99mY+wgq5NoXi2fMM54khsbXmJpHnAA3INHAqI8
+            zRW+q4aQk9YNokMmyIbQFXbfCnOIZ1LFxUaljWNu/KEYTbPkMQZNw7ippZifCq/O
+            c0Phau2Ry2/050ZQKyqLne4gnox5bWcCEXWVBraXLmzwP50cb/FqnLQMdOYlL+Lg
+            ZW350OHw/hpsDtSirhCKmS5/aY+TLAnmbVXduajjTpnNRrxfIKvj3WodR0vBpBEv
+            9LAqjxa0CeMjO0xWzL+sldqT8q3j17Abf81a6FQfaSSHNd91cFKX7s2r6Nu26Gru
+            FL/Yb0bS/sLKSs73NvV32Nkb7HJQ2HueLftPpiSdcSVywog0du4hJocb+ob5F+tf
+            D9bgtQWsn6tC6D/KBL36bujidKLnCViOpe9eRtVOHmRT8W4Ih+tGnGAfcFUWQZ6s
+            aeJ5w5m5L5h6hVaLFSdI4P9rclmQQe0DE39i/Jgu9uuQvlG/Xlp+2bspdtfAnFYP
+            wtnqmdGIYTr4JeGAcgJJ878+Q0IfU1rOZJCIM9dIlm79Ae53m+EasM90NWAtNjH2
+            URRl90KTvo90aQabsypa37ZNvhnZrCj1Sl0Win1BKVmYJeoRRbOZQFCYqGrlgDru
+            DsgUQxPRvkrtF2duMHgRJuReBahNX15MILFVskq7/ZDTdcZpIh49aA6MsCtoB/nU
+            aAEJAhC3cKiOon0acbmGCndSDecRYzXbvhELhnsFXAGzfj4Nf0ARxz/vqwDn2Rh+
+            C55tWK2XT5rtc8HmfI7PPbrlUc1vkE6/v1F7OWSGGmcu+DMUBHpl6IEMc3z3rI6I
+            tM+5Rl0plG43
+            =GvhM
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(dashboard)$
-    version: 3.12.1
+    mac_only_encrypted: true
+    version: 3.12.2

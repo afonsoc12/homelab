@@ -2,6 +2,8 @@
 .decrypted~*
 .terraform
 *.tfstate*
+*.tfbackend
+backend.tf
 .DS_Store
 ._*
 .idea/

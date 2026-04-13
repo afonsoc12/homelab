@@ -1,7 +1,7 @@
 secret:
     stringData:
-        CF_APITOKEN: ENC[AES256_GCM,data:hhm6zGjWV5/+nlyRlR/LBDl6G+KvZZzR2oyxhOL+YQEJA83POkB+Aw==,iv:GQykHs0L64Qy70hyNvxwN4v7NDAKk0CKbYXCYLZBmKo=,tag:ydUrD9GY1kXfUVWlB7pbPg==,type:str]
-        CF_ZONES: ENC[AES256_GCM,data:L9MvTI5ZkAS8K58EutXS6NlzAhfFsfLXuRrITqDtpNI=,iv:r/4aWRiTZMazVLnojLW9qojU0agT7wFJHx6GcHq7yJM=,tag:zmldkJoFeDugF1PP1dbmVQ==,type:str]
+        CF_APITOKEN: ENC[AES256_GCM,data:HJp6TYmuI4V9edVwKQH6o21PySdDTlu+lfI5XernTJtBXXUih/jeqw==,iv:xX33d4R6b+PkQc5uyueQIDvwKKHBKv3S4KelvmZyY+w=,tag:0Z5urJDeQHPXI7XBBACVzA==,type:str]
+        CF_ZONES: ENC[AES256_GCM,data:yC1YYZp1hvWYW6zkO+DoXALwbwGH+ayiAd5Zv1DP5Is=,iv:swHNlxqh1BXDTlYpQeC0U7Yx7foMqlarLKTW/r2evhw=,tag:rpx+TVP1/eEYxHfuCPc+QA==,type:str]
 configmap:
     data:
         CF_HOSTS: pt.ip.{{ .Values.domain }}
@@ -24,34 +24,30 @@ cronjobs:
       nodeSelector:
         kubernetes.io/hostname: k3s-m2
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-06-13T19:05:58Z"
-    mac: ENC[AES256_GCM,data:9I37Lh9SY4EhuYggJZlO53XWAPfLhDZdcQK0r2Bnfc+rumeNPAqP4OHQ1ran+wmHAHPW+I2efd1X2f6kTZ5AEeotN/c/GMzxI0xmnfRcgw1vaSQwdAs+g2TH6pRP4GsH3YYYEKk4r8oMJGKnzubaxjopomrH/7hbSYE75ZsVQsA=,iv:Pcpl2VkVWzfDaoMY65hvSkMvoQFn5MxEE3UnNiAyI1c=,tag:gfeXa7KyfRMZhgTLZxdTLA==,type:str]
+    lastmodified: "2026-04-13T20:28:43Z"
+    mac: ENC[AES256_GCM,data:zXa5q5ORvr7Fc0rn3uvDcaAimIHV0gGPUjSuPswRj9AqHXv/wOb9LYa/12EBRTz+SibR3KrqN1P3SiveaV1s+2I2x99VH6Lg2vr3orRa9BgsukFWZf8kMZsINRWakrhU5+wmRxlZEwDO6maPa+ixBzi3EEbRNnVCmhLm/3E2ETE=,iv:f42bNMOHIF2aRHYpHTgtL0k1syFdF7547mT3/HpqUuw=,tag:u11ZeXmJVKsr1o5Tt9rbwg==,type:str]
     pgp:
-        - created_at: "2024-07-20T14:13:50Z"
+        - created_at: "2026-04-13T20:28:43Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/8CrUoV0oMQQtlgfVU1yiU0ruJ/fqojMGPl+IwFFW0ayAY
-            qrl49irDgVHCgHpr3OdRiyu/LTQS3MAn/e6s3OiAcqPvkJtTmTkAFJ2Y27pMVBAQ
-            QCE5VFSp3wr4Xzh2A5yrNBBOMOgin9BdilfNZ95DxEiWgzi55za0oxzl5SxSgMvW
-            PXYXtVII8KSN/owINcZ2K/QReoTcr1hKVe9/CJqKALnLF15eCEeUAsT+HJNGzON2
-            +5hErHDv/y5si0t66JKkjX5kMBukTrI3QfxbKKoW9KiXM7pcHdfcete8OHnnE+eZ
-            6SL3TZGxpQISyGOKK+gLIjaKDY81snLaViYr+1bZFho+tqnUqjQPKELJ/hII63Ja
-            tjxyg1nCCxlR/HtWrziVpH4ZRrWcCE/iuWA6zDT4bX5ZhN1pYrdtXIL2c1by+sLO
-            WMc3R12jf8WPzZxBeM9Z9skuEPBVY1ITGgHYZ9jtGGpVd9h/KRzs/ILvs8a1Pbcw
-            dLa061gxy9Js054XtGwokd0IxHB6OQ5DF87fl8+RH7IJqyO02u6clQu11m/iahv6
-            MTzF9NsYJUBVjZ6ODfGTj4J5Zy2BTs2c9jzkIFavh6jP3WEp6IkpyvLtA+3HLYKn
-            sgtLAePcxUH2+WnwgN2sWrfuj1eOsZMlhyFZZFWG1Y0X04yk5936sSuAcDQDQOnU
-            aAEJAhAHHxKDUrlVx2WhX7Aouf9dAXfvIXpq0NTLxhessy784E/WbQxS1dM0mZAS
-            jKAJ2sfEGLHeOhlVU8JIorIpqMLFjpHhZOAI/+7fItcn0VPsTasgXM697Z/R4RUx
-            +L5pgDS1N2DF
-            =hAO0
+            hQIMA5NT/LvuRqeGAQ//c983JO/fuVtVNWVG/RkMe3rtYw/ejzQBVnkPw1uXVvgj
+            1VPDR7jzdiex03D56tWtxN3dTE7RpZX8738OJ7BXSq2Dr9qk/gQanviI3L8iyvNm
+            jOKZuUjElBLrLkweqtaNwdsp+t7oEZtfT/8N9IeWHXhEQgBoYFfrnjJ65vkiZhIq
+            5L4X6wcZxAolVfH7QYq+G+t0n+1LuBITIwd+vjEANmMsQSBZV24s7ayuoEhK6g0q
+            RaB/b0tlX5N20FCcdL3HOn8HPipG54HxLlIXzvUiyxUgMVApHEgmRqfa6wxtXAtd
+            +9WdVMFuhCDHs75M2igFzlpk0fNAV7WC+0FUqQLjEW5nZb/FnL+mHi7qJk0w9xok
+            U/ZEOfC9frh/SOYmCR55XLluVMMLfe0TxiaqGSeiYHecEuQtx3J8IlVsQJ28h6Oj
+            s5GyIdyRpxliWcm6XX/myKAcOgE72n2/k7vV2IxmeWpz+ITU9UMDB40+isTY7yCQ
+            PxKQuAChGCqO9s4kGKaRxxUpmyWS25rqv3EQJAwaE5GqFfCyXUkgj7VVSZqjSrvs
+            9npoJ6u4dwlwqpfJTCkWTCMHlsjAkb9DKrKznhqwcbbPnJfxhAKQveQJhn4cDvXS
+            5r4TJQopz7XgfTfirk97h2a256ytKIJxPrSJZMiS3SaFrmIhilg4WSfe+XA9uvbU
+            aAEJAhAq4nZ1Ty+PGheUGWi1kVpoz7DNRInQFzo/Yh+ivMkUHdToK0uHYdtIl9Qt
+            yaUiSiHgqTqy3k8htkiaUK7H/8fZ+7hgCoOSqNP9qh/MBN3zOgULbH41AiL3yRX0
+            g9Y1KN1PUzGO
+            =osKh
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2

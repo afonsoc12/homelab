@@ -6,41 +6,37 @@ metadata:
     labels:
         argocd.argoproj.io/secret-type: repository
 stringData:
-    project: ENC[AES256_GCM,data:w7DrBOZxsw==,iv:M1L7KUe1sZ20C8e72laC6LOQtCtu/Mt9NprzM5aY+Wk=,tag:GMtbEB02vLdPDbyddZTBwQ==,type:str]
-    name: ENC[AES256_GCM,data:i8gBBhW6Ew==,iv:7VnJN10x1CLOMtHuBXka1nLS+7T0+M+TjJSVY0AXV+k=,tag:2uzA6g00yJTOZGN6i+zocw==,type:str]
-    url: ENC[AES256_GCM,data:Q+9OT2PPdC4aRV/ssrsQmedKdyeDWF/EkUHNpg1VURIMtv+0,iv:oAX3LkJDhw96i12+vhXnOnQDZ6FLwJQNgkrU3+y1fX0=,tag:7pY2B1xjmO2lNmXHpuIDFw==,type:str]
-    type: ENC[AES256_GCM,data:B11w,iv:FZUjPosYor20HsrxTqyMXpOx33hkWHPo+BEgNCJEI7Q=,tag:TImtNhELIMj3fFxVJUn9uQ==,type:str]
-    #ENC[AES256_GCM,data:mfG/f+6LWnShSOIrpDVGlWNzMQv82sRqymOXQgqF,iv:jZOZ1siZvXgq01KkwblALYm5qXAdEmr20O+4Ihrz9/4=,tag:28cDCwW//A8iOzjLrVz5BA==,type:comment]
-    sshPrivateKey: ENC[AES256_GCM,data:CUrotqQBeVToiw3IjcNA+ZUrzVu284JSspxT85aMxSflF2OOj97r1m4cFO+9Gxypvl9bhjuj5XVVv5EZtm3mIGUX3eu4zGBewgaUvd0RIl7jGWdnX0DUL8f6zUSChiLL1uuqe7YWzMmSeh564zLHRGjWG3cJPDbvyiZzrfAcdHSUjw1N0QeIZmx086SPMqm5hcHUc0cKoEMuIX2AYRRuhTj2AwhtgXfdDo+GhO+U26kWHmEdV8AXFji8O0XY1p0v7gTfeBT6568PRpaIbWOCtSAT0FuMgQcwk7T3tUFJTQEinWuIpF0Ke9mRBb3AQyafHeP24bp2wva91s30BbDEru3RwTDxzJGfkSkl6NXCc6flgXUR8FOxbnTTB2Vsa7Q6K4cS1qtf6P8LllTHpj7IkAdB5eIOAlmg9IbYmTWAPITu9gprmX/3sdTNssICgGgmpjcmVG5vajdf7oAKle5ZQd9cAIhPPESvKk+m2tBFGxlIpOFKaHPO0osNxaZ7jpv+m2j4sJKL3sF9HGKTBRhtM3CMQcQQlxcHHMfd,iv:rPQIBp0lhI0o3JCWpbh02b4wZZMKrppMIssznBtW32k=,tag:Dj3UqdH9zgJmSmvREhXmrA==,type:str]
+    project: ENC[AES256_GCM,data:k7SvQ0iwRQ==,iv:JDecEnSfCzyleTK5Zyj0osycoasA3botHvfkte4+fqk=,tag:vToabOPtNX4uj6KZBvZfOA==,type:str]
+    name: ENC[AES256_GCM,data:jg4Vjj9eKw==,iv:AghTjQBWamt+M8r4J1DLeaKGiPI2xamtp/QO9k88DL8=,tag:1HOR9ok+QNRttqjsyFyBYg==,type:str]
+    url: ENC[AES256_GCM,data:altX9HoL0/SwqyhwsjbZfn5xxkdiPWl7IdEs95hMCMQRXGsP,iv:x33grGAjOVapp9nKUSaqCPg4lW0KKQjqnO0FJst/ZCM=,tag:W7XN9/LV4lmui3TFG1F7lQ==,type:str]
+    type: ENC[AES256_GCM,data:n91P,iv:kv1ruQMie9WPLozUNBTvVmCIQQhP0kCn7ufsHIxtJjc=,tag:E40IuaZETSQo11QqJWUCBw==,type:str]
+    #ENC[AES256_GCM,data:c5foenQMWJrVslY8Qs6GDDS2KfD10Jkg6onquti8,iv:XtYo+RcE9sEOhf+kY1/OSjLd9uVOxubX7lrrgZ6zv78=,tag:tkpmv3FOmRdCWJ+JmAoatA==,type:comment]
+    sshPrivateKey: ENC[AES256_GCM,data:kEEI+02hRDFMMzXTEkjy1UOWQDh3bD8xCjwLKYOAAt14HPbvC5G72YLDIxadHcAwfYzSzUZ7ms9/S5/5dZiEjbQYoyhMNgzyM7kIAg7MAOO0wBuZa8RR8J3nQJsFuQOlft1rXKd33qzfF2phcvNQ2gqZ3G+vN4LH2S5Ax4NOWr/KvilgoxhdlDNUjHc6zYwxKcYcXYUgVrU2wRZRSYyFSB3uzmAAPz628fgMopMBwOMtNt9mhiuJSzzG/hyfXnJs/GphfwNaq/9Nzvqc1gxv4onHoePbCrGhn+ifQEkV9XXSQwhI5qgNhmbnE+Mzs5dX+Nv37f5ntFxE3Ia12Q+IWUL2ul+RYlsk/82tbv/vDRA/t9v3S7UIq2HsILyP7nURRtMgfsExvTdontPfRsIa+53cDK2qv7GlYsgvjobnDAS9JA2G2mtoatOM53zXUxVtY9/pgYffWJ9Lr51r9/2sQPtQ3CuB8TZi0t9nGzfDVcNbI9IrHBrKOYD0WscTMIXruhcroiE4TC8rTK44HGMOcE6SSt0myETPzLxu,iv:RhbSfeI4EwKMq6ngnntsD+VLh3sGgd6iuZn5gdQ9uyo=,tag:/4QMJ7X3oA/ZxbEEqwAJ7Q==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2024-07-21T10:34:00Z"
-    mac: ENC[AES256_GCM,data:vqw9AQt7PPCzgwbLYLL1hzGv062m9geWdhXs44Fh8lMdoPpwHzfiIoEYWE+tUmx/PdgTcNMSxhcwQ/i8Qpzj61GSCQ2IUU5sScrHHwGmPCwZKN63w5MLB1h0C5126Wan9sGKcE3H//Ue3ZF6UX1JnxeEMIy5MN6ZszEHczDZEH4=,iv:dG/G8XgayvuRwfsj8Xg5nGAMa+V8hyTmV8/ZMl29fZI=,tag:WfwNSt4DAHPZ2yWCZqga2g==,type:str]
+    lastmodified: "2026-04-13T20:28:40Z"
+    mac: ENC[AES256_GCM,data:Ux7P8hpeoQjsfoSnklIzQ39NOlC8AtOlmJS0DOvLBku7dq2I3qisl/6VwAOAFfAYZONnwtSto8U2wzdoKnb/l0HR3b/KQrGkpEEln5NQABlQkPKVzm9zpzTT9rX5k6To+sKIiLAGvYxcT7SXeuhDK8+GrDlv/t16LzPMw1RYFCo=,iv:ZpJJy4Qwv1/PUE5pxfD0v/GLHSm0PBymElNOJry8N/g=,tag:jW8kLjZJZNr+H9nKDcfbmw==,type:str]
     pgp:
-        - created_at: "2024-07-21T10:34:00Z"
+        - created_at: "2026-04-13T20:28:40Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//boHjlbxTtNsJRXsfuGJ7VaPpkjz3ku//Rprk9iVw0c4i
-            TQtwmqd6hinyh6iWIwbAAszu7DeaHFT3UKagOUUvSJ6Gq8KsojGFl0k0KmSttG4+
-            LwN0XPx1+f2/rNEo4A1XZkvBOG4VHIwHoGS/ekfMoarPtuT7tgJIkgtNdH7ilM3v
-            I4FbyyNDWMZ2TMnoJFZQOYSCg4QGEybdYk1rDQl+i0wMc+rB7arIuyG0Q3yQJNfE
-            O/Np8lOg2Se8mUTz2eAmG1z0IGcE5dcPrJN2SPyc9dTg+5L6bJKwLa3T4P25FVPw
-            riKmnr/2yOy1XUFU2J1thPRDIvMSjOTZ39lxGhSEekjIpMZ9MMu7TNE1zyP4I2sG
-            K8uSfkEpuFhSQfGzV3u8WLshB+GPpvmq9TfOvNJW5AONLTsr3rlLTF0S3vV6QUT5
-            Sd27RkskXdaaB6AvAQ51MBPizblAXjRCFcowRXezxBCRP5sIT/vUbPwmQhgUnoGZ
-            3o3f7MOAD0+WNaaOTVyeSYk58/jseVcXa4LOv2aIkeeYS51Z/K4CxYWldZsFKpFJ
-            qgijubpTIQVr+MPtQttzkpG48guLYPuYNSWzUnTE3w3kw9U0LTWdHiPiEOASDWrT
-            Vr5EY5DoUXRjZQeais9nRXVu6/6/lxvI8+SbFuw+iQ+ilni8eMt711Fe27Tc/BrU
-            aAEJAhAXZGlcQIoGhwqcKv7PXZsvUa2YUgS0Mzvsqf4hiUjSoioLIN3W8/QTPzr7
-            FyViC24RuZGabUg3bgdHufzU1gRyi+V9lMjAVg2PbhR+ulSSbMtEkIBqnn78wCc0
-            DyIeE0qKwBkE
-            =vxS3
+            hQIMA5NT/LvuRqeGARAAjXJpFmf4nFpCRcdaqRWvSjLw1TkxcUDsEoaPqu9IZJZ8
+            Gn5sphCW5xjVIi1rgfUkOuiFWYQYow9ucSynyWVijtejOe5vi9ljGYXjz3eSbYSS
+            Pst7dl8O/vzgKhMnoIo7MquD4TjYhhQ9D1hu20QhpoZkTi9Xw1ow6X0/DsCbTuss
+            Uqnh8n8GsZIVrTOCxVoMQppvKpQKot59XosYs0qOe0h0KiDeo2QfCO3lw1Nlrun3
+            DcaFiWLa6/CsAgmMY/kYkYd5CrGjpTUTSRavGlgeFUTzq/sQvyzSg1+wMWvFG3pe
+            XbcwUQrEgku1rkgm9DaAp6Jg6c0cJBu6jH8KYu560FBhXXe9wsf8F6MWvW/WIvTp
+            1EuDqoTgHnm68IsB5JOjnXa6XVd9HhvObixccWB4/lexZ1I+LM4X2P5VDQwqll1+
+            sxF7iazr9jOeM5xbRG0l/6UF5U+8cE+/3ZpPSLctVVSmaw8MHD7woeB69dfhyGg5
+            b4sLICRt0Soc34k4Big7RF6rXRYzzmm+D4HJO6NCIrCfP+9Q6Hjc1Gw2nHZb/cNG
+            C6LdHyPAXUk8+en+X7kdvaQ4LPW09ZtYkRhtokpqV1swwHi7EIuI1kdUsJY6N90B
+            CLRgdZg7p1GiXuA0tbXaLjtjU+KyAyK206ohNVc7UDVMKakHKKQc3avDI1M7ei/U
+            aAEJAhAj8mLlspUhG9tiidDoKqHKXZLofocMP2cAL8PAh8tHqTvXj93B9+0Wwx3L
+            fVR2ddbVnZC1a5V+X7W3qzBlq2RxO22Qht+jvXQFDsMcSgvBd317QgJb4w8ZLUL9
+            +xsPfzBqmR7Z
+            =KgpE
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    version: 3.9.0
+    mac_only_encrypted: true
+    version: 3.12.2

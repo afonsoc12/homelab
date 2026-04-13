@@ -17,7 +17,7 @@ args:
 secret:
     mountEnv: true
     stringData:
-        TUNNEL_TOKEN: ENC[AES256_GCM,data:f9SpD5Ah8J2UTLhjiAT7zpYry01Zf5vcisQEbnC8gEvPT8nyFblu6QySMjzJZArT4eC3AMw/ZpesIH9qTdcKiP7sYB6Mj388mv7B2zj0O87qKCj0w9TWQXvyi4AT+z4tSIoLAVdvlvLwkfKbu/ltonkAZ9SjurVKSOLLYo9K41kY/EUr83wYY+AmJQKzuAmcPn28WcHU/e1vNFlAlIkTEueGOiREst/jQC5TEm2wHCuvgSwh,iv:mt41MgXm/4EBec2TqzSYWMr0g0AXpt+bJXQjjtvRZIk=,tag:ygbPGMS72HA/PGP2/bfh6Q==,type:str]
+        TUNNEL_TOKEN: ENC[AES256_GCM,data:vo6TFJBEz0UvTgWEVo4pZtr7FLJLgFSiC6kjsZg3HV2QNxaj+iaeNMrklpI5V2MrqR/xHuS1kGUjoEk1aRgBDVyNXDW20aaBQKwP4vChK8iE9Cxy6NFmubFMnB8HRUBefB87EnTjhyB5TUiUoYUWEDOsGhvUIn29XvUfpYwWZ33MMYHJE20+wWcSwEaOEa+a8T/sHFU273Tt+Rb8nFySjfZjDUU2+0ZrYP1Wkx+4t3A+sYwN,iv:GwjDxf291vSGLyKzlia/szdOW9HGdEBMKQ4PbEog38g=,tag:haPQC0OfRmWkSiK6OxpQKw==,type:str]
     livenessProbe:
         httpGet:
             path: /ready
@@ -33,34 +33,30 @@ secret:
         initialDelaySeconds: 5
         periodSeconds: 10
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-10-21T00:13:00Z"
-    mac: ENC[AES256_GCM,data:cY7SwzdPWCTdh+wMGUpEVFnQbZMf8xFr1pPJfGbx/+ubu04HJccHt1gnq87AoExMx/CfMqf4jl6CbgyNH55/rXUsFx7fteITr3WwgbnSaaw6AB6wE3NRxz4qoYNu7mSlIp8HCzmgc8THDKfYkPJQT7PfRnEAD785U9hXHKX+rU0=,iv:ILdgjXJi6uuCGWhhtZuGooieWqwm1H260P0ArkZXoAA=,tag:kuqfMbNzUhTFcICyaICJaA==,type:str]
+    lastmodified: "2026-04-13T20:28:44Z"
+    mac: ENC[AES256_GCM,data:2zul+SaF/ZlOoP4NESrhZaj5cfx+mb8rhrUPn6MEXDrfr1Tw6MCS9J0r6YbcH7Ij8zuYhigtiyJhUVd3uCPj1UU88PxwtagTEk6aoYq9ajCse1Jh7WEUySdX42K2N6U/xqyFv8mZsb2gnSqcJ8ORXbYNQ6DA+ABAWi9sDeIPpwI=,iv:oKDaPCNv8sC8MnHoACf1/RuhC4Uh3etV20I1/eA2l0o=,tag:LaYyNCJcdq6EFaHrxExqbA==,type:str]
     pgp:
-        - created_at: "2024-07-20T14:14:51Z"
+        - created_at: "2026-04-13T20:28:44Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAngv04cGJlBDeguKOFLfe6TODgkwRjqhUJ0LgGZDPpnQG
-            9u8yJNIOHkjkZqqyBywszDX3/cM4Xx4Jy7aAWJPB6OhSv2BVl5BscP21kWLnAwA/
-            UlXb1UjcBob26qUxkCA0QAF+D4SPHv8SaX2KXXk2pGlNdHc1bBRnVvzNi9J1kEwQ
-            Pm3n5xUK1+qugcN2oRGiV2iOpMHsS9rPNNwy0x1hEdmgit+zajJG50rv9ogWzv9V
-            Q0tLkLMjlKhLDCnN8zS/LlSj7ivY+JLsfkl+hVi3K2AgINczlxX/wI0JDCi5MJJa
-            mR8JJKXBWyqMKxGVlcKMILZNnbz2NJGwl9Mq6Ws6QmiCTgNMmAIdqTZMSeJ100by
-            Ef+dycV4y9AL/qhMN92RMYBlJOg9MICY4wA0j/l58gBBuWkseAYrE/mn4HVLK0Cj
-            WB4Ii2MKVlS0uKsjjwX4AV7EmpsD5oHXEm20S+8jwWXalBLJAqDrokELeG2ettT4
-            p9X3do94hG5ElPCWbRxTaThtP9V8TbQcUYqcv8ps7uKE+J6qPnRPGR6ACITCVlWB
-            cXodinA21RlfAfN1En1zXZ3Pqwy95dHJ4z8MJ9CYsVW0oaGvBQFemdOwglxY79bY
-            SSLViMEkNdmmcdZQG25Md+yT1U8q0ln97YDdMN9ldiFsg2WJHTr0im25BbqOzrXU
-            aAEJAhByQR2T8Rcq/CKMPCufF6+/UqM+k3/ZxyiNadF/i4Zov26MwHjuORl0F3Ds
-            2asO4aQeK2pnZL0UfIP4fkaBVoXuFtn6cEDV4OC558Bqb0+mCPgUiQtLJyhW1KXi
-            3mtUstT/z7QI
-            =rcw0
+            hQIMA5NT/LvuRqeGAQ//dbaG7tkMLayPGIN3qhoIvFV7KIKJ5ZkFfj8pzmcwZIEX
+            Gkt4cRnrQAFuzn6rSM58Qb5ZZT988vZ86+Lpjvq2xmDSeSD3xFDaKURRsDBVaPzI
+            f9SsqmgDKunwL4FIYYrxH2Gl6kOPks13KJ+nGtumYJjhJ/M/buLgF68I+6i8LtM/
+            bp0H/EjRDq3CZZJZ2H4o99b5pHB9YiXXv+BxQxyjOse0ztLGvYvZnwJkQUM7p6/r
+            kM+b9vq5fmfH1tY2YS0BJWhZ1tmehZVBXaE+bw9jmtLDIIR3DFJG1PVfRn3yfeUH
+            5WGJrDtoL5q2zAIJkYaDRSTxue96e2r6fI3YTuXkgzEIIMeYjRu0YNoneHiIDnaT
+            /WkNAm+eg5LGqZAFWiU9mT/aa9qAIuDlN6ianjF3R4Y4vpG4sVxHsArs9SmeT/m+
+            goeP3D8jQpB/Mm/5K6Gm4aQixyxchkAScMDiKf4uEdFxsG+Gim+htwL1E0l1DUu+
+            8y8LY1QcjiyiFcZrDJb017zJwELCQldVcdCM1KkAYII4x5o/D6JgADwgDRkLMKDz
+            Af1tuhdXRATajmhT14hKb1IGD+d/LFfaPRCa+GPKT1hNmVlwhYUjst+ou8PMtAf5
+            BBJz4+fDzp7IPgbnrFI2QGLt/YSN3NTHP4JJOQy3aS/DHUPCzJVuqRo1wI5aQ8vU
+            aAEJAhCiuqiBkaVkhX/WegVnYHGDB3YK7aqGaZRokVa+nSgRFZqGjCxikt6lqBqL
+            1B987haz7cAdiyG3NBzZpcnnbDqd0G7aj2L3+YFkQ46cxwm0yMCppCSWyerNGyPZ
+            s9A+dP2zwvDN
+            =9YNy
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2

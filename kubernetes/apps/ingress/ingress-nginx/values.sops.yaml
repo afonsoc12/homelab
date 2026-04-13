@@ -4,7 +4,7 @@ controller:
     kind: DaemonSet
     service:
         externalTrafficPolicy: Local
-        loadBalancerIP: ENC[AES256_GCM,data:fp2xrTbaCWIIns4=,iv:DbmDPdPhqi19l7c+DCS9DP/5wYHE8u7vyvZHbHDpJjc=,tag:h+dNCl0e+lX6ypsmJaxhkg==,type:str]
+        loadBalancerIP: ENC[AES256_GCM,data:F53YVQFAseHyQgc=,iv:AgShoZwEcm5vmEuf2fJaRizQGRKnVWNQajDGP+cCfDk=,tag:IcsGnoOXGfavGxxjcDh2vg==,type:str]
     allowSnippetAnnotations: true
     config:
         enable-real-ip: true
@@ -15,34 +15,30 @@ controller:
                 return 444;
             }
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age: []
-    lastmodified: "2025-10-16T22:58:24Z"
-    mac: ENC[AES256_GCM,data:hJjvveaoTTXDLKefAb3ue0B02rQLk4oytVD+sWi0RH/INJkXA+DUB4yjrH5gB45+uXFLC/gjGq6oVYTxCIIoOx9qy9SAU42cYoaovIVfHNOzuz1SijT8u+t7uf3PWtD48XeVQu0yu48U23AsF2e5xoPiZAlznGks9BSVom2ASNk=,iv:7kEsUi1uEhWw4aOFDg38SgfAuFJhxh0nA9IytvDgCoA=,tag:YCnidH9/zKT2V6A6hC+hJQ==,type:str]
+    lastmodified: "2026-04-13T20:28:44Z"
+    mac: ENC[AES256_GCM,data:cdhMhcDikO8yUAlOlHeS7nbo7ZjTefk2L+6QSV7Fuq9h6g8PWshFuhZO1VW1l44E04xV77PQLmfggIKlV5MJveE3fEcEuWbudwiQAZ+zeWaXUswTriEpd5gZfr9+Q0qITxufyHAYy9Et3ABWLSfVTX74dDP+keAXFjbhYQcZo8c=,iv:2pq6jQGqglsqJkacx9KI6mFlJgFR2tz72vmozXUX4dg=,tag:fZyyJ+K++jnTQ/BOG0fGlA==,type:str]
     pgp:
-        - created_at: "2024-07-20T14:15:24Z"
+        - created_at: "2026-04-13T20:28:44Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/8DFKctOMu1LMSwQWs1KJgOAl3CIP4AhWQpWL0tA0dQFlT
-            LmcBo7fa+sbKNUeO6uzQcEq2v/5939S9N3DK+gsiuheodRSbeH59wghVTdhljiPv
-            097Ffti0kbhMpJnB+bOcF2hO38xVtYKRIJ/W+AKImTMzexw3uDO+yHUtTXebEBMK
-            ExVEmnqEDSMZvhTghVzDUqxDTp4cPW828530yHJtJp7hx8MpjplUlb/9Jj8k2lD3
-            dMMRSmPbz0dvnVOx0rElvP8ypuhHP7K8lT5mg69G8sH2j5DrSHTzlKk8h+EEEhb1
-            S4rG73bXYdeLX7rx7MCLyjO/2W93aK6xTMVxl8foITlrjCKnFc0P5z5Tm3rYrcw6
-            SY0cHTXVm792R2+K38fCLFO3vtk+eRUweLv1ORhAG9E6T2ZBPdXFc/KSTv1ObWJU
-            a2xh+YGfq0F1sHf7fKZPPw1H+SZhcjJrGTDVLdqO5zhO76nw5Ik9roIHZ1nZSXI+
-            KQIRwV+MKvdFK5dx5CKgWBKtlQpqWjql76Upz4Uq1HiM95SC8eZwX13WZDZ02bCR
-            7EwOu4bDRUstfCF9In/q2/9rbxVFJ2yMSzx1PeyCkv74JcRebI0mVBFCAIdYyzq/
-            ZV0MACnKcbk25dYocs7YoCpABwUK3St7+x2FZ3XyfNaf6+rAYtEP5ntpid2h463U
-            aAEJAhAR2ZihP04PI/rTgME7QIOsG9Miq4pV1Q+N6MTUto0uefqsznC24lq3u7ms
-            JtQJc/ZEemUBrFwNcy/XTZs9vwS6E44eNiPnYclB+KISwKelGVHLSrvLSR2aKwY8
-            jjblsvTG8Yh5
-            =KjyX
+            hQIMA5NT/LvuRqeGARAAl6x3gTi/JY5+wv3qTkTj5HFveohC48br/7SCaFMVWHrg
+            CKUXuv0xgtbCGgD0fKDkn8S7opLIkC40ig0o38bK64Tx0/lYY+aLXQKDri2coNBf
+            islLHNFu5shfQK+2qspJUSWfJ8gEsDejzVNyniU6eGpmC3LbTxzA+l+M9bVXJCi7
+            CtTcguZbyaLSmXq6oKzQFjDojajxSm2LCXh0YNWs7IqVBl7Udf+s58NoY8YTuVRe
+            ixH1I2N1Z/g3MSCGQJlJDSvO2ZmVGrfX74kedo5JgAIXhLMc7QQwSrdE6LEnMs91
+            +mAQw33p067585qTC4rCL+l+zAypIwaiJ/Z9cIqUjY8KFZg1zXZ5MzfE4O/fgCKo
+            uO4ltqzd/4vtwx7Np+mDlinYaJ7saYZxGxeJ8gsOPkrVvSD0dc7Mf52qn48NELro
+            95s7AAFMof06lLiiaaC+hLl6AOmdlzRWJOpXZ/Mki/XdQtKiMRZk1T07/dhADKnr
+            Se79np4bZ5fpFsmAGhk4Kr5YjgC30nCItSYtAUz/xHVItWkx2P5lk52r79/VOr77
+            KtLSzt20YDpJN9sWoFLAqTlZiRFHtyaardm9urI5T0U2/wQDgqzxlb8ggzAlYU7P
+            7tjGGSSlvrSZ6wrNMdSxvDKlGzffVSZcyptVnxoXJf9RL2YpegnKjd/Rwltmr3rU
+            ZgEJAhAjDZPnWsyfDkxZ/FS2xKajte8cYBTwYH8utY/LnXftUKGK7mYZdQ0IVKAJ
+            rT7LOwCaL6Uy0C7xKcOmW5E7nTIiKX1Ntsax4wTYeURR8sSyYX3aR58Ju2fTLxZA
+            JSV5y+hibg==
+            =kD2U
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    version: 3.9.4
+    mac_only_encrypted: true
+    version: 3.12.2
