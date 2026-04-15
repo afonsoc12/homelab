@@ -8,3 +8,4 @@ backend.tf
 ._*
 .idea/
 .venv/
+/tmp

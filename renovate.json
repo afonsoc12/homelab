@@ -1,6 +1,99 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  "extends": ["config:recommended"],
+  "argocd": {
+    "enabled": true,
+    "managerFilePatterns": [
+      "/^kubernetes\\/apps\\/addons\\/argocd-apps\\/application\\.ya?ml$/",
+      "/^kubernetes\\/apps\\/addons\\/argocd-apps\\/templates\\/.+\\.ya?ml$/"
+    ]
+  },
+  "helmv3": {
+    "enabled": true,
+    "managerFilePatterns": ["/(^|/)Chart\\.ya?ml$/"]
+  },
+  "helm-values": {
+    "enabled": true,
+    "managerFilePatterns": [
+      "/(^|/)values\\.ya?ml$/",
+      "/(^|/)values\\.sops\\.ya?ml$/"
+    ]
+  },
+  "kubernetes": {
+    "enabled": true,
+    "managerFilePatterns": ["/^kubernetes\\/.+\\.ya?ml$/"]
+  },
+  "terraform": {
+    "enabled": true,
+    "managerFilePatterns": ["/^terraform\\/.+\\.tf$/"]
+  },
+  "ignorePaths": ["**/.decrypted~*.yaml"],
+  "packageRules": [
+    {
+      "description": "Do not update image tags pinned to latest",
+      "matchDatasources": ["docker"],
+      "matchCurrentValue": "/^latest$/",
+      "enabled": false
+    },
+    {
+      "description": "Use dashboard approval for major infra updates",
+      "matchDatasources": ["docker", "helm", "kubernetes-api", "git-tags", "terraform-provider", "github-releases"],
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Avoid updating encrypted blobs in SOPS files",
+      "matchFileNames": ["**/*.sops.yaml"],
+      "matchCurrentValue": "/^ENC\\[/",
+      "enabled": false
+    },
+    {
+      "description": "Group ArgoCD app-of-apps updates",
+      "matchManagers": ["argocd"],
+      "matchFileNames": ["kubernetes/apps/addons/argocd-apps/**"],
+      "groupName": "argocd app definitions"
+    },
+    {
+      "description": "Group Helm chart dependencies",
+      "matchManagers": ["helmv3"],
+      "groupName": "helm chart dependencies"
+    },
+    {
+      "description": "Group Helm values image updates",
+      "matchManagers": ["helm-values"],
+      "groupName": "helm values images"
+    },
+    {
+      "description": "Group Terraform provider updates",
+      "matchManagers": ["terraform"],
+      "groupName": "terraform providers"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update custom image repository/tag blocks in non-standard YAML",
+      "managerFilePatterns": [
+        "/^kubernetes\\/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "image:\\s*\\n\\s+repository:\\s+(?<depName>[^\\n]+)\\s*\\n\\s+tag:\\s+(?<currentValue>[^\\n]+)"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "Update k3s version in Ansible group vars",
+      "managerFilePatterns": [
+        "/^ansible\\/inventory\\/group_vars\\/k3s_cluster\\.sops\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "k3s_version:\\s+(?<currentValue>[^\\n]+)"
+      ],
+      "depNameTemplate": "k3s-io/k3s",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced"
+    }
   ]
 }
