@@ -10,7 +10,7 @@ group_apt_packages:
 # ==================================================
 # Role: k3s
 # ==================================================
-k3s_version: v1.33.1+k3s1
+k3s_version: v1.35.3+k3s1
 extra_server_args: --flannel-iface=tailscale0 --disable traefik --disable servicelb
 extra_agent_args: ""
 # If you define multiple masters you should be providing a loadbalanced
