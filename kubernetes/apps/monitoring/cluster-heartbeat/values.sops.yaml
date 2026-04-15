@@ -16,7 +16,7 @@ cronjobs:
       restartPolicy: Never
       image:
         repository: curlimages/curl
-        tag: 8.16.0
+        tag: 8.19.0
       command:
         - sh
         - -c
