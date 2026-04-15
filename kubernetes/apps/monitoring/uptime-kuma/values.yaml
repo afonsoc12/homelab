@@ -6,7 +6,7 @@ strategy:
 
 image:
   repository: louislam/uptime-kuma
-  tag: 1
+  tag: 2
   pullPolicy: Always
 
 ports:
