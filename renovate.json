@@ -66,18 +66,6 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Update custom image repository/tag blocks in non-standard YAML",
-      "managerFilePatterns": [
-        "/^kubernetes\\/.+\\.ya?ml$/"
-      ],
-      "matchStrings": [
-        "image:\\s*\\n\\s+repository:\\s+(?<depName>[^\\n]+)\\s*\\n\\s+tag:\\s+(?<currentValue>[^\\n]+)"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "docker"
-    },
-    {
-      "customType": "regex",
       "description": "Update k3s version in Ansible group vars",
       "managerFilePatterns": [
         "/^ansible\\/inventory\\/group_vars\\/k3s_cluster\\.sops\\.ya?ml$/"
