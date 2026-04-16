@@ -1,0 +1,75 @@
+---
+- name: Install Docker
+  become: true
+  block:
+    - name: Ensure group "docker" exists
+      group:
+        name: docker
+        state: present
+
+    - name: Put user in "docker" group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: true
+
+    - name: Remove docker packages
+      apt:
+        force_apt_get: true
+        name: ["docker", "docker-engine", "docker.io", "containerd", "runc"]
+        state: absent
+
+    - name: Docker dependencies
+      apt:
+        force_apt_get: true
+        update_cache: true
+        name: ["ca-certificates", "curl", "gnupg", "lsb-release"]
+        state: latest
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Run lsb_release to detect distro
+      ansible.builtin.command: lsb_release -is -cs
+      register: lsb_release
+      changed_when: false
+
+    - name: Show detected Docker repository
+      debug:
+        msg: "({{ lsb_release.stdout_lines[0] | lower }} {{ lsb_release.stdout_lines[1] }} stable)"
+        verbosity: 2
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/{{ lsb_release.stdout_lines[0] | lower }} {{ lsb_release.stdout_lines[1] }} stable
+        state: present
+
+    - name: Install docker-ce and docker-compose-plugin
+      apt:
+        force_apt_get: true
+        update_cache: true
+        name: ["docker-ce", "docker-compose-plugin"]
+        state: latest
+
+# Without become
+- name: Show Docker version
+  ansible.builtin.command: docker --version
+  register: docker_version
+  failed_when: docker_version.stdout.find('Docker version') == -1 or docker_version.stderr
+  changed_when: false
+
+- name: Show Docker Compose version
+  ansible.builtin.command: docker compose version
+  register: docker_compose_version
+  failed_when: docker_compose_version.stdout.lower().find('docker compose') == -1 or docker_compose_version.stderr
+  changed_when: false
+
+- name: Print Docker version
+  debug:
+    var: docker_version.stdout_lines[0]
+
+- name: Print Docker Compose version
+  debug:
+    var: docker_compose_version.stdout_lines[0]

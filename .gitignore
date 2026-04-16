@@ -9,3 +9,4 @@ backend.tf
 .idea/
 .venv/
 /tmp
+.claude/plans

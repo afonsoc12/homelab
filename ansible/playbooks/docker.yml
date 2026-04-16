@@ -1,0 +1,7 @@
+---
+- name: Setup Docker
+  hosts: docker
+  become: true
+  roles:
+    - docker/provision
+    - docker/daemon-config

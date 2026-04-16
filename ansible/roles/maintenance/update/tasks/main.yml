@@ -1,7 +1,8 @@
 ---
-- become: true
+- name: Update packages and dependencies
+  become: true
   block:
-    - name: "Add user {{ ansible_user }} to sudoers without requiring password"
+    - name: Add user to sudoers without requiring password
       community.general.sudoers:
         name: "sudoers-nopass"
         user: "{{ ansible_user }}"
@@ -13,7 +14,6 @@
         force_apt_get: true
         update_cache: true
         cache_valid_time: "{{ apt_cache_valid_time }}"
-        # changed_when: false
 
     - name: Apt-get dist-upgrade
       apt:
@@ -56,6 +56,7 @@
             host_pip_packages | default([])
           }}
         state: latest
+      when: (base_pip_packages + group_pip_packages + host_pip_packages) | length > 0
 
     - name: Set cron to update caches
       cron:

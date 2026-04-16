@@ -1,4 +1,5 @@
 ---
+fail_fast: true
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -13,13 +14,13 @@ repos:
       - id: yamllint
         name: yamllint
         language: system
-        entry: uvx yamllint
+        entry: uv run yamllint
         types: [yaml]
 
       - id: ansible-lint
         name: ansible-lint
         language: system
-        entry: uvx ansible-lint ansible/
+        entry: bash -c 'ANSIBLE_CONFIG=ansible/ansible.cfg uv run ansible-lint --fix ansible/'
         pass_filenames: false
         files: ^ansible/
 
@@ -33,6 +34,6 @@ repos:
       - id: terraform-fmt
         name: terraform fmt
         language: system
-        entry: terraform fmt -check -recursive terraform/
+        entry: terraform fmt -recursive terraform/
         pass_filenames: false
         files: \.tf$

@@ -1,0 +1,57 @@
+---
+# ==================================================
+# Connection defaults (all hosts)
+# ==================================================
+ansible_user: ENC[AES256_GCM,data:+u+huwwb,iv:DEE1I7a0qnIJrCFbKReQ7HoEhU5rqOOs1ZOPsHsczCk=,tag:tMCeTEcjXkOOvSC4xiGMdQ==,type:str]
+ansible_ssh_private_key_file:
+  ENC[AES256_GCM,data:OGE9YThIWICrrTVUaamQ3pivHg==,iv:LeGYVXr7827bl1ZBFlLc/9FKmB9UIKHqe4dmeDZse+Q=,tag:qFvb6L+4d2Cur1uFo618zg==,type:str]
+# ==================================================
+# Role: tailscale
+# ==================================================
+tailscale_authkey:
+  ENC[AES256_GCM,data:D3BINMjh3P2hI9FwOqTv1MAAZbGbNOyjUIh/BG+bjao0kXKNjECVSwA89taevsLPZ/W0Rd+ioOpuiXVHqqk=,iv:5FhIxGAAWpLDccQmjKCqjvsIVkbz1PZxv1Q2rBluaRs=,tag:KuBUf480PvKA8vYfTqw+vg==,type:str]
+tailscale_version: 1.96.4
+tailscale_args: --ssh
+# ==================================================
+# Role: maintenance/update
+# ==================================================
+base_apt_packages:
+  - dnsutils
+  - wget
+  - python3-pip
+  - nano
+  - cron
+  - inetutils-ping
+  - iperf3
+  - net-tools
+  - rsync
+base_pip_packages: []
+sops:
+  lastmodified: "2026-04-16T20:05:26Z"
+  mac:
+    ENC[AES256_GCM,data:FU6jKJ0IAgQRwc8raaahWZI6nMH42P5Cjll7Wo+MfHz3fI1AjOQh+CsxN8TZ4JKYoFbe0v1XhCICeldDsqkUXhA0LpBMF10fSEmpMOZ/a6S3Q1WVq6YOmWP5jbHaSZo9GS/Frylq8QAb1lAGTiN/6OY2NMIxqyq7O0Y1AINcnA4=,iv:Wupk5LyIMS9F2jrcEvcPBSfKb5nTddQNqaccPm11h14=,tag:UrPcd5e0J0mErGCo5Tm5gA==,type:str]
+  pgp:
+    - created_at: "2026-04-16T19:32:01Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
+
+        hQIMA5NT/LvuRqeGARAAiseiZ6gbRkQb1+CvAwa4xlxFSI3wKRUHiarXVCk/ZH3K
+        ZOPKU723XzQEwwzqKqCgCalpOBogEGm5XsAx5TjK7g5kfksg33sAbqvwYilRLBWv
+        N2FuHRlqVUK2NgAZcu/WsS6r0kK6mbpDq+lAsVU2JWIEQz///JU+tyJ4UOIs5+D8
+        DZr6W1wk1iYMckcwRHh7kO1ATPDJVulFb7KIyF4roBHbvqP+Sd8yVhYuGcOC/W/b
+        bRNINEOrMgpmJa0p+ac69mt/RQzsJob36NhOh+e9xdKAPS/eXofstAQBQY+e0AhH
+        NIBpc01XQh5SSxh8HiW0BnUuG9ekR+3M30VLmRY7a/J43E55MAmI3wzx4gXHtmus
+        t+nJu1uzW1+//TGe7pYEA+L5wUX+5TkL3yyiCPjwXWXojRqF7zMDgu8G9FbMmTNA
+        tmI+1kXzDManIVLfdszpVT0lrqJLXWcNCU9wyZZKWgsV8LWqB9uiQtQJyINaV1lQ
+        EDSWtLacpJIav0iZ6M8SwaQcJAaWGUXzR398nvODIgEIPCb2eZT4/4PwDWryKg8i
+        FW0gJtL1zNY7VLODeNx7owlqYLJ+vvmZwtjjikUJMqMNGHSy0yhrJTurAG4wDJ1I
+        XFZrd5Fx5ARxbjD5glZCBMXpDmGDbKuDbdZVrgjUKqWsUoAeporRvYp75ENLV4/U
+        ZgEJAhDauACA24DXC2SuuV3YCNH54QlxDtTCwJNWX1eSL2dXRXKOcna/+SKGz9xu
+        IybgatjwIlD0A4w+ZouNKqRhbWV9h26LNF8XWUtsEO2ekOYHvEAH0RCMQ9CGDuKv
+        pMaZlYigrQ==
+        =yv3d
+        -----END PGP MESSAGE-----
+      fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+  encrypted_regex: ^(token|api_endpoint|tailscale_authkey|ansible_host|ansible_user|ansible_ssh_private_key_file)$
+  mac_only_encrypted: true
+  version: 3.12.2

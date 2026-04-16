@@ -36,12 +36,6 @@
       "enabled": false
     },
     {
-      "description": "Use dashboard approval for major infra updates",
-      "matchDatasources": ["docker", "helm", "kubernetes-api", "git-tags", "terraform-provider", "github-releases"],
-      "matchUpdateTypes": ["major"],
-      "dependencyDashboardApproval": true
-    },
-    {
       "description": "Avoid updating encrypted blobs in SOPS files",
       "matchFileNames": ["**/*.sops.yaml"],
       "matchCurrentValue": "/^ENC\\[/",
@@ -94,6 +88,20 @@
       "depNameTemplate": "k3s-io/k3s",
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver-coerced"
+    },
+    {
+      "customType": "regex",
+      "description": "Update Tailscale version in Ansible group vars",
+      "managerFilePatterns": [
+        "/^ansible\\/inventory\\/group_vars\\/all\\.sops\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "tailscale_version:\\s+(?<currentValue>[^\\n]+)"
+      ],
+      "depNameTemplate": "tailscale/tailscale",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
     }
   ]
 }

@@ -1,0 +1,60 @@
+---
+token:
+  ENC[AES256_GCM,data:vDcEkO58MfAFCskwqcq/yJB5bMX7CDE4/H6CAW3cPgWpnpzcTu3WPkKAbp9kuIsPcOw3aLOexebmLHIcaxahDgHnHm+BejHZG4b5DV4cqMgn+9EWI+5aG6dxXqJ15Rq9Cj3DeDUfnU1y24Ok,iv:4p18CtsVGSXa6jSV/b9SwR5fcLxII7IIo/Uby3cCrKA=,tag:Mo9yjMrRwhlPLjIaHKNtnw==,type:str]
+api_endpoint:
+  ENC[AES256_GCM,data:BgB7pYjgx58fl4hYlGpoPp1gUMwuBjPfCNDa8ptw01hhowsVDDutGC5q1TGAz6ZcxxfiiZZOFtsJlEipzrGWpVlX4zQvZ0kOMi8F7QojsBbr8UpX30BdSfFC,iv:aLJCtoalOq67N33IC5n2n5puQm80W5HB7gXpxmgb9+M=,tag:6Hz7TO/gtyZ2p1FgEiCvwA==,type:str]
+# ==================================================
+# Role: maintenance/update
+# ==================================================
+group_apt_packages:
+  # Longhorn needs this package to mount RWX
+  - nfs-common
+  - open-iscsi
+  - lshw
+# ==================================================
+# Role: k3s_server (k3s-io/k3s-ansible)
+# ==================================================
+server_group: masters
+agent_group: nodes
+k3s_version: v1.35.3+k3s1
+# K3s server config written to /etc/rancher/k3s/config.yaml on each server node.
+# Jinja2 is supported — ansible_tailscale0 is populated after the tailscale role runs.
+server_config_yaml: |
+  flannel-iface: tailscale0
+  node-ip: "{{ ansible_facts['tailscale0']['ipv4']['address'] }}"
+  advertise-address: "{{ ansible_facts['tailscale0']['ipv4']['address'] }}"
+  node-external-ip: "{{ ansible_facts['tailscale0']['ipv4']['address'] }}"
+  disable:
+    - traefik
+    - servicelb
+extra_server_args: ""
+extra_agent_args: ""
+sops:
+  lastmodified: "2026-04-16T12:55:20Z"
+  mac:
+    ENC[AES256_GCM,data:UgH20qGnfJKShdGXEBVl+NH80uIZi+F2DQ0j5C38LoB2FoLkeaWR06zkAD3LUetZjZtnH3GsW1HKSOgEFRu09mD7lZL6YGivCiHe7nbVuUDsD4oHp0yj0ePBO6W9zwL/9OG6dD7t1vqzmn2oIaR4R+Y4yVHE0NfHPmdA4/KGkgc=,iv:gEfwiDT9h1nRYsc4y+xEmgyHubvojeJ8V4GJv1BpMyo=,tag:COEy1uZKfKubrngIji+zyg==,type:str]
+  pgp:
+    - created_at: "2026-04-15T21:23:26Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
+
+        hQIMA5NT/LvuRqeGARAAry1x/vWf7ER9zoF14wD2RBg5xMGwr++IgR/ZYLtKj5m1
+        yCFSEUfvB6QMzJ6rC43Y0/oOHJnq+fsLzGcpXDIEGPlgNY5Co2Yf7ZeydI9pDoQs
+        EN68p/5e5nck+4en02Q+MmVQcTq30i9k7sdelpTEPPYnh0ILaWu+6SjJBQtmi0sO
+        2gD/m1PCjPVYxzi0D1xPKyouZ7p7aCFMFA/EBBEehwpKIfGl4uNIISoZhW12iH4J
+        /EW36hz3wzbpTAJ3GiUFFwUQewtlryBFAcqkixpl1vlirVFeY2FL8KnqrPNHMmga
+        DFkrkZ0qEFSI3eHfnjM57CAo0NscMU9qJ6V0wqVhKz/neb+5j+WkRtvVmEV9uMQO
+        5UGx4aweN6uhIyYGR3ZSBEGMjW0Qnyu3qB+YmNhqkW5seS0FEPT7cyb2Nk9J2zZg
+        bLMjBukCsijzFc9jr1l4gcrPNpn/VxIcX7wHR/z2H90UtNghixOqqw9K5+R/rrjs
+        3zO+t2F4ghOnUcAQ0TnONHEFf3Zzovl4Hbj7DMio+FE7h0bp3cmLL3aH8ia0/5j4
+        PntUehU/FbtOTgyksqcslLHKWh7OMUgPIcmgl9uFS12iGDeTMeC1WdnBS4PZ3Pot
+        hhVffKYP5I55NO+TmikUyCFNiaGRUn1fEZuhDvagAMMubS98GQZIoR7QV9I+y6jU
+        aAEJAhDDRMy/I13pzb3LHIQVZCvzFXX96S8HIURW4xtqM7hVPYhCjSWd76hpxIdY
+        4jX7yEqGkQRRrfoSpHrvnq7ADuTc81No6iZgGJ4obinzUS0f55auzwq92m1Dly5a
+        M1fEvtlit+Jy
+        =N4sr
+        -----END PGP MESSAGE-----
+      fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+  encrypted_regex: ^(token|api_endpoint|tailscale_auth_key)$
+  mac_only_encrypted: true
+  version: 3.12.2

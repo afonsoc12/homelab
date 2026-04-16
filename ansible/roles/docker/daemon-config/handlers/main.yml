@@ -1,0 +1,6 @@
+---
+- name: Restart docker daemon
+  systemd:
+    name: docker
+    state: restarted
+  when: "'unraid' not in group_names"

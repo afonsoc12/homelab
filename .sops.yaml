@@ -1,8 +1,16 @@
 creation_rules:
+  # Kubernetes
   - path_regex: 'kubernetes/.*.y?ml'
     encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
     mac_only_encrypted: true
-    key_groups:
-      - pgp: [47E4999BED565F9874AA0E7C05DA03D000FC10D1]
+    pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+
+  # Ansible - group/host var secrets
+  - path_regex: 'ansible/inventory/(group|host)_vars/.*\.sops\.ya?ml'
+    encrypted_regex: ^(token|api_endpoint|tailscale_authkey|ansible_host|ansible_user|ansible_ssh_private_key_file)$
+    mac_only_encrypted: true
+    pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+
+  # Fallback for everything else (terraform, etc.)
   - mac_only_encrypted: true
     pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1

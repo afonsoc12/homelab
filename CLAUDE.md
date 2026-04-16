@@ -54,7 +54,7 @@ All secrets are SOPS-encrypted (`.sops.yaml` files). Never commit plaintext secr
 uv sync
 
 # Run cluster playbook
-uv run ansible-playbook ansible/k3s-cluster.yml
+uv run ansible-playbook ansible/playbooks/k3s-cluster.yml
 
 # Ad-hoc
 uv run ansible-playbook ansible/playbooks/<playbook>.yml

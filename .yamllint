@@ -2,14 +2,14 @@
 extends: default
 
 ignore:
-  - '*.sops.y?ml'
-  - kubernetes/charts
-  - kubernetes/apps/addons/argocd-apps/templates
+  - '**/*.sops.y*ml'
   - .venv/
+  - tmp/
 
 rules:
   line-length:
     max: 160
+
   comments:
     min-spaces-from-content: 1
   comments-indentation: false

@@ -1,0 +1,9 @@
+---
+compose_files_containers:
+compose_files:
+tear_down_compose_files:
+always_pull: true
+docker_env_file_path: "inventory/env/{{ ansible_hostname }}.env"
+repo_dest: "{{ ansible_hostname }}/homelab-stackz"
+docker_networks:
+recreate_policy: smart

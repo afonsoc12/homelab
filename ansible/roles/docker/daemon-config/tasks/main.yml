@@ -1,0 +1,12 @@
+---
+- name: Configure Docker daemon
+  become: true
+  block:
+    - name: Configure daemon.json
+      template:
+        src: ../../provision/templates/daemon.json.j2
+        dest: "/etc/docker/daemon.json"
+        owner: root
+        group: root
+        mode: "0644"
+      notify: "Restart docker daemon"

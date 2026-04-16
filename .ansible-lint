@@ -1,0 +1,8 @@
+---
+profile: production
+skip_list:
+  - fqcn
+  - var-naming[no-role-prefix] # vars shared across inventory, renaming would be disruptive
+  - package-latest # update/docker roles intentionally upgrade to latest
+  - latest[git] # docker compose repo has no pinned version
+  - role-name[path] # nested role structure is intentional

@@ -1,0 +1,18 @@
+---
+- name: Update packages
+  hosts: all:!unraid
+  become: true
+  gather_facts: true
+  tags: [update]
+  roles:
+    - maintenance/update
+
+- name: Connect to Tailscale
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: artis3n.tailscale.machine
+      vars:
+        tailscale_package: "tailscale={{ tailscale_version }}"
+        state: present

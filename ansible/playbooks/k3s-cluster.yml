@@ -1,0 +1,138 @@
+---
+- name: Update packages
+  hosts: k3s_cluster
+  become: true
+  gather_facts: true
+  tags: [update]
+  roles:
+    - maintenance/update
+
+- name: Connect to Tailscale
+  hosts: k3s_cluster
+  become: true
+  gather_facts: true
+  roles:
+    - role: artis3n.tailscale.machine
+      vars:
+        tailscale_package: "tailscale={{ tailscale_version }}"
+        state: present
+
+- name: K3s cluster prerequisites
+  hosts: k3s_cluster
+  gather_facts: true
+  become: true
+  any_errors_fatal: true
+  roles:
+    - k3s.orchestration.prereq
+    - k3s.orchestration.raspberrypi
+
+- name: Configure multipath for Longhorn
+  hosts: k3s_cluster
+  become: true
+  tasks:
+    - name: Ensure multipath.conf contains Longhorn blacklist
+      ansible.builtin.blockinfile:
+        path: /etc/multipath.conf
+        create: true
+        mode: "0644"
+        block: |
+          blacklist {
+              devnode "^sd[a-z0-9]+"
+          }
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
+      notify: Restart multipathd
+  handlers:
+    - name: Restart multipathd
+      ansible.builtin.systemd:
+        name: multipathd
+        state: restarted
+
+# - name: Setup K3s masters
+#   hosts: masters
+#   become: true
+#   any_errors_fatal: true
+#   pre_tasks:
+#     - name: Download K3s install script
+#       ansible.builtin.get_url:
+#         url: https://get.k3s.io/
+#         dest: /usr/local/bin/k3s-install.sh
+#         owner: root
+#         group: root
+#         mode: "0755"
+#         timeout: 120
+#   roles:
+#     - k3s.orchestration.k3s_server
+
+- name: Setup K3s nodes
+  hosts: nodes
+  become: true
+  any_errors_fatal: true
+  roles:
+    - k3s.orchestration.k3s_agent
+
+- name: Reset k3s cluster
+  hosts: k3s_cluster
+  become: true
+  tags: [never, reset]
+  tasks:
+    - name: Run k3s uninstall script [master]
+      when: "'masters' in group_names"
+      ansible.builtin.command:
+        cmd: k3s-uninstall.sh
+        removes: /var/lib/rancher/k3s/*
+
+    - name: Run k3s uninstall script [node]
+      when: "'nodes' in group_names"
+      ansible.builtin.command:
+        cmd: k3s-agent-uninstall.sh
+        removes: /var/lib/rancher/k3s/*
+
+    - name: Remove user kubeconfig
+      ansible.builtin.file:
+        path: ~{{ ansible_user }}/.kube/config
+        state: absent
+
+    - name: Remove k3s install script
+      ansible.builtin.file:
+        path: /usr/local/bin/k3s-install.sh
+        state: absent
+
+    - name: Remove k3s config
+      ansible.builtin.file:
+        path: /etc/rancher/k3s/config.yaml
+        state: absent
+
+- name: Reboot k3s masters (rolling)
+  hosts: masters
+  become: true
+  gather_facts: true
+  serial: 1
+  tags: [never, reboot]
+  tasks:
+    - name: Reboot
+      ansible.builtin.reboot:
+        test_command: kubectl get nodes
+
+- name: Reboot k3s nodes
+  hosts: nodes
+  become: true
+  gather_facts: true
+  tags: [never, reboot]
+  tasks:
+    - name: Reboot
+      ansible.builtin.reboot:
+
+- name: Upgrade K3s masters (rolling)
+  hosts: masters
+  become: true
+  serial: 1
+  tags: [never, upgrade]
+  roles:
+    - role: k3s.orchestration.k3s_upgrade
+
+- name: Upgrade K3s nodes
+  hosts: nodes
+  become: true
+  tags: [never, upgrade]
+  roles:
+    - role: k3s.orchestration.k3s_upgrade

@@ -1,0 +1,6 @@
+---
+- name: Setup Hyperion devices
+  hosts: hyperion
+  become: true
+  roles:
+    - hyperion
