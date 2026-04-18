@@ -1,3 +1,9 @@
+# --------------------
+# Bazarr
+#   - Repo:           https://github.com/morpheus65535/bazarr
+#   - Docs:           https://wiki.bazarr.media/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/external-svc/values.yaml
+# --------------------
 ---
 # Default values for external-service.
 

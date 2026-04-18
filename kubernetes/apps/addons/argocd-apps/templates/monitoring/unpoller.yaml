@@ -1,3 +1,8 @@
+# --------------------
+# UnPoller
+#   - Docs: https://unpoller.com/
+#   - Chart: homelab-svc
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: unpoller
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:

@@ -1,3 +1,8 @@
+# --------------------
+# External Ingress
+#   - Docs: https://github.com/afonsoc12/homelab
+#   - Chart: external-svc
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
@@ -51,4 +56,4 @@ spec:
         - group: discovery.k8s.io
           kind: EndpointSlice
           jsonPointers:
-          - /endpoints/0/conditions
+            - /endpoints/0/conditions

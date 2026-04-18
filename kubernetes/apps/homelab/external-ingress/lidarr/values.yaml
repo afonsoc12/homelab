@@ -1,3 +1,9 @@
+# --------------------
+# Lidarr
+#   - Repo:           https://github.com/Lidarr/Lidarr
+#   - Docs:           https://lidarr.audio/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/external-svc/values.yaml
+# --------------------
 ---
 # Default values for external-service.
 

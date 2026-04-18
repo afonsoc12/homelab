@@ -1,3 +1,9 @@
+# --------------------
+# ntfy
+#   - Repo:           https://github.com/binwiederhier/ntfy
+#   - Docs:           https://docs.ntfy.sh/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 nameOverride: ""
 fullnameOverride: ""
 labels: {}
@@ -11,8 +17,8 @@ revisionHistoryLimit: 0
 strategy:
     type: Recreate
 image:
-    repository: binwiederhier/ntfy
-    tag: latest
+    repository: docker.io/binwiederhier/ntfy
+    tag: v2.21
     pullPolicy: Always
 #   restartPolicy:
 command: {}

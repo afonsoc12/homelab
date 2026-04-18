@@ -1,3 +1,8 @@
+# --------------------
+# Cloudflare DDNS (UK)
+#   - Docs: https://github.com/hotio/cloudflareddns
+#   - Chart: cronjob
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: cloudflare-ddns-uk
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:

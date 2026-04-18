@@ -10,6 +10,11 @@ rules:
   line-length:
     max: 160
 
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+    check-multi-line-strings: false
+
   comments:
     min-spaces-from-content: 1
   comments-indentation: false

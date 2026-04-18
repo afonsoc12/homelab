@@ -1,3 +1,9 @@
+# --------------------
+# MetalLB
+#   - Repo:           https://github.com/metallb/metallb
+#   - Docs:           https://metallb.universe.tf/
+#   - Chart Defaults: https://github.com/metallb/metallb/blob/main/charts/metallb/values.yaml
+# --------------------
 ---
 # Default values for metallb.
 # This is a YAML-formatted file.
@@ -5,16 +11,16 @@
 # controller contains configuration specific to the MetalLB cluster
 # controller.
 controller:
-    enabled: true
-    # -- Controller log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
-    logLevel: info
+  enabled: true
+  # -- Controller log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
+  logLevel: info
 # speaker contains configuration specific to the MetalLB speaker
 # daemonset.
 speaker:
-    enabled: true
-    # command: /speaker
-    # -- Speaker log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
-    logLevel: info
+  enabled: true
+  # command: /speaker
+  # -- Speaker log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
+  logLevel: info
 crds:
-    enabled: true
-    validationFailurePolicy: Fail
+  enabled: true
+  validationFailurePolicy: Fail

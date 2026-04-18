@@ -1,3 +1,9 @@
+# --------------------
+# PostgreSQL
+#   - Repo:           https://github.com/postgres/postgres
+#   - Docs:           https://www.postgresql.org/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/database-svc/values.yaml
+# --------------------
 labels: {}
 # label_1: abc
 # label_2: def
@@ -10,7 +16,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/postgres
-    tag: 15
+    tag: 15.10
 #   pullPolicy: Always
 command: {}
 args: {}

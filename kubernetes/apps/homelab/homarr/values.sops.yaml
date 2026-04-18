@@ -1,6 +1,12 @@
+# --------------------
+# Homarr
+#   - Repo:           https://github.com/homarr-labs/homarr
+#   - Docs:           https://homarr.dev/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 image:
     repository: ghcr.io/homarr-labs/homarr
-    tag: latest
+    tag: v1.59.2
 ports:
     - containerPort: 7575
       name: http

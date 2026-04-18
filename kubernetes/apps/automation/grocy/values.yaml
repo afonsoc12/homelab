@@ -1,7 +1,14 @@
+# --------------------
+# Grocy
+#   - Repo:           https://github.com/grocy/grocy
+#   - Docs:           https://grocy.info/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 image:
   repository: lscr.io/linuxserver/grocy
+  tag: 4.3.1
 ports:
   - containerPort: 80
     service: true

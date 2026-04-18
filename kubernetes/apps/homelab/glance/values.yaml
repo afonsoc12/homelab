@@ -1,6 +1,12 @@
+# --------------------
+# Glance
+#   - Repo:           https://github.com/glanceapp/glance
+#   - Docs:           https://github.com/glanceapp/glance/blob/main/docs/configuration.md
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 image:
-  repository: glanceapp/glance
-  tag: latest
+  repository: docker.io/glanceapp/glance
+  tag: v0.8.4
   pullPolicy: Always
 
 restartPolicy: Always

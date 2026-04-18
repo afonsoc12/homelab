@@ -1,3 +1,9 @@
+# --------------------
+# AdGuard Home
+#   - Repo:           https://github.com/AdguardTeam/AdGuardHome
+#   - Docs:           https://adguard.com/en/adguard-home/overview.html
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/external-svc/values.yaml
+# --------------------
 ---
 # Default values for external-service.
 

@@ -1,7 +1,13 @@
+# --------------------
+# Cloudflared
+#   - Repo:           https://github.com/cloudflare/cloudflared
+#   - Docs:           https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 replicas: 2
 image:
-    repository: cloudflare/cloudflared
-    tag: latest
+    repository: docker.io/cloudflare/cloudflared
+    tag: 2026.3.0
 service:
     enabled: true
 ports:

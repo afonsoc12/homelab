@@ -1,3 +1,9 @@
+# --------------------
+# Wallabag
+#   - Repo:           https://github.com/wallabag/wallabag
+#   - Docs:           https://doc.wallabag.org/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 nameOverride: ""
 fullnameOverride: ""
 labels: {}
@@ -11,8 +17,8 @@ revisionHistoryLimit: 0
 strategy:
     type: Recreate
 image:
-    repository: wallabag/wallabag
-    tag: latest
+    repository: docker.io/wallabag/wallabag
+    tag: 2.6.14
     pullPolicy: Always
 #   restartPolicy:
 command: {}

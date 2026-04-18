@@ -1,10 +1,16 @@
+# --------------------
+# UnPoller
+#   - Repo:           https://github.com/unpoller/unpoller
+#   - Docs:           https://unpoller.com/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 labels: {}
 # label_1: abc
 # label_2: def
 replicas: 1
 image:
     repository: ghcr.io/unpoller/unpoller
-    tag: latest
+    tag: v2.39.0
 ports:
     - name: metrics
       containerPort: 9130

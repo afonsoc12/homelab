@@ -1,3 +1,9 @@
+# --------------------
+# WireGuard (wg-easy)
+#   - Repo:           https://github.com/wg-easy/wg-easy
+#   - Docs:           https://github.com/wg-easy/wg-easy
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 revisionHistoryLimit: 0
@@ -5,7 +11,7 @@ strategy:
   type: Recreate
 image:
   repository: ghcr.io/wg-easy/wg-easy
-  tag: 15
+  tag: 15.0.0
   pullPolicy: Always
 #   restartPolicy:
 command: {}

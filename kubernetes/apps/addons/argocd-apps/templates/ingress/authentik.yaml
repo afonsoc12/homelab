@@ -1,3 +1,8 @@
+# --------------------
+# Authentik
+#   - Docs: https://docs.goauthentik.io/
+#   - Chart: https://charts.goauthentik.io (authentik)
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: authentik
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
 
@@ -16,8 +21,8 @@ spec:
       helm:
         valueFiles:
         # Was causing issues decrypting second file
-        - $values/kubernetes/apps/values.sops.yaml
-        - $values/kubernetes/apps/ingress/authentik/values.sops.yaml
+          - $values/kubernetes/apps/values.sops.yaml
+          - $values/kubernetes/apps/ingress/authentik/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values

@@ -1,3 +1,9 @@
+# --------------------
+# Longhorn Resources
+#   - Repo:           https://github.com/afonsoc12/homelab
+#   - Docs:           https://longhorn.io/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/adhoc-resources/values.yaml
+# --------------------
 secrets:
     - name: longhorn-minio-secret
       stringData:

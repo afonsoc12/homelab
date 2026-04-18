@@ -1,3 +1,9 @@
+# --------------------
+# Prometheus Resources
+#   - Repo:           https://github.com/afonsoc12/homelab
+#   - Docs:           https://prometheus.io/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/prometheus-resources/values.yaml
+# --------------------
 scrapeConfigs:
     - name: node-exporter-lan-uk
       namespace: monitoring

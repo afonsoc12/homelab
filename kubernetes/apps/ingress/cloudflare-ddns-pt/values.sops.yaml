@@ -1,3 +1,9 @@
+# --------------------
+# Cloudflare DDNS (PT)
+#   - Repo:           https://github.com/hotio/cloudflareddns
+#   - Docs:           https://github.com/hotio/cloudflareddns
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/cronjob/values.yaml
+# --------------------
 secret:
     stringData:
         CF_APITOKEN: ENC[AES256_GCM,data:HJp6TYmuI4V9edVwKQH6o21PySdDTlu+lfI5XernTJtBXXUih/jeqw==,iv:xX33d4R6b+PkQc5uyueQIDvwKKHBKv3S4KelvmZyY+w=,tag:0Z5urJDeQHPXI7XBBACVzA==,type:str]
@@ -20,7 +26,7 @@ cronjobs:
       restartPolicy: Never
       image:
         repository: ghcr.io/hotio/cloudflareddns
-        tag: latest
+        tag: 3.1.0
       nodeSelector:
         kubernetes.io/hostname: k3s-m2
 sops:

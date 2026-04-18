@@ -1,3 +1,8 @@
+# --------------------
+# WireGuard (wg-easy)
+#   - Docs: https://github.com/wg-easy/wg-easy
+#   - Chart: homelab-svc
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: wireguard
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:

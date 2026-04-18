@@ -1,10 +1,16 @@
+# --------------------
+# Wyoming Whisper
+#   - Repo:           https://github.com/rhasspy/wyoming-faster-whisper
+#   - Docs:           https://github.com/rhasspy/wyoming-faster-whisper
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 revisionHistoryLimit: 0
 
 image:
-  repository: rhasspy/wyoming-whisper
-  tag: latest
+  repository: docker.io/rhasspy/wyoming-whisper
+  tag: 3.1.0
   pullPolicy: Always
 
 args:

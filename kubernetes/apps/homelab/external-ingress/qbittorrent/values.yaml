@@ -1,3 +1,9 @@
+# --------------------
+# qBittorrent
+#   - Repo:           https://github.com/qbittorrent/qBittorrent
+#   - Docs:           https://www.qbittorrent.org/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/external-svc/values.yaml
+# --------------------
 ---
 # Default values for external-service.
 

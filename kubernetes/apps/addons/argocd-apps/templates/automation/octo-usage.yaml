@@ -1,3 +1,8 @@
+# --------------------
+# Octo Usage
+#   - Docs: https://github.com/afonsoc12/octo-usage
+#   - Chart: cronjob
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: octo-usage
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:

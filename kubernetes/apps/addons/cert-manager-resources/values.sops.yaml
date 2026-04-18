@@ -1,3 +1,9 @@
+# --------------------
+# cert-manager Resources
+#   - Repo:           https://github.com/afonsoc12/homelab
+#   - Docs:           https://cert-manager.io/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/cert-manager-resources/values.yaml
+# --------------------
 issuers:
     - name: letsencrypt
       server: https://acme-v02.api.letsencrypt.org/directory

@@ -1,3 +1,9 @@
+# --------------------
+# Node-RED
+#   - Repo:           https://github.com/node-red/node-red
+#   - Docs:           https://nodered.org/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 revisionHistoryLimit: 0
@@ -5,8 +11,8 @@ strategy:
   type: Recreate
 
 image:
-  repository: nodered/node-red
-  tag: latest
+  repository: docker.io/nodered/node-red
+  tag: 4.1.8
   pullPolicy: Always
 
 hostNetwork: true

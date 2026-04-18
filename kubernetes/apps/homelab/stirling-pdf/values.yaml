@@ -1,8 +1,14 @@
+# --------------------
+# Stirling PDF
+#   - Repo:           https://github.com/Stirling-Tools/Stirling-PDF
+#   - Docs:           https://docs.stirlingpdf.com/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 
 image:
-  repository: stirlingtools/stirling-pdf
+  repository: docker.io/stirlingtools/stirling-pdf
   tag: 2.9.2-ultra-lite
 
 strategy:

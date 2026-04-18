@@ -1,3 +1,9 @@
+# --------------------
+# Mealie
+#   - Repo:           https://github.com/mealie-recipes/mealie
+#   - Docs:           https://docs.mealie.io/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 nameOverride: ""
 fullnameOverride: ""
 labels: {}

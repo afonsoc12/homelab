@@ -1,3 +1,8 @@
+# --------------------
+# Speedtest Exporter
+#   - Docs: https://github.com/afonsoc12/speedtest-telegraf
+#   - Chart: homelab-svc
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: speedtest-exporter
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:

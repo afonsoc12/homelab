@@ -1,3 +1,9 @@
+# --------------------
+# Cluster Heartbeat
+#   - Repo:           https://github.com/healthchecks/healthchecks
+#   - Docs:           https://healthchecks.io/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/cronjob/values.yaml
+# --------------------
 secret:
     stringData:
         PING_KEY: ENC[AES256_GCM,data:JzLDMUV18iroWZYOtY5WFPUa9foCxw==,iv:sF6nhVU0Pt5O8uRrYNgckfHIl08WhUgtfW2SBSxETeo=,tag:kgJ3hAWOiJSCuMnJ4xAMag==,type:str]
@@ -15,7 +21,7 @@ cronjobs:
                 fieldPath: spec.nodeName
       restartPolicy: Never
       image:
-        repository: curlimages/curl
+        repository: docker.io/curlimages/curl
         tag: 8.19.0
       command:
         - sh

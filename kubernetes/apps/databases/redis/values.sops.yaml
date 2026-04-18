@@ -1,3 +1,9 @@
+# --------------------
+# Redis
+#   - Repo:           https://github.com/redis/redis
+#   - Docs:           https://redis.io/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/database-svc/values.yaml
+# --------------------
 labels: {}
 # label_1: abc
 # label_2: def
@@ -10,7 +16,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/redis
-    tag: 7-alpine
+    tag: 7.4-alpine
 #   pullPolicy: Always
 command: {}
 args: {}

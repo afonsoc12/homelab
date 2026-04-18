@@ -1,3 +1,8 @@
+# --------------------
+# Firefly III
+#   - Docs: https://docs.firefly-iii.org/
+#   - Chart: homelab-svc
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: firefly
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   source:

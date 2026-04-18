@@ -1,3 +1,9 @@
+# --------------------
+# Homepage
+#   - Repo:           https://github.com/gethomepage/homepage
+#   - Docs:           https://gethomepage.dev/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 nameOverride: ""
 fullnameOverride: ""
 labels: {}
@@ -12,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: ghcr.io/gethomepage/homepage
-    tag: latest
+    tag: v1.12.3
     pullPolicy: Always
 #   restartPolicy:
 command: {}

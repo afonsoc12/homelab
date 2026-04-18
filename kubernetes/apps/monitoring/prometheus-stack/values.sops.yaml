@@ -1,3 +1,9 @@
+# --------------------
+# kube-prometheus-stack
+#   - Repo:           https://github.com/prometheus-community/helm-charts
+#   - Docs:           https://prometheus.io/docs/
+#   - Chart Defaults: https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+# --------------------
 fullnameOverride: promstack
 crds:
     enabled: true

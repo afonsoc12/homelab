@@ -1,10 +1,16 @@
+# --------------------
+# Authelia
+#   - Repo:           https://github.com/authelia/authelia
+#   - Docs:           https://www.authelia.com/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 labels: {}
 # label_1: abc
 # label_2: def
 replicas: 2
 image:
-    repository: authelia/authelia
-    tag: 4.39
+    repository: docker.io/authelia/authelia
+    tag: 4.39.2
 ports:
     - containerPort: 9091
       service: true

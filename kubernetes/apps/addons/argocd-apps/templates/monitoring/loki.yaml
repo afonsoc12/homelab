@@ -1,3 +1,8 @@
+# --------------------
+# Loki
+#   - Docs: https://grafana.com/docs/loki/
+#   - Chart: https://grafana.github.io/helm-charts (loki-stack)
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: loki
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
@@ -14,8 +19,8 @@ spec:
       chart: loki-stack
       helm:
         valueFiles:
-        - $values/kubernetes/apps/values.sops.yaml
-        - $values/kubernetes/apps/monitoring/loki/values.yaml
+          - $values/kubernetes/apps/values.sops.yaml
+          - $values/kubernetes/apps/monitoring/loki/values.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values

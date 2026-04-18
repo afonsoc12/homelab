@@ -1,3 +1,9 @@
+# --------------------
+# Gitea
+#   - Repo:           https://github.com/go-gitea/gitea
+#   - Docs:           https://gitea.com/
+#   - Chart Defaults: https://gitea.com/gitea/helm-chart/src/branch/main/values.yaml
+# --------------------
 # Default values for gitea.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.

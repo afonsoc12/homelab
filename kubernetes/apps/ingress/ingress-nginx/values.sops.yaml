@@ -1,3 +1,9 @@
+# --------------------
+# ingress-nginx
+#   - Repo:           https://github.com/kubernetes/ingress-nginx
+#   - Docs:           https://kubernetes.github.io/ingress-nginx/
+#   - Chart Defaults: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+# --------------------
 controller:
     # Must run at least one copy on node k3s-m1 because there is no horizontal distribution
     # https://metallb.universe.tf/usage/#local-traffic-policy

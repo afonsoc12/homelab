@@ -1,3 +1,8 @@
+# --------------------
+# Gitea
+#   - Docs: https://gitea.com/
+#   - Chart: https://dl.gitea.io/charts (gitea)
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: gitea
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
@@ -15,7 +20,7 @@ spec:
       helm:
         valueFiles:
         # - $values/kubernetes/apps/values.sops.yaml
-        - $values/kubernetes/apps/homelab/gitea/values.sops.yaml
+          - $values/kubernetes/apps/homelab/gitea/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values

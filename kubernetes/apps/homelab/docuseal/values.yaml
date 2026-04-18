@@ -1,11 +1,17 @@
+# --------------------
+# DocuSeal
+#   - Repo:           https://github.com/docusealco/docuseal
+#   - Docs:           https://www.docuseal.com/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 revisionHistoryLimit: 0
 strategy:
   type: Recreate
 image:
-  repository: docuseal/docuseal
-  tag: latest
+  repository: docker.io/docuseal/docuseal
+  tag: 2.4.4
   pullPolicy: Always
 #   restartPolicy:
 command: {}

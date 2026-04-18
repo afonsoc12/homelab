@@ -1,3 +1,9 @@
+# --------------------
+# Speedtest Exporter
+#   - Repo:           https://github.com/afonsoc12/speedtest-telegraf
+#   - Docs:           https://github.com/afonsoc12/speedtest-telegraf
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 image:
     repository: ghcr.io/afonsoc12/telegraf
     tag: 1.37.1-dev

@@ -1,3 +1,9 @@
+# --------------------
+# Zigbee2MQTT
+#   - Repo:           https://github.com/Koenkk/zigbee2mqtt
+#   - Docs:           https://www.zigbee2mqtt.io/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 nameOverride: ""
 fullnameOverride: ""
 labels: {}
@@ -11,7 +17,7 @@ revisionHistoryLimit: 0
 strategy:
     type: Recreate
 image:
-    repository: koenkk/zigbee2mqtt
+    repository: docker.io/koenkk/zigbee2mqtt
     tag: 2.9.2
     pullPolicy: Always
 ports:

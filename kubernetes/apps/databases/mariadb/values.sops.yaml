@@ -1,3 +1,9 @@
+# --------------------
+# MariaDB
+#   - Repo:           https://github.com/MariaDB/server
+#   - Docs:           https://mariadb.org/documentation/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/database-svc/values.yaml
+# --------------------
 labels:
     tier: db
     # label_2: def
@@ -91,7 +97,7 @@ tolerations: []
 affinity: {}
 extraContainers:
     - name: mysqld-exporter
-      image: prom/mysqld-exporter:v0.19.0
+      image: docker.io/prom/mysqld-exporter:v0.19.0
       ports:
         - containerPort: 9104
           name: metrics

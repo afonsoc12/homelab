@@ -1,3 +1,9 @@
+# --------------------
+# Authentik
+#   - Repo:           https://github.com/goauthentik/authentik
+#   - Docs:           https://docs.goauthentik.io/
+#   - Chart Defaults: https://github.com/goauthentik/authentik/blob/main/helm/values.yaml
+# --------------------
 authentik:
     log_level: info
     # don't change this after the first install

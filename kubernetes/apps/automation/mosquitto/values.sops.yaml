@@ -1,10 +1,16 @@
+# --------------------
+# Eclipse Mosquitto
+#   - Repo:           https://github.com/eclipse/mosquitto
+#   - Docs:           https://mosquitto.org/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 labels: {}
 # label_1: abc
 # label_2: def
 replicas: 1
 image:
-    repository: eclipse-mosquitto
-    tag: latest
+    repository: docker.io/eclipse-mosquitto
+    tag: 2.0.22
 ports:
     - containerPort: 1883
       service: true

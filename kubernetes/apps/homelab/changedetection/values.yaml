@@ -1,3 +1,9 @@
+# --------------------
+# ChangeDetection.io
+#   - Repo:           https://github.com/dgtlmoon/changedetection.io
+#   - Docs:           https://changedetection.io/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 nameOverride: ""
 fullnameOverride: ""
@@ -9,7 +15,7 @@ strategy:
 
 image:
   repository: ghcr.io/dgtlmoon/changedetection.io
-  tag: latest
+  tag: 0.54.9
   pullPolicy: Always
 
 #   restartPolicy:
@@ -26,7 +32,7 @@ ports:
 
 additionalContainers:
   - name: playwright
-    image: browserless/chrome:latest
+    image: docker.io/browserless/chrome:1.61.1-chrome-stable
 
 # Uses ports from .ports section, if service is true
 service:

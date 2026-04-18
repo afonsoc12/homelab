@@ -1,10 +1,16 @@
+# --------------------
+# LLDAP
+#   - Repo:           https://github.com/lldap/lldap
+#   - Docs:           https://github.com/lldap/lldap
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 labels: {}
 # label_1: abc
 # label_2: def
 replicas: 1
 image:
-    repository: nitnelave/lldap
-    tag: stable
+    repository: docker.io/nitnelave/lldap
+    tag: v0.6.0
 ports:
     - containerPort: 17170
       name: web

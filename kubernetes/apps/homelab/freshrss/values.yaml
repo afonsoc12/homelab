@@ -1,9 +1,15 @@
+# --------------------
+# FreshRSS
+#   - Repo:           https://github.com/FreshRSS/FreshRSS
+#   - Docs:           https://freshrss.github.io/FreshRSS/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 
 image:
-  repository: linuxserver/freshrss
-  tag: latest
+  repository: docker.io/linuxserver/freshrss
+  tag: 1.28.1
 
 strategy:
   type: Recreate

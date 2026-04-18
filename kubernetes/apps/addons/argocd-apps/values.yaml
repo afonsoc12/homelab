@@ -1,3 +1,9 @@
+# --------------------
+# ArgoCD Apps
+#   - Repo:           https://github.com/afonsoc12/homelab
+#   - Docs:           https://argo-cd.readthedocs.io/en/stable/user-guide/helm/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/addons/argocd-apps/values.yaml
+# --------------------
 ---
 gitrepo:
 

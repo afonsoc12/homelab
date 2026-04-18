@@ -1,3 +1,7 @@
+# --------------------
+# Global k8s Values
+#   - Repo: https://github.com/afonsoc12/homelab
+# --------------------
 domain: ENC[AES256_GCM,data:oz/GQeUXQtmWLteHjA==,iv:oSJykjtRiItNzPs86xllqIvcn64MMDa8XEjIbEknN18=,tag:ywZZB8NFlB+Ev/60PgqhLw==,type:str]
 domain_jrs: ENC[AES256_GCM,data:7njJQU9F7K/nmm/ga9ZwFafThZx8BpgVUBbO,iv:iU0B8FaEjtWczMJeYBv8QTwuWNV81YqtX1TxWQHoGZc=,tag:Yh4OZHZvbMh2Gt3VKvjJOA==,type:str]
 domain_ldap: ENC[AES256_GCM,data:9J37ZPAMTb0QOn2FJnsEXpubPg==,iv:D8KsyVnImaGK5zskZM+YUfVMr5pRiK1hz2Qc9rJNfO0=,tag:FTt7EkOTKE36zk6XN/Lqvg==,type:str]

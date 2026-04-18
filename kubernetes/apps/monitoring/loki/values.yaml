@@ -1,7 +1,13 @@
+# --------------------
+# Loki
+#   - Repo:           https://github.com/grafana/loki
+#   - Docs:           https://grafana.com/docs/loki/
+#   - Chart Defaults: https://github.com/grafana/helm-charts/blob/main/charts/loki-stack/values.yaml
+# --------------------
 ---
 test_pod:
   enabled: true
-  image: bats/bats:1.13.0
+  image: docker.io/bats/bats:1.13.0
   pullPolicy: IfNotPresent
 
 loki:

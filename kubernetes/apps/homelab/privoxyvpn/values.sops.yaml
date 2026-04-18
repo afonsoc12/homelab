@@ -1,3 +1,9 @@
+# --------------------
+# PrivoxyVPN
+#   - Repo:           https://github.com/binhex/arch-privoxyvpn
+#   - Docs:           https://www.privoxy.org/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 nameOverride: ""
 fullnameOverride: ""
 labels: {}
@@ -11,8 +17,8 @@ revisionHistoryLimit: 0
 strategy:
     type: Recreate
 image:
-    repository: binhex/arch-privoxyvpn
-    tag: latest
+    repository: docker.io/binhex/arch-privoxyvpn
+    tag: 4.1.0-1-02
     pullPolicy: Always
 #   restartPolicy:
 command: {}
@@ -86,7 +92,7 @@ tolerations: []
 affinity: {}
 initContainers:
     - name: surfshark-config
-      image: busybox
+      image: docker.io/busybox
       env:
         - name: SURFSHARK_CONFIG
           value: us-las.prod.surfshark.com_udp.ovpn

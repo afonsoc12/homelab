@@ -1,3 +1,9 @@
+# --------------------
+# Grafana Alloy
+#   - Repo:           https://github.com/grafana/alloy
+#   - Docs:           https://grafana.com/docs/alloy/
+#   - Chart Defaults: https://github.com/grafana/alloy/blob/main/operations/helm/charts/alloy/values.yaml
+# --------------------
 ---
 crds:
   create: true

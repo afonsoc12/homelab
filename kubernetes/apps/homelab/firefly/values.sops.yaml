@@ -1,3 +1,9 @@
+# --------------------
+# Firefly III
+#   - Repo:           https://github.com/firefly-iii/firefly-iii
+#   - Docs:           https://docs.firefly-iii.org/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 nameOverride: ""
 fullnameOverride: ""
 labels: {}
@@ -11,8 +17,8 @@ revisionHistoryLimit: 0
 strategy:
     type: Recreate
 image:
-    repository: fireflyiii/core
-    tag: latest
+    repository: docker.io/fireflyiii/core
+    tag: version-6.5.9
     pullPolicy: Always
 #   restartPolicy:
 command: {}
@@ -122,8 +128,8 @@ cronjobs:
       failedJobsHistoryLimit: 1
       successfulJobsHistoryLimit: 1
       image:
-        repository: curlimages/curl
-        tag: latest
+        repository: docker.io/curlimages/curl
+        tag: 8.19.0
         pullPolicy: Always
       restartPolicy: Never
       command:

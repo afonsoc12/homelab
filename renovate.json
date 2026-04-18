@@ -36,6 +36,12 @@
       "enabled": false
     },
     {
+      "description": "Preserve range constraints for Helm charts in ArgoCD",
+      "matchManagers": ["argocd"],
+      "matchDepTypes": ["helm"],
+      "rangeStrategy": "widen"
+    },
+    {
       "description": "Avoid updating encrypted blobs in SOPS files",
       "matchFileNames": ["**/*.sops.yaml"],
       "matchCurrentValue": "/^ENC\\[/",
@@ -82,10 +88,10 @@
       "description": "Update k3s-ansible collection in Ansible requirements",
       "managerFilePatterns": ["/^ansible\\/requirements\\.ya?ml$/"],
       "matchStrings": [
-        "name:\\s+git@github\\.com:k3s-io/k3s-ansible\\.git\\s+type:\\s+git\\s+version:\\s+\"?(?<currentValue>[^\"\\n]+)\"?"
+        "(?s)- name: git@github\\.com:k3s-io/k3s-ansible\\.git\\s+type: git\\s+version: [\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
       ],
       "depNameTemplate": "k3s-io/k3s-ansible",
-      "datasourceTemplate": "github-tags",
+      "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver-coerced"
     },
     {

@@ -1,3 +1,9 @@
+# --------------------
+# Uptime Kuma
+#   - Repo:           https://github.com/louislam/uptime-kuma
+#   - Docs:           https://uptime.kuma.pet/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 revisionHistoryLimit: 0
@@ -5,8 +11,8 @@ strategy:
   type: Recreate
 
 image:
-  repository: louislam/uptime-kuma
-  tag: 2
+  repository: docker.io/louislam/uptime-kuma
+  tag: 2.2.1
   pullPolicy: Always
 
 ports:

@@ -1,3 +1,9 @@
+# --------------------
+# MetalLB Resources
+#   - Repo:           https://github.com/afonsoc12/homelab
+#   - Docs:           https://metallb.universe.tf/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/metallb-resources/
+# --------------------
 ---
 ipAddressPools:
   ip-pool-20-lan-uk:

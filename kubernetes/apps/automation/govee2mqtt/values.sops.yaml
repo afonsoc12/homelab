@@ -1,9 +1,16 @@
+# --------------------
+# Govee2MQTT
+#   - Repo:           https://github.com/wez/govee2mqtt
+#   - Docs:           https://github.com/wez/govee2mqtt
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 labels: {}
 # label_1: abc
 # label_2: def
 replicas: 1
 image:
     repository: ghcr.io/wez/govee2mqtt
+    tag: 0.18.1
 hostNetwork: true
 secret:
     mountEnv: true

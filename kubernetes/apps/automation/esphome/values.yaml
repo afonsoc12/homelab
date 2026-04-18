@@ -1,3 +1,9 @@
+# --------------------
+# ESPHome
+#   - Repo:           https://github.com/esphome/esphome
+#   - Docs:           https://esphome.io/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 ---
 replicas: 1
 revisionHistoryLimit: 0
@@ -5,8 +11,8 @@ strategy:
   type: Recreate
 
 image:
-  repository: esphome/esphome
-  tag: latest
+  repository: docker.io/esphome/esphome
+  tag: 2026.4.0
   pullPolicy: Always
 
 hostNetwork: true
