@@ -79,6 +79,17 @@
     },
     {
       "customType": "regex",
+      "description": "Update k3s-ansible collection in Ansible requirements",
+      "managerFilePatterns": ["/^ansible\\/requirements\\.ya?ml$/"],
+      "matchStrings": [
+        "name:\\s+git@github\\.com:k3s-io/k3s-ansible\\.git\\s+type:\\s+git\\s+version:\\s+\"?(?<currentValue>[^\"\\n]+)\"?"
+      ],
+      "depNameTemplate": "k3s-io/k3s-ansible",
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver-coerced"
+    },
+    {
+      "customType": "regex",
       "description": "Update Tailscale version in Ansible group vars",
       "managerFilePatterns": [
         "/^ansible\\/inventory\\/group_vars\\/all\\.sops\\.ya?ml$/"

@@ -1,8 +1,9 @@
 .vscode
-.decrypted~*
 .terraform
 *.tfstate*
 *.tfbackend
+!*.sops.tfbackend
+.decrypted~*
 backend.tf
 .DS_Store
 ._*

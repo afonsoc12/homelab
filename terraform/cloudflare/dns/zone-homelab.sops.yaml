@@ -1,0 +1,49 @@
+records:
+    # Static
+    - name: ENC[AES256_GCM,data:vCek,iv:yFlcr23isa704S2IxpA0VfegifiLNldVo/hI3gZuuGM=,tag:YwhjlSNhliMhiIPZ2iDBSw==,type:str]
+      type: A
+      content: ENC[AES256_GCM,data:K8SGQAIYK/AT,iv:BEqPv8bQ6ZuZATw8HGL4DQD5qW9hIA+8+rxbWgDkyuE=,tag:rNr3oH5ipk2Ow2G3Nd/j1A==,type:str]
+      proxied: true
+    - name: ENC[AES256_GCM,data:+qp16w==,iv:dgsSbnT6kS4B650m7be9ThS7VOHlfIy+az0fSIMKWRE=,tag:Ldr4eqAEwI09NPTdJ4NgHQ==,type:str]
+      type: A
+      content: ENC[AES256_GCM,data:jgdpfogWC85gdOBPdw==,iv:GgDvv/accH0p5oQMjx6VCynBvDySfnmku+y5ifM6AWM=,tag:cbc604nm131OSo7WrEIvwQ==,type:str]
+      proxied: false
+    # Dynamic (DDNS managed - content ignored after creation)
+    - name: ENC[AES256_GCM,data:vz/xvs0=,iv:rMaNkiXpMF24bD+WHbkAVOfl5Bh2hBQVKpNRwmxXHus=,tag:H55Vi8esnbY/ZCx4I8tJJg==,type:str]
+      type: A
+      content: ENC[AES256_GCM,data:vT7cnAVbnw==,iv:1WlbkQfabguxGoK2YIKuodrWnl2cIrR4Ed8fDM2B8kE=,tag:uUUsjVbXyvOyrrWni1/+Ww==,type:str]
+      dynamic: true
+      proxied: false
+    - name: ENC[AES256_GCM,data:0Pbn+NQ=,iv:+rXcHcoC9bXLQOBGFXeVdVjQ6haCc6mlKZW38BGLL/Q=,tag:H5/EyOy4vTuy4gn1wedpcw==,type:str]
+      type: A
+      content: ENC[AES256_GCM,data:KEyzYlkZUQ==,iv:ZQjtTmzX2OCyhGgY/kQ7U8DwB7lDRUaBc4yrBq/tzg4=,tag:sjCkQC4zPvLln7b+iyT6kg==,type:str]
+      dynamic: true
+      proxied: false
+sops:
+    lastmodified: "2026-04-17T21:04:14Z"
+    mac: ENC[AES256_GCM,data:15IYbcjI20VHkJIAnpyeEDixP6sJkPG/yxnjkSUG3w/5yxR8cue91x1e8TqCCIW9bLXF8EnDfASg+s2GwFNGVNFbOy+Bru3pEUXR0e6UAi6i1FkbMON9ud9D9aPas95d5ZZ4EP/W113HwIPhxMoWUc0Nrm8lCnER8efTt8fFLOQ=,iv:PTSjKx80WGcvm64+zaWW821n3s2Iaqzh/ABPEq7DwEk=,tag:zvnaSHxuNM4Z48pndhFQJw==,type:str]
+    pgp:
+        - created_at: "2026-04-17T21:04:14Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//dP9GcvkBYUOO9TdqvwsTI1NNLBus2rmQqEmvzjKd34no
+            eIyrm7DYf16eLYQ1Kxy9Ovbg1irM2+N4yJyVJIzDFu0SNiV7ZPWlQIU1YAN0Zfqr
+            p1TE2cuDDGSlF/iiN9oQ7i7jJ7auuVVXXln4R+sROnCIzuZV/SnIzC7ksNlfxzzY
+            BhN1KeEdtsi5BHuo6N2SnK7q6ZgHA7boxMozPqhjfOyed6EoVEaKaeIAFsQQfjPY
+            KDDlbCXwf5n/UUTRrt0Q8GyIYjiYqlWzMP20XdNTUbcSGWiQiXcwxc7U5IUvJOf2
+            LJBBfMpiFFgmK0YKsU//b8OC5F2uYPsGSuvXQq7GkdqaFOj5GT4UMQn66xD5fuQn
+            zAB0gMqdG6Cwmb/VF0bfWl/L5xB37bXrsj0EXHGM8552AxptMyWRLzlsmGi8rEW/
+            Y5zQmhbJoxcYJYbOoWtSyvP8RoYLNPSf+WvZIWgRb/POMXeKhptfdyn/ZEXr2694
+            VfYB7auID5uQsV6t2akmNYXIIVp+kKuwVclUYTeYw2n9A9hXBkvHzyzoUczVbWlo
+            2mki93r5UYQ3pI1GMNLmPHrXPCZdeo0e2rWseI1v+mca+Mb5U8xVcPxudD6D5yc9
+            Dmw5bK1nCXafGuel0rzr0voOnGEKQ1EsruzcaxCudjlfuszswPhTP8DpRWTYFVfU
+            aAEJAhA1oVQfHGYCdRB/veXE7cHHy46cOfQt5+DKJm++HmYERLXGhY/cyknclxHq
+            2e1RH7/lNcrh9wmOleo361vsCd+8lJ13El1a6lWeXbsypB51OfY5Bj5nvW/mEYlp
+            WQIWWQ5sFlDr
+            =ioU9
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(name|content)$
+    mac_only_encrypted: true
+    version: 3.12.2

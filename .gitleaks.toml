@@ -1,0 +1,14 @@
+[extend]
+# Extend the default gitleaks config
+useDefault = true
+
+[allowlist]
+description = "Ignore SOPS-encrypted values"
+regexes = [
+  # SOPS encrypted values start with ENC[
+  '''ENC\[AES256_GCM''',
+]
+paths = [
+  # Ignore the SOPS config itself
+  '''.sops.yaml''',
+]

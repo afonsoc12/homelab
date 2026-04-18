@@ -11,6 +11,12 @@ creation_rules:
     mac_only_encrypted: true
     pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
 
+  # Cloudflare DNS records (one file per zone)
+  - path_regex: 'terraform/cloudflare/dns/.*\.sops\.yaml'
+    encrypted_regex: ^(name|content)$
+    mac_only_encrypted: true
+    pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+
   # Fallback for everything else (terraform, etc.)
   - mac_only_encrypted: true
     pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
