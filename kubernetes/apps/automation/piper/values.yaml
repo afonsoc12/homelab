@@ -10,7 +10,7 @@ revisionHistoryLimit: 0
 
 image:
   repository: docker.io/rhasspy/wyoming-piper
-  tag: v2.2.2
+  tag: 2.2.2
   pullPolicy: Always
 
 args: ["--voice", "en_GB-cori-medium"]

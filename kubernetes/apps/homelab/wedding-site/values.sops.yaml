@@ -10,7 +10,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/wordpress
-    tag: 6.9.5
+    tag: 6.9.4-fpm-alpine
     pullPolicy: Always
 ports:
     - containerPort: 80
@@ -75,8 +75,8 @@ affinity:
                             - mariadb
                 topologyKey: kubernetes.io/hostname
 sops:
-    lastmodified: "2026-04-13T20:28:43Z"
-    mac: ENC[AES256_GCM,data:Fr4/P2m6/59oInonH5d5DiMKD9Rs7eINj28FAI0QllIJZ29w3EeUWI3ZYS5DCrzShUdJM1Hlki84iXASRIfr5x43u14adjHr1caOMiNlOyTYY5f3zGgRzevxPK82Mhltk3eahyXHx5/c7cTY20NkFFubwoJpO6TwWukEPtzoYBo=,iv:eCZRF3lO7hnel/lmsmGCmECUy1aOYHiEcNhGIsbAqGs=,tag:2qb5qENyF1JAAyUtmUQ05Q==,type:str]
+    lastmodified: "2026-04-18T13:23:36Z"
+    mac: ENC[AES256_GCM,data:o+8Yi5C0FFOb2O/imR8qakCbEjzVr9jEzH2JMmyXA9I9VGhokccneLh+ihJZ1XQ0GJQIwU7E1EVog2pWdQIQFelTqNbyZhrZjEw2UOL8wO1YO8x0lqZ/vJoNxcQBViGt5J8mFAdXny/5ZOvrN5SacH8OYEeKQcd98kacAY3VpkY=,iv:bnqSt+fMvc6OszVcKWwQcRpDK/kR7cTjpV1tLieUMQ4=,tag:U8djqlD5OAsZEK06HXY/rg==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:43Z"
           enc: |-

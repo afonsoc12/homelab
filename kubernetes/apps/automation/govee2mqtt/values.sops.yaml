@@ -10,7 +10,7 @@ labels: {}
 replicas: 1
 image:
     repository: ghcr.io/wez/govee2mqtt
-    tag: 0.18.1
+    tag: 2026.03.25-ab9deb66
 hostNetwork: true
 secret:
     mountEnv: true
@@ -35,8 +35,8 @@ configmap:
 nodeSelector:
     kubernetes.io/hostname: k3s-m1
 sops:
-    lastmodified: "2026-04-13T20:28:40Z"
-    mac: ENC[AES256_GCM,data:q+C0KaIExMStCuTYcYYObuziSkasfwJn9QJ06sdI1CXH+opUpdg8nIbYMFu6wFaV2ARcKb/TyAsavFb0AfW5Mm8jKDCXp7L5LZJQJdNSONYsTmD9E0U8PIYC9ehlnQLmFJkkUkIvnsBC9kaa59StXBl+AknCQS6/veEAitcRe+A=,iv:1ja9HD43qhWqzpx9XTvu42QeI/e1cFqgInOT7tA2esg=,tag:DQEXAdCUdYkLCIguvvxw/g==,type:str]
+    lastmodified: "2026-04-18T13:23:08Z"
+    mac: ENC[AES256_GCM,data:LLFcdJXTklhCdMA3Er9yru2s3hhNggeiu6oLlSITbtglv33eRh5TlIvlBbnnXg10hsMsj/R5gxD7v+xb7BisakRzadAFDKp7LHCj+f0TFWMAxPKu7h+H3RM/boKAfMZnhx3skuF9xLVqL03sxKTNHRthkoL1Wh3S72aX8RMmqZI=,iv:rO+p2F0XO/3yGCH85cm/k1A46wO6Mrc0wZY7M16J1dM=,tag:PGx0jURbjLwoyXRii9fpTA==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:40Z"
           enc: |-
