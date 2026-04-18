@@ -21,6 +21,33 @@ module "dns_zone_personal" {
   records_file = "${path.module}/dns/zone-personal.sops.yaml"
 }
 
+module "zone_homelab" {
+  source  = "./zone"
+  zone_id = data.sops_file.secrets.data["zones.0.zone_id"]
+
+  ssl_mode         = "strict"
+  min_tls_version  = "1.2"
+  always_use_https = true
+
+  block_bots        = true
+  allow_aws         = true
+  geo_block_enabled = true
+  geo_allowlist     = ["PT", "GB"]
+}
+
+module "zone_personal" {
+  source  = "./zone"
+  zone_id = data.sops_file.secrets.data["zones.1.zone_id"]
+
+  ssl_mode         = "strict"
+  min_tls_version  = "1.2"
+  always_use_https = true
+
+  block_bots        = true
+  allow_aws         = false
+  geo_block_enabled = false
+}
+
 module "tunnels" {
   source             = "./tunnels"
   account_id         = data.sops_file.secrets.data["account_id"]

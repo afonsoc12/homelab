@@ -1,3 +1,8 @@
+# --------------------
+# MetalLB
+#   - Docs: https://metallb.universe.tf/
+#   - Chart: https://metallb.github.io/metallb (metallb)
+# --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -5,7 +10,7 @@ metadata:
   name: metallb
   namespace: {{ .Release.Namespace }}
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
 
@@ -15,8 +20,8 @@ spec:
       chart: metallb
       helm:
         valueFiles:
-        - $values/kubernetes/apps/values.sops.yaml
-        - $values/kubernetes/apps/addons/metallb/values.yaml
+          - $values/kubernetes/apps/values.sops.yaml
+          - $values/kubernetes/apps/addons/metallb/values.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values
@@ -26,13 +31,13 @@ spec:
     namespace: addons
 
   ignoreDifferences:
-  - group: "apiextensions.k8s.io"
-    kind: CustomResourceDefinition
-    name: bgppeers.metallb.io
-    jsonPointers:
-    - /spec/conversion/webhook/clientConfig/caBundle
-  - group: "apiextensions.k8s.io"
-    kind: CustomResourceDefinition
-    name: addresspools.metallb.io
-    jsonPointers:
-    - /spec/conversion/webhook/clientConfig/caBundle
+    - group: "apiextensions.k8s.io"
+      kind: CustomResourceDefinition
+      name: bgppeers.metallb.io
+      jsonPointers:
+        - /spec/conversion/webhook/clientConfig/caBundle
+    - group: "apiextensions.k8s.io"
+      kind: CustomResourceDefinition
+      name: addresspools.metallb.io
+      jsonPointers:
+        - /spec/conversion/webhook/clientConfig/caBundle
