@@ -17,32 +17,32 @@
 
 - name: Install hyperion
   become: true
-  apt:
+  ansible.builtin.apt:
     name: hyperion
 
 # restart service as the root user
 - name: Disable systemd unit for user # noqa: name[template]
   become: true
-  systemd:
+  ansible.builtin.systemd:
     name: "hyperion@{{ ansible_user_id }}.service"
     state: stopped
     enabled: false
 
 - name: Enable systemd unit @ root user
   become: true
-  systemd:
+  ansible.builtin.systemd:
     name: hyperion@root.service
     state: started
     enabled: true
 
 - name: Verify hyperiond service
   become: true
-  service:
+  ansible.builtin.service:
     name: hyperion@root.service
     state: started
 
 - name: Validate connection to hyperion servers
-  wait_for:
+  ansible.builtin.wait_for:
     host: "{{ ansible_host }}"
     port: 8090
     timeout: 30

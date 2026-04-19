@@ -1,10 +1,11 @@
+---
 name: 📚 Docs
 
 concurrency:
   group: docs-${{ github.ref }}
   cancel-in-progress: true
 
-on:
+on: # yamllint disable-line rule:truthy
   pull_request:
     paths:
       - docs/**
@@ -12,11 +13,11 @@ on:
   push:
     branches:
       - master
+      - feat/ci
     paths:
       - docs/**
       - mkdocs.yml
   workflow_dispatch:
-
 permissions:
   contents: read
   pages: write
@@ -32,9 +33,11 @@ jobs:
 
       - name: 🐍 Setup Python
         uses: actions/setup-python@v6
+        with:
+          python-version-file: .python-version
 
       - name: ⚡ Setup uv
-        uses: astral-sh/setup-uv@v8
+        uses: astral-sh/setup-uv@v8.1.0
         with:
           activate-environment: true
 
@@ -45,13 +48,13 @@ jobs:
         run: uv run yamllint .
 
       - name: ⚙️ Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: 🔨 Build MkDocs site
         run: uv run mkdocs build --site-dir site
 
       - name: 📤 Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
@@ -66,4 +69,4 @@ jobs:
     steps:
       - name: 🚀 Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

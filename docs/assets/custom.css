@@ -1,0 +1,141 @@
+/* ── Palette ──────────────────────────────────────────────── */
+:root,
+[data-md-color-scheme="slate"] {
+  --hl-teal:   #56e0ff;
+  --hl-green:  #7dffb0;
+  --hl-blue:   #6aa6ff;
+  --hl-purple: #b28cff;
+  --hl-red:    #ff6b7a;
+  --hl-yellow: #ffe26a;
+  --hl-orange: #ffb23f;
+
+  --bg-0: #07080a;
+  --bg-1: #0c0e12;
+  --bg-2: #13161b;
+  --bg-3: #1b1e24;
+  --bg-4: #23262d;
+  --bg-5: #2a2e35;
+
+  /* Material overrides */
+  --md-primary-fg-color:          var(--hl-teal);
+  --md-primary-fg-color--light:   #84eeff;
+  --md-primary-fg-color--dark:    #2a8092;
+  --md-accent-fg-color:           var(--hl-green);
+
+  --md-default-bg-color:          var(--bg-1);
+  --md-default-bg-color--light:   var(--bg-2);
+  --md-default-bg-color--lighter: var(--bg-3);
+  --md-default-bg-color--lightest: var(--bg-4);
+
+  --md-code-bg-color:             var(--bg-0);
+  --md-code-fg-color:             #c9d1d9;
+
+  --md-typeset-a-color:           var(--hl-teal);
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+.md-header {
+  background-color: var(--bg-0);
+  border-bottom: 1px solid var(--bg-4);
+}
+
+.md-tabs {
+  background-color: var(--bg-1);
+  border-bottom: 1px solid var(--bg-4);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
+.md-sidebar {
+  background-color: var(--bg-1);
+}
+
+.md-nav__link--active,
+.md-nav__link:hover {
+  color: var(--hl-teal) !important;
+}
+
+/* ── Code blocks ─────────────────────────────────────────── */
+.highlight pre,
+code {
+  border-radius: 6px;
+}
+
+.md-typeset code {
+  background-color: var(--bg-0);
+  color: var(--hl-teal);
+  border-radius: 4px;
+  padding: 0.1em 0.3em;
+}
+
+/* ── Admonitions ─────────────────────────────────────────── */
+.md-typeset .admonition.tip,
+.md-typeset details.tip {
+  border-color: var(--hl-green);
+}
+.md-typeset .tip > .admonition-title,
+.md-typeset .tip > summary {
+  background-color: rgba(125, 255, 176, 0.08);
+}
+
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  border-color: var(--hl-orange);
+}
+
+.md-typeset .admonition.danger,
+.md-typeset details.danger {
+  border-color: var(--hl-red);
+}
+
+/* ── Tables ──────────────────────────────────────────────── */
+.md-typeset table:not([class]) th {
+  background-color: var(--bg-3);
+  color: var(--hl-teal);
+}
+
+.md-typeset table:not([class]) tr:hover {
+  background-color: var(--bg-3);
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.md-footer {
+  background-color: var(--bg-0);
+}
+
+.md-footer-copyright {
+  text-align: center;
+  width: 100%;
+}
+
+.md-copyright {
+  text-align: center;
+  width: 100%;
+}
+
+/* ── Span last card full-width when count is odd ─────────── */
+.md-typeset .grid.cards > ul > li:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
+/* ── Title icon ──────────────────────────────────────────── */
+.title-icon {
+  display: inline !important;
+  height: 1.1em !important;
+  width: auto !important;
+  max-height: 1.1em !important;
+  vertical-align: middle;
+  margin-right: 0.15em;
+  position: relative;
+  top: -0.05em;
+}
+
+/* ── Service icons (section headings) ───────────────────── */
+.svc-icon {
+  height: 1.4em;
+  width: 1.4em;
+  vertical-align: middle;
+  margin-right: 0.3em;
+  position: relative;
+  top: -0.1em;
+  object-fit: contain;
+}
