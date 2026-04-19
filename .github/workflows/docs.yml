@@ -12,6 +12,7 @@ on:
   push:
     branches:
       - master
+      - feat/ci
     paths:
       - docs/**
       - mkdocs.yml
