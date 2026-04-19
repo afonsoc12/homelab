@@ -256,6 +256,8 @@ repoServer:
           value: "true"
         - name: HELM_SECRETS_HELM_PATH
           value: /usr/local/bin/helm
+        - name: GNUPGHOME
+          value: /tmp/.gnupg
         - name: HELM_SECRETS_LOAD_GPG_KEYS
           # Multiple keys can be separated by space
           value: /homelab-sops-gpg/sops.asc
@@ -275,7 +277,7 @@ repoServer:
             - name: VALS_VERSION
               value: 0.42.4
             - name: SOPS_VERSION
-              value: 3.11.0
+              value: 3.12.2
           args:
             - |
               mkdir -p /gitops-tools/helm-plugins
