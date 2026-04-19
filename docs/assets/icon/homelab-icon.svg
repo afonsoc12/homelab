@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="512" height="512">
+    <defs>
+      <linearGradient id="body" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#1f242c"/>
+        <stop offset=".5" stop-color="#11141a"/>
+        <stop offset="1" stop-color="#07090c"/>
+      </linearGradient>
+      <linearGradient id="bodyEdge" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#2a303a"/>
+        <stop offset="1" stop-color="#0a0c10"/>
+      </linearGradient>
+      <linearGradient id="chassis" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#1a1e25"/>
+        <stop offset="1" stop-color="#0e1116"/>
+      </linearGradient>
+      <linearGradient id="sheen" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#ffffff" stop-opacity=".08"/>
+        <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+      </linearGradient>
+      <radialGradient id="innerShadow" cx="50%" cy="20%" r="80%">
+        <stop offset="0" stop-color="#000" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity=".55"/>
+      </radialGradient>
+      <radialGradient id="accentGlow" cx="50%" cy="100%" r="70%">
+        <stop offset="0" stop-color="#56e0ff" stop-opacity=".35"/>
+        <stop offset="1" stop-color="#56e0ff" stop-opacity="0"/>
+      </radialGradient>
+      <pattern id="innerGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#2a3039" stroke-width=".4"/>
+      </pattern>
+      <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation=".8" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="rimBlur" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="2.2"/>
+      </filter>
+      <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+        <feOffset dx="0" dy="3" result="o"/>
+        <feComponentTransfer><feFuncA type="linear" slope=".6"/></feComponentTransfer>
+        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+
+    <!-- backdrop (transparent outside body in final PNG only if you want square canvas)-->
+    <rect x="12" y="12" width="176" height="176" rx="42" fill="none" stroke="rgba(86,224,255,.55)" stroke-width="2" filter="url(#rimBlur)" opacity=".9"/>
+
+    <!-- body outer stroke -->
+    <rect x="13.5" y="13.5" width="173" height="173" rx="40.5" fill="url(#bodyEdge)"/>
+    <!-- body -->
+    <rect x="14" y="14" width="172" height="172" rx="40" fill="url(#body)"/>
+    <!-- accent glow from bottom (like blue drive LEDs lighting the case) -->
+    <rect x="14" y="14" width="172" height="172" rx="40" fill="url(#accentGlow)"/>
+    <!-- inner subtle grid -->
+    <rect x="16" y="16" width="168" height="168" rx="38" fill="url(#innerGrid)" opacity=".35"/>
+    <!-- inner shadow darkening top -->
+    <rect x="14" y="14" width="172" height="172" rx="40" fill="url(#innerShadow)" opacity=".6"/>
+
+    <!-- rack window -->
+    <rect x="40" y="52" width="120" height="108" rx="6" fill="#05070a" stroke="#181c22" stroke-width=".6"/>
+
+    <!-- server units -->
+    <rect x="44" y="56" width="112" height="29.333333333333332" rx="5" fill="url(#chassis)" stroke="#222831" stroke-width=".6"/><rect x="47" y="59" width="106" height="23.333333333333332" rx="3" fill="#0a0c10" stroke="#1a1d24" stroke-width=".4"/><rect x="54" y="67.66666666666667" width="22" height="6" rx="1.5" fill="#041a26" stroke="#0c3b4a" stroke-width=".3"/><circle cx="58" cy="70.66666666666667" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="63" cy="70.66666666666667" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="68" cy="70.66666666666667" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="73" cy="70.66666666666667" r="1.2" fill="#56e0ff" filter="url(#glow)"/><rect x="82" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="85" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="88" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="91" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="94" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="97" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="100" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="103" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="106" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="109" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="112" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="115" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="118" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="121" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="124" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="127" y="68.66666666666667" width="1.3" height="4" fill="#060810"/><rect x="118" y="59" width="1" height="23.333333333333332" fill="#1a1d24"/><circle cx="142" cy="66.66666666666667" r="1.7" fill="#7dffb0" filter="url(#glow)"/><circle cx="142" cy="74.66666666666667" r="1.7" fill="#ffb23f" filter="url(#glow)"/><circle cx="50" cy="70.66666666666667" r="1.4" fill="#0d1015" stroke="#222831" stroke-width=".4"/><rect x="44" y="91.33333333333333" width="112" height="29.333333333333332" rx="5" fill="url(#chassis)" stroke="#222831" stroke-width=".6"/><rect x="47" y="94.33333333333333" width="106" height="23.333333333333332" rx="3" fill="#0a0c10" stroke="#1a1d24" stroke-width=".4"/><rect x="54" y="103" width="22" height="6" rx="1.5" fill="#041a26" stroke="#0c3b4a" stroke-width=".3"/><circle cx="58" cy="106" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="63" cy="106" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="68" cy="106" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="73" cy="106" r="1.2" fill="#56e0ff" filter="url(#glow)"/><rect x="82" y="104" width="1.3" height="4" fill="#060810"/><rect x="85" y="104" width="1.3" height="4" fill="#060810"/><rect x="88" y="104" width="1.3" height="4" fill="#060810"/><rect x="91" y="104" width="1.3" height="4" fill="#060810"/><rect x="94" y="104" width="1.3" height="4" fill="#060810"/><rect x="97" y="104" width="1.3" height="4" fill="#060810"/><rect x="100" y="104" width="1.3" height="4" fill="#060810"/><rect x="103" y="104" width="1.3" height="4" fill="#060810"/><rect x="106" y="104" width="1.3" height="4" fill="#060810"/><rect x="109" y="104" width="1.3" height="4" fill="#060810"/><rect x="112" y="104" width="1.3" height="4" fill="#060810"/><rect x="115" y="104" width="1.3" height="4" fill="#060810"/><rect x="118" y="104" width="1.3" height="4" fill="#060810"/><rect x="121" y="104" width="1.3" height="4" fill="#060810"/><rect x="124" y="104" width="1.3" height="4" fill="#060810"/><rect x="127" y="104" width="1.3" height="4" fill="#060810"/><rect x="118" y="94.33333333333333" width="1" height="23.333333333333332" fill="#1a1d24"/><circle cx="142" cy="102" r="1.7" fill="#7dffb0" filter="url(#glow)"/><circle cx="142" cy="110" r="1.7" fill="#7dffb0" filter="url(#glow)"/><circle cx="50" cy="106" r="1.4" fill="#0d1015" stroke="#222831" stroke-width=".4"/><rect x="44" y="126.66666666666666" width="112" height="29.333333333333332" rx="5" fill="url(#chassis)" stroke="#222831" stroke-width=".6"/><rect x="47" y="129.66666666666666" width="106" height="23.333333333333332" rx="3" fill="#0a0c10" stroke="#1a1d24" stroke-width=".4"/><rect x="54" y="138.33333333333331" width="22" height="6" rx="1.5" fill="#041a26" stroke="#0c3b4a" stroke-width=".3"/><circle cx="58" cy="141.33333333333331" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="63" cy="141.33333333333331" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="68" cy="141.33333333333331" r="1.2" fill="#56e0ff" filter="url(#glow)"/><circle cx="73" cy="141.33333333333331" r="1.2" fill="#56e0ff" filter="url(#glow)"/><rect x="82" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="85" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="88" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="91" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="94" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="97" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="100" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="103" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="106" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="109" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="112" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="115" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="118" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="121" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="124" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="127" y="139.33333333333331" width="1.3" height="4" fill="#060810"/><rect x="118" y="129.66666666666666" width="1" height="23.333333333333332" fill="#1a1d24"/><circle cx="142" cy="137.33333333333331" r="1.7" fill="#7dffb0" filter="url(#glow)"/><circle cx="142" cy="145.33333333333331" r="1.7" fill="#ff6b7a" filter="url(#glow)"/><circle cx="50" cy="141.33333333333331" r="1.4" fill="#0d1015" stroke="#222831" stroke-width=".4"/>
+
+    <!-- top sheen -->
+    <rect x="17" y="17" width="166" height="72.24" rx="36" fill="url(#sheen)"/>
+  </svg>

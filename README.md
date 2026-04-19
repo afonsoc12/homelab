@@ -6,7 +6,7 @@
 GitOps-driven homelab. Self-hosted. Automated. Encrypted.
 
 <p align="center">
-  <img src="docs/assets/homelab-rack.svg" alt="Homelab Rack" width="820">
+  <img src="docs/assets/homelab-rack.svg" width="820">
 </p>
 
 <p align="center">
@@ -55,9 +55,7 @@ All apps are declared as [ArgoCD](https://argoproj.github.io/cd/) `Application` 
 
 Ad-hoc Kubernetes resources that don't belong to a specific app (CRDs, cluster-wide config) live as [Helm](https://helm.sh/) charts under [`kubernetes/charts/`](kubernetes/charts/).
 
----
-
-## 🔐 Secrets (SOPS)
+### 🔐 Secrets (SOPS)
 
 All secrets are [SOPS](https://github.com/getsops/sops)-encrypted (`.sops.yaml`) and **never committed in plaintext**. Ansible, Terraform, and ArgoCD each decrypt on the fly at runtime — no manual steps required.
 
@@ -69,7 +67,7 @@ All secrets are [SOPS](https://github.com/getsops/sops)-encrypted (`.sops.yaml`)
 
 ---
 
-## 📄 License
+## License
 
 **Copyright © 2026 [Afonso Costa](https://github.com/afonsoc12)**
 
