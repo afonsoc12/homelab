@@ -33,7 +33,7 @@ repos:
       - id: helm-lint
         name: helm lint
         language: system
-        entry: bash -c 'for d in kubernetes/charts/*/; do helm lint "$d"; done && helm lint kubernetes/apps/addons/argocd-apps/'
+        entry: bash -c 'find kubernetes -name "Chart.yaml" | xargs -I{} dirname {} | while read chart; do helm lint "$chart"; done'
         pass_filenames: false
         files: ^kubernetes/(charts|apps/addons/argocd-apps)/
 

@@ -29,3 +29,10 @@ spec:
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: addons
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

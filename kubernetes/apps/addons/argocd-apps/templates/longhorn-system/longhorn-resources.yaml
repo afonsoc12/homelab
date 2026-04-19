@@ -24,3 +24,10 @@ spec:
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: longhorn-system
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

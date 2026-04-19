@@ -28,3 +28,10 @@ spec:
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
