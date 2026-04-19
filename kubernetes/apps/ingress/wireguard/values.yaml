@@ -11,7 +11,7 @@ strategy:
   type: Recreate
 image:
   repository: ghcr.io/wg-easy/wg-easy
-  tag: 15.0.0
+  tag: 15.2.2
   pullPolicy: Always
 #   restartPolicy:
 command: {}
