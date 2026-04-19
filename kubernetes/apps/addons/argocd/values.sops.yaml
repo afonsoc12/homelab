@@ -19,7 +19,7 @@ crds:
 global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: ENC[AES256_GCM,data:Y1oFD9jucFKz83aB3TXtlpvL5SEQwViH/Fw=,iv:XXXU4Z4Pc0hlL3+oWols36oH+OAvodVw1yNU33P7A8c=,tag:fThCXY/WJ3UzIZdMnby9Rg==,type:str]
+    domain: ENC[AES256_GCM,data:wFunypBGBBtylZMN4JVocpX30E0cE9qo7c0=,iv:o6CKAJ5itjKnyKKoMkAMDH3D2AawbcS+QNy/H7sb6R8=,tag:lCS2cbN6vdXDrG3lMdsvig==,type:str]
     # -- Common labels for the all resources
     additionalLabels: {}
     # app: argo-cd
@@ -40,7 +40,7 @@ configs:
         create: true
         helm.valuesFileSchemes: secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import, secrets+age-import-kubernetes, secrets,secrets+literal, https
         admin.enabled: "false"
-        oidc.config: ENC[AES256_GCM,data:ZI6MTrYsnG5t4y+JQA6nAfJB3K4kDpBAM9APR+y7Br+rs0HYzb1lVr5iZkVuFldLqP+HzdpmPaaktsY5gWcjHhAm03dAOM7a4NEUJcagLTiABMWs5yDOL3zXf8bb836uYVyPZNhPojaCYF9kSQScqz1SWu/+jgJbbaogV3JeDUjACTS9XGUsr8bcYMQ1oivW3uJmBGFrfXHKcK5+3YztMHAQvrN80Cjetlgh7l/a9LGUfbEVYwYbgSphjmhYzEy76Fn6nMMyTWONgVsk+PyQbHZZ7Xt1vHk8ByMC3UqZkjy5XtXojTDWXMc=,iv:oGcrZK+6l4mVy0rQCB4yhK1WRDUDCGag7LU1gnYq5WM=,tag:pMtoiVKF20J++llLxzyTvw==,type:str]
+        oidc.config: ENC[AES256_GCM,data:fa92Du8IZrpreMivLILjSLxBIm0Jq4HbFeNQAG6taliAfPa6tALBFHtRj6n1emNy10n3rBZp7MG8WWv2PfLMdxGypGHNSfQlihColMhVsn1MwMUHX1dh2puTKbNLuv2hOulQKA1AHF+UliAaUwbSn08plbIbFJvRWO6rr10TOCpF40Q1DnRX20TXDkqg6pFV3cvxfQs2bhQOF8EM6LxoymPYbi2iKZw63dR68sPMjoZx6OY4YU0j0Q1AGwFme1zfPmWmF9N2462XzSITqb7KO/vxiQJZxkclLdI4gZFNhdM5B6uqQMHqKao=,iv:2V8iVtSzoAQl/Q0TxBvXOotm5j1BCynPV3tqqhzkrbs=,tag:uQYk9RGdzEGvZhn5+d8i4A==,type:str]
         oidc.tls.insecure.skip.verify: "true"
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
@@ -133,9 +133,9 @@ configs:
         #     command: ["/bin/sh", "-c"]
         #     args: ["cat *.yaml | yq"]
     secret:
-        createSecret: ENC[AES256_GCM,data:zhJopg==,iv:HbMBROma+IQptJB5fzMbyYiceFVtdTdnIxhjnOM6ibo=,tag:XicfJ/NXXUl4t9nZTjJdAg==,type:bool]
-        oidc.authentik.clientId: ENC[AES256_GCM,data:ZUkeEz1E9b/ANKJ1hxfsPlgPWW0gC8dYnSGQo5/FZ3GCis00T+PDIg==,iv:V1s5VbxNOxALUuHAdaiyuJNuJJfvyq6XCQ8+qTOTGpY=,tag:7cDmtw5i9aZoH5jczKokPQ==,type:str]
-        oidc.authentik.secret: ENC[AES256_GCM,data:a3Yg73/x12Mjxe3yIp1sYTJIcR5Yhfeoe6hzSr8lmPDUi8957fJ7sfMBQvX5P8tJijYkj13a4HW3ZTOIm9hL6F+VQExEhYdD9ujBGUeulV3SfSOTfMQC7BWDVXNv1LV5gPyXoiZQNfXJ+WY7ktBv2rJ+NORk63BD3PbOZM6r5XI=,iv:tKWLTKXpBy76VYOVf5q49IZ2q6DwLMmn+8IqIpCrCRA=,tag:0LgXbs1gsM/XYsdDNMG6Aw==,type:str]
+        createSecret: ENC[AES256_GCM,data:S2uasw==,iv:FmVFUHS6Ofn1IFhPvYTdCNu9nLiHFe+yvD2QbDvh/b8=,tag:Ot7lRs0rD07UQB8+zCddKA==,type:bool]
+        oidc.authentik.clientId: ENC[AES256_GCM,data:/0NO3TRBb3p+KxYMe2Murb9taPv1TZ2iTNXD9Yq22ClxzMj+ZjTuZQ==,iv:cFkQCQss7iOLV8Xu+YRLfRHaVngEjz9BA7SzyR+/Xvc=,tag:UGdtx4KPpvRXTjtgOZRe5w==,type:str]
+        oidc.authentik.secret: ENC[AES256_GCM,data:J6XIH4xUQ4OuRegmoFrrl4wbLIpxQhUo9ysEJrTqCSqAr65ETl2NDKQK9jVmpJyvJ3zKsTNBHE//k1Ir7TswXtVfb/KfxlhiR3MAfI78JGRHzrjC+XDeIMjXd6ULNn4rGexyeDVvSwe/SWmMvngGFyUwMJH9BEw8/bJRf/iq0uM=,iv:E+aBqE8Gf4MzxO9kLcuXyOZ1ZDh72Rg4dLKzWyV4j48=,tag:4jjcUJW3HwiXnTcZcuBMSg==,type:str]
     rbac:
         # -- Create the argocd-rbac-cm configmap with ([Argo CD RBAC policy]) definitions.
         # If false, it is expected the configmap will be created by something else.
@@ -310,7 +310,7 @@ repoServer:
         # kubectl create secret generic homelab-sops-gpg --from-file=sops.asc=assets/gpg/private2.gpg
         - name: homelab-sops-gpg
           secret:
-            secretName: ENC[AES256_GCM,data:QctXOcnrE7+Mtn2NBc9BhA==,iv:vsQFI2MLPlHFnujGS63nYdxlpdAioXnic/zDaWNfuO4=,tag:RWyf596Gi5DDoBqrOIE3KA==,type:str]
+            secretName: ENC[AES256_GCM,data:WhmWpuUBauFrrbutPpQDhg==,iv:gx+uCoE2ZyQnBbKDBjZBC3BNRUtNDI4kCai9iq/PCGo=,tag:CjLU91smHgtVJKhbjjzjqA==,type:str]
 ## ApplicationSet controller
 applicationSet:
     # -- Enable ApplicationSet controller
@@ -323,31 +323,92 @@ notifications:
     enabled: true
     # -- Notifications controller name string
     name: notifications-controller
+    secret:
+        items:
+            discord-webhook: ENC[AES256_GCM,data:0OMuXl6T0HiotpFJEzMMZRJnBe6+AAg4E6PhXfjDflc7vN18XEm76AHyjWNW4QOPwvBc0TpAD0L0AM4PUkdFMIOqRaqpMGwqQsmoq3YRhjxJfZrHRNgC3lw7v570ouTrczrRZ2nFqHX30aHdlRqyk/rJ6+66zKMpaQ==,iv:Ej982GJoJhDZz+iaHGK3kaz7beXIdjVKLZXpn1PTGWU=,tag:AfB7WEWdiGXICZgUHq3DCA==,type:str]
+    notifiers:
+        service.webhook.discord: |
+            url: $discord-webhook
+            headers:
+              - name: Content-Type
+                value: application/json
+    templates:
+        template.app-deployed: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "✅ {{.app.metadata.name}} deployed",
+                      "color": 3066993,
+                      "fields": [
+                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": true},
+                        {"name": "Revision", "value": "{{.app.status.sync.revision}}", "inline": true}
+                      ]
+                    }]
+                  }
+        template.app-health-degraded: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 {{.app.metadata.name}} health degraded\",\n          \"color\": 15158332,\n          \"fields\": [\n            {\"name\": \"Namespace\", \"value\": \"{{.app.spec.destination.namespace}}\", \"inline\": true},\n            {\"name\": \"Health\", \"value\": \"{{.app.status.health.status}}\", \"inline\": true}\n          ]\n        }]\n      }\n"
+        template.app-sync-failed: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "❌ {{.app.metadata.name}} sync failed",
+                      "color": 15158332,
+                      "fields": [
+                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": true},
+                        {"name": "Message", "value": "{{default \"N/A\" .app.status.operationState.message}}", "inline": false}
+                      ]
+                    }]
+                  }
+    triggers:
+        trigger.on-deployed: |
+            - when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
+              oncePer: app.status.sync.revision
+              send: [app-deployed]
+        trigger.on-health-degraded: |
+            - when: app.status.health.status == 'Degraded'
+              oncePer: app.status.reconciledAt
+              send: [app-health-degraded]
+        trigger.on-sync-failed: |
+            - when: app.status.operationState.phase in ['Error', 'Failed']
+              oncePer: app.status.sync.revision
+              send: [app-sync-failed]
+    subscriptions:
+        - recipients:
+            - discord
+          triggers:
+            - on-deployed
+            - on-health-degraded
+            - on-sync-failed
 sops:
-    lastmodified: "2026-04-18T01:01:27Z"
-    mac: ENC[AES256_GCM,data:YMyiGxQBZpi6oEsg3ueQHuLLzdjj10NeDZk9QY69fd2XJ26uouIEldasqipWvEFfuCHe3MpTPE+B/ibdZHf8NrOgxi/uObXZXnNqUKDANSP0ntzGu3Pyd8glxNpyT2F5kZVz0DZ41DpAuF7DhSs30o+VKlIEgz1wmyNxyGe/1LE=,iv:iGKuTJea0UqVQD3yD1yR7RVl1EdQnH2oD0geWC6kvL0=,tag:jQja1ZNHD9vdvWFb6DBlWA==,type:str]
+    lastmodified: "2026-04-19T22:32:35Z"
+    mac: ENC[AES256_GCM,data:EXKrmtXOzYO2asUkfymT71TqsUF0wP2U8o46iZnPvnu5U+WS6109ONDKxC+quV5SBDA45wUFK6qKxpK8TmbVp7lAmnG1JM+nOH/PlnRwyxrUsveUdQlRbkpYcMqCGlR3XJNEnjZCBt7KIc/LAfT5MnpREuObpOs98QkhooStEi4=,iv:6ZU8e8iK66dIO8UsnVXR6QJaAYXg/qEpy/c+31W5kNU=,tag:AND0DjvMCkaFc9V+CtL8og==,type:str]
     pgp:
-        - created_at: "2026-04-13T20:28:40Z"
+        - created_at: "2026-04-19T22:32:35Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAsUjDhwxQlR+uUsVMWPUYmDltUJJg+Gpq8Lcscnl3SjeI
-            uGyjzOYz03G2LitpHcMaPsnuR8OhDdsRNhh3UpONkTd7PzGrw3eb1lNS+l6KeRHd
-            UrXeXDlrvwvMSiTEMuFDmwW81Gyd4GQyQ/A746RHDE7CYZd2+D4IcyOe9Byo7+Iz
-            7eQisbz/uj9TSFVGG9fTrMQ7/oQRHluESQ7SZWihyOpK0+jWymRqcab+218YYCxX
-            2vUKpE25g1sDUg31p6//Cmj+/6lXtpXe3cgGN6d5ktlyJAjz0KX+hq5XjvhqVni9
-            SIpiwUVmoCAxfa9q0WZ2O0Dn1VWVsIBFB+b1imxpyMAFS9ZXeR1jw1kjeATrMEuP
-            UCqP15upMrW3AICG4hReVNMme0Dr7m/PnTGsGqzCpqta0KWoachaOoRO4nrTycFd
-            uSMDyvvwSUqY1sNnUJsOWQjsgLtnbGJrw+mkM+y1FdOgD5UTWmYFNiwEKiqhXEOy
-            s5FRlVUmlRRjTYTMLz4fPGuloSc8n6vKA7Zu1ibSYy475nqPtmY7BI4HYUkSyWLd
-            rcSarLhmf/TbxfQq4AawiRM8Ok0kkmvUTvcZyyIsSges7msZF0eXLwJlp5I2ievb
-            G2Emf2j9GKAbhUcXx7k8iAZQLUGGPXWwmeTgdsVEYFOCJfuhv98a0dU05JZQQPDU
-            aAEJAhDJqcDWKrvN7KcMK/cr29pX6JHACknzZMsq/lcW8FLy54EEgiFsQi0eF/h3
-            NIdHZssO+sifgvMZeYq3Kjjo7CAbaQD06FvR8DUo80tpZDG0d0vQcfh/rlMN3kdW
-            V/7fpycG2VVd
-            =npjI
+            hQIMA5NT/LvuRqeGAQ//fDlRMQHp8w/SJEp8MIIvkxZoAaTOmEqANQ39uI7sLYdv
+            gdgwsQfUQNxIQnHJ+z+7zbCxAcQnVD5M3uh0cA3rYhjDIC2G4zGAmUtOh6xuq+nn
+            kV969DdkeGmj6YR7dgKD/Rvmnw3p1E936T1V0RkYddy9zJtdEZffFhMF1YOb9Xyl
+            JAnizDOzFmxbk6pvVIHPzSUaJd8LsATveL7G1EbxXY+1LTJtKv9AsP7VU2Gehf3k
+            78O4NirfWTiDV9qw1HRJLLR3O9AqIswb+0vhs+IV/e6AiFWP47XMR+zUBDhy1SyN
+            ODMgwAvMhW//5/B7xyzuiyNlWjVrU8TEJmx/ld4STPMnHJKjngvQdIgFfqWgGTqN
+            3+5hVJKpijt+t6qDpUnv5JmLRwYXtvgye7Z624aSpU1Tuqy1MryRZYNb8fV1GpP8
+            NcZW07UgA0zO3lw+ATRRSMPU5JpS+MsA22CxLjxVHZUlfa24lP46oepSPXdvtEtJ
+            bwB4TiKSlDZMrD9NYtJvX0XiyT5RGD3JbpPoE5zpl9N6HzbfF4LUAhON7wWv5ke8
+            lXH0ST3jsXaY5S0sXpNF5sApEkfhpwtlAxw2Hie7vZrHftl8MYAp6z+tarqoZzqe
+            5v6fBjsmsdi725sh7OQ6gQ62BoatIt1Ho8Rxm+79OIli466fY/69JPpXMroTXHDU
+            aAEJAhCWJQi6mFXL2xSK8EIExNZItHG/HlONA8GBm7p/nPjsjhXJUf7sGQpnnwtO
+            Qocoq0He9uiAjliuh5zGTlK6ivkcd6h2eaZ/YptSK5QH8Gr46v73EH2RwxgTQ0kS
+            7b+wM2XcRXpe
+            =GpbU
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin|oidc.config|secret|domain)$
+    encrypted_regex: ^(data|stringData|secret|domain|oidc\.config|loadBalancerIP|nginx\.ingress\.kubernetes\.io/auth-signin)$
     mac_only_encrypted: true
     version: 3.12.2

@@ -5,8 +5,6 @@
 #   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/addons/argocd-apps/values.yaml
 # --------------------
 ---
-gitrepo:
-
 spec:
   destination:
     name: in-cluster
