@@ -11,3 +11,4 @@ backend.tf
 .venv/
 /tmp
 .claude/plans
+site/
