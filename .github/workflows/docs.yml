@@ -4,7 +4,7 @@ concurrency:
   group: docs-${{ github.ref }}
   cancel-in-progress: true
 
-"on":
+on:
   pull_request:
     paths:
       - docs/**
@@ -39,7 +39,10 @@ jobs:
           activate-environment: true
 
       - name: 📦 Install dependencies
-        run: uv sync --locked --group docs
+        run: uv sync --locked --all-groups
+
+      - name: 🔍 Run yamllint
+        run: uv run yamllint .
 
       - name: ⚙️ Configure GitHub Pages
         uses: actions/configure-pages@v5
