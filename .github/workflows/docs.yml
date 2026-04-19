@@ -4,7 +4,7 @@ concurrency:
   group: docs-${{ github.ref }}
   cancel-in-progress: true
 
-on:
+on:  # yamllint disable-line rule:truthy
   pull_request:
     paths:
       - docs/**
