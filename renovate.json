@@ -30,6 +30,11 @@
   "ignorePaths": ["**/.decrypted~*.yaml"],
   "packageRules": [
     {
+      "description": "Ignore git SSH URL picked up natively by ansible manager — handled by custom manager",
+      "matchPackageNames": ["git@github.com:k3s-io/k3s-ansible.git"],
+      "enabled": false
+    },
+    {
       "description": "Do not update image tags pinned to latest",
       "matchDatasources": ["docker"],
       "matchCurrentValue": "/^latest$/",
@@ -72,6 +77,45 @@
   "customManagers": [
     {
       "customType": "regex",
+      "description": "Update helm-secrets version in ArgoCD init container",
+      "managerFilePatterns": ["/^kubernetes\\/apps\\/addons\\/argocd\\/values\\.sops\\.ya?ml$/"],
+      "matchStrings": ["- name: HELM_SECRETS_VERSION\\s+value: (?<currentValue>[^\\n]+)"],
+      "depNameTemplate": "jkroepke/helm-secrets",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced"
+    },
+    {
+      "customType": "regex",
+      "description": "Update sops version in ArgoCD init container",
+      "managerFilePatterns": ["/^kubernetes\\/apps\\/addons\\/argocd\\/values\\.sops\\.ya?ml$/"],
+      "matchStrings": ["- name: SOPS_VERSION\\s+value: (?<currentValue>[^\\n]+)"],
+      "depNameTemplate": "getsops/sops",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Update vals version in ArgoCD init container",
+      "managerFilePatterns": ["/^kubernetes\\/apps\\/addons\\/argocd\\/values\\.sops\\.ya?ml$/"],
+      "matchStrings": ["- name: VALS_VERSION\\s+value: (?<currentValue>[^\\n]+)"],
+      "depNameTemplate": "helmfile/vals",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Update kubectl version in ArgoCD init container",
+      "managerFilePatterns": ["/^kubernetes\\/apps\\/addons\\/argocd\\/values\\.sops\\.ya?ml$/"],
+      "matchStrings": ["- name: KUBECTL_VERSION\\s+value: (?<currentValue>[^\\n]+)"],
+      "depNameTemplate": "kubernetes/kubernetes",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
       "description": "Update k3s version in Ansible group vars",
       "managerFilePatterns": [
         "/^ansible\\/inventory\\/group_vars\\/k3s_cluster\\.sops\\.ya?ml$/"
@@ -85,10 +129,10 @@
     },
     {
       "customType": "regex",
-      "description": "Update k3s-ansible collection in Ansible requirements",
+      "description": "Update k3s-ansible git collection in Ansible requirements",
       "managerFilePatterns": ["/^ansible\\/requirements\\.ya?ml$/"],
       "matchStrings": [
-        "(?s)- name: git@github\\.com:k3s-io/k3s-ansible\\.git\\s+type: git\\s+version: [\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
+        "name: git@github\\.com:k3s-io/k3s-ansible\\.git\\s+type: git\\s+version: \"(?<currentValue>[^\"]+)\""
       ],
       "depNameTemplate": "k3s-io/k3s-ansible",
       "datasourceTemplate": "github-releases",
