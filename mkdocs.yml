@@ -1,0 +1,92 @@
+site_name: homelab
+site_description: GitOps-driven homelab managed with ArgoCD, Ansible, and Terraform
+site_author: Afonso Costa
+site_url: https://afonsoc12.github.io/homelab
+repo_url: https://github.com/afonsoc12/homelab
+repo_name: afonsoc12/homelab
+edit_uri: edit/master/docs/
+
+# docs_dir:
+theme:
+  name: material
+  logo: assets/icon/homelab-icon.svg
+  favicon: assets/icon/homelab-icon-32.png
+  font:
+    text: Inter
+    code: JetBrains Mono
+  palette:
+    scheme: slate
+    primary: custom
+    accent: custom
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+extra_css:
+  - assets/custom.css
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Architecture:
+      - Overview: architecture/overview.md
+      - Servers: architecture/nodes.md
+      - Networking: architecture/networking.md
+  - Kubernetes:
+      - GitOps with ArgoCD: kubernetes/argocd.md
+      - Namespaces & Apps: kubernetes/namespaces.md
+      - Adding a New App: kubernetes/adding-apps.md
+  - Services:
+      - Overview: services/index.md
+      - Addons: services/addons.md
+      - Automation: services/automation.md
+      - Databases: services/databases.md
+      - Homelab: services/homelab.md
+      - Ingress: services/ingress.md
+      - Monitoring: services/monitoring.md
+  - Ansible:
+      - Overview: ansible/overview.md
+      - Playbook Reference: ansible/playbooks.md
+  - Terraform:
+      - Overview: terraform/overview.md
+  - Secrets (SOPS): secrets.md
+  - Runbooks:
+      - K3s Upgrade: runbooks/k3s-upgrade.md
+      - Adding a Node: runbooks/adding-node.md

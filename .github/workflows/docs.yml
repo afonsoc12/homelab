@@ -1,0 +1,66 @@
+name: 📚 Docs
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+"on":
+  pull_request:
+    paths:
+      - docs/**
+      - mkdocs.yml
+  push:
+    branches:
+      - master
+    paths:
+      - docs/**
+      - mkdocs.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    name: 🔨 Build Docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v6
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v6
+
+      - name: ⚡ Setup uv
+        uses: astral-sh/setup-uv@v8
+        with:
+          activate-environment: true
+
+      - name: 📦 Install dependencies
+        run: uv sync --locked --group docs
+
+      - name: ⚙️ Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: 🔨 Build MkDocs site
+        run: uv run mkdocs build --site-dir site
+
+      - name: 📤 Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: 🚀 Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
