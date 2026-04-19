@@ -3,31 +3,31 @@
   become: true
   block:
     - name: Ensure group "docker" exists
-      group:
+      ansible.builtin.group:
         name: docker
         state: present
 
     - name: Put user in "docker" group
-      user:
+      ansible.builtin.user:
         name: "{{ ansible_user }}"
         groups: docker
         append: true
 
     - name: Remove docker packages
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         name: ["docker", "docker-engine", "docker.io", "containerd", "runc"]
         state: absent
 
     - name: Docker dependencies
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         update_cache: true
         name: ["ca-certificates", "curl", "gnupg", "lsb-release"]
         state: latest
 
     - name: Add Docker GPG apt Key
-      apt_key:
+      ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
@@ -37,17 +37,17 @@
       changed_when: false
 
     - name: Show detected Docker repository
-      debug:
+      ansible.builtin.debug:
         msg: "({{ lsb_release.stdout_lines[0] | lower }} {{ lsb_release.stdout_lines[1] }} stable)"
         verbosity: 2
 
     - name: Add Docker Repository
-      apt_repository:
+      ansible.builtin.apt_repository:
         repo: deb https://download.docker.com/linux/{{ lsb_release.stdout_lines[0] | lower }} {{ lsb_release.stdout_lines[1] }} stable
         state: present
 
     - name: Install docker-ce and docker-compose-plugin
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         update_cache: true
         name: ["docker-ce", "docker-compose-plugin"]
@@ -67,9 +67,9 @@
   changed_when: false
 
 - name: Print Docker version
-  debug:
+  ansible.builtin.debug:
     var: docker_version.stdout_lines[0]
 
 - name: Print Docker Compose version
-  debug:
+  ansible.builtin.debug:
     var: docker_compose_version.stdout_lines[0]

@@ -1,16 +1,16 @@
+---
 name: 🔍 CI
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   pull_request:
   push:
     branches:
       - master
   workflow_dispatch:
-
 jobs:
   gitleaks:
     name: 🔑 Secret Scan
@@ -50,4 +50,4 @@ jobs:
         run: uv run yamllint .
 
       - name: 🔍 Run ansible-lint
-        run: uv run ansible-lint ansible/
+        run: cd ansible && uv run ansible-lint .

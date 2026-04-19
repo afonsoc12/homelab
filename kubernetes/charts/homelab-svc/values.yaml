@@ -1,3 +1,4 @@
+---
 nameOverride: ""
 fullnameOverride: ""
 
@@ -22,9 +23,7 @@ image:
 #   restartPolicy:
 
 command: {}
-
 args: {}
-
 ports: []
 #  - containerPort: 80
 #    name: http
@@ -32,13 +31,11 @@ ports: []
 #    service: true
 
 additionalContainers: []
-
 # Uses ports from .ports section, if service is true
 service:
   enabled: false
   type: ClusterIP
   port:
-
 serviceMonitor:
   enabled: false
   labels: {}
@@ -108,8 +105,8 @@ ingress:
   authentik: false
   className: "nginx"
   annotations: {}
-    # nginx.ingress.kubernetes.io/client-max-body-size: "0"
-    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  # nginx.ingress.kubernetes.io/client-max-body-size: "0"
+  # nginx.ingress.kubernetes.io/proxy-body-size: "0"
   tls: []
   #  - secretName: mydomain-cert
   #    hosts:
@@ -123,9 +120,7 @@ ingress:
           pathType: ImplementationSpecific
 
 livenessProbe: {}
-
 readinessProbe: {}
-
 resources: {}
   # limits:
   #   cpu: 100m
@@ -146,13 +141,9 @@ securityContext: {}
   # runAsUser: 1000
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
-
 initContainers: []
-
 cronjobs: []
 # - name:
 #   labels: {}

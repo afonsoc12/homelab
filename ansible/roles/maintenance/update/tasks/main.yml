@@ -10,19 +10,19 @@
         nopassword: true
 
     - name: Apt-get update
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         update_cache: true
         cache_valid_time: "{{ apt_cache_valid_time }}"
 
     - name: Apt-get dist-upgrade
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         state: latest
         upgrade: dist
 
     - name: Apt install (base + group + host)
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         name: >-
           {{
@@ -33,22 +33,22 @@
         state: latest
 
     - name: Apt clean
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         autoclean: true
 
     - name: Apt autoremove
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         autoremove: true
 
     - name: Apt purge
-      apt:
+      ansible.builtin.apt:
         force_apt_get: true
         purge: true
 
     - name: Pip install (base + group + host)
-      pip:
+      ansible.builtin.pip:
         name: >-
           {{
             base_pip_packages | default([]) +
@@ -59,7 +59,7 @@
       when: (base_pip_packages + group_pip_packages + host_pip_packages) | length > 0
 
     - name: Set cron to update caches
-      cron:
+      ansible.builtin.cron:
         name: "Update caches"
         hour: 4
         minute: 0

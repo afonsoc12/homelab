@@ -1,3 +1,4 @@
+---
 site_name: homelab
 site_description: GitOps-driven homelab. Self-hosted. Automated. Encrypted.
 site_author: Afonso Costa
@@ -7,7 +8,8 @@ repo_name: afonsoc12/homelab
 edit_uri: edit/master/docs/
 copyright: 'Made with 🤖 by <a href="https://github.com/afonsoc12" target="_blank">me</a>'
 
-# docs_dir:
+docs: docs
+
 theme:
   name: material
   logo: assets/icon/homelab-icon.svg

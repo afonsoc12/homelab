@@ -2,9 +2,11 @@
 extends: default
 
 ignore:
-  - '**/*.sops.y*ml'
+  - "**/*.sops.y*ml"
+  - "**/.decrypted~*.y*ml"
   - .venv/
   - tmp/
+  - kubernetes/apps/sandbox/
   - kubernetes/charts/*/templates/
 
 rules:

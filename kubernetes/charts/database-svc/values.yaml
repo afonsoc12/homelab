@@ -1,3 +1,4 @@
+---
 nameOverride: ""
 fullnameOverride: ""
 
@@ -19,26 +20,20 @@ image:
 #   restartPolicy:
 
 command: {}
-
 args: {}
-
 ports: []
 #  - containerPort: 80
 #    name: http
 #    protocol: TCP
 #    service: true
-
-
 # Uses ports from .ports section, if service is true
 service:
   annotations: {}
-    # metallb.universe.tf/allow-shared-ip: "db-svc"
+  # metallb.universe.tf/allow-shared-ip: "db-svc"
   type: ClusterIP
   loadBalancerIP:
   port:
-
 extraContainers: []
-
 secret: {}
   # stringData:
   #   secret_string_1: abc
@@ -70,8 +65,8 @@ ingress:
   authelia: false
   className: "nginx"
   annotations: {}
-    # nginx.ingress.kubernetes.io/client-max-body-size: "0"
-    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  # nginx.ingress.kubernetes.io/client-max-body-size: "0"
+  # nginx.ingress.kubernetes.io/proxy-body-size: "0"
   tls: []
   #  - secretName: mydomain-cert
   #    hosts:
@@ -84,11 +79,8 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
 
-
 livenessProbe: {}
-
 readinessProbe: {}
-
 resources: {}
   # limits:
   #   cpu: 100m
@@ -109,11 +101,8 @@ securityContext: {}
   # runAsUser: 1000
 
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
-
 backup:
   enabled: false
   image:

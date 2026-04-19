@@ -1,5 +1,5 @@
+---
 labels: {}
-
 secret: {}
   # stringData:
   #   secret_string_1: abc

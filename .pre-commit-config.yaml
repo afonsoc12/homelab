@@ -26,7 +26,7 @@ repos:
       - id: ansible-lint
         name: ansible-lint
         language: system
-        entry: bash -c 'ANSIBLE_CONFIG=ansible/ansible.cfg uv run ansible-lint --fix ansible/'
+        entry: bash -c 'cd ansible && uv run ansible-lint --fix .'
         pass_filenames: false
         files: ^ansible/
 

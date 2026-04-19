@@ -11,6 +11,7 @@
   hosts: all
   become: true
   gather_facts: true
+  tags: [tailscale]
   roles:
     - role: artis3n.tailscale.machine
       vars:
