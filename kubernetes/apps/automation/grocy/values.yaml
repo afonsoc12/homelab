@@ -8,7 +8,7 @@
 replicas: 1
 image:
   repository: lscr.io/linuxserver/grocy
-  tag: 4.3.1
+  tag: v4.6.0-ls321
 ports:
   - containerPort: 80
     service: true

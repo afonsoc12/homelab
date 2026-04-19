@@ -36,13 +36,6 @@ initChownData:
     ## This allows the grafana-server to be run with an arbitrary user
     ##
     enabled: true
-    ## initChownData container image
-    ##
-    image:
-        repository: docker.io/busybox
-        tag: 1.37.0
-        sha: ""
-        pullPolicy: IfNotPresent
 env:
     GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
 grafana.ini:
@@ -112,8 +105,8 @@ smtp:
     userKey: user
     passwordKey: password
 sops:
-    lastmodified: "2026-04-13T20:28:45Z"
-    mac: ENC[AES256_GCM,data:PLQEWWO+COPGxZ43V6TtTmTbsyKnEzt+eSXLW+mtR4jHYYIQpYOed14jBSs2tScecJ8tKtKLruQaXQijClh05wy7O1s0jzlNWb3pxgPw3+6yq1xyAAK8UQL0+Yn1yfrlyiW4BQ8Z9/MKWlgzBan8tL2mwamvJ28fNyir66i2XUU=,iv:hg09PNTkWkvECdMVwB/6JfymYVAWVYUs2F0dhbXgTJk=,tag:Eibf9f4UicMmTB5NJ8oP7w==,type:str]
+    lastmodified: "2026-04-19T00:58:06Z"
+    mac: ENC[AES256_GCM,data:967K2/iQVokY1SM6ZfgDaP0YwFNwuVenVCxQUWRgQRh+xd/sRRi8XqYYG5DWwlchdKCUoDAZcKrfTMY/Zr9l31VgH5CW72lD2wqBYkaCcIa8o/jdJk3IqFnjtJJ7+iK/DGPgipAL1tfwCzkgwN3mfJZFvbgrD0XeLA1YXF23wLY=,iv:qeMhW/Drdco07pTp2zUp+IYy+nfrS4EGhLadYeiYcqI=,tag:CwPo5PFFow7GBuA2cJBJPQ==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:45Z"
           enc: |-

@@ -26,12 +26,12 @@ cronjobs:
       restartPolicy: Never
       image:
         repository: ghcr.io/hotio/cloudflareddns
-        tag: 3.1.0
+        tag: release-34a15f7
       nodeSelector:
         kubernetes.io/hostname: k3s-m2
 sops:
-    lastmodified: "2026-04-13T20:28:43Z"
-    mac: ENC[AES256_GCM,data:zXa5q5ORvr7Fc0rn3uvDcaAimIHV0gGPUjSuPswRj9AqHXv/wOb9LYa/12EBRTz+SibR3KrqN1P3SiveaV1s+2I2x99VH6Lg2vr3orRa9BgsukFWZf8kMZsINRWakrhU5+wmRxlZEwDO6maPa+ixBzi3EEbRNnVCmhLm/3E2ETE=,iv:f42bNMOHIF2aRHYpHTgtL0k1syFdF7547mT3/HpqUuw=,tag:u11ZeXmJVKsr1o5Tt9rbwg==,type:str]
+    lastmodified: "2026-04-19T00:56:32Z"
+    mac: ENC[AES256_GCM,data:5hqiDs1i7+LSF0xFt4/T8Uw23iki2ljhdN4QDRS3nFOx4K40AilbheFIHrwOyC4m44pTbKYPRrLkc+0iT7fM+/ucSRJnGuJgx+u/yg3w5X8leCiByDNXlL726Tb2OyE0To/hClgPUMJ6pmoeUvf8wfW2WyXQ1mBfzYyGKaATWyI=,iv:ro347RQjph0BeZjv0H6iPegMZFK7NiZ8OWHcw2ldUWU=,tag:K8XmQRFKYgaKpsZGOr8oNQ==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:43Z"
           enc: |-
