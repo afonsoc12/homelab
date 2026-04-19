@@ -269,7 +269,7 @@ repoServer:
             - -ec
           env:
             - name: HELM_SECRETS_VERSION
-              value: 4.6.10
+              value: 4.7.6
             - name: KUBECTL_VERSION
               value: 1.34.1
             - name: VALS_VERSION
