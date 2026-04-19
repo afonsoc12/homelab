@@ -32,7 +32,7 @@ ports:
 
 additionalContainers:
   - name: playwright
-    image: docker.io/browserless/chrome:1.61.1-chrome-stable
+    image: ghcr.io/browserless/chromium:v2.47.0
 
 # Uses ports from .ports section, if service is true
 service:
