@@ -19,7 +19,7 @@ crds:
 global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: ENC[AES256_GCM,data:wFunypBGBBtylZMN4JVocpX30E0cE9qo7c0=,iv:o6CKAJ5itjKnyKKoMkAMDH3D2AawbcS+QNy/H7sb6R8=,tag:lCS2cbN6vdXDrG3lMdsvig==,type:str]
+    domain: ENC[AES256_GCM,data:DEl7HvSsSJWv5YbzledK8FDbfHwQB+tefeg=,iv:M422VXHFB9d0jHjG2vja3+4wyJzC8cbaWyiqBzeafTE=,tag:/UtttwrBD1fwwRA3i/CZvg==,type:str]
     # -- Common labels for the all resources
     additionalLabels: {}
     # app: argo-cd
@@ -40,7 +40,7 @@ configs:
         create: true
         helm.valuesFileSchemes: secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import, secrets+age-import-kubernetes, secrets,secrets+literal, https
         admin.enabled: "false"
-        oidc.config: ENC[AES256_GCM,data:fa92Du8IZrpreMivLILjSLxBIm0Jq4HbFeNQAG6taliAfPa6tALBFHtRj6n1emNy10n3rBZp7MG8WWv2PfLMdxGypGHNSfQlihColMhVsn1MwMUHX1dh2puTKbNLuv2hOulQKA1AHF+UliAaUwbSn08plbIbFJvRWO6rr10TOCpF40Q1DnRX20TXDkqg6pFV3cvxfQs2bhQOF8EM6LxoymPYbi2iKZw63dR68sPMjoZx6OY4YU0j0Q1AGwFme1zfPmWmF9N2462XzSITqb7KO/vxiQJZxkclLdI4gZFNhdM5B6uqQMHqKao=,iv:2V8iVtSzoAQl/Q0TxBvXOotm5j1BCynPV3tqqhzkrbs=,tag:uQYk9RGdzEGvZhn5+d8i4A==,type:str]
+        oidc.config: ENC[AES256_GCM,data:zgDhGtOg9tkx00hdO/XcrAf7EPh8KbJejJ/7rQWEr69ejriIrVprRKumoMSiOXDa3zHRlc9WFGbuphPrDJWDjT1wFwS9XGTm2Lz7bCqU11J2xDihrOWFvkd2z9UMgJV6SOXvYj9NunKx8MGbAkLYx72HxdUkI/G9AcCPBXCiZAEBJ/p8e9HJJbAa1zaQmIRB8wkEz5HO1xJuqVkoSlHxnyob+QD7z1nczIhYR1wajIO1Td6Mrqc/xPIyfGfTvQCbeVFWzc2GXfrmLGhwAfeYHTSJyK5rdpBjvMghvSAGt/eFPykoNyAfhW4=,iv:F41tKWXch2X42gayekcSimacxl3ALwPXWno3DlMRTcY=,tag:ULIszwGvTRJhzsZX/Tdn4A==,type:str]
         oidc.tls.insecure.skip.verify: "true"
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
@@ -133,9 +133,9 @@ configs:
         #     command: ["/bin/sh", "-c"]
         #     args: ["cat *.yaml | yq"]
     secret:
-        createSecret: ENC[AES256_GCM,data:S2uasw==,iv:FmVFUHS6Ofn1IFhPvYTdCNu9nLiHFe+yvD2QbDvh/b8=,tag:Ot7lRs0rD07UQB8+zCddKA==,type:bool]
-        oidc.authentik.clientId: ENC[AES256_GCM,data:/0NO3TRBb3p+KxYMe2Murb9taPv1TZ2iTNXD9Yq22ClxzMj+ZjTuZQ==,iv:cFkQCQss7iOLV8Xu+YRLfRHaVngEjz9BA7SzyR+/Xvc=,tag:UGdtx4KPpvRXTjtgOZRe5w==,type:str]
-        oidc.authentik.secret: ENC[AES256_GCM,data:J6XIH4xUQ4OuRegmoFrrl4wbLIpxQhUo9ysEJrTqCSqAr65ETl2NDKQK9jVmpJyvJ3zKsTNBHE//k1Ir7TswXtVfb/KfxlhiR3MAfI78JGRHzrjC+XDeIMjXd6ULNn4rGexyeDVvSwe/SWmMvngGFyUwMJH9BEw8/bJRf/iq0uM=,iv:E+aBqE8Gf4MzxO9kLcuXyOZ1ZDh72Rg4dLKzWyV4j48=,tag:4jjcUJW3HwiXnTcZcuBMSg==,type:str]
+        createSecret: ENC[AES256_GCM,data:9BxCUQ==,iv:oyHijEYK+xv82EHshgDoYDWWc5Ulnp16ZVfnu9YJF4I=,tag:Rfsz5oUdxCwQOc5ZAsRq0w==,type:bool]
+        oidc.authentik.clientId: ENC[AES256_GCM,data:XXlba3IRzj1VChQsI14dh4ozIdMg9z8ED865v+UaltipCoCFTQ7IGg==,iv:E+UyqCn5fvwMaRL9q+1fHt93x2e2Ti50aZePJYdrpTc=,tag:AfO8isgo/xAvN25nXIvsAA==,type:str]
+        oidc.authentik.secret: ENC[AES256_GCM,data:KvoKZfZ00bPCIliThsCex7lkyFa/tSwaE6ohl2LqjLNXeKZ/qH8akYOCT+zzbN9rKU+5sj3Eh4e2gHf9XvH7bcJGZL3Lr7ehRv/tgJaonI8XRkxwNblEuKclj/w7bTpVd15+ZBpu49g+UfPjBpExWvYO5N2xPf/HEwdaEOKCsbw=,iv:TAlDmj+27okSX2oJf1MXSxjCHHgh5rvEJOym+KFLsBc=,tag:X+YCjlJcoaWTvvuo8lVivQ==,type:str]
     rbac:
         # -- Create the argocd-rbac-cm configmap with ([Argo CD RBAC policy]) definitions.
         # If false, it is expected the configmap will be created by something else.
@@ -310,7 +310,7 @@ repoServer:
         # kubectl create secret generic homelab-sops-gpg --from-file=sops.asc=assets/gpg/private2.gpg
         - name: homelab-sops-gpg
           secret:
-            secretName: ENC[AES256_GCM,data:WhmWpuUBauFrrbutPpQDhg==,iv:gx+uCoE2ZyQnBbKDBjZBC3BNRUtNDI4kCai9iq/PCGo=,tag:CjLU91smHgtVJKhbjjzjqA==,type:str]
+            secretName: ENC[AES256_GCM,data:cBgR0WfNdkQLxSYnWV/brw==,iv:VwSkNWsHXLG+qeS0+PqsfKnHBZYBQScqFaXGKdHkLbg=,tag:sHuz3jUJcIy7IqeVnsgk8A==,type:str]
 ## ApplicationSet controller
 applicationSet:
     # -- Enable ApplicationSet controller
@@ -323,9 +323,10 @@ notifications:
     enabled: true
     # -- Notifications controller name string
     name: notifications-controller
+    argocdUrl: ENC[AES256_GCM,data:mqcq1wzUY3j9HYBmtWeIwADF/BowMMoNcHSLbU105GIWQA==,iv:YpQCGlDC1JM83+GeqooamErpV+/X1DXbqzqRKrIdY0M=,tag:Q3bZtWG0YwQFCmTF2WtEwQ==,type:str]
     secret:
         items:
-            discord-webhook: ENC[AES256_GCM,data:0OMuXl6T0HiotpFJEzMMZRJnBe6+AAg4E6PhXfjDflc7vN18XEm76AHyjWNW4QOPwvBc0TpAD0L0AM4PUkdFMIOqRaqpMGwqQsmoq3YRhjxJfZrHRNgC3lw7v570ouTrczrRZ2nFqHX30aHdlRqyk/rJ6+66zKMpaQ==,iv:Ej982GJoJhDZz+iaHGK3kaz7beXIdjVKLZXpn1PTGWU=,tag:AfB7WEWdiGXICZgUHq3DCA==,type:str]
+            discord-webhook: ENC[AES256_GCM,data:N7b9q590r3yhWoFzaJiMFStd+S4wzuuqOTSeJap1oPG3nmo4rSeyKv2L+vUAfZwk/0PT/S1m4uUxjyQzKPf1s8KTcnfgIDNw8U6sQf7alfc1JFMLdvGpWuccFwSL9z0CK2Gt2gMRvuE3mqEoMQlVLakIUhJ29YxfEQ==,iv:AAAwPpqvIN2tnJ2D77E4aKTfPx+93g/jWEJe10GbBVo=,tag:SNzCU6qFhiAt1u0yJe83yQ==,type:str]
     notifiers:
         service.webhook.discord: |
             url: $discord-webhook
@@ -341,14 +342,20 @@ notifications:
                   {
                     "embeds": [{
                       "title": "✅ {{.app.metadata.name}} deployed",
+                      "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
                       "color": 3066993,
                       "fields": [
-                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": true},
-                        {"name": "Revision", "value": "{{.app.status.sync.revision}}", "inline": true}
+                        {"name": "Application", "value": "[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})", "inline": false},
+                        {"name": "Cluster", "value": "{{.app.spec.destination.name}}", "inline": false},
+                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": false},
+                        {"name": "Author", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}", "inline": false},
+                        {"name": "Revision", "value": "[{{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}})", "inline": false},
+                        {"name": "Last Updated", "value": "{{.app.status.operationState.finishedAt}}", "inline": false},
+                        {"name": "Commit", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}", "inline": false}
                       ]
                     }]
                   }
-        template.app-health-degraded: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 {{.app.metadata.name}} health degraded\",\n          \"color\": 15158332,\n          \"fields\": [\n            {\"name\": \"Namespace\", \"value\": \"{{.app.spec.destination.namespace}}\", \"inline\": true},\n            {\"name\": \"Health\", \"value\": \"{{.app.status.health.status}}\", \"inline\": true}\n          ]\n        }]\n      }\n"
+        template.app-health-degraded: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 {{.app.metadata.name}} health degraded\",\n          \"url\": \"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n          \"color\": 15158332,\n          \"fields\": [\n            {\"name\": \"Application\", \"value\": \"[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})\", \"inline\": false},\n            {\"name\": \"Cluster\", \"value\": \"{{.app.spec.destination.name}}\", \"inline\": false},\n            {\"name\": \"Namespace\", \"value\": \"{{.app.spec.destination.namespace}}\", \"inline\": false},\n            {\"name\": \"Health\", \"value\": \"{{.app.status.health.status}}\", \"inline\": false},\n            {\"name\": \"Last Updated\", \"value\": \"{{.app.status.reconciledAt}}\", \"inline\": false}\n          ]\n        }]\n      }\n"
         template.app-sync-failed: |
             webhook:
               discord:
@@ -357,10 +364,16 @@ notifications:
                   {
                     "embeds": [{
                       "title": "❌ {{.app.metadata.name}} sync failed",
+                      "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
                       "color": 15158332,
                       "fields": [
-                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": true},
-                        {"name": "Message", "value": "{{default \"N/A\" .app.status.operationState.message}}", "inline": false}
+                        {"name": "Application", "value": "[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})", "inline": false},
+                        {"name": "Cluster", "value": "{{.app.spec.destination.name}}", "inline": false},
+                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": false},
+                        {"name": "Author", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}", "inline": false},
+                        {"name": "Revision", "value": "[{{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}})", "inline": false},
+                        {"name": "Last Updated", "value": "{{.app.status.operationState.finishedAt}}", "inline": false},
+                        {"name": "Error", "value": "{{.app.status.operationState.message | default "N/A"}}", "inline": false}
                       ]
                     }]
                   }
@@ -385,30 +398,30 @@ notifications:
             - on-health-degraded
             - on-sync-failed
 sops:
-    lastmodified: "2026-04-19T22:32:35Z"
-    mac: ENC[AES256_GCM,data:EXKrmtXOzYO2asUkfymT71TqsUF0wP2U8o46iZnPvnu5U+WS6109ONDKxC+quV5SBDA45wUFK6qKxpK8TmbVp7lAmnG1JM+nOH/PlnRwyxrUsveUdQlRbkpYcMqCGlR3XJNEnjZCBt7KIc/LAfT5MnpREuObpOs98QkhooStEi4=,iv:6ZU8e8iK66dIO8UsnVXR6QJaAYXg/qEpy/c+31W5kNU=,tag:AND0DjvMCkaFc9V+CtL8og==,type:str]
+    lastmodified: "2026-04-19T22:53:57Z"
+    mac: ENC[AES256_GCM,data:I4YY0oFwZ5XxrcJ4y6IEnNL/R8Awl1E2RPrV5UfD9X3hzTY/HeCqEfpo0qS6smlpiGgCOjI9P0bMvMW23v0Q3JmXcPZsmzNzB6pVFp3Y5Zw5IaIDw11WJeAqmFXNymBwOHUDMXhahMxPwFf44ToMO8MrpK5u/9HCSL5zqwkyW+I=,iv:Ll1T7iJCjFA1qhcvXAEaSELPb6nMShw9KIRk0gmovic=,tag:dxLkJlhI6KyST+145J68uQ==,type:str]
     pgp:
-        - created_at: "2026-04-19T22:32:35Z"
+        - created_at: "2026-04-19T22:53:57Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//fDlRMQHp8w/SJEp8MIIvkxZoAaTOmEqANQ39uI7sLYdv
-            gdgwsQfUQNxIQnHJ+z+7zbCxAcQnVD5M3uh0cA3rYhjDIC2G4zGAmUtOh6xuq+nn
-            kV969DdkeGmj6YR7dgKD/Rvmnw3p1E936T1V0RkYddy9zJtdEZffFhMF1YOb9Xyl
-            JAnizDOzFmxbk6pvVIHPzSUaJd8LsATveL7G1EbxXY+1LTJtKv9AsP7VU2Gehf3k
-            78O4NirfWTiDV9qw1HRJLLR3O9AqIswb+0vhs+IV/e6AiFWP47XMR+zUBDhy1SyN
-            ODMgwAvMhW//5/B7xyzuiyNlWjVrU8TEJmx/ld4STPMnHJKjngvQdIgFfqWgGTqN
-            3+5hVJKpijt+t6qDpUnv5JmLRwYXtvgye7Z624aSpU1Tuqy1MryRZYNb8fV1GpP8
-            NcZW07UgA0zO3lw+ATRRSMPU5JpS+MsA22CxLjxVHZUlfa24lP46oepSPXdvtEtJ
-            bwB4TiKSlDZMrD9NYtJvX0XiyT5RGD3JbpPoE5zpl9N6HzbfF4LUAhON7wWv5ke8
-            lXH0ST3jsXaY5S0sXpNF5sApEkfhpwtlAxw2Hie7vZrHftl8MYAp6z+tarqoZzqe
-            5v6fBjsmsdi725sh7OQ6gQ62BoatIt1Ho8Rxm+79OIli466fY/69JPpXMroTXHDU
-            aAEJAhCWJQi6mFXL2xSK8EIExNZItHG/HlONA8GBm7p/nPjsjhXJUf7sGQpnnwtO
-            Qocoq0He9uiAjliuh5zGTlK6ivkcd6h2eaZ/YptSK5QH8Gr46v73EH2RwxgTQ0kS
-            7b+wM2XcRXpe
-            =GpbU
+            hQIMA5NT/LvuRqeGARAAlbqUl7LCls5mO3g+r87557Fy3J2qHdLG5S9pJypL4Byy
+            /BXbW8ywSGrJt6je6s0k2W/CafKT5TQC/vby6m58dvaCioIpzngQB7ZM6j89Wr2T
+            5Ae8pt3JLsjsOg5MFwhaplKM3NUGgoVQy/KB1fUP+oJFxr+ab3KiC984LvNRfQi5
+            38tVwkXYo9vR3MTZxwqPDQdzRjsFc3NgS7/u7O+vGVmiBOnk9x6WAb13Mi/qSC1P
+            Pw+43gfHIWWpv6G+SRQ5njBhseSRugl4rui4wFwDkUX0Y+EiTLu5GGDxYWGGB/s2
+            PmXjru4+AGpo1n5LE/ACqb2uVm1XQNT3JH9ycdwVsKzvTgxpMvb4iNQE9FVLVQTB
+            6xvaDOCLsq2HrV8mGJWWXHF06bsYlt0pE4wtUc158q3f8vn0IuRtxTYrTFRJFOC0
+            y+/N1jyPBzbfKxDseM/JoEnbWiz3YGWxe3Y3S0TMa2Wz0mXLsQaCyDjGhsaD5gpM
+            Sor2rxw7vASuERG8jUlswJf7I/lKkX7UQZeD6bAUurfEM81NaqTRxbDidu1cc7bb
+            6YMsHkDLQeSWifuBwQwruk6SJ7rhEi5t3i3PEjJl5SQqK89REDBLnOJIb28So6K2
+            I2am+TnteqR1VNKc6H+I0Yds6n6rc7iLEZ+b6gsoXzku5ZKJiZF9OG5G6yEIZbzU
+            aAEJAhAq0qFWOOc81s8C/hFu4TWpqDy6ib43TkXItvettNxOdfUX1SQyb/Lkmhaq
+            FNn1kdLBDVbTq9cxcyw1lxu5XnwQ2otxw3fEJAsyau22kImyAq1DAayvzHnpbGfA
+            su75B8mxKA8Q
+            =6147
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData|secret|domain|oidc\.config|loadBalancerIP|nginx\.ingress\.kubernetes\.io/auth-signin)$
+    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP|nginx\.ingress\.kubernetes\.io/auth-signin)$
     mac_only_encrypted: true
     version: 3.12.2
