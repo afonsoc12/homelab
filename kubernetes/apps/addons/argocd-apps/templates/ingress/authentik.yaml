@@ -16,7 +16,7 @@ spec:
 
   sources:
     - repoURL: https://charts.goauthentik.io
-      targetRevision: '>=2025 <2026'
+      targetRevision: '<2027'
       chart: authentik
       helm:
         valueFiles:
