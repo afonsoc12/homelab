@@ -262,7 +262,7 @@ repoServer:
     # -- Init containers to add to the repo server pods
     initContainers:
         - name: download-tools
-          image: docker.io/alpine:3.22.4
+          image: docker.io/alpine:3.23.4
           imagePullPolicy: IfNotPresent
           command:
             - sh
