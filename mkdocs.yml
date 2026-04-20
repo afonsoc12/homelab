@@ -75,7 +75,7 @@ markdown_extensions:
 nav:
   - Architecture:
       - Overview: architecture/overview.md
-      - Servers: architecture/nodes.md
+      - Servers: architecture/servers.md
       - Networking: architecture/networking.md
   - Services:
       - Overview: services/index.md
@@ -88,13 +88,17 @@ nav:
   - Kubernetes:
       - GitOps with ArgoCD: kubernetes/argocd.md
       - Namespaces & Apps: kubernetes/namespaces.md
-      - Adding a New App: kubernetes/adding-apps.md
   - Ansible:
       - Overview: ansible/overview.md
-      - Playbook Reference: ansible/playbooks.md
+      - Playbooks: ansible/playbooks.md
+      - Roles: ansible/roles.md
   - Terraform:
       - Overview: terraform/overview.md
+      - Cloudflare: terraform/cloudflare.md
+      - OCI: terraform/oci.md
+      - Backblaze: terraform/backblaze.md
   - Secrets (SOPS): secrets.md
   - Runbooks:
-      - K3s Upgrade: runbooks/k3s-upgrade.md
-      - Adding a Node: runbooks/adding-node.md
+      - k3s Upgrade: runbooks/k3s-upgrade.md
+      - Adding a Server: runbooks/adding-server.md
+      - Adding a New App: runbooks/adding-app.md

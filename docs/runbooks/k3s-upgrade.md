@@ -37,7 +37,7 @@ sops ansible/inventory/group_vars/k3s_cluster.sops.yml
 
 ## 4. Run the Rolling Upgrade
 
-The playbook upgrades masters serially (one at a time), then all agent nodes:
+The playbook upgrades masters serially (one at a time), then all agent servers:
 
 ```bash
 uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags upgrade

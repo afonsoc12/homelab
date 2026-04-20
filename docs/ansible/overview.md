@@ -1,6 +1,6 @@
 # Ansible Overview
 
-Ansible manages everything below the Kubernetes layer: OS configuration, package installation, k3s installation, Tailscale enrollment, and ongoing node maintenance.
+Ansible manages everything below the Kubernetes layer: OS configuration, package installation, k3s installation, Tailscale enrollment, and ongoing server management.
 
 ## Setup
 
@@ -69,7 +69,7 @@ Declared in `ansible/requirements.yml`:
 | `ansible.posix` | 2.1.0 | POSIX utilities |
 | `community.general` | 12.5.0 | General-purpose modules |
 | `k3s-io/k3s-ansible` | 1.2.0 | k3s installation and upgrade |
-| `artis3n.tailscale` | 1.2.1 | Tailscale node enrollment |
+| `artis3n.tailscale` | 1.2.1 | Tailscale server enrollment |
 
 Install or update:
 

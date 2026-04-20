@@ -12,3 +12,8 @@ paths = [
   # Ignore the SOPS config itself
   '''.sops.yaml''',
 ]
+
+[[rules]]
+id = "generic-api-key"
+[rules.allowlist]
+paths = ['''docs/terraform/backblaze\.md''']

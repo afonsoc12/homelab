@@ -14,8 +14,8 @@ The primary playbook for managing the k3s cluster. Runs in plays:
 
 | Play | Hosts | Tags | Description |
 |------|-------|------|-------------|
-| Update packages | `k3s_cluster` | `update` | `apt upgrade` on all nodes |
-| Connect to Tailscale | `k3s_cluster` | *(always)* | Enroll / re-enroll nodes in Tailscale |
+| Update packages | `k3s_cluster` | `update` | `apt upgrade` on all servers |
+| Connect to Tailscale | `k3s_cluster` | *(always)* | Enroll / re-enroll servers in Tailscale |
 | k3s prerequisites | `k3s_cluster` | *(always)* | System prereqs: inotify, multipath, sysctl |
 | Configure multipath | `k3s_cluster` | *(always)* | Longhorn multipath blacklist in `/etc/multipath.conf` |
 | Setup k3s nodes | `nodes` | *(always)* | Install k3s agent on worker nodes |
@@ -42,13 +42,13 @@ uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags reboot --limit 
 ```
 
 !!! danger "`--tags reset`"
-    The `reset` tag **completely uninstalls k3s** from all nodes. It is tagged `never` — it will not run unless explicitly passed with `--tags reset`. Use only for full cluster teardown.
+    The `reset` tag **completely uninstalls k3s** from all servers. It is tagged `never` — it will not run unless explicitly passed with `--tags reset`. Use only for full cluster teardown.
 
 ---
 
-## `provision.yml` — Node Provisioning
+## `provision.yml` — Server Provisioning
 
-General-purpose provisioning: package updates and Tailscale for all node types.
+General-purpose provisioning: package updates and Tailscale for all server types.
 
 | Play | Hosts | Tags |
 |------|-------|------|
@@ -56,7 +56,7 @@ General-purpose provisioning: package updates and Tailscale for all node types.
 | Connect to Tailscale | `all` | `tailscale` |
 
 ```bash
-# Provision all nodes
+# Provision all servers
 uv run ansible-playbook ansible/playbooks/provision.yml
 
 # Tailscale only
@@ -94,7 +94,7 @@ uv run ansible-playbook ansible/playbooks/hyperion.yml
 # Ping all hosts
 uv run ansible -m ping all
 
-# Run a command on all k3s nodes
+# Run a command on all k3s servers
 uv run ansible k3s_cluster -m command -a "kubectl get nodes"
 
 # Check disk usage on all masters

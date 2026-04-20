@@ -25,9 +25,9 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
 -   :simple-ansible: **Server provisioning**
 
-    [k3s](https://k3s.io) cluster setup and node management handled by [Ansible](https://www.ansible.com/).
+    [k3s](https://k3s.io) cluster setup and server management handled by [Ansible](https://www.ansible.com/).
 
--   :simple-terraform: **External infrastructure**
+-   :simple-terraform: **Infrastructure**
 
     [Cloudflare](https://www.cloudflare.com) DNS, tunnels, and more via [Terraform](https://www.terraform.io/).
 
@@ -47,7 +47,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
     ---
 
-    High-level design, cluster nodes, and networking
+    High-level design, cluster servers, and networking.
 
     [:octicons-arrow-right-24: Overview](architecture/overview.md)
 
@@ -55,7 +55,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
     ---
 
-    All running services across every namespace
+    All running services across every namespace.
 
     [:octicons-arrow-right-24: Services](services/index.md)
 
@@ -63,7 +63,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
     ---
 
-    [ArgoCD](https://argoproj.github.io/cd/) GitOps, namespaces, and how to add a new app
+    [ArgoCD](https://argoproj.github.io/cd/) GitOps, namespaces, and how to add a new app.
 
     [:octicons-arrow-right-24: GitOps with ArgoCD](kubernetes/argocd.md)
 
@@ -71,7 +71,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
     ---
 
-    Server provisioning, [k3s](https://k3s.io) cluster management, and playbooks
+    Server provisioning, [k3s](https://k3s.io) cluster management, and playbooks.
 
     [:octicons-arrow-right-24: Ansible docs](ansible/overview.md)
 
@@ -79,7 +79,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
     ---
 
-    [Cloudflare](https://www.cloudflare.com) DNS, tunnels, and external infrastructure
+    [Cloudflare](https://www.cloudflare.com) DNS, tunnels, and external infrastructure.
 
     [:octicons-arrow-right-24: Terraform docs](terraform/overview.md)
 
@@ -87,7 +87,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
     ---
 
-    [SOPS](https://github.com/getsops/sops) encryption rules and secret management patterns
+    [SOPS](https://github.com/getsops/sops) encryption rules and secret management patterns.
 
     [:octicons-arrow-right-24: Secrets](secrets.md)
 
@@ -95,7 +95,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
     ---
 
-    Step-by-step operational procedures
+    Step-by-step operational procedures.
 
     [:octicons-arrow-right-24: Runbooks](runbooks/k3s-upgrade.md)
 

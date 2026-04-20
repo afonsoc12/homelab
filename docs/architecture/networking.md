@@ -50,10 +50,10 @@ All apps get their TLS certificates from **cert-manager** using Let's Encrypt (v
 
 Tailscale is used for:
 
-- **Cluster inter-node communication** — especially between home nodes and the OCI master
+- **Cluster inter-server communication** — especially between home servers and the OCI master
 - **Admin access** — direct `kubectl` / SSH access from trusted devices
 
-All k3s nodes are enrolled in the Tailscale network. The `artis3n.tailscale` Ansible role manages installation and auth.
+All k3s servers are enrolled in the Tailscale network. The `artis3n.tailscale` Ansible role manages installation and auth.
 
 ## Wireguard
 

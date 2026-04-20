@@ -1,6 +1,6 @@
-# Runbook: Adding a Node
+# Runbook: Adding a Server
 
-## Adding a k3s Worker Node
+## Adding a k3s Worker
 
 ### 1. Add to Inventory
 
@@ -31,7 +31,7 @@ k3s-w1:
 
 ### 3. Enroll in Tailscale
 
-If the node isn't yet on Tailscale, run provision first:
+If the server isn't yet on Tailscale, run provision first:
 
 ```bash
 uv run ansible-playbook ansible/playbooks/provision.yml \
@@ -44,13 +44,13 @@ uv run ansible-playbook ansible/playbooks/provision.yml \
 uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --limit k3s-w1
 ```
 
-This will run prerequisites and install the k3s agent, which registers the node with the cluster automatically using the shared `token` from `k3s_cluster.sops.yml`.
+This will run prerequisites and install the k3s agent, which registers the server with the cluster automatically using the shared `token` from `k3s_cluster.sops.yml`.
 
 ### 5. Validate
 
 ```bash
 kubectl get nodes
-# new node should appear as Ready within ~30s
+# new server should appear as Ready within ~30s
 ```
 
 ---
@@ -69,7 +69,7 @@ The `k3s.orchestration.raspberrypi` role (run as part of the cluster playbook) h
 
 ---
 
-## Removing a Node
+## Removing a Server
 
 ### 1. Drain and delete from Kubernetes
 

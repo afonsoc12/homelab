@@ -29,7 +29,7 @@
           ▼                    ▼
   ┌──────────────┐    ┌────────────────┐
   │  Cloudflare  │    │ Tailscale mesh │
-  │  DNS/Tunnels │    │ (node comms)   │
+  │  DNS/Tunnels │    │ (server comms) │
   └──────────────┘    └────────────────┘
 ```
 
@@ -49,7 +49,7 @@ homelab/
 │   │       ├── values.yaml
 │   │       └── values.sops.yaml   # Encrypted secrets
 │   └── charts/                    # Ad-hoc Kubernetes resource charts
-├── ansible/                  # k3s provisioning and node management
+├── ansible/                  # k3s provisioning and server management
 │   ├── playbooks/
 │   ├── roles/
 │   └── inventory/
