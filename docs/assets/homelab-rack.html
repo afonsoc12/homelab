@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Homelab Rack Banner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9,86 +10,71 @@
 <style>
   :root{
     --bg:#0a0b0d;
-    --panel:#111318;
-    --rack:#16181d;
-    --rack-2:#1c1f25;
-    --rack-edge:#2a2e36;
-    --metal:#3a3f48;
-    --metal-hi:#565c67;
+    --cyan:#56e0ff;
     --ink:#e9edf2;
     --dim:#6b7380;
-    --cyan:#56e0ff;
-    --amber:#ffb23f;
-    --violet:#b28cff;
-    --green:#7dffb0;
-    --red:#ff6b7a;
-    --pink:#ff7fd5;
-    --yellow:#ffe26a;
-    --blue:#6aa6ff;
   }
-  html,body{margin:0;background:var(--bg);font-family:"JetBrains Mono",ui-monospace,monospace;color:var(--ink);}
-  body{margin:0;padding:0;display:flex;align-items:center;justify-content:center;}
+  html,body{margin:0;padding:0;background:var(--bg);font-family:"JetBrains Mono",ui-monospace,monospace;color:var(--ink);}
+  body{display:flex;align-items:flex-start;justify-content:center;}
   .frame{
-    width:820px;height:400px;position:relative;border-radius:14px;overflow:hidden;
+    width:min(820px,100%);
+    aspect-ratio:820/400;
+    position:relative;
+    border-radius:14px;
+    overflow:hidden;
     background:
       radial-gradient(820px 600px at 20% 120%, rgba(86,224,255,.08), transparent 60%),
       radial-gradient(700px 500px at 90% -20%, rgba(178,140,255,.07), transparent 60%),
-      linear-gradient(180deg,#0c0e12 0%, #07080a 100%);
+      linear-gradient(180deg,#0c0e12 0%,#07080a 100%);
     box-shadow:0 30px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04) inset;
   }
-  /* subtle grid */
   .frame::before{
-    content:"";position:absolute;inset:0;
+    content:"";position:absolute;inset:0;pointer-events:none;
     background-image:
       linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
     background-size:40px 40px;
     mask-image:radial-gradient(ellipse at 50% 60%, black 40%, transparent 80%);
-    pointer-events:none;
   }
   .floor{
     position:absolute;left:0;right:0;bottom:0;height:64px;
-    background:linear-gradient(180deg, transparent, rgba(86,224,255,.05) 30%, rgba(86,224,255,.02));
+    background:linear-gradient(180deg,transparent,rgba(86,224,255,.05) 30%,rgba(86,224,255,.02));
     border-top:1px solid rgba(255,255,255,.04);
   }
   .stage{position:absolute;inset:0;}
-  svg{display:block;}
+  .stage svg{display:block;width:100%;height:100%;}
   .corner{
-    position:absolute;font-size:10px;letter-spacing:.18em;color:var(--dim);
-    text-transform:uppercase;
+    position:absolute;font-size:10px;letter-spacing:.18em;
+    color:var(--dim);text-transform:uppercase;
   }
   .c-tl{top:16px;left:20px;}
   .c-tr{top:16px;right:20px;}
   .c-bl{bottom:16px;left:20px;}
-  .c-br{bottom:16px;right:20px;color:#4a515c;}
-  .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);margin-right:8px;vertical-align:1px;}
+  .dot{display:inline-block;width:6px;height:6px;border-radius:50%;
+       background:var(--cyan);box-shadow:0 0 8px var(--cyan);margin-right:8px;vertical-align:1px;}
 
-  @keyframes blink { 0%,60%{opacity:1} 70%,100%{opacity:.15} }
-  @keyframes blink2 { 0%,40%{opacity:.15} 50%,100%{opacity:1} }
-  @keyframes scan { 0%{transform:translateY(0)} 100%{transform:translateY(60px)} }
-  @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+  @keyframes blink  { 0%,60%{opacity:1}  70%,100%{opacity:.15} }
+  @keyframes blink2 { 0%,40%{opacity:.15} 50%,100%{opacity:1}  }
+
+  @media (max-width:600px){
+    .corner { font-size:8px; }
+    #stats  { display:none; }
+  }
 </style>
 </head>
 <body>
   <div class="frame" id="banner">
-    <div class="corner c-tl" id="corner-tl"><span class="dot"></span>HOMELAB</div>
-    <div class="corner c-tr" id="corner-tr">19" · 16U · ONLINE</div>
-    <div class="corner c-bl" id="corner-bl">PWR · NET · TEMP 22°C</div>
+    <div class="corner c-tl"><span class="dot"></span>HOMELAB</div>
+    <div class="corner c-tr">19" · 16U · ONLINE</div>
+    <div class="corner c-bl">PWR · NET · TEMP 22°C</div>
     <div class="floor"></div>
     <div class="stage" id="stage"></div>
   </div>
 
 <script>
-/*
-  Coordinates: 1200x400 banner.
-  Rack is centered-left; cable management panel sits to its right.
-*/
-/* ---------- Tweaks state (must be before drawPatch) ---------- */
+/* ── Tweaks ─────────────────────────────────────────────────────── */
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "cables": "cool",
-  "showCallouts": true,
-  "showStats": true,
-  "showGrid": true
+  "cables":"cool","showCallouts":true,"showGrid":true
 }/*EDITMODE-END*/;
 window.__tweaks = {...TWEAK_DEFAULTS};
 window.__cablePalette = function(){
@@ -100,52 +86,50 @@ window.__cablePalette = function(){
   return ['#ff6b7a','#ffb23f','#ffe26a','#7dffb0','#56e0ff','#6aa6ff','#b28cff','#ff7fd5'];
 };
 
-const RACK_X = 188;           // left edge of rack outer frame
-const RACK_Y = 40;             // top
-const RACK_W = 280;            // outer width
-const RACK_H = 320;            // outer height
-const INNER_PAD_X = 18;        // outer→inner horizontal pad
-const INNER_PAD_Y = 16;        // outer→inner vertical pad
-const U = 16;                  // 1U height in px (rack body ~ 288px / 18U)
+/* ── Layout constants ────────────────────────────────────────────── */
+const RACK_X = 188;
+const RACK_Y = 40;
+const RACK_W = 280;
+const RACK_H = 276;
+const INNER_PAD_X = 18;
+const INNER_PAD_Y = 16;
+const U = 16;
 const INNER_X = RACK_X + INNER_PAD_X;
 const INNER_Y = RACK_Y + INNER_PAD_Y;
 const INNER_W = RACK_W - INNER_PAD_X*2;  // 244
 const INNER_H = RACK_H - INNER_PAD_Y*2;  // 288
 
-// Units from top to bottom (total must be <=18U for room)
-// 2U screen panel, 1U UDM Pro, 1U switch, 1U patch, 2U server, 2U server(M700 trio), 1U server, 1U blank, 2U UPS = 13U
 const modules = [
   {kind:'screen',  u:2},
-  {kind:'gap',     u:0.25},
+  {kind:'gap',     u:.25},
   {kind:'udm',     u:1},
-  {kind:'gap',     u:0.15},
+  {kind:'gap',     u:.15},
   {kind:'switch',  u:1},
-  {kind:'gap',     u:0.15},
+  {kind:'gap',     u:.15},
   {kind:'patch',   u:1},
-  {kind:'gap',     u:0.4},
+  {kind:'gap',     u:.4},
   {kind:'server1', u:2},
-  {kind:'gap',     u:0.15},
+  {kind:'gap',     u:.15},
   {kind:'m700',    u:2},
-  {kind:'gap',     u:0.15},
+  {kind:'gap',     u:.15},
   {kind:'server2', u:1},
-  {kind:'gap',     u:0.4},
+  {kind:'gap',     u:.4},
   {kind:'ups',     u:2},
 ];
 
-const ns="http://www.w3.org/2000/svg";
+/* ── SVG scaffold ───────────────────────────────────────────────── */
+const ns = "http://www.w3.org/2000/svg";
 const svg = document.createElementNS(ns,"svg");
 svg.setAttribute("viewBox","0 0 820 400");
-svg.setAttribute("width","820");
-svg.setAttribute("height","400");
+svg.setAttribute("preserveAspectRatio","xMidYMid meet");
 document.getElementById("stage").appendChild(svg);
 
-// defs
 const defs = document.createElementNS(ns,"defs");
 defs.innerHTML = `
   <linearGradient id="rackFrame" x1="0" x2="0" y1="0" y2="1">
-    <stop offset="0" stop-color="#23262d"/>
+    <stop offset="0"  stop-color="#23262d"/>
     <stop offset=".5" stop-color="#181a1f"/>
-    <stop offset="1" stop-color="#0f1115"/>
+    <stop offset="1"  stop-color="#0f1115"/>
   </linearGradient>
   <linearGradient id="rackInner" x1="0" x2="0" y1="0" y2="1">
     <stop offset="0" stop-color="#090a0c"/>
@@ -163,20 +147,10 @@ defs.innerHTML = `
     <stop offset="0" stop-color="#0b2a33"/>
     <stop offset="1" stop-color="#061319"/>
   </linearGradient>
-  <linearGradient id="cmPanel" x1="0" x2="1" y1="0" y2="0">
-    <stop offset="0" stop-color="#1a1d23"/>
-    <stop offset=".5" stop-color="#12151a"/>
-    <stop offset="1" stop-color="#1a1d23"/>
-  </linearGradient>
   <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
     <feGaussianBlur stdDeviation="1.2" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
-  <filter id="bigGlow" x="-50%" y="-50%" width="200%" height="200%">
-    <feGaussianBlur stdDeviation="3" result="b"/>
-    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-  </filter>
-  <clipPath id="screenClip"><rect x="0" y="0" width="140" height="48" rx="3"/></clipPath>
 `;
 svg.appendChild(defs);
 
@@ -188,263 +162,180 @@ function el(tag, attrs={}, parent=svg){
 }
 function g(attrs={}, parent=svg){ return el('g', attrs, parent); }
 
-/* ---------- Outer rack frame ---------- */
-// Rear shadow / stand
-el('rect',{x:RACK_X-8,y:RACK_Y+RACK_H,width:RACK_W+16,height:8,rx:2,fill:'#050608'});
-// base plinth
-el('rect',{x:RACK_X-10,y:RACK_Y+RACK_H-4,width:RACK_W+20,height:10,rx:2,fill:'#1a1d22',stroke:'#272b33','stroke-width':1});
-// frame
-el('rect',{x:RACK_X,y:RACK_Y,width:RACK_W,height:RACK_H,rx:6,fill:'url(#rackFrame)',stroke:'#2b2f37','stroke-width':1});
-// inner cavity
-el('rect',{x:INNER_X,y:INNER_Y,width:INNER_W,height:INNER_H,rx:2,fill:'url(#rackInner)',stroke:'#05060a','stroke-width':1});
-// rack ears (left/right mounting strips)
-el('rect',{x:INNER_X-4,y:INNER_Y,width:4,height:INNER_H,fill:'#202329'});
-el('rect',{x:INNER_X+INNER_W,y:INNER_Y,width:4,height:INNER_H,fill:'#202329'});
-// screw dots on ears
+/* ── Rack outer frame ───────────────────────────────────────────── */
+el('rect',{x:RACK_X-8,   y:RACK_Y+RACK_H,    width:RACK_W+16, height:8,  rx:2, fill:'#050608'});
+el('rect',{x:RACK_X-10,  y:RACK_Y+RACK_H-4,  width:RACK_W+20, height:10, rx:2, fill:'#1a1d22',stroke:'#272b33','stroke-width':1});
+el('rect',{x:RACK_X,     y:RACK_Y,            width:RACK_W,    height:RACK_H, rx:6, fill:'url(#rackFrame)',stroke:'#2b2f37','stroke-width':1});
+el('rect',{x:INNER_X,    y:INNER_Y,           width:INNER_W,   height:INNER_H, rx:2, fill:'url(#rackInner)',stroke:'#05060a','stroke-width':1});
+el('rect',{x:INNER_X-4,  y:INNER_Y,           width:4,         height:INNER_H, fill:'#202329'});
+el('rect',{x:INNER_X+INNER_W, y:INNER_Y,      width:4,         height:INNER_H, fill:'#202329'});
 for(let i=0;i<18;i++){
   const cy = INNER_Y + 8 + i*16;
-  el('circle',{cx:INNER_X-2,cy,r:1,fill:'#0a0b0d'});
-  el('circle',{cx:INNER_X+INNER_W+2,cy,r:1,fill:'#0a0b0d'});
+  el('circle',{cx:INNER_X-2,         cy, r:1, fill:'#0a0b0d'});
+  el('circle',{cx:INNER_X+INNER_W+2, cy, r:1, fill:'#0a0b0d'});
 }
 
-/* ---------- Module layout ---------- */
-let y = INNER_Y + 6;
-const slotW = INNER_W;
-const slotX = INNER_X;
+/* ── Module slot layout ─────────────────────────────────────────── */
+let _y = INNER_Y + 6;
 const slots = {};
 for(const m of modules){
   const h = m.u * U;
-  if(m.kind === 'gap'){ y += h; continue; }
-  slots[m.kind] = {x:slotX, y, w:slotW, h};
-  y += h;
+  if(m.kind==='gap'){ _y += h; continue; }
+  slots[m.kind] = {x:INNER_X, y:_y, w:INNER_W, h};
+  _y += h;
 }
 
-/* ---------- 2U SCREEN PANEL ---------- */
+/* ── Screen panel (2U) ──────────────────────────────────────────── */
 function drawScreen(s){
   const r = g({transform:`translate(${s.x},${s.y})`});
   el('rect',{x:0,y:0,width:s.w,height:s.h,rx:2,fill:'url(#faceplateLite)',stroke:'#2b2f37','stroke-width':.75},r);
-  // bezel
   el('rect',{x:6,y:4,width:s.w-12,height:s.h-8,rx:2,fill:'#0a0b0e',stroke:'#1f2229','stroke-width':.5},r);
-  // screen area
-  const sw = s.w-40, sh = s.h-14;
-  const sx = (s.w-sw)/2, sy = 7;
+  const sw=s.w-40, sh=s.h-14, sx=(s.w-sw)/2, sy=7;
   el('rect',{x:sx,y:sy,width:sw,height:sh,rx:1.5,fill:'url(#screenGlow)'},r);
-  // grafana-ish bars + line
-  const chartG = g({transform:`translate(${sx+4},${sy+3})`, 'clip-path':`inset(0 round 1px)`}, r);
-  const cw = sw-8, ch = sh-6;
-  // baseline
-  el('line',{x1:0,y1:ch-1,x2:cw,y2:ch-1,stroke:'#0e3540','stroke-width':.5}, chartG);
-  el('line',{x1:0,y1:ch/2,x2:cw,y2:ch/2,stroke:'#0e3540','stroke-width':.3,'stroke-dasharray':'2 2'}, chartG);
-  // mini bar cluster
-  const bars = 14;
-  for(let i=0;i<bars;i++){
-    const bh = 2 + Math.abs(Math.sin(i*1.3))*ch*0.55 + (i%3)*1.2;
-    el('rect',{x:i*3,y:ch-bh,width:1.6,height:bh,fill:'#0f4a58'}, chartG);
+  const cg = g({transform:`translate(${sx+4},${sy+3})`},r);
+  const cw=sw-8, ch=sh-6;
+  el('line',{x1:0,y1:ch-1,x2:cw,y2:ch-1,stroke:'#0e3540','stroke-width':.5},cg);
+  el('line',{x1:0,y1:ch/2,x2:cw,y2:ch/2,stroke:'#0e3540','stroke-width':.3,'stroke-dasharray':'2 2'},cg);
+  for(let i=0;i<14;i++){
+    const bh=2+Math.abs(Math.sin(i*1.3))*ch*0.55+(i%3)*1.2;
+    el('rect',{x:i*3,y:ch-bh,width:1.6,height:bh,fill:'#0f4a58'},cg);
   }
-  // sparkline
-  let d = `M 0 ${ch*0.7}`;
-  const pts = 22;
-  for(let i=1;i<=pts;i++){
-    const px = (i/pts)*cw;
-    const py = ch*0.35 + Math.sin(i*0.6)*ch*0.18 + (i%4)*1.5;
-    d += ` L ${px.toFixed(1)} ${py.toFixed(1)}`;
+  let d=`M 0 ${ch*0.7}`;
+  for(let i=1;i<=22;i++){
+    const px=(i/22)*cw, py=ch*0.35+Math.sin(i*0.6)*ch*0.18+(i%4)*1.5;
+    d+=` L ${px.toFixed(1)} ${py.toFixed(1)}`;
   }
-  el('path',{d,fill:'none',stroke:'#56e0ff','stroke-width':1,filter:'url(#softGlow)'}, chartG);
-  // status chip
-  el('rect',{x:cw-22,y:1,width:20,height:5,rx:1,fill:'#0e3540'}, chartG);
-  el('circle',{cx:cw-19,cy:3.5,r:1,fill:'#7dffb0'}, chartG);
-  // brand strip under
-  el('rect',{x:sx,y:s.h-5,width:sw,height:1,fill:'#1a1e25'},r);
-  // small power led
+  el('path',{d,fill:'none',stroke:'#56e0ff','stroke-width':1,filter:'url(#softGlow)'},cg);
+  el('rect',{x:cw-22,y:1,width:20,height:5,rx:1,fill:'#0e3540'},cg);
+  el('circle',{cx:cw-19,cy:3.5,r:1,fill:'#7dffb0'},cg);
   el('circle',{cx:s.w-10,cy:s.h-5,r:1.2,fill:'#56e0ff',filter:'url(#softGlow)'},r);
 }
 drawScreen(slots.screen);
 
-/* ---------- 1U UDM PRO ---------- */
+/* ── UDM Pro (1U) ───────────────────────────────────────────────── */
 function drawUDM(s){
   const r = g({transform:`translate(${s.x},${s.y})`});
   el('rect',{x:0,y:0,width:s.w,height:s.h,rx:1.5,fill:'url(#faceplate)',stroke:'#2a2e35','stroke-width':.75},r);
-  // left touchscreen square
   el('rect',{x:6,y:3,width:12,height:s.h-6,rx:1,fill:'#0a1c22',stroke:'#124652','stroke-width':.5},r);
   el('rect',{x:8,y:5,width:8,height:2,fill:'#56e0ff',opacity:.7},r);
   el('rect',{x:8,y:8,width:6,height:1,fill:'#1d5763'},r);
-  // vent slots (middle)
-  for(let i=0;i<18;i++){
-    el('rect',{x:24+i*4,y:5,width:2,height:s.h-10,fill:'#0a0b0e'},r);
-  }
-  // ports on right: 8 SFP + ethernet
-  const px0 = 104;
+  for(let i=0;i<18;i++) el('rect',{x:24+i*4,y:5,width:2,height:s.h-10,fill:'#0a0b0e'},r);
   for(let i=0;i<8;i++){
-    el('rect',{x:px0+i*10,y:4,width:8,height:s.h-8,rx:1,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.4},r);
-    // activity led
-    el('circle',{cx:px0+i*10+4,cy:s.h-3,r:.8,fill: i<3 ? '#7dffb0' : (i===3?'#ffb23f':'#2a2e35')},r);
+    el('rect',{x:104+i*10,y:4,width:8,height:s.h-8,rx:1,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.4},r);
+    el('circle',{cx:104+i*10+4,cy:s.h-3,r:.8,fill:i<3?'#7dffb0':(i===3?'#ffb23f':'#2a2e35')},r);
   }
-  // console port
-  el('rect',{x:px0+82,y:4,width:8,height:s.h-8,rx:1,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.4},r);
-  // ubiquiti logo dot
+  el('rect',{x:186,y:4,width:8,height:s.h-8,rx:1,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.4},r);
   el('circle',{cx:s.w-8,cy:s.h/2,r:1.5,fill:'#56e0ff',filter:'url(#softGlow)'},r);
-  // blink
-  const b = el('circle',{cx:18,cy:s.h-3,r:.9,fill:'#7dffb0'},r);
-  b.style.animation = 'blink 1.6s infinite';
+  const b=el('circle',{cx:18,cy:s.h-3,r:.9,fill:'#7dffb0'},r);
+  b.style.animation='blink 1.6s infinite';
 }
 drawUDM(slots.udm);
 
-/* ---------- 1U SWITCH ---------- */
+/* ── Switch (1U) ────────────────────────────────────────────────── */
 function drawSwitch(s){
   const r = g({transform:`translate(${s.x},${s.y})`});
   el('rect',{x:0,y:0,width:s.w,height:s.h,rx:1.5,fill:'url(#faceplate)',stroke:'#2a2e35','stroke-width':.75},r);
-  // mount ears
   el('rect',{x:0,y:0,width:6,height:s.h,fill:'#1d2026'},r);
   el('circle',{cx:3,cy:3,r:1,fill:'#0a0b0d'},r);
   el('circle',{cx:3,cy:s.h-3,r:1,fill:'#0a0b0d'},r);
-  // power led
   el('circle',{cx:10,cy:s.h/2,r:1.2,fill:'#7dffb0',filter:'url(#softGlow)'},r);
-  // 24 ports in 2 rows
-  const portsX = 18, portsY = 3, pw = 6, ph = 5, gap=.5;
-  const switchPorts = [];
+  const pw=6, ph=5, gap=.5;
+  const switchPorts=[];
   for(let row=0;row<2;row++){
     for(let i=0;i<24;i++){
-      const x = portsX + i*(pw+gap);
-      const y = portsY + row*(ph+1);
+      const x=18+i*(pw+gap), y=3+row*(ph+1);
       el('rect',{x,y,width:pw,height:ph,rx:.5,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.3},r);
-      // port led
       if(Math.random()>.55){
-        const c = ['#7dffb0','#ffb23f','#56e0ff'][i%3];
-        const led = el('circle',{cx:x+pw/2,cy:y+ph/2,r:.6,fill:c,opacity:.8},r);
-        if(i%5===0) led.style.animation = `blink ${1+Math.random()}s infinite`;
+        const c=['#7dffb0','#ffb23f','#56e0ff'][i%3];
+        const led=el('circle',{cx:x+pw/2,cy:y+ph/2,r:.6,fill:c,opacity:.8},r);
+        if(i%5===0) led.style.animation=`blink ${1+Math.random()}s infinite`;
       }
-      if(row===0) switchPorts.push({x: s.x + x + pw/2, y: s.y + y});
+      if(row===0) switchPorts.push({x:s.x+x+pw/2, y:s.y+y});
     }
   }
-  window.__switchPorts = switchPorts;
-  // sfp slots right
-  const sfpX = portsX + 24*(pw+gap) + 4;
-  for(let i=0;i<4;i++){
-    el('rect',{x:sfpX+i*8,y:2,width:7,height:s.h-4,rx:.5,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.3},r);
-  }
+  window.__switchPorts=switchPorts;
+  const sfpX=18+24*(pw+gap)+4;
+  for(let i=0;i<4;i++) el('rect',{x:sfpX+i*8,y:2,width:7,height:s.h-4,rx:.5,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.3},r);
 }
 drawSwitch(slots.switch);
 
-/* ---------- 1U PATCH PANEL + rainbow cables ---------- */
+/* ── Patch panel (1U) ───────────────────────────────────────────── */
 function drawPatch(s){
   const r = g({transform:`translate(${s.x},${s.y})`});
   el('rect',{x:0,y:0,width:s.w,height:s.h,rx:1.5,fill:'url(#faceplateLite)',stroke:'#2a2e35','stroke-width':.75},r);
-  // ears
   el('rect',{x:0,y:0,width:6,height:s.h,fill:'#1d2026'},r);
   el('rect',{x:s.w-6,y:0,width:6,height:s.h,fill:'#1d2026'},r);
   el('circle',{cx:3,cy:3,r:.9,fill:'#0a0b0d'},r);
   el('circle',{cx:3,cy:s.h-3,r:.9,fill:'#0a0b0d'},r);
   el('circle',{cx:s.w-3,cy:3,r:.9,fill:'#0a0b0d'},r);
   el('circle',{cx:s.w-3,cy:s.h-3,r:.9,fill:'#0a0b0d'},r);
-  // labels strip
   el('rect',{x:8,y:1.5,width:s.w-16,height:2,fill:'#0b0c10'},r);
-  // 24 keystones
-  const palette = (window.__cablePalette && window.__cablePalette()) || ['#ff6b7a','#ffb23f','#ffe26a','#7dffb0','#56e0ff','#6aa6ff','#b28cff','#ff7fd5'];
-  const count = 24;
-  const usable = s.w - 18;
-  const kw = usable/count;
-  const jackY = 5;
-  const jackH = s.h - 8;
-  const jacks = [];
-  for(let i=0;i<count;i++){
-    const x = 9 + i*kw;
-    el('rect',{x:x+0.6,y:jackY,width:kw-1.2,height:jackH,rx:.6,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.3},r);
-    // cable head (RJ45 boot) in color
-    const c = palette[i % palette.length];
-    el('rect',{x:x+1.2,y:jackY+1,width:kw-2.4,height:jackH-2,rx:.4,fill:c,opacity:.95},r);
-    jacks.push({x:s.x + x + kw/2, y:s.y + jackY, color:c});
+  const palette=(window.__cablePalette&&window.__cablePalette())||['#ff6b7a','#ffb23f','#ffe26a','#7dffb0','#56e0ff','#6aa6ff','#b28cff','#ff7fd5'];
+  const kw=(s.w-18)/24;
+  const jacks=[];
+  for(let i=0;i<24;i++){
+    const x=9+i*kw;
+    el('rect',{x:x+.6,y:5,width:kw-1.2,height:s.h-8,rx:.6,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.3},r);
+    const c=palette[i%palette.length];
+    el('rect',{x:x+1.2,y:6,width:kw-2.4,height:s.h-10,rx:.4,fill:c,opacity:.95},r);
+    jacks.push({x:s.x+x+kw/2, y:s.y+5, color:c});
   }
-  // save for cables
-  window.__jacks = jacks;
+  window.__jacks=jacks;
 }
 drawPatch(slots.patch);
 
-/* ---------- Generic 2U server with drives / fans ---------- */
+/* ── 2U server ──────────────────────────────────────────────────── */
 function drawServer(s, opts={}){
   const r = g({transform:`translate(${s.x},${s.y})`});
   el('rect',{x:0,y:0,width:s.w,height:s.h,rx:1.5,fill:'url(#faceplate)',stroke:'#2a2e35','stroke-width':.75},r);
-  // ears
   el('rect',{x:0,y:0,width:6,height:s.h,fill:'#1d2026'},r);
   el('rect',{x:s.w-6,y:0,width:6,height:s.h,fill:'#1d2026'},r);
-  el('circle',{cx:3,cy:3,r:.9,fill:'#0a0b0d'},r);
-  el('circle',{cx:3,cy:s.h-3,r:.9,fill:'#0a0b0d'},r);
-  el('circle',{cx:s.w-3,cy:3,r:.9,fill:'#0a0b0d'},r);
-  el('circle',{cx:s.w-3,cy:s.h-3,r:.9,fill:'#0a0b0d'},r);
-  // status leds
   el('circle',{cx:12,cy:6,r:1.2,fill:'#7dffb0',filter:'url(#softGlow)'},r);
-  const led2 = el('circle',{cx:12,cy:s.h-6,r:1.2,fill:'#ffb23f'},r);
+  const led2=el('circle',{cx:12,cy:s.h-6,r:1.2,fill:'#ffb23f'},r);
   led2.style.animation='blink 2.2s infinite';
-  // drive bays
-  const bays = opts.bays ?? 8;
-  const bayX0 = 20, bayY = 3, bayH = s.h-6;
-  const bayW = (s.w - 70)/bays;
+  const bays=opts.bays??8, bayW=(s.w-70)/bays;
   for(let i=0;i<bays;i++){
-    const x = bayX0 + i*bayW;
-    el('rect',{x:x+0.5,y:bayY,width:bayW-1,height:bayH,rx:.6,fill:'#0d1015',stroke:'#1a1d22','stroke-width':.4},r);
-    // handle
-    el('rect',{x:x+2,y:bayY+bayH/2-.5,width:bayW-4,height:1,fill:'#2a2e36'},r);
-    // drive led
-    if(i<(opts.active??bays)) el('circle',{cx:x+bayW-2.5,cy:bayY+2,r:.6,fill:'#56e0ff'},r);
+    const x=20+i*bayW, bayH=s.h-6;
+    el('rect',{x:x+.5,y:3,width:bayW-1,height:bayH,rx:.6,fill:'#0d1015',stroke:'#1a1d22','stroke-width':.4},r);
+    el('rect',{x:x+2,y:3+bayH/2-.5,width:bayW-4,height:1,fill:'#2a2e36'},r);
+    if(i<(opts.active??bays)) el('circle',{cx:x+bayW-2.5,cy:5,r:.6,fill:'#56e0ff'},r);
   }
-  // right: model label strip + vents
-  const rx0 = 20 + bays*bayW + 4;
+  const rx0=20+bays*bayW+4;
   el('rect',{x:rx0,y:3,width:s.w-rx0-8,height:s.h-6,rx:1,fill:'#0c0e12',stroke:'#1a1d22','stroke-width':.4},r);
-  // vent slots
-  for(let i=0;i<8;i++){
-    el('rect',{x:rx0+3+i*3,y:5,width:1.2,height:s.h-10,fill:'#05060a'},r);
-  }
+  for(let i=0;i<8;i++) el('rect',{x:rx0+3+i*3,y:5,width:1.2,height:s.h-10,fill:'#05060a'},r);
 }
 
-/* ---------- 1U thin server ---------- */
+/* ── Thin server (1U) ───────────────────────────────────────────── */
 function drawThinServer(s){
   const r = g({transform:`translate(${s.x},${s.y})`});
   el('rect',{x:0,y:0,width:s.w,height:s.h,rx:1.5,fill:'url(#faceplate)',stroke:'#2a2e35','stroke-width':.75},r);
   el('rect',{x:0,y:0,width:6,height:s.h,fill:'#1d2026'},r);
   el('rect',{x:s.w-6,y:0,width:6,height:s.h,fill:'#1d2026'},r);
-  // front bezel slots
-  for(let i=0;i<40;i++){
-    el('rect',{x:10+i*4,y:4,width:2.5,height:s.h-8,fill:'#0a0b0e'},r);
-  }
-  // leds
+  for(let i=0;i<40;i++) el('rect',{x:10+i*4,y:4,width:2.5,height:s.h-8,fill:'#0a0b0e'},r);
   el('circle',{cx:s.w-10,cy:s.h/2-2,r:1,fill:'#7dffb0'},r);
-  const l = el('circle',{cx:s.w-10,cy:s.h/2+2,r:1,fill:'#56e0ff'},r);
+  const l=el('circle',{cx:s.w-10,cy:s.h/2+2,r:1,fill:'#56e0ff'},r);
   l.style.animation='blink2 1.4s infinite';
 }
 
-/* ---------- 2U slot with 3 Lenovo M700 mini PCs sitting on a shelf ---------- */
+/* ── M700 shelf (2U) ────────────────────────────────────────────── */
 function drawM700Shelf(s){
   const r = g({transform:`translate(${s.x},${s.y})`});
-  // shelf tray
   el('rect',{x:0,y:0,width:s.w,height:s.h,rx:1.5,fill:'#0d0f13',stroke:'#2a2e35','stroke-width':.75},r);
   el('rect',{x:0,y:0,width:6,height:s.h,fill:'#1d2026'},r);
   el('rect',{x:s.w-6,y:0,width:6,height:s.h,fill:'#1d2026'},r);
-  // shelf floor line
   el('rect',{x:6,y:s.h-2,width:s.w-12,height:1,fill:'#1a1d22'},r);
-  // 3 m700 tiny pcs standing side by side
-  const count = 3;
-  const areaX = 14, areaY = 3, areaW = s.w - 28, areaH = s.h - 6;
-  const gap = 6;
-  const pcW = (areaW - gap*(count-1))/count;
-  for(let i=0;i<count;i++){
-    const x = areaX + i*(pcW+gap);
-    const pc = g({transform:`translate(${x},${areaY})`},r);
-    // body (dark, slightly lighter top)
+  const areaW=s.w-28, areaH=s.h-6, pcW=(areaW-12)/3;
+  for(let i=0;i<3;i++){
+    const x=14+i*(pcW+6);
+    const pc=g({transform:`translate(${x},3)`},r);
     el('rect',{x:0,y:0,width:pcW,height:areaH,rx:1.5,fill:'#1a1d22',stroke:'#2c3039','stroke-width':.5},pc);
-    // top seam
     el('line',{x1:0,y1:2,x2:pcW,y2:2,stroke:'#262a31','stroke-width':.4},pc);
-    // front face darker
     el('rect',{x:1.5,y:3,width:pcW-3,height:areaH-5,rx:1,fill:'#0d1014'},pc);
-    // power button
     el('circle',{cx:pcW/2,cy:6,r:1.2,fill:'#0a0b0d',stroke:'#2a2e35','stroke-width':.3},pc);
     el('circle',{cx:pcW/2,cy:6,r:.5,fill:'#7dffb0',filter:'url(#softGlow)'},pc);
-    // slot dvd/usb row
     el('rect',{x:3,y:10,width:pcW-6,height:1,fill:'#05060a'},pc);
-    el('rect',{x:3,y:13,width:3,height:1.5,fill:'#05060a'},pc);
-    el('rect',{x:7,y:13,width:3,height:1.5,fill:'#05060a'},pc);
-    // activity led
-    const act = el('circle',{cx:pcW-3,cy:areaH-3,r:.6,fill:'#56e0ff'},pc);
-    act.style.animation=`blink ${1.2+i*0.3}s infinite`;
-    // tiny label strip
+    const act=el('circle',{cx:pcW-3,cy:areaH-3,r:.6,fill:'#56e0ff'},pc);
+    act.style.animation=`blink ${1.2+i*.3}s infinite`;
     el('rect',{x:3,y:areaH-6,width:pcW-6,height:1,fill:'#1f2329'},pc);
   }
 }
@@ -453,34 +344,25 @@ drawServer(slots.server1,{bays:8,active:6});
 drawM700Shelf(slots.m700);
 drawThinServer(slots.server2);
 
-/* ---------- 2U UPS ---------- */
+/* ── UPS (2U) ───────────────────────────────────────────────────── */
 function drawUPS(s){
   const r = g({transform:`translate(${s.x},${s.y})`});
   el('rect',{x:0,y:0,width:s.w,height:s.h,rx:1.5,fill:'url(#faceplate)',stroke:'#2a2e35','stroke-width':.75},r);
   el('rect',{x:0,y:0,width:6,height:s.h,fill:'#1d2026'},r);
   el('rect',{x:s.w-6,y:0,width:6,height:s.h,fill:'#1d2026'},r);
-  // small display
-  const dw=40,dh=s.h-10, dx=12, dy=5;
-  el('rect',{x:dx,y:dy,width:dw,height:dh,rx:1,fill:'#0a1c22',stroke:'#124652','stroke-width':.5},r);
-  // battery bars
-  for(let i=0;i<5;i++){
-    el('rect',{x:dx+3+i*7,y:dy+dh-5,width:5,height:2,fill: i<4?'#7dffb0':'#2a3a3f'},r);
+  const dw=40, dh=s.h-10;
+  el('rect',{x:12,y:5,width:dw,height:dh,rx:1,fill:'#0a1c22',stroke:'#124652','stroke-width':.5},r);
+  for(let i=0;i<5;i++) el('rect',{x:15+i*7,y:5+dh-5,width:5,height:2,fill:i<4?'#7dffb0':'#2a3a3f'},r);
+  el('text',{x:32,y:12,'text-anchor':'middle','font-family':'JetBrains Mono','font-size':5,fill:'#56e0ff','font-weight':700},r).textContent='100%';
+  el('text',{x:32,y:19,'text-anchor':'middle','font-family':'JetBrains Mono','font-size':3.5,fill:'#2a8092'},r).textContent='230V · 42min';
+  for(let i=0;i<6;i++){
+    const x=60+i*11;
+    el('rect',{x,y:4,width:10,height:s.h-8,rx:1,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.4},r);
+    el('circle',{cx:x+5,cy:7,r:.8,fill:'#05060a'},r);
+    el('rect',{x:x+2.5,y:4+(s.h-8)/2,width:5,height:1.2,fill:'#05060a'},r);
+    el('rect',{x:x+4.4,y:4+s.h-12,width:1.2,height:2,fill:'#05060a'},r);
   }
-  // digits
-  el('text',{x:dx+dw/2,y:dy+7,'text-anchor':'middle','font-family':'JetBrains Mono','font-size':5,fill:'#56e0ff','font-weight':700},r).textContent='100%';
-  el('text',{x:dx+dw/2,y:dy+14,'text-anchor':'middle','font-family':'JetBrains Mono','font-size':3.5,fill:'#2a8092'},r).textContent='230V · 42min';
-  // outlets on the right
-  const oX0 = 60, oY = 4, oW = 10, oH = s.h-8, oCount=6;
-  for(let i=0;i<oCount;i++){
-    const x = oX0 + i*(oW+1);
-    el('rect',{x,y:oY,width:oW,height:oH,rx:1,fill:'#0a0b0d',stroke:'#1a1d22','stroke-width':.4},r);
-    // outlet holes
-    el('circle',{cx:x+oW/2,cy:oY+3,r:.8,fill:'#05060a'},r);
-    el('rect',{x:x+2.5,y:oY+oH/2,width:5,height:1.2,fill:'#05060a'},r);
-    el('rect',{x:x+oW/2-.6,y:oY+oH-4,width:1.2,height:2,fill:'#05060a'},r);
-  }
-  // big power button
-  const bx = s.w - 20;
+  const bx=s.w-20;
   el('circle',{cx:bx,cy:s.h/2,r:5,fill:'#0d1015',stroke:'#2a2e35','stroke-width':.6},r);
   el('circle',{cx:bx,cy:s.h/2,r:2.8,fill:'#162a30',stroke:'#1d4652','stroke-width':.5},r);
   el('path',{d:`M ${bx} ${s.h/2-1.8} L ${bx} ${s.h/2+.6}`,stroke:'#56e0ff','stroke-width':1,'stroke-linecap':'round',filter:'url(#softGlow)'},r);
@@ -488,230 +370,170 @@ function drawUPS(s){
 }
 drawUPS(slots.ups);
 
-/* ---------- Neat cables: patch panel → switch directly above ---------- */
+/* ── Cables (patch → switch) ────────────────────────────────────── */
 const cablesG = g({});
-
-const jacks = window.__jacks || [];
-const switchPorts = window.__switchPorts || [];
+const jacks = window.__jacks||[];
+const switchPorts = window.__switchPorts||[];
 
 function cablePalette(mode){
-  const rainbow = ['#ff6b7a','#ffb23f','#ffe26a','#7dffb0','#56e0ff','#6aa6ff','#b28cff','#ff7fd5'];
-  if(mode==='mono')   return new Array(24).fill('#56e0ff');
-  if(mode==='twotone')return Array.from({length:24},(_,i)=> i%2?'#56e0ff':'#b28cff');
-  if(mode==='warm')   return ['#ff6b7a','#ffb23f','#ffe26a','#ff7fd5'];
-  return rainbow;
+  const rb=['#ff6b7a','#ffb23f','#ffe26a','#7dffb0','#56e0ff','#6aa6ff','#b28cff','#ff7fd5'];
+  if(mode==='mono')    return new Array(24).fill('#56e0ff');
+  if(mode==='twotone') return Array.from({length:24},(_,i)=>i%2?'#56e0ff':'#b28cff');
+  if(mode==='warm')    return ['#ff6b7a','#ffb23f','#ffe26a','#ff7fd5'];
+  return rb;
 }
-
 function drawCables(){
-  cablesG.innerHTML = '';
-  const palette = cablePalette(window.__tweaks.cables);
-  const n = Math.min(jacks.length, switchPorts.length);
+  cablesG.innerHTML='';
+  const palette=cablePalette(window.__tweaks.cables);
+  const n=Math.min(jacks.length,switchPorts.length);
   for(let i=0;i<n;i++){
-    const j = jacks[i];
-    const p = switchPorts[i];
-    const color = palette[i % palette.length];
-    const sx = j.x, sy = j.y + 6;   // exit bottom of jack
-    const ex = p.x, ey = p.y + 6;   // enter top of switch port (ports drawn top-down so +h)
-    // the switch port top is actually at p.y, cable plugs in from below the switch port visual
-    // Route: small boot down, S-curve up into switch port bottom
-    const midY = (sy + ey) / 2;
-    const bend = 3 + (i%4);
-    const d = `M ${sx} ${sy}
-               C ${sx} ${sy - bend}, ${ex} ${ey + bend}, ${ex} ${ey}`;
-    el('path',{d, fill:'none', stroke:color, 'stroke-width':1.1, 'stroke-linecap':'round', opacity:.95, filter:'url(#softGlow)'}, cablesG);
-    // tiny boot at patch end
-    el('rect',{x: sx-1.2, y: sy-1, width:2.4, height:2, rx:.4, fill:color, opacity:.9}, cablesG);
+    const j=jacks[i], p=switchPorts[i];
+    const color=palette[i%palette.length];
+    const sx=j.x, sy=j.y+6, ex=p.x, ey=p.y+6;
+    const bend=3+(i%4);
+    el('path',{d:`M ${sx} ${sy} C ${sx} ${sy-bend}, ${ex} ${ey+bend}, ${ex} ${ey}`,
+      fill:'none',stroke:color,'stroke-width':1.1,'stroke-linecap':'round',opacity:.95,filter:'url(#softGlow)'},cablesG);
+    el('rect',{x:sx-1.2,y:sy-1,width:2.4,height:2,rx:.4,fill:color,opacity:.9},cablesG);
   }
 }
 svg.appendChild(cablesG);
 
-/* ---------- Floating annotations (subtle) ---------- */
+/* ── Callouts placeholder ───────────────────────────────────────── */
 const anno = g({id:'callouts'});
-function tick(x1,y1,x2,y2,label,labelX,labelY,align='start'){}
-// left-side callouts removed per request
 
-/* ---------- Left decoration: topology sketch (removed) ---------- */
-const deco = g({id:'topology',style:'display:none'});
+/* ── Stats bars (desktop only, hidden on mobile via CSS) ─────────── */
+{
+  const stats=[
+    {l:'CPU',v:.42,c:'#56e0ff'},
+    {l:'MEM',v:.61,c:'#7dffb0'},
+    {l:'NET',v:.28,c:'#b28cff'},
+    {l:'DSK',v:.74,c:'#ffb23f'},
+    {l:'PWR',v:.35,c:'#ff7fd5'},
+  ];
+  const sd = g({id:'stats', transform:`translate(${RACK_X+RACK_W+60},70)`});
+  const barH=180, barW=10, barGap=24;
+  stats.forEach((st,i)=>{
+    const x=i*barGap;
+    el('rect',{x,y:0,width:barW,height:barH,rx:2,fill:'#0f1218',stroke:'#1d2129','stroke-width':.5},sd);
+    const segH=(barH-4)/18;
+    const filled=Math.round(18*st.v);
+    for(let k=0;k<18;k++){
+      const on=k<filled;
+      el('rect',{x:x+2,y:barH-2-(k+1)*segH+1,width:barW-4,height:segH-1,rx:.6,
+        fill:on?st.c:'#131720',opacity:on?.95:1,filter:on?'url(#softGlow)':''},sd);
+    }
+    el('text',{x:x+barW/2,y:barH+12,'text-anchor':'middle','font-family':'JetBrains Mono',
+      'font-size':7,fill:'#6b7380','letter-spacing':'.15em'},sd).textContent=st.l;
+    el('text',{x:x+barW/2,y:-6,'text-anchor':'middle','font-family':'JetBrains Mono',
+      'font-size':6,fill:st.c,'letter-spacing':'.1em'},sd).textContent=Math.round(st.v*100)+'%';
+  });
+  el('text',{x:0,y:-20,'font-family':'JetBrains Mono','font-size':7,fill:'#4a515c',
+    'letter-spacing':'.2em'},sd).textContent='LIVE · STATS';
+}
 
-/* ---------- Right decoration: vertical stat bars ---------- */
-const rightDeco = g({id:'stats', transform:`translate(${RACK_X + RACK_W + 60}, 70)`});
-const stats = [
-  {l:'CPU', v:0.42, c:'#56e0ff'},
-  {l:'MEM', v:0.61, c:'#7dffb0'},
-  {l:'NET', v:0.28, c:'#b28cff'},
-  {l:'DSK', v:0.74, c:'#ffb23f'},
-  {l:'PWR', v:0.35, c:'#ff7fd5'},
-];
-const barH = 180, barW = 10, barGap = 24;
-stats.forEach((st,i)=>{
-  const x = i*barGap;
-  el('rect',{x,y:0,width:barW,height:barH,rx:2,fill:'#0f1218',stroke:'#1d2129','stroke-width':.5},rightDeco);
-  // segmented fill
-  const segCount = 18;
-  const segH = (barH-4)/segCount;
-  const filled = Math.round(segCount*st.v);
-  for(let k=0;k<segCount;k++){
-    const filledSeg = k < filled;
-    el('rect',{x:x+2,y:barH-2 - (k+1)*segH+1,width:barW-4,height:segH-1,rx:.6,fill: filledSeg ? st.c : '#131720', opacity: filledSeg? .95 : 1, filter: filledSeg?'url(#softGlow)':''},rightDeco);
-  }
-  el('text',{x:x+barW/2,y:barH+12,'text-anchor':'middle','font-family':'JetBrains Mono','font-size':7,fill:'#6b7380','letter-spacing':'.15em'},rightDeco).textContent = st.l;
-  el('text',{x:x+barW/2,y:-6,'text-anchor':'middle','font-family':'JetBrains Mono','font-size':6,fill:st.c,'letter-spacing':'.1em'},rightDeco).textContent = Math.round(st.v*100)+'%';
-});
-// title
-el('text',{x:0,y:-20,'font-family':'JetBrains Mono','font-size':7,fill:'#4a515c','letter-spacing':'.2em'},rightDeco).textContent = 'LIVE · STATS';
-
-/* ---------- Apply tweaks ---------- */
+/* ── Apply tweaks ───────────────────────────────────────────────── */
 function applyTweaks(){
-  const t = window.__tweaks;
-  document.getElementById('callouts').style.display = t.showCallouts ? '' : 'none';
-  document.getElementById('stats').style.display   = t.showStats    ? '' : 'none';
-  document.getElementById('banner').style.setProperty('--show-grid', t.showGrid?'1':'0');
-  // redraw cables with new palette
+  document.getElementById('callouts').style.display = window.__tweaks.showCallouts?'':'none';
   if(window.__drawCables) window.__drawCables();
 }
-// expose drawCables
 window.__drawCables = drawCables;
 applyTweaks();
 
-/* ---------- SVG download ---------- */
+/* ── SVG download ───────────────────────────────────────────────── */
 function downloadSVG(){
-  // Deep clone svg
-  const clone = svg.cloneNode(true);
+  const clone=svg.cloneNode(true);
   clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
-  clone.setAttribute('xmlns:xlink','http://www.w3.org/1999/xlink');
-  clone.setAttribute('width', 820);
-  clone.setAttribute('height', 400);
+  clone.setAttribute('width',820); clone.setAttribute('height',400);
   clone.setAttribute('viewBox','0 0 820 400');
-
-  // Kill any CSS-driven animations by removing style attrs that reference animation
   clone.querySelectorAll('[style]').forEach(n=>{
-    const s = n.getAttribute('style') || '';
-    // strip animation props, keep opacity:1 baseline
-    const cleaned = s.replace(/animation[^;]*;?/gi,'').trim();
-    if(cleaned) n.setAttribute('style', cleaned); else n.removeAttribute('style');
+    const c=(n.getAttribute('style')||'').replace(/animation[^;]*;?/gi,'').trim();
+    if(c) n.setAttribute('style',c); else n.removeAttribute('style');
   });
-  // Force all circles/rects that were blinking to fully visible (they have no explicit opacity here)
-
-  // Find defs in clone
-  const defs = clone.querySelector('defs');
-
-  // Add a background gradient that recreates the .frame CSS look
-  const bgGrad = `
-    <radialGradient id="bgGlow1" cx="20%" cy="120%" r="80%">
-      <stop offset="0%" stop-color="#0a2a33" stop-opacity=".35"/>
-      <stop offset="60%" stop-color="#0a2a33" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="bgGlow2" cx="90%" cy="-20%" r="75%">
-      <stop offset="0%" stop-color="#1a0f2a" stop-opacity=".3"/>
-      <stop offset="60%" stop-color="#1a0f2a" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="bgBase" x1="0" x2="0" y1="0" y2="1">
-      <stop offset="0" stop-color="#0c0e12"/>
-      <stop offset="1" stop-color="#07080a"/>
-    </linearGradient>
-    <pattern id="bgGrid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,.025)" stroke-width="1"/>
-    </pattern>
-    <radialGradient id="gridMask" cx="50%" cy="60%" r="60%">
-      <stop offset="0" stop-color="#fff"/>
-      <stop offset=".7" stop-color="#fff" stop-opacity=".2"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-    </radialGradient>
-    <mask id="gridMaskM">
-      <rect x="0" y="0" width="820" height="400" fill="url(#gridMask)"/>
-    </mask>
-  `;
-  defs.insertAdjacentHTML('beforeend', bgGrad);
-
-  // Insert background layers BEFORE other content
-  const bgLayer = `
-    <rect x="0" y="0" width="820" height="400" fill="url(#bgBase)"/>
-    <rect x="0" y="0" width="820" height="400" fill="url(#bgGrid)" mask="url(#gridMaskM)"/>
-    <rect x="0" y="0" width="820" height="400" fill="url(#bgGlow1)"/>
-    <rect x="0" y="0" width="820" height="400" fill="url(#bgGlow2)"/>
-    <rect x="0" y="336" width="820" height="64" fill="#081820" opacity=".4"/>
-  `;
-  defs.insertAdjacentHTML('afterend', bgLayer);
-
-  // Add the HTML corner labels as SVG text
-  const tlDot = `<circle cx="28" cy="28" r="3" fill="#56e0ff"/>`;
-  const corners = `
-    ${tlDot}
-    <text x="40" y="31" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" letter-spacing="1.8" fill="#6b7380">HOMELAB</text>
-    <text x="800" y="31" text-anchor="end" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" letter-spacing="1.8" fill="#6b7380">19" · 16U · ONLINE</text>
-    <text x="20" y="385" font-family="JetBrains Mono, ui-monospace, monospace" font-size="10" letter-spacing="1.8" fill="#6b7380">PWR · NET · TEMP 22°C</text>
-  `;
-  clone.insertAdjacentHTML('beforeend', corners);
-
-  // Serialize
-  const xml = new XMLSerializer().serializeToString(clone);
-  const full = '<?xml version="1.0" encoding="UTF-8"?>\n' + xml;
-  const blob = new Blob([full], {type:'image/svg+xml;charset=utf-8'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'homelab-rack.svg';
+  const d=clone.querySelector('defs');
+  d.insertAdjacentHTML('beforeend',`<linearGradient id="bgBase" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#0c0e12"/><stop offset="1" stop-color="#07080a"/></linearGradient>`);
+  d.insertAdjacentHTML('afterend',`<rect x="0" y="0" width="820" height="400" fill="url(#bgBase)"/>`);
+  clone.insertAdjacentHTML('beforeend',`
+    <circle cx="28" cy="28" r="3" fill="#56e0ff"/>
+    <text x="40" y="31" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="1.8" fill="#6b7380">HOMELAB</text>
+    <text x="800" y="31" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="1.8" fill="#6b7380">19" · 16U · ONLINE</text>
+    <text x="20" y="385" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="1.8" fill="#6b7380">PWR · NET · TEMP 22°C</text>
+  `);
+  const xml=new XMLSerializer().serializeToString(clone);
+  const blob=new Blob(['<?xml version="1.0" encoding="UTF-8"?>\n'+xml],{type:'image/svg+xml'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='homelab-rack.svg';
   document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-window.__downloadSVG = downloadSVG;
+window.__downloadSVG=downloadSVG;
 
-/* ---------- Tweaks panel ---------- */
+/* ── Tweaks panel ───────────────────────────────────────────────── */
 (function tweaksPanel(){
-  const panel = document.createElement('div');
-  panel.id = 'tweaks-panel';
-  panel.style.cssText = `
-    position:fixed;right:20px;bottom:20px;width:260px;z-index:9999;
+  const panel=document.createElement('div');
+  panel.id='tweaks-panel';
+  panel.style.cssText=`position:fixed;right:20px;bottom:20px;width:260px;z-index:9999;
     background:#0f1218;border:1px solid #22262e;border-radius:10px;
     padding:14px;font-family:"JetBrains Mono",monospace;font-size:11px;color:#cfd4dc;
-    box-shadow:0 12px 40px rgba(0,0,0,.5);display:none;
-  `;
-  panel.innerHTML = `
+    box-shadow:0 12px 40px rgba(0,0,0,.5);display:none;`;
+  panel.innerHTML=`
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;letter-spacing:.15em;color:#8a93a0">
       <span>TWEAKS</span>
-      <button id="tw-dl" style="background:#162028;color:#56e0ff;border:1px solid #1d4652;border-radius:4px;padding:3px 8px;font-family:inherit;font-size:10px;cursor:pointer;letter-spacing:.12em">↓ SVG</button>
+      <button id="tw-dl" style="background:#162028;color:#56e0ff;border:1px solid #1d4652;border-radius:4px;padding:3px 8px;font-family:inherit;font-size:10px;cursor:pointer;">↓ SVG</button>
     </div>
     <label style="display:block;margin:8px 0 4px;color:#8a93a0">CABLES</label>
     <select id="tw-cables" style="width:100%;background:#0a0b0d;color:#cfd4dc;border:1px solid #22262e;border-radius:4px;padding:4px;font-family:inherit;font-size:11px">
       <option value="rainbow">Rainbow</option>
-      <option value="cool">Cool (cyan/green/blue/violet)</option>
-      <option value="warm">Warm (red/amber/yellow/pink)</option>
-      <option value="twotone">Two-tone (cyan/violet)</option>
-      <option value="mono">Mono (cyan)</option>
+      <option value="cool">Cool</option>
+      <option value="warm">Warm</option>
+      <option value="twotone">Two-tone</option>
+      <option value="mono">Mono</option>
     </select>
-    <label style="display:flex;align-items:center;gap:8px;margin-top:10px;color:#cfd4dc"><input type="checkbox" id="tw-stats"> Live stats bars</label>
-    <label style="display:flex;align-items:center;gap:8px;margin-top:6px;color:#cfd4dc"><input type="checkbox" id="tw-callouts"> Callouts (empty now)</label>
   `;
   document.body.appendChild(panel);
-
-  const sel = panel.querySelector('#tw-cables');
-  const cbStats = panel.querySelector('#tw-stats');
-  const cbCall = panel.querySelector('#tw-callouts');
-
-  function sync(){
-    sel.value = window.__tweaks.cables;
-    cbStats.checked = window.__tweaks.showStats;
-    cbCall.checked = window.__tweaks.showCallouts;
-  }
-  sync();
-
-  function push(edits){
-    Object.assign(window.__tweaks, edits);
-    applyTweaks();
-    try{ window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); }catch(e){}
-  }
-  sel.addEventListener('change', e=> push({cables: e.target.value}));
-  cbStats.addEventListener('change', e=> push({showStats: e.target.checked}));
-  cbCall.addEventListener('change', e=> push({showCallouts: e.target.checked}));
-  panel.querySelector('#tw-dl').addEventListener('click', downloadSVG);
-
-  window.addEventListener('message', (ev)=>{
-    const d = ev.data || {};
-    if(d.type === '__activate_edit_mode'){ panel.style.display='block'; }
-    if(d.type === '__deactivate_edit_mode'){ panel.style.display='none'; }
+  const sel=panel.querySelector('#tw-cables');
+  sel.value=window.__tweaks.cables;
+  sel.addEventListener('change',e=>{
+    window.__tweaks.cables=e.target.value; applyTweaks();
+    try{ window.parent.postMessage({type:'__edit_mode_set_keys',edits:{cables:e.target.value}},'*'); }catch(_){}
   });
-  window.parent.postMessage({type:'__edit_mode_available'}, '*');
+  panel.querySelector('#tw-dl').addEventListener('click',downloadSVG);
+  window.addEventListener('message',(ev)=>{
+    if(ev.data?.type==='__activate_edit_mode')   panel.style.display='block';
+    if(ev.data?.type==='__deactivate_edit_mode') panel.style.display='none';
+  });
+  window.parent.postMessage({type:'__edit_mode_available'},'*');
 })();
 
+/* ── Mobile: set frame height + viewBox via JS (bypasses CSS caching) ── */
+// Rack at x=270–550 (center 410), y=40–368.
+// Mobile viewBox: 480 wide centered on x=410 → startX=170.
+//                 400 tall from y=30 → rack+padding.
+// Frame height is set to match viewBox ratio (480:400 = 1.2) so no letterboxing.
+(function mobileSetup(){
+  const frame = document.getElementById('banner');
+  // Rack at x=188–468, center x=328. ViewBox 480 wide centered on 328 → startX=88.
+  // y=-20 gives rack top (y=40) at 60/420=14.3% ≈ 49px from frame top → 33px below header ✓
+  // Rack bottom (y=324) at 82.6% → ~59px above footer label ✓
+  const MOBILE_VB  = '88 -20 480 420';
+  const DESKTOP_VB = '0 0 820 400';
+
+  function apply(){
+    if(window.innerWidth <= 600){
+      // Frame height matches viewBox 480:420 ratio → no letterboxing
+      const w = window.innerWidth;
+      frame.style.height = Math.round(w * 420/480) + 'px';
+      frame.style.aspectRatio = 'unset';
+      svg.setAttribute('viewBox', MOBILE_VB);
+    } else {
+      frame.style.height = '';
+      frame.style.aspectRatio = '';
+      svg.setAttribute('viewBox', DESKTOP_VB);
+    }
+  }
+
+  apply();
+  window.addEventListener('resize', apply);
+})();
 </script>
 </body>
 </html>
