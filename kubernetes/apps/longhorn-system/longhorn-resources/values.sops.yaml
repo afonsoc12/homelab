@@ -5,16 +5,11 @@
 #   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/adhoc-resources/values.yaml
 # --------------------
 secrets:
-    - name: longhorn-minio-secret
-      stringData:
-        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:7x8Z6ksQDrTK2liaCw7LShiGi7w=,iv:LtyxaFTNxp5wUGg5w1KthZciPD8ksqpkzqsQdsj0hFA=,tag:16MyKIjc1zCY/Wvje/2QoQ==,type:str]
-        AWS_ENDPOINTS: ENC[AES256_GCM,data:BXxUZB04dF0o4sapaGoihdv1OyjD6Fl6rQ==,iv:fzL+ZRWRIvon3ERG3sQbzhe29lUK4VSDw2B9LicTJHA=,tag:/VOhTwxRSZAUTJoi5iqpqw==,type:str]
-        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:qnnOEOlv7/lVLbeYQKYJ3rY7u9B3ASngtsU3PpQC+PVUVSCKWtxWsA==,iv:Vip6Ea6WzBfSzPjGUfWP7f4sMKjlppf8zxwZtLZJhOY=,tag:WoM5V5d55MV/sj/pp6ljmQ==,type:str]
     - name: longhorn-backblaze-secret
       stringData:
-        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:akRv8qJwmkLfuswtEDvL945BsGZH5ubKiw==,iv:1O0/dwz6XCRdT1ONtuuQWLEvIC7ds9YNZav168qQ/80=,tag:pzyYWo86mzpAvAxenzZcFQ==,type:str]
+        AWS_ACCESS_KEY_ID: ENC[AES256_GCM,data:mbHEqw906e89Ll7zAlDYyQd2HEdThdX3Qw==,iv:t70nYBaiq2R4KbWHSAvvVrztK2ueNmih76igxArQTqU=,tag:7xuScTf9iZP46RCtZQ9fJQ==,type:str]
         AWS_ENDPOINTS: ENC[AES256_GCM,data:YIWNPbjE/0FhfNxZd3aoDUdfRLSVwUtUQJG0y4yHQJc0a95yJh3Ji3A=,iv:3uFkimG2LjwxJt0HDvKDGqsdhRUh3ah367NF6w4gQjU=,tag:c2zUd8sqXkXBpsTBX0sqaQ==,type:str]
-        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:Mr6O0sxAkxStNqgVVhKVREs4hPCgdPm0QXKnFTK85w==,iv:sNSO72nbY5b7/9yPlC2m3ZYD5nyzQlkw01oHrYijanw=,tag:NjclRGxEb6wil02CAhXyfw==,type:str]
+        AWS_SECRET_ACCESS_KEY: ENC[AES256_GCM,data:6vlzbEzQA0y3YdQ4xmtm4ALJwRKD8kuq2qy/XnycIg==,iv:IDJGqvZgNT1YEZq64ATsElrkFjtyntoH66NxfmYzZH4=,tag:luwqvEYMxDToFj7CzO7CPw==,type:str]
 resources:
     - apiVersion: storage.k8s.io/v1
       kind: StorageClass
@@ -62,8 +57,8 @@ resources:
         retain: 4
         concurrency: 4
 sops:
-    lastmodified: "2026-04-13T20:28:44Z"
-    mac: ENC[AES256_GCM,data:vB0OQV3pvONJfOzB9L2O7RxUSaaTxlXBAS6K2Av3HZgdJtIpZ+YpaH8U6oa4zCRYa5cCKzND0LhGgUP6bdXFYqDeF0hkyPbum0MWpV1XNmWrJDOpoYlW/RnG4vDIN/YBEEQt3DDwXW3tc74QWXlAO65RvD8exDlqgMAoIq0wDH8=,iv:SQmBmt5AeNNxcMiz9BT22XWAETSQqhwfZqNLAh6y2Jw=,tag:QF0HzZK/ICCyKiYkI54F9g==,type:str]
+    lastmodified: "2026-04-20T20:06:54Z"
+    mac: ENC[AES256_GCM,data:ovRiyYs5BSRg9kduoT6TCUcYZODFYKBojXE3ONjpj6Pu+Q5B6daQDp6UnfvD/RWldiXzuxQzcywu4/Em46LM109h7chYXwVIcPzOomEbx3K+GcECF3/k/cn9itc9NasxkbDYBlS52g/cFkkIylgFeZjclbNtaU463aFzyxyhto4=,iv:K3SwGx8swFGiGAzysdrFJ/FZ3fmYXZfqHytQTM1dYJg=,tag:3F6VkYH48Bnb50ip4h2m+w==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:44Z"
           enc: |-

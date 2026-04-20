@@ -18,6 +18,12 @@ creation_rules:
     mac_only_encrypted: true
     pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
 
+  # Backblaze secrets — bucket names and credentials encrypted, config flags plaintext
+  - path_regex: "terraform/backblaze/secrets\\.sops\\.yaml"
+    encrypted_regex: ^(application_key_id|application_key|name)$
+    mac_only_encrypted: true
+    pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+
   # Fallback for everything else (terraform, etc.)
   - mac_only_encrypted: true
     pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1

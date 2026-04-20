@@ -12,7 +12,7 @@ kubernetes/       # Kubernetes manifests (GitOps via ArgoCD)
     <namespace>/<app>/    # App-specific Helm values (values.yaml or values.sops.yaml)
   charts/               # Ad-hoc Kubernetes resource charts (not ArgoCD apps)
 ansible/              # k3s cluster provisioning and node management
-terraform/            # Cloudflare DNS/tunnels, Authentik, MariaDB, Hostinger
+terraform/            # Cloudflare DNS/tunnels, Authentik, MariaDB, Hostinger, Backblaze B2, OCI
 cloudflare/           # (non-Terraform) Cloudflare configs
 ```
 
@@ -71,8 +71,20 @@ terraform init -backend-config=../.decrypted~backend.sops.tfbackend
 terraform plan
 terraform apply
 
-# Other modules: authentik, hostinger, mariadb — same pattern
+# Other modules: authentik, hostinger, mariadb, backblaze, oci — same pattern
+
+# View sensitive outputs (e.g. rotated B2 application keys)
+terraform output -raw longhorn_application_key
+terraform output -raw velero_application_key
 ```
+
+### Terraform Modules
+
+| Module | Manages |
+|--------|---------|
+| `cloudflare` | DNS records, tunnels, WAF, zone settings |
+| `oci` | Oracle Cloud compute instance (`k3s-oci-m3`) and networking |
+| `backblaze` | B2 buckets (`ac-longhorn`, `ac-terraform`, `ac-velero`) and scoped application keys |
 
 ### Kubernetes / ArgoCD
 
