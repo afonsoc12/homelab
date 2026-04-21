@@ -18,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/binwiederhier/ntfy
-    tag: v2.21
+    tag: v2.22
     pullPolicy: Always
 #   restartPolicy:
 command: {}
