@@ -53,24 +53,28 @@
       "enabled": false
     },
     {
-      "description": "Group ArgoCD app-of-apps updates",
+      "description": "Group ArgoCD app-of-apps minor/patch updates",
       "matchManagers": ["argocd"],
       "matchFileNames": ["kubernetes/apps/addons/argocd-apps/**"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "argocd app definitions"
     },
     {
-      "description": "Group Helm chart dependencies",
+      "description": "Group Helm chart dependency minor/patch updates",
       "matchManagers": ["helmv3"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "helm chart dependencies"
     },
     {
-      "description": "Group Helm values image updates",
+      "description": "Group Helm values image minor/patch updates",
       "matchManagers": ["helm-values"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "helm values images"
     },
     {
-      "description": "Group Terraform provider updates",
+      "description": "Group Terraform provider minor/patch updates",
       "matchManagers": ["terraform"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "terraform providers"
     }
   ],
