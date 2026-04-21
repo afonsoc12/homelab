@@ -45,7 +45,7 @@
       "description": "Preserve range constraints for Helm charts in ArgoCD",
       "matchManagers": ["argocd"],
       "matchDepTypes": ["helm"],
-      "rangeStrategy": "widen"
+      "rangeStrategy": "pin"
     },
     {
       "description": "Avoid updating encrypted blobs in SOPS files",
