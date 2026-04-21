@@ -57,10 +57,9 @@ spec:
           kind: EndpointSlice
           jsonPointers:
             - /endpoints/0/conditions
-
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
