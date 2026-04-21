@@ -15,7 +15,7 @@ spec:
   project: default
   sources:
     - repoURL: https://dl.gitea.io/charts
-      targetRevision: '>=10 <11'
+      targetRevision: '<13'
       chart: gitea
       helm:
         valueFiles:
