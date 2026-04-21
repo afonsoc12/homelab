@@ -2,7 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "labels": ["renovate"],
-  "separateMajorMinor": true,
   "argocd": {
     "enabled": true,
     "managerFilePatterns": [
@@ -43,17 +42,10 @@
       "enabled": false
     },
     {
-      "description": "Pin Helm chart versions in ArgoCD Applications",
+      "description": "Preserve range constraints for Helm charts in ArgoCD",
       "matchManagers": ["argocd"],
-      "matchDatasources": ["helm"],
+      "matchDepTypes": ["helm"],
       "rangeStrategy": "pin"
-    },
-    {
-      "description": "Bundle Helm release minor and patch updates",
-      "matchManagers": ["argocd", "helmv3"],
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "groupName": "helm releases minor and patch"
     },
     {
       "description": "Avoid updating encrypted blobs in SOPS files",
@@ -65,16 +57,14 @@
       "description": "Group ArgoCD app-of-apps minor/patch updates",
       "matchManagers": ["argocd"],
       "matchFileNames": ["kubernetes/apps/addons/argocd-apps/**"],
-      "excludeDatasources": ["helm"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "argocd app definitions"
     },
     {
       "description": "Group Helm chart dependency minor/patch updates",
       "matchManagers": ["helmv3"],
-      "matchDatasources": ["helm"],
-      "matchUpdateTypes": ["digest", "pin", "pinDigest"],
-      "groupName": "helm chart metadata"
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "groupName": "helm chart dependencies"
     },
     {
       "description": "Group Helm values image minor/patch updates",
