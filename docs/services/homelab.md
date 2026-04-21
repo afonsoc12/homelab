@@ -107,6 +107,68 @@ These services run as Docker containers on the `hoarder` NAS via [homelab-stackz
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/docker.png" class="svc-icon"> Backup Utils
+
+Utility container for backup and data-maintenance tasks on Unraid.
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/navidrome.png" class="svc-icon"> Navidrome
+
+Personal music streaming server for self-hosted audio libraries.
+
+[:octicons-book-16: Documentation](https://www.navidrome.org/docs/)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tdarr.png" class="svc-icon"> Tdarr
+
+Distributed media transcoding and health-check automation for video libraries.
+
+[:octicons-book-16: Documentation](https://docs.tdarr.io/)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/portainer.png" class="svc-icon"> Portainer CE
+
+Container management UI for Docker environments.
+
+[:octicons-book-16: Documentation](https://docs.portainer.io/)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/scrutiny.png" class="svc-icon"> Scrutiny
+
+Disk S.M.A.R.T. monitoring dashboard with historical metrics and alerts.
+
+[:octicons-book-16: Documentation](https://github.com/AnalogJ/scrutiny)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/github.png" class="svc-icon"> Ghorg
+
+Bulk Git repository cloning and synchronization tool.
+
+[:octicons-book-16: Documentation](https://github.com/gabrie30/ghorg)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/krusader.png" class="svc-icon"> Krusader
+
+Dual-pane file manager used for direct filesystem operations on the NAS.
+
+[:octicons-book-16: Documentation](https://krusader.org/)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/bookstack.png" class="svc-icon"> BookLore
+
+Self-hosted e-book and reading library service.
+
+[:octicons-book-16: Documentation](https://github.com/adityachandelgit/booklore)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/plex.png" class="svc-icon"> Plex
 
 Media server. Streams movies, TV shows, and music to all devices on the network and remotely.
@@ -171,6 +233,14 @@ BitTorrent client. Receives download tasks from the \*arr stack and saves comple
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/privoxy.png" class="svc-icon"> PrivoxyVPN
+
+VPN gateway and shared network stack for downloader and \*arr containers.
+
+[:octicons-book-16: Documentation](https://github.com/binhex/arch-privoxyvpn)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/seerr.png" class="svc-icon"> Overseerr / Seerr
 
 Media request management. Lets users browse and request movies and TV shows, which are then routed to Radarr/Sonarr.
@@ -187,40 +257,16 @@ Plex monitoring and analytics. Tracks play history, sends notifications, and pro
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kometa.png" class="svc-icon"> Kometa
+
+Plex metadata and collection automation tool (formerly Plex Meta Manager).
+
+[:octicons-book-16: Documentation](https://kometa.wiki/)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/calibre-web.png" class="svc-icon"> Calibre Web
 
 Web interface for a Calibre e-book library. Browse, read, and download books from any browser or e-reader.
 
 [:octicons-book-16: Documentation](https://github.com/janeczku/calibre-web) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/calibre-web/values.yaml)
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/adguard-home.png" class="svc-icon"> AdGuard Home
-
-Network-wide DNS ad blocker. Filters ads and trackers at the DNS level for all devices on the network.
-
-[:octicons-book-16: Documentation](https://adguard.com/en/adguard-home/overview.html) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/adguard/values.yaml)
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kopia.png" class="svc-icon"> Kopia
-
-Backup tool. Manages encrypted, deduplicated snapshots of critical data to offsite storage.
-
-[:octicons-book-16: Documentation](https://kopia.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/kopia/values.yaml)
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/minio.png" class="svc-icon"> MinIO
-
-S3-compatible object storage. Used as a local blob store for backups, Loki chunks, and other object storage needs.
-
-[:octicons-book-16: Documentation](https://min.io/docs/minio/linux/index.html) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/minio/values.yaml)
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unifi.png" class="svc-icon"> UniFi Controller
-
-Network management for Ubiquiti UniFi devices (APs, switches). Manages WLAN configuration, clients, and network topology.
-
-[:octicons-book-16: Documentation](https://help.ui.com/hc/en-us/categories/200320654) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/unifi/values.yaml)

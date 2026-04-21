@@ -13,7 +13,7 @@ The homelab spans three physical locations: bare-metal at home, a Raspberry Pi, 
 | `k3s-oci-m3` | k3s master | ☁️ Oracle Cloud | Ubuntu 22.04 LTS |
 | `rpi-4b` | k3s worker + Docker host | 🏠 Home | Ubuntu 24.04 LTS |
 | `rpi-z2w-hyperion` | LED controller (Hyperion) | 🏠 Home | Ubuntu 24.04 LTS |
-| `hoarder` | NAS / storage | 🏠 Home | Unraid |
+| `hoarder` | NAS / storage | 🏠 Home | Unraid v7.2.4 |
 
 ## Ansible Inventory Groups
 
