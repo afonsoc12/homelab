@@ -16,7 +16,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/postgres
-    tag: 15.170
+    tag: 18
 #   pullPolicy: Always
 command: {}
 args: {}
@@ -36,12 +36,9 @@ secret:
     stringData:
         PGPASSWORD: ENC[AES256_GCM,data:GlJvzCREQu9eNmk4TF4x42x3KEw=,iv:/Xeew83BQfqWByRfFXoBoLT4CtAVptSHN2R1HynJG4M=,tag:pFYkZkH65iLCkRCFLi9J4A==,type:str]
         POSTGRES_PASSWORD: ENC[AES256_GCM,data:fSJv4FXZ7rF1tLoSH/WxRDbFSRw=,iv:4PBjgwUhFwTjCevhM9W+Xy5Urm4SlmOutE1JM1s9Z10=,tag:gpvmBhQnCgcaz26M/OROXA==,type:str]
-configmap: {}
-# config_1: abc
-# config_2: def
 volumeMounts:
     - name: data
-      mountPath: /var/lib/postgresql/data
+      mountPath: /var/lib/postgresql
 volumeClaimTemplates:
     - name: data
       accessModes:
@@ -106,8 +103,8 @@ backup:
         COMPRESSION: GZ
         GZ_RSYNCABLE: "TRUE"
 sops:
-    lastmodified: "2026-04-13T20:28:41Z"
-    mac: ENC[AES256_GCM,data:vQnQ1aysK6NTGSNYMNl4FQnpSfsAPjjYeQzFwWVC+3W0kfJ6miAEZWcHNI866/epCFamU7WicxzwxAo42vY40YAEwnMWQpUIR//11ClL9GnV8Epj2gorYghzueyIukZkoPPEz3n/apBWHHpRMV64dwdsjuXlBd2kqGzJWs8Skpg=,iv:zfdjqsEnq7qwNHpiV9zL/1nqD/LYUevL/b/VT2R+Nnc=,tag:nG8i+N9sUymaE8CEkVkmLA==,type:str]
+    lastmodified: "2026-04-22T00:27:05Z"
+    mac: ENC[AES256_GCM,data:G4kEOfdLyOhn4SHj0FM9/cVfVMnkoXcEfFCNqPFDbTgqnrF/Q3s9EdSoif90tjeqo2NoLp377o5Z7bJgQtr1sTd2ZTOySrCu4XPXexn34VhQ6WSX0uHBHKG2uJHrw2OMVvMx6Uq1R6S2UpWA/zOWT7bfh4mxjT4brPnHFqhMCSg=,iv:RWm8XDfafeFY5CSQt8kPXFI/spH9h5IYGtE/owAjSG4=,tag:xGfONw0fAWSCh1I/SGCDrQ==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:41Z"
           enc: |-
