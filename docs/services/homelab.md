@@ -77,11 +77,11 @@ Read-it-later service. Saves articles for offline reading, strips ads, and syncs
 
 ---
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/stirling-pdf.png" class="svc-icon"> Stirling PDF
+### BentoPDF
 
 Self-hosted PDF toolbox. Merge, split, compress, convert, rotate, and watermark PDFs without sending files to third-party services.
 
-[:octicons-book-16: Documentation](https://docs.stirlingpdf.com/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/stirling-pdf/values.yaml)
+[:octicons-book-16: Documentation](https://github.com/Alamino/BentoPDF) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/bentopdf/values.yaml)
 
 ---
 

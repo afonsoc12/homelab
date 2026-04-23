@@ -1,15 +1,15 @@
 # --------------------
-# Stirling PDF
-#   - Repo:           https://github.com/Stirling-Tools/Stirling-PDF
-#   - Docs:           https://docs.stirlingpdf.com/
+# bentopdf
+#   - Repo:           https://github.com/Alamino/BentoPDF
+#   - Image:          ghcr.io/alam00000/bentopdf-simple:2.8.4
 #   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
 # --------------------
 ---
 replicas: 1
 
 image:
-  repository: docker.io/stirlingtools/stirling-pdf
-  tag: 2.9.2-ultra-lite
+  repository: ghcr.io/alam00000/bentopdf-simple
+  tag: 2.8.4
 
 strategy:
   type: Recreate
@@ -18,25 +18,8 @@ ports:
   - containerPort: 8080
     service: true
 
-# Uses ports from .ports section, if service is true
 service:
   enabled: true
-
-volumeMounts:
-  - name: config
-    mountPath: /configs
-    # readOnly: true
-
-volumes:
-  - name: config
-    emptyDir: {sizeLimit: 2Gi}
-
-# pvc:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 5Gi
 
 ingress:
   enabled: true

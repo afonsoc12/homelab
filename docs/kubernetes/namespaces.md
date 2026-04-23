@@ -68,7 +68,7 @@
 | [Glance](https://github.com/glanceapp/glance) | Personal dashboard |
 | [RomM](https://github.com/rommapp/romm) | ROM and game library manager |
 | [Wallabag](https://wallabag.org/) | Read-it-later service |
-| [Stirling PDF](https://stirlingpdf.io/) | PDF editing and conversion |
+| [BentoPDF](https://github.com/Alamino/BentoPDF) | PDF editing and conversion |
 | [ChangeDetection](https://changedetection.io/) | Web page change monitoring |
 | [Docuseal](https://docuseal.co/) | Document signing |
 

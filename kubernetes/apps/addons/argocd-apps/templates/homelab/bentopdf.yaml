@@ -1,13 +1,13 @@
 # --------------------
-# Stirling PDF
-#   - Docs: https://docs.stirlingpdf.com/
+# bentopdf
+#   - Image: ghcr.io/alam00000/bentopdf-simple:2.8.4
 #   - Chart: homelab-svc
 # --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: stirling-pdf
+  name: bentopdf
   namespace: {{ .Release.Namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -20,7 +20,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - ../../apps/homelab/stirling-pdf/values.yaml
+        - ../../apps/homelab/bentopdf/values.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: homelab
