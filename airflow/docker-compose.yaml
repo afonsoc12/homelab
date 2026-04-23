@@ -1,0 +1,22 @@
+services:
+  airflow:
+    build:
+      context: .
+    image: homelab-airflow:local
+    environment:
+      AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/data/airflow.db
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/data/logs
+      AIRFLOW__SECRETS__BACKEND: airflow.secrets.local_filesystem.LocalFilesystemBackend
+      AIRFLOW__SECRETS__BACKEND_KWARGS: >-
+        {"variables_file_path":"/opt/airflow/local-secrets/variables.json",
+        "connections_file_path":"/opt/airflow/local-secrets/secrets.json"}
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./local-secrets:/opt/airflow/local-secrets:ro
+      - airflow-data:/opt/airflow/data
+    ports:
+      - "8080:8080"
+
+volumes:
+  airflow-data:
