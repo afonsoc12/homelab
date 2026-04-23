@@ -56,5 +56,4 @@ jobs:
         with:
           context: airflow
           push: ${{ github.event_name != 'pull_request' }}
-          tags:
-            - ghcr.io/${{ github.repository_owner }}/airflow:3.2.1-b${{ GITHUB_RUN_NUMBER }}
+          tags: ghcr.io/${{ github.repository_owner }}/airflow:3.2.1-b${{ GITHUB_RUN_NUMBER }}
