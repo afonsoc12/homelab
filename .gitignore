@@ -12,3 +12,8 @@ backend.tf
 /tmp
 .claude/plans
 site/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.so
+airflow/.env
