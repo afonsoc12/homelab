@@ -99,6 +99,8 @@ postgresql-ha:
     enabled: false
 redis-cluster:
     enabled: false
+valkey:
+    enabled: false
 sops:
     lastmodified: "2026-04-13T20:28:42Z"
     mac: ENC[AES256_GCM,data:91ZU30ClSFwqAx111Cw2qQs78f+rmnN5giunKQP2+eu4hBc4JcHAbEfZ7lKNCF2OVl+yxNqnpObeONMsdHVErl0hpwMkI4XNCyG+3pzoXcH6AJBb3IaE9fbBMiRB+600xIr3nqM5BK7VW8dG5hauRBoUCRiKIR9wy093UVDpcT8=,iv:GGeP7PhW/J0u2vdDdTm9HPvQNM5pUMDR0DJndPqo1Og=,tag:84eC2H1Sk1wL0FzSK2fcRA==,type:str]
