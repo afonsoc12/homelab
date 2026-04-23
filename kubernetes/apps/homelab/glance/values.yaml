@@ -106,7 +106,6 @@ configmap:
                 cache: 1d
                 repositories:
                   - glanceapp/glance
-                  - go-gitea/gitea
                   - immich-app/immich
                   - homebridge/homebridge
 
@@ -220,6 +219,16 @@ configmap:
             widgets:
               - type: bookmarks
                 groups:
+                  - title: Entertainment
+                    links:
+                      - title: YouTube
+                        description: Video streaming
+                        icon: di:youtube
+                        url: https://youtube.com
+                      - title: Netflix
+                        description: Video streaming
+                        icon: di:netflix
+                        url: https://netflix.com
                   - title: Services
                     links:
                       - title: FireflyIII
@@ -242,10 +251,6 @@ configmap:
                         description: Link aggregator
                         icon: di:wallabag
                         url: https://wallabag.{{ .Values.domain }}
-                      - title: Gitea
-                        description: Git
-                        icon: di:gitea
-                        url: https://git.{{ .Values.domain }}
                       - title: Change Detection
                         description: Site stock monitor
                         icon: di:changedetection

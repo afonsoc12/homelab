@@ -6,7 +6,7 @@ Shared stateful services used by apps across multiple namespaces.
 
 ## <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/postgresql.png" class="svc-icon"> PostgreSQL
 
-Primary relational database. Shared across multiple apps in the cluster (Gitea, Authentik, Ghostfolio, Firefly, etc.).
+Primary relational database. Shared across multiple apps in the cluster (Authentik, Ghostfolio, Firefly, etc.).
 
 [:octicons-book-16: Documentation](https://www.postgresql.org/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/databases/postgres/values.sops.yaml)
 

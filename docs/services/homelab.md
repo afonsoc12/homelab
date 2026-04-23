@@ -13,14 +13,6 @@ Services here run in two places:
 
 ---
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/gitea.png" class="svc-icon"> Gitea
-
-Self-hosted Git service. Mirrors and hosts private repositories, acts as a local fallback for GitHub-dependent workflows.
-
-[:octicons-book-16: Documentation](https://docs.gitea.com/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/gitea/values.sops.yaml)
-
----
-
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/mealie.png" class="svc-icon"> Mealie
 
 Recipe manager and meal planner. Supports import from any URL, nutritional data, and shopping list generation.
@@ -58,14 +50,6 @@ Self-hosted RSS aggregator. Consolidates feeds from blogs, news sites, and podca
 Personalised dashboard. Shows RSS feeds, weather, stocks, server stats, and other widgets in a single-page layout.
 
 [:octicons-book-16: Documentation](https://github.com/glanceapp/glance) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/glance/values.yaml)
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/romm.png" class="svc-icon"> RomM
-
-ROM and game library manager. Organises and serves a local game collection with metadata and cover art from IGDB.
-
-[:octicons-book-16: Documentation](https://romm.app/docs) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/romm/values.sops.yaml)
 
 ---
 

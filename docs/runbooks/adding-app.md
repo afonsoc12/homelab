@@ -65,7 +65,7 @@ spec:
   project: default
   sources:
     - repoURL: https://charts.myapp.io
-      targetRevision: '>=1 <2'
+      targetRevision: 1.2.3
       chart: myapp
       helm:
         valueFiles:
@@ -101,8 +101,8 @@ argocd app sync myapp          # then sync the new app
 
 ## Notes
 
-!!! tip "Chart version ranges"
-    Use semver ranges like `'>=1 <2'` in `targetRevision`. This allows Renovate to bump patch and minor versions automatically while protecting against unexpected major upgrades.
+!!! tip "Chart version pinning"
+  Pin `targetRevision` to an exact chart version (for example `1.2.3`). Renovate will open PRs with explicit version bumps, keeping upgrades reviewable and reproducible.
 
 !!! warning "No `latest` tags"
     Always pin image tags. Using `latest` makes deployments non-reproducible and breaks GitOps rollback.

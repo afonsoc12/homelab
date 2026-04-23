@@ -41,3 +41,11 @@ Distributed block storage for Kubernetes. Provides persistent volumes backed by 
 Syncs Secrets and ConfigMaps across namespaces. Used to replicate TLS certificates issued in one namespace to others that need them.
 
 [:octicons-book-16: Documentation](https://github.com/emberstack/kubernetes-reflector) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/addons/reflector/values.yaml)
+
+---
+
+## <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/airflow.png" class="svc-icon"> Airflow
+
+Workflow orchestration platform for scheduled and dependency-aware pipelines. DAGs are baked into a custom image and deployed in the `addons` namespace.
+
+[:octicons-book-16: Documentation](https://airflow.apache.org/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/addons/airflow/values.yaml)

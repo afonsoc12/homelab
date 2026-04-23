@@ -60,13 +60,11 @@
 
 | App | Description |
 |-----|-------------|
-| [Gitea](https://gitea.io/) | Self-hosted Git server |
 | [Mealie](https://mealie.io/) | Recipe manager and meal planner |
 | [Ghostfolio](https://ghostfol.io/) | Open-source wealth management |
 | [Firefly III](https://www.firefly-iii.org/) | Personal finance manager |
 | [FreshRSS](https://freshrss.org/) | RSS feed aggregator |
 | [Glance](https://github.com/glanceapp/glance) | Personal dashboard |
-| [RomM](https://github.com/rommapp/romm) | ROM and game library manager |
 | [Wallabag](https://wallabag.org/) | Read-it-later service |
 | [BentoPDF](https://github.com/Alamino/BentoPDF) | PDF editing and conversion |
 | [ChangeDetection](https://changedetection.io/) | Web page change monitoring |

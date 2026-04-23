@@ -26,7 +26,7 @@ argocd-apps (root)
         ├── values.yaml         ← sets cluster destination
         └── templates/
               ├── addons/argocd.yaml
-              ├── homelab/gitea.yaml
+              ├── homelab/mealie.yaml
               ├── automation/home-assistant.yaml
               └── ... (one file per app)
 ```
@@ -45,37 +45,37 @@ Every app in `templates/<namespace>/<app>.yaml` follows the same pattern — a m
 
 ```yaml
 # --------------------
-# Gitea
-#   - Docs: https://gitea.com/
-#   - Chart: https://dl.gitea.io/charts (gitea)
+# cert-manager
+#   - Docs: https://cert-manager.io/docs/
+#   - Chart: https://charts.jetstack.io (cert-manager)
 # --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gitea
+  name: cert-manager
   namespace: {{ .Release.Namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io   # (1)
 spec:
   project: default
   sources:
-    - repoURL: https://dl.gitea.io/charts
-      targetRevision: '>=10 <11'               # (2)
-      chart: gitea
+    - repoURL: https://charts.jetstack.io
+      targetRevision: 1.20.2                   # (2)
+      chart: cert-manager
       helm:
         valueFiles:
-          - $values/kubernetes/apps/homelab/gitea/values.sops.yaml
+          - $values/kubernetes/apps/addons/cert-manager/values.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values                              # (3)
   destination:
     name: {{ .Values.spec.destination.name }}
-    namespace: homelab
+    namespace: addons
 ```
 
 1. Cascade-deletes all owned resources when the Application is deleted.
-2. Semver range locks the chart to a major version, allowing Renovate to bump patch/minor automatically.
+2. `targetRevision` is pinned to a specific chart version. Renovate opens PRs to update that pinned version.
 3. The second source is a `ref` (no path, no chart) — it only provides the values files for the first source.
 
 ## Sync Policy
