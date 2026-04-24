@@ -56,6 +56,7 @@ certificates:
         - local.{{ .Values.domain }}
         - '*.local.{{ .Values.domain }}'
       reflectNamespaces:
+        - addons
         - automation
         - databases
         - homelab
@@ -117,8 +118,8 @@ certificates:
       reflectNamespaces:
         - clients
 sops:
-    lastmodified: "2026-04-13T20:28:40Z"
-    mac: ENC[AES256_GCM,data:JB6uEXMnUaqDhYskXU9W+YXWh4xspj8k3J/8+c2WKJGhDNVN1teObEox1PrnGiZdAuHWUXc4G0oqH4gCxdI5n+ps1JHzERGPE1mUkF9QsIRwEa2n258qkpDu0eyXSX2ttSeDKdWCBlj2e+63UOmZyF9HODsPEWR7at5Yqs8W608=,iv:IK7VxwIDEzELCL2wMKv00OghRT4zHfC+eGJ65/5Nr8A=,tag:gqHHptbpyc+x5Hn14L9usQ==,type:str]
+    lastmodified: "2026-04-24T00:40:13Z"
+    mac: ENC[AES256_GCM,data:P14hNYiCS4gzJchz2OLiE5+80DStv7OORVmoC9bdY3X8GDn9XvXDgdRlgd1ClBIjPktqvyY9oFjSSD60ODaAibwYWqy1stOww5iMzbt3UBGaFNsO/OFnTJ+sld1MezhgoBOxFfO4X/Pe6a+JgiRF1be1oL8ei+MZUVO3hoU4P1Y=,iv:t73JYjdWjuE1S07XrwEdb4pME60EGzPXmqzm5T+U9ZE=,tag:N0weGvbaOpETgBRiKBperg==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:40Z"
           enc: |-
