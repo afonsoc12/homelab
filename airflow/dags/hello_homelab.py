@@ -11,8 +11,8 @@ from airflow.providers.standard.operators.python import PythonOperator
 def print_vars() -> None:
     test_var = Variable.get("test_var", default_var="missing")
     test_secret = Variable.get("test_secret", default_var="missing")
-    print(f"test_var={test_var}")
-    print(f"test_secret={test_secret}")
+    print(f"test_var = {test_var}")
+    print(f"test_secret = {test_secret}")
 
 
 with DAG(
