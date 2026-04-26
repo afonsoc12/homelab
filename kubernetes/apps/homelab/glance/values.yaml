@@ -243,6 +243,10 @@ configmap:
                         description: RSS news aggregator
                         icon: di:freshrss
                         url: https://rss.{{ .Values.domain }}
+                      - title: OctoTrack
+                        description: Electricity usage dashboard
+                        icon: si:octopusdeploy
+                        url: https://electricity.local.{{ .Values.domain }}
                       - title: Ghostfolio
                         description: Stocks tracker
                         icon: di:ghostfolio
