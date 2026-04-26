@@ -1,0 +1,101 @@
+# --------------------
+# Apache Airflow
+#   - Repo:           https://github.com/apache/airflow
+#   - Docs:           https://airflow.apache.org/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+image:
+    repository: ghcr.io/afonsoc12/airflow
+    tag: 3.2.1-b11
+    pullPolicy: Always
+podSecurityContext:
+    fsGroup: 50000
+securityContext:
+    runAsUser: 50000
+    runAsGroup: 0
+ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+    type: ClusterIP
+    port: 8080
+secret:
+    mountEnv: true
+    stringData:
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:o9a5m6YXXQgg8z32Ze8TUvM3l9i3Q2U8lmXC0+t7pkDxi8NfAPmRwM+HKxROm63Hv3ClUS4Jb1DOUPAbAgeuM+h/VgFZc8disGXgD/5eVK65edCAlEnzBKtZgZhgdwxlHeM=,iv:JYInj5AABLU2Wlmb2GB6kYKpyQ7NMjDdzFLOSg14ywk=,tag:2eitmzaLKSmsXz8gTyt3FQ==,type:str]
+extraSecrets:
+    - name: airflow-dag-secret
+      stringData:
+        test-secret: ENC[AES256_GCM,data:FXruGJKGBHCoJw==,iv:S8EM0gdhKCH40Wd4ZwpOJABs+MGYqPQNho/KONERjP0=,tag:DUjgFIZ1b9nf2AiAD29YdQ==,type:str]
+configmap:
+    mountEnv: true
+    SECRETS_PATH: /var/run/secrets/airflow
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+    AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
+    AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/data/logs
+    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "True"
+    AIRFLOW__SECRETS__BACKEND: airflow.providers.cncf.kubernetes.secrets.kubernetes_secrets_backend.KubernetesSecretsBackend
+    AIRFLOW__SECRETS__BACKEND_KWARGS: '{"namespace": "addons", "connections_label": null, "variables_label": "airflow.apache.org/variable-key", "config_label": null, "variables_data_key": "value"}'
+pvc:
+    storageClassName: longhorn
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 5Gi
+volumeMounts:
+    - name: data
+      mountPath: /opt/airflow/data
+    - name: secret
+      mountPath: /var/run/secrets/airflow
+      readOnly: true
+volumes:
+    - name: data
+      mountPvc: true
+    - name: secret
+      secret:
+        secretName: airflow-dag-secret
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: airflow.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+sops:
+    lastmodified: "2026-04-24T00:44:54Z"
+    mac: ENC[AES256_GCM,data:Ss5aD4G0+hR+QOslwQsA7kMAKvsFQ5Ct3tgvONeQ5Pr9LNI0qM/sLEQzWLax86SFfiC/7pympOKsxZ6RG3onQRkmI/J7QFO+Cvg9NlAycfouxGdBF9ieyM29uJqmg9ZCERMMryTqCI0eNlZcnsX3zVaHqHUMwvR2BHNK3FPlDbA=,iv:IcmxaXfRUGELnFLIN/sgJyKDJbuxYJw91sZ/LZ0Q1/c=,tag:qdWz6weQPAPnjnDBmq4PCw==,type:str]
+    pgp:
+        - created_at: "2026-04-24T00:05:20Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/7Bydej8WQSDxopmYxuFATZLkXWvrnU4MUInO5FdsNvOem
+            QyYFnDpAt0QynuoEIyZeWUKNnn+0Znkd6aMYsk1zEzdorwZl86sSqEBCHdp2jqak
+            iP+jsQGFnnjvgGGIw1Jdy6BJHqN6B01Y37Ji2zmpuLWvWmF2xRZKrjmtb8xctiws
+            Hb1kGNmbnQt6dm1c82KSOsomVdVQf8/xKn39yz+H/wBc2iB9lJKupJNJlta7UmOT
+            IRVJ1fJBAk3K78NxD8uwhDIYtkKGc1+RblEqUbwchr40Zj+Q8OuWcfFqvuAdynMW
+            DMV4AEp2sWkgWGZoLvbK1lQ6Ak310Lhmx0eLJhWiXGB5dcg4XK+14ioXPrYgQtnp
+            JnSNqlknJHTpqLUY5Vi0pUVuPSRAcLtdipROfHZD+So7M2fj9QpR9GnkDlGwg0dN
+            2k0nz3mH72xMHbt7UbFY0YMr2sTjjG7iPOMMuAa8MjVysSURso/Ag7GyanQMKCVA
+            GzPo3JrXeXdlpZbDLJPqktbzObLT3OcfyL7VREPJWGN+hjGlEIsjElJoSZA58tYI
+            CfG7Viiz12LYy70shUfJATYh4p96H43LWUTpXdBXcSY3sav3xVBINRWUUW+DG/Mb
+            hH9pP8TocXcouTBfI4otjLvOSoVVpZFEZ/KjJ5c9zouqmHAewv3cHWxzbvsdK2zU
+            aAEJAhDhKLhpa5NRod9tQC5jYzZNXCQm9X3cB+k4st5dpo/BnXWeAy/526zFcLBy
+            RpCQdI0H3T7fGgW3flFrdfkrUL8bNokjRUHM0bdybAjpMjhhnTkxEfX1IrZBVXu5
+            QbHQuax4uI6M
+            =Iloz
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(stringData)$
+    mac_only_encrypted: true
+    version: 3.12.2
