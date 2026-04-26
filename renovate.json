@@ -41,6 +41,11 @@
       "enabled": false
     },
     {
+      "description": "Use loose versioning for afonsoc12/airflow build tags (3.x.y-bN)",
+      "matchPackageNames": ["ghcr.io/afonsoc12/airflow"],
+      "versioning": "loose"
+    },
+    {
       "description": "Preserve range constraints for Helm charts in ArgoCD",
       "matchManagers": ["argocd"],
       "matchDepTypes": ["helm"],
