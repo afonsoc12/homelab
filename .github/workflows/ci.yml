@@ -49,8 +49,9 @@ jobs:
       - name: 🔍 Run yamllint
         run: uv run yamllint .
 
-      - name: 📦 Install Ansible Galaxy collections
-        run: ansible-galaxy install -r requirements.yml
+      # todo: fix install because GHA cannot git clone via SSH out-of-the-box
+      # - name: 📦 Install Ansible Galaxy collections
+      #   run: ansible-galaxy install -r ansible/requirements.yml
 
       - name: 🔍 Run ansible-lint
         run: cd ansible && uv run ansible-lint .
