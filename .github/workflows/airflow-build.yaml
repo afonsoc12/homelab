@@ -6,7 +6,7 @@ on: # yamllint disable-line rule:truthy
       - master
     paths:
       - airflow/**
-      - .github/workflows/airflow-ci.yaml
+      - .github/workflows/airflow-build.yaml
   workflow_dispatch:
 
 permissions:
