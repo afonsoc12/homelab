@@ -14,6 +14,7 @@ def print_vars() -> None:
     print(f"test_var={test_var}")
     print(f"test_secret={test_secret}")
 
+
 with DAG(
     dag_id="homelab_hello",
     description="Minimal DAG baked into the Airflow image (prints test_var and test_secret)",

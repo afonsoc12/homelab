@@ -31,14 +31,14 @@ jobs:
       - name: "📦 Install dependencies"
         run: uv sync --project airflow --group dev --frozen
 
-    #   - name: "🧹 Ruff format check"
-    #     run: uv run --project airflow ruff format --check airflow
+      - name: "🔎 ruff format"
+        run: uv run --project airflow ruff format --check
 
-    #   - name: "🔎 Ruff lint"
-    #     run: uv run --project airflow ruff check airflow
+      - name: "🔎 ruff check"
+        run: uv run --project airflow ruff check
 
-    #   - name: "🧪 Pytest"
-    #     run: uv run --project airflow pytest airflow/tests
+      - name: "✅ Run pytest"
+        run: uv run --project airflow pytest -m "not integration"
 
       - name: "🏗️ Set up Docker Buildx"
         uses: docker/setup-buildx-action@v4
