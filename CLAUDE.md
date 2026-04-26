@@ -63,5 +63,10 @@ terraform plan && terraform apply
 Push to `master` — ArgoCD auto-syncs. To force:
 ```bash
 argocd app sync <app-name>
+
+# Render a chart locally with decrypted SOPS values
+helm secrets template <release> <chart> \
+  -f kubernetes/apps/values.sops.yaml \
+  -f kubernetes/apps/<namespace>/<app>/values.sops.yaml
 ```
 → Adding a new app: @docs/runbooks/adding-app.md

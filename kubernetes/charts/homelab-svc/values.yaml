@@ -68,6 +68,15 @@ secret: {}
   #   secret_base64_1: ==a
   #   secret_base64_2: ==b
 
+# extraSecrets:
+#   - name: my-extra-secret
+#     stringData:
+#       key1: value1
+#       key2: value2
+#   - name: another-secret
+#     data:
+#       key3: dmFsdWUz
+
 configmap: {}
   # mountEnv: false
   # data:

@@ -1,0 +1,74 @@
+# --------------------
+# OctoTrack
+#   - Repo:           https://github.com/afonsoc12/octo-track
+#   - Docs:           https://github.com/afonsoc12/octo-track
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+replicas: 1
+revisionHistoryLimit: 0
+image:
+    repository: ghcr.io/afonsoc12/octo-track
+    tag: 0.0.1
+ports:
+    - containerPort: 8501
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+secret:
+    mountEnv: ENC[AES256_GCM,data:+A2ddg==,iv:hW7v5/lKb5bqSGsif3FjOJeL+aj+USKjlIUK5tcss4g=,tag:/eIHkWfwd86Th/quZt6jhQ==,type:bool]
+    stringData:
+        OCTOPUS_API_KEY: ENC[AES256_GCM,data:O0PwBphijnZPsd/+uwkSs7d3yqDfArbI73Ha4+/s09c=,iv:nomwswmXpZ+ze5Z+OC5XovLDwx0AymKlaJnaIcM072w=,tag:O5Cy5UapTZ1UIVnSYsqKbg==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        LOG_LEVEL: ENC[AES256_GCM,data:V2v4+TI=,iv:1TgsONoTTW8Tjrh5zH6FpUi0b3wDhl71vYb5KiXxr+E=,tag:mCzOlUnrEHaUr/ANRhFZ6Q==,type:str]
+        LOG_FORMAT: ENC[AES256_GCM,data:HUQdGA==,iv:dOHb5nKrQHgXlMmCZvfRSJBH241zbq8drogm5FPG9Wk=,tag:XZLwg9Vq9D61pOFfl/QuEQ==,type:str]
+volumeMounts:
+    - name: data
+      mountPath: /data
+volumes:
+    - name: data
+      emptyDir:
+        sizeLimit: 1Gi
+ingress:
+    enabled: true
+    authentik: true
+    className: nginx
+    annotations: null
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: electricity.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+sops:
+    lastmodified: "2026-04-26T22:50:12Z"
+    mac: ENC[AES256_GCM,data:tD5OtJ1oOBgTRDuwbzAFETrWmW3qIjtw8IZUkZIGix1TOekfQ6nPCM65KWiPoroQzcWrJimvG7aB0CJWHXdDLUlQpCeqoDQAYzbd1MrFbdKahXa4+0lmnRK+Zd+F2nmwR3K/ey9M9afauE+Um9FuilogrrK0bNAlAPWfLLNT4mM=,iv:Fbw+Jh5ChIOCjatjqF8FHj3lZZO7EofDr+5G35ly38c=,tag:R6VPkNUymDBW9JCzFdSY7A==,type:str]
+    pgp:
+        - created_at: "2026-04-26T22:50:12Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/+PZkaW2h+tD2FVBYF0uUrhM0/C8fCznqOOc9TkSaHHFAT
+            qKnRBveU+HjT1cX9WEIMyRynx7UNxSjagLsJLFzcocLoR8/L1UXDq+YBCxPsB7Oa
+            bAccG1v8lY6TOSwux0nzap0P5TjHx68bRnH1eQNakxtDmEk+PhB2h11aHij3gIp6
+            lMhweUO9IvYS8E31uCUIf+BHkY/8Cf+WW7JoVbV4OqZRZ3aD+jF+SCVwHq3qHVbJ
+            PcD5IjzbIwDA5mO2c6Bw73NPp4kq4lhzHnNdYVQXb7ElRKX/V1yVXY6DrBNwh9R9
+            eAbfqU77ZLRP3lHaQu0g/BNIcr+513gK76rnCcLH0B6CDqgJwtTygkgOo1mLW01K
+            wQlp0FD9ldAPtGZTtWV93fi/KoJQB3gFU7GVAATmob41Rb/X+BupEfs6J6yAeKD+
+            ydWuwnQY3gIfdf6/wPIa0fG34WH1l7B70igCjBhP51+u0v+c4qLlVmfGXDA5sOpa
+            QwTRt7kz+GZgNwH8s2bM9zm2hCtzh6lmxEHdvXVUnG74DRq3feqzzGclzYJVolIf
+            V1LH/TM0J+swq5ehD/hDy5e/bNxZ24E1rx9n7g6CJlcnKvK+56YbQUgxZkjiamh3
+            Nn6gX9pnsJNCvblDT+ZUOJ/qD3+mUtAM+uKXUZBT+XraONpOtXOVkwFFJ6GekGzU
+            aAEJAhBqH6z9rruQ6SDzrGyar6YqHbrGmrP4YY2+8XSQc/sR65JttPKj9ev+OAED
+            dcmmPjEu6f6Dob7UmPb5Q45E8HmhjqyLFjSIdQhf6jZdGXH0QKWPtNo+vARElZVQ
+            +oDCewRRyrHf
+            =njhl
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    mac_only_encrypted: true
+    version: 3.12.2

@@ -28,7 +28,6 @@
     "enabled": true,
     "managerFilePatterns": ["/^terraform\\/.+\\.tf$/"]
   },
-  "ignorePaths": ["**/.decrypted~*.yaml"],
   "packageRules": [
     {
       "description": "Ignore git SSH URL picked up natively by ansible manager — handled by custom manager",

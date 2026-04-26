@@ -1,0 +1,33 @@
+# --------------------
+# OctoTrack
+#   - Docs: https://github.com/afonsoc12/octo-track
+#   - Chart: homelab-svc
+# --------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: octo-track
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:afonsoc12/homelab.git
+    targetRevision: HEAD
+    path: kubernetes/charts/homelab-svc
+    helm:
+      valueFiles:
+        - secrets://../../apps/values.sops.yaml
+        - secrets://../../apps/monitoring/octo-track/values.sops.yaml
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
