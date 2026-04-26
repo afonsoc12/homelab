@@ -99,3 +99,4 @@
 | Speedtest Exporter | Internet speed Prometheus exporter |
 | Unpoller | UniFi metrics exporter |
 | Cluster Heartbeat | Custom heartbeat check |
+| [OctoTrack](https://github.com/afonsoc12/octo-track) | Octopus Energy electricity usage dashboard |

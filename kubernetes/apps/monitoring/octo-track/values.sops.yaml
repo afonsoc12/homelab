@@ -34,9 +34,8 @@ volumes:
         sizeLimit: 1Gi
 ingress:
     enabled: true
-    authentik: true
+    authelia: true
     className: nginx
-    annotations: null
     tls:
         - secretName: local-wildcard-cert
     hosts:
@@ -45,8 +44,8 @@ ingress:
             - path: /
               pathType: Prefix
 sops:
-    lastmodified: "2026-04-26T22:50:12Z"
-    mac: ENC[AES256_GCM,data:tD5OtJ1oOBgTRDuwbzAFETrWmW3qIjtw8IZUkZIGix1TOekfQ6nPCM65KWiPoroQzcWrJimvG7aB0CJWHXdDLUlQpCeqoDQAYzbd1MrFbdKahXa4+0lmnRK+Zd+F2nmwR3K/ey9M9afauE+Um9FuilogrrK0bNAlAPWfLLNT4mM=,iv:Fbw+Jh5ChIOCjatjqF8FHj3lZZO7EofDr+5G35ly38c=,tag:R6VPkNUymDBW9JCzFdSY7A==,type:str]
+    lastmodified: "2026-04-26T22:55:34Z"
+    mac: ENC[AES256_GCM,data:6v1+KgxRNVzaZMgQty6D2d7il4loT461XHeloaWMZlwEj62BLgs59lGPELdLubbJFPVQcZt3Ef9HqSwxOb6jsvrutjZs6BBsQouUYEVHXa9hH4pOINQPSXOT0lQlPPQLmEkxfx57ONmH/mpuafVvxSsNIBIMvUz5eeniAWMNB/k=,iv:QbK6qDacUONUgKI/k5kt6xTQAyhG7vcj/1hbYMMvpPU=,tag:8UgMpsCSWuyNkCQuvtmbyQ==,type:str]
     pgp:
         - created_at: "2026-04-26T22:50:12Z"
           enc: |-
