@@ -4,7 +4,6 @@ on: # yamllint disable-line rule:truthy
   push:
     branches:
       - master
-      - develop
     paths:
       - airflow/**
       - .github/workflows/airflow-ci.yaml
