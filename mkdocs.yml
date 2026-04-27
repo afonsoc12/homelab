@@ -8,7 +8,7 @@ repo_name: afonsoc12/homelab
 edit_uri: edit/master/docs/
 copyright: 'Made with 🤖 by <a href="https://github.com/afonsoc12" target="_blank">me</a>'
 
-docs: docs
+docs_dir: docs
 
 theme:
   name: material
@@ -79,12 +79,13 @@ nav:
       - Networking: architecture/networking.md
   - Services:
       - Overview: services/index.md
-      - Addons: services/addons.md
-      - Automation: services/automation.md
+      - Infrastructure: services/addons.md
+      - Networking & Access: services/ingress.md
+      - Observability: services/monitoring.md
       - Databases: services/databases.md
-      - Homelab: services/homelab.md
-      - Ingress: services/ingress.md
-      - Monitoring: services/monitoring.md
+      - Home Automation: services/automation.md
+      - Media & Entertainment: services/media.md
+      - Productivity & Finance: services/homelab.md
   - Kubernetes:
       - GitOps with ArgoCD: kubernetes/argocd.md
       - Namespaces & Apps: kubernetes/namespaces.md
