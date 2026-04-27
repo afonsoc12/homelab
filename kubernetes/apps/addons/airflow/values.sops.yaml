@@ -6,7 +6,7 @@
 # --------------------
 image:
     repository: ghcr.io/afonsoc12/airflow
-    tag: 3.2.1-b1
+    tag: 3.2.1-b2
     pullPolicy: Always
 podSecurityContext:
     fsGroup: 50000
@@ -72,8 +72,8 @@ ingress:
             - path: /
               pathType: ImplementationSpecific
 sops:
-    lastmodified: "2026-04-26T23:53:04Z"
-    mac: ENC[AES256_GCM,data:EfOlomVwx87XsHrOQMlotePR+5VD9ML1bVc4kIq1Y15uHXrupdJVcfDp2JAK6O8nmxlABIbpfdRvlNVkE1Ygb7qDE3oZUgRkrAFA22pkYZnbwc6ypWpY2o4bd4mMIaqsxYdmm+uUHYqa2Eqe+ibcDEuSR/FUHPMSZPiGEqzdRc4=,iv:gb/RM5qduGb3MuAgcwP2FHZk52WsJV1a/Kn8/qGy1ao=,tag:DaF3xasrjX8q9f7AzlUoPg==,type:str]
+    lastmodified: "2026-04-27T00:18:21Z"
+    mac: ENC[AES256_GCM,data:JHjUAT/vhqAfwAvqcnS87fo+lCtkCuewxS9lk90CcaM8SKeuAA60LZIlSfwk3F/Jivy3COAKBpKMQqVdgllllNiMUGe6kkgPZ1p1kRa0TT4fM9px3KTEH7RmfsqoVfUCcoapXMzsEvnGN4lcQh+UxLRNJBdRtxrkm8h5alVseFQ=,iv:MFlbxlupiY5Tf5q78HvAz7JE4PK/h89amsw7Dunz+AQ=,tag:E7YIJlD52anYlRXSDJ9ZRQ==,type:str]
     pgp:
         - created_at: "2026-04-24T00:05:20Z"
           enc: |-
