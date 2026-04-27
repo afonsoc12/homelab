@@ -6,7 +6,7 @@
 # --------------------
 image:
     repository: ghcr.io/afonsoc12/airflow
-    tag: 3.2.1-b3
+    tag: 3.2.1-b4
     pullPolicy: Always
 podSecurityContext:
     fsGroup: 50000

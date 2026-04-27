@@ -15,7 +15,7 @@ strategy:
 
 image:
   repository: ghcr.io/dgtlmoon/changedetection.io
-  tag: 0.54.10
+  tag: 0.55.1
   pullPolicy: Always
 
 #   restartPolicy:
@@ -32,7 +32,7 @@ ports:
 
 additionalContainers:
   - name: playwright
-    image: ghcr.io/browserless/chromium:v2.47.0
+    image: ghcr.io/browserless/chromium:v2.48.0
 
 # Uses ports from .ports section, if service is true
 service:
