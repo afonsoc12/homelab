@@ -246,7 +246,7 @@ wheels = [
 
 [[package]]
 name = "apache-airflow-providers-cncf-kubernetes"
-version = "10.16.0"
+version = "10.16.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -258,9 +258,9 @@ dependencies = [
     { name = "kubernetes-asyncio" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/31/c4/13549905608a63cf974f35b766139c078685d9c96ee1c1d5f803e2360d33/apache_airflow_providers_cncf_kubernetes-10.16.0.tar.gz", hash = "sha256:f55fe0fbbb3638e3d243a5c2c7b47ff4231c8e06ac39d52a33ba903d8371829f", size = 458809, upload-time = "2026-04-12T14:21:46.061Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/77/19/f039148c61bac48dcf2143cf2da0e4386cbbd745efb0f452c6d6e86f6ac7/apache_airflow_providers_cncf_kubernetes-10.16.1.tar.gz", hash = "sha256:1f36b0ec18e97b13ac36373a8c48e4d38e9f8f227a963bbea144c383bc904419", size = 464082, upload-time = "2026-04-26T19:24:59.337Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e9/e0/c390518813e5e7c9d8d56d4497b67adbce77dc86a1fca34d90a9f4f8f7b2/apache_airflow_providers_cncf_kubernetes-10.16.0-py3-none-any.whl", hash = "sha256:f8ff9875541b45ee4b7ee84242a4b1d9abbedab94d3d35ecb27ba1a11353cd8d", size = 169550, upload-time = "2026-04-12T14:19:56.626Z" },
+    { url = "https://files.pythonhosted.org/packages/9f/fb/a82e34aebcb6ace1c27ede3d7097fea2806e3985d5ce6f750202dd8ceb3c/apache_airflow_providers_cncf_kubernetes-10.16.1-py3-none-any.whl", hash = "sha256:98f96b1fce52e1b22f8ddb33921dacacde57748708e0af84a8919648596aaaef", size = 171321, upload-time = "2026-04-26T19:24:20.92Z" },
 ]
 
 [[package]]
@@ -903,7 +903,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "apache-airflow", specifier = "==3.2.1" },
-    { name = "apache-airflow-providers-cncf-kubernetes", specifier = "==10.16.0" },
+    { name = "apache-airflow-providers-cncf-kubernetes", specifier = "==10.16.1" },
     { name = "apache-airflow-providers-postgres", specifier = "==6.6.3" },
 ]
 
