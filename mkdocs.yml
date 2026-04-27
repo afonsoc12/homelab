@@ -2,7 +2,7 @@
 site_name: homelab
 site_description: GitOps-driven homelab. Self-hosted. Automated. Encrypted.
 site_author: Afonso Costa
-site_url: https://afonsoc12.github.io/homelab
+site_url: https://afonsocosta.dev/homelab
 repo_url: https://github.com/afonsoc12/homelab
 repo_name: afonsoc12/homelab
 edit_uri: edit/master/docs/
