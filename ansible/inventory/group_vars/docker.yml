@@ -3,3 +3,9 @@
 # Role: maintenance
 # ==================================================
 maintenance_group_pip_packages: []
+
+# ==================================================
+# Role: geerlingguy.docker
+# ==================================================
+docker_users:
+  - "{{ ansible_user }}"

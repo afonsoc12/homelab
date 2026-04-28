@@ -1,4 +1,11 @@
 ---
+- name: Update packages
+  hosts: hyperion
+  become: true
+  tags: [update]
+  roles:
+    - maintenance
+
 - name: Setup Hyperion devices
   hosts: hyperion
   become: true

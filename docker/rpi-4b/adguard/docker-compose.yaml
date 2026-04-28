@@ -1,0 +1,20 @@
+---
+# --------------------
+# AdGuard Home
+#   - Docs: https://github.com/AdguardTeam/AdGuardHome/wiki/Docker
+#   - Image: adguard/adguardhome
+# --------------------
+services:
+  adguard:
+    image: docker.io/adguard/adguardhome:v0.107.73
+    container_name: adguard
+    restart: unless-stopped
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "80:80/tcp"
+      - "3000:3000/tcp"
+      - "853:853/tcp"
+    volumes:
+      - /opt/docker/adguard/work:/opt/adguardhome/work
+      - /opt/docker/adguard/conf:/opt/adguardhome/conf

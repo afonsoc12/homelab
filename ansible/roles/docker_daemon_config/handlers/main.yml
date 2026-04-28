@@ -1,6 +1,0 @@
----
-- name: Restart docker daemon
-  ansible.builtin.systemd:
-    name: docker
-    state: restarted
-  when: "'unraid' not in group_names"

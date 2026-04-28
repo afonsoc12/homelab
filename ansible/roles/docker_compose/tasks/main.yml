@@ -1,17 +1,61 @@
 ---
-- name: Clone compose-files Repository
-  ansible.builtin.git:
-    repo: https://github.com/afonsoc12/homelab-stackz
-    dest: "{{ docker_compose_repo_dest }}"
-    version: main
-    force: true
+- name: Find stacks for host
+  ansible.builtin.find:
+    paths: "{{ docker_compose_stacks_src }}/{{ inventory_hostname }}"
+    file_type: directory
+  delegate_to: localhost
+  register: _docker_stacks
 
-- name: Copy .env file to homelab-stackz/compose-files
+- name: Ensure base directory exists
+  ansible.builtin.file:
+    path: "{{ docker_compose_base_dir }}"
+    state: directory
+    mode: "0750"
+
+- name: Ensure volume directories exist
+  ansible.builtin.file:
+    path: "{{ docker_compose_volumes_dir }}/{{ item.path | basename }}"
+    state: directory
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
+    mode: "0750"
+  become: true
+  loop: "{{ _docker_stacks.files }}"
+
+- name: Sync stack directories to host
+  ansible.posix.synchronize:
+    src: "{{ item.path }}/"
+    dest: "{{ docker_compose_base_dir }}/{{ item.path | basename }}"
+    rsync_opts:
+      - "--exclude=secrets.sops.yaml"
+      - "--exclude=.env"
+    delete: true
+  loop: "{{ _docker_stacks.files }}"
+
+- name: Check for secrets files
+  ansible.builtin.stat:
+    path: "{{ item.path }}/secrets.sops.yaml"
+  delegate_to: localhost
+  register: _secrets_stat
+  loop: "{{ _docker_stacks.files }}"
+
+- name: Decrypt secrets to dotenv
+  ansible.builtin.command:
+    cmd: "sops --decrypt --output-type dotenv {{ item.item.path }}/secrets.sops.yaml"
+  delegate_to: localhost
+  register: _env_contents
+  no_log: true
+  loop: "{{ _secrets_stat.results }}"
+  when: item.stat.exists
+
+- name: Write .env files on host
   ansible.builtin.copy:
-    src: "{{ docker_compose_env_file_path }}"
-    dest: "{{ docker_compose_repo_dest }}/compose-files"
+    content: "{{ item.stdout }}"
+    dest: "{{ docker_compose_base_dir }}/{{ item.item.item.path | basename }}/.env"
     mode: "0600"
-  when: docker_compose_files or docker_compose_files_containers
+  no_log: true
+  loop: "{{ _env_contents.results }}"
+  when: item.stdout is defined
 
 - name: Create docker networks
   community.docker.docker_network:
@@ -21,48 +65,18 @@
     attachable: "{{ item.value.attachable | default(omit) }}"
   with_dict: "{{ docker_compose_networks if docker_compose_networks is iterable else {} }}"
 
-- name: Deploy
+- name: Deploy stacks
   community.docker.docker_compose_v2:
-    project_src: /home/{{ ansible_user_id }}/homelab-stackz/compose-files
-    env_files: "{{ docker_compose_repo_dest }}/compose-files/{{ docker_compose_env_file_path.split('/')[-1] }}"
-    files: "{{ item ~ '.yml' }}"
-    project_name: "{{ item }}"
+    project_src: "{{ docker_compose_base_dir }}/{{ item.path | basename }}"
     pull: always
-    build: always
+    build: never
     recreate: "{{ docker_compose_recreate_policy }}"
     remove_orphans: true
-  loop: "{{ docker_compose_files if docker_compose_files is iterable else [] }}"
+  loop: "{{ _docker_stacks.files }}"
   loop_control:
-    pause: 10
+    pause: 5
 
-- name: Deploy (specific containers)
-  community.docker.docker_compose_v2:
-    project_src: /home/{{ ansible_user_id }}/homelab-stackz/compose-files
-    env_files: "{{ docker_compose_repo_dest }}/compose-files/{{ docker_compose_env_file_path.split('/')[-1] }}"
-    files: "{{ item.key ~ '.yml' }}"
-    project_name: "{{ item.key }}"
-    services: "{{ item.value }}"
-    pull: always
-    build: always
-    recreate: "{{ docker_compose_recreate_policy }}"
-    remove_orphans: true
-  with_dict: "{{ docker_compose_files_containers if docker_compose_files_containers is iterable else {} }}"
-  loop_control:
-    pause: 10
-
-- name: Tear down
-  community.docker.docker_compose_v2:
-    project_src: /home/{{ ansible_user_id }}/homelab-stackz/compose-files
-    env_files: "{{ docker_compose_repo_dest }}/compose-files/{{ docker_compose_env_file_path.split('/')[-1] }}"
-    files: "{{ item ~ '.yml' }}"
-    project_name: "{{ item }}"
-    state: absent
-    remove_images: all
-    remove_orphans: true
-    remove_volumes: true
-  loop: "{{ docker_compose_tear_down_files if docker_compose_tear_down_files is iterable else [] }}"
-
-- name: Prune everything
+- name: Prune unused resources
   community.docker.docker_prune:
     timeout: 180
     containers: true
@@ -70,4 +84,3 @@
     images_filters:
       dangling: false
     networks: true
-    volumes: true

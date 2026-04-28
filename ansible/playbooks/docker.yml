@@ -1,7 +1,19 @@
 ---
-- name: Setup Docker
+- name: Update packages
   hosts: docker
   become: true
+  tags: [update]
   roles:
-    - docker_provision
-    - docker_daemon_config
+    - maintenance
+
+- name: Install Docker
+  hosts: docker
+  become: true
+  tags: [install-docker]
+  roles:
+    - geerlingguy.docker
+
+- name: Deploy Docker compose stacks
+  hosts: docker
+  roles:
+    - docker_compose

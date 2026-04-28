@@ -48,6 +48,11 @@ resource "adguard_rewrite" "stocks" {
   answer = "10.0.10.220"
 }
 
+resource "adguard_rewrite" "seerr" {
+  domain = "seerr.${local.domain}"
+  answer = "10.0.10.220"
+}
+
 resource "adguard_rewrite" "plex" {
   domain = "plex.${local.domain}"
   answer = local.oci_public_ip

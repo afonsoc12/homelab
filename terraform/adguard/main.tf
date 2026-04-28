@@ -9,6 +9,6 @@ provider "adguard" {
   host     = data.sops_file.secrets.data["host"]
   username = data.sops_file.secrets.data["username"]
   password = data.sops_file.secrets.data["password"]
-  scheme   = "https"
+  scheme   = "http"
   timeout  = 60
 }
