@@ -2,15 +2,13 @@
 - name: Update packages
   hosts: all:!unraid
   become: true
-  gather_facts: true
   tags: [update]
   roles:
-    - maintenance/update
+    - maintenance
 
 - name: Connect to Tailscale
-  hosts: all
+  hosts: all:!unraid
   become: true
-  gather_facts: true
   tags: [tailscale]
   roles:
     - role: artis3n.tailscale.machine

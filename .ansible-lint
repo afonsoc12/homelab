@@ -2,10 +2,6 @@
 profile: production
 skip_list:
   - fqcn
-  - role-name[path] # todo remove
-  - latest[git] # todo remove
-  - package-latest # todo remove
-  - var-naming[no-role-prefix] # todo remove
 
 exclude_paths:
-  - config.sops.yml
+  - "**/*.sops.yml"

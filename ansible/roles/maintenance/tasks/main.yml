@@ -1,0 +1,97 @@
+---
+- name: Configure inotify limits
+  become: true
+  ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    sysctl_set: true
+    reload: true
+  loop:
+    - { name: fs.inotify.max_user_watches, value: "{{ maintenance_inotify_max_user_watches }}" }
+    - { name: fs.inotify.max_user_instances, value: "{{ maintenance_inotify_max_user_instances }}" }
+
+- name: Update packages and dependencies
+  become: true
+  tags: [update]
+  block:
+    - name: Add user to sudoers without requiring password
+      community.general.sudoers:
+        name: "sudoers-nopass"
+        user: "{{ ansible_user }}"
+        commands: ALL
+        nopassword: true
+
+    - name: Apt update cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: "{{ maintenance_apt_cache_valid_time }}"
+
+    - name: Apt dist-upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: Apt install (base + group + host)
+      ansible.builtin.apt:
+        name: >-
+          {{
+            maintenance_base_apt_packages | default([]) +
+            maintenance_group_apt_packages | default([]) +
+            maintenance_host_apt_packages | default([])
+          }}
+        state: present
+
+    - name: Apt clean
+      ansible.builtin.apt:
+        autoclean: true
+
+    - name: Apt autoremove
+      ansible.builtin.apt:
+        autoremove: true
+
+    - name: Apt purge
+      ansible.builtin.apt:
+        purge: true
+
+    - name: Pip install (base + group + host)
+      ansible.builtin.pip:
+        name: >-
+          {{
+            maintenance_base_pip_packages | default([]) +
+            maintenance_group_pip_packages | default([]) +
+            maintenance_host_pip_packages | default([])
+          }}
+        state: present
+      when: (maintenance_base_pip_packages + maintenance_group_pip_packages + maintenance_host_pip_packages) | length > 0
+
+    - name: Set cron to update caches
+      ansible.builtin.cron:
+        name: "Update caches"
+        hour: 4
+        minute: 0
+        job: "apt-get update"
+
+    - name: Check if reboot required
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+        get_checksum: false
+      register: maintenance_reboot_flag
+      notify: Reboot server
+      changed_when: maintenance_reboot_flag.stat.exists
+
+- name: System upgrade
+  become: true
+  tags: [never, system-upgrade]
+  when: not (skip_system_upgrade | default(false))
+  block:
+    - name: Apt update cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Apt full-upgrade
+      ansible.builtin.apt:
+        upgrade: full
+
+    - name: Release upgrade (Ubuntu)
+      ansible.builtin.include_tasks: release-upgrade-ubuntu.yml
+      when: ansible_facts['distribution'] | default('') == 'Ubuntu'

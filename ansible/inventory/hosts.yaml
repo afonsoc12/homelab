@@ -1,5 +1,7 @@
 ---
 raspberries:
+  vars:
+    skip_system_upgrade: true
   hosts:
     rpi-4b:
     rpi-z2w-hyperion:
@@ -14,6 +16,7 @@ masters:
     k3s-m1:
     k3s-m2:
     k3s-oci-m3:
+      skip_system_upgrade: true
 nodes:
   hosts: {}
 k3s_cluster:

@@ -1,5 +1,5 @@
 ---
 # ==================================================
-# Role: maintenance/update
+# Role: maintenance
 # ==================================================
-group_pip_packages: []
+maintenance_group_pip_packages: []

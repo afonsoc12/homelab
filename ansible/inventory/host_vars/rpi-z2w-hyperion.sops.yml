@@ -1,33 +1,30 @@
----
-ansible_host: ENC[AES256_GCM,data:JFxTFGk0QZZMwcE=,iv:A9uutVzjgYrwrdNgeZuM0++I0Ld2N6a8OyrkNZjtBxk=,tag:IkNKD4zm0ckR3wNOjnmuJQ==,type:str]
-ansible_ssh_private_key_file:
-  ENC[AES256_GCM,data:FLnilweFEPMyMKO0yPG00x10tg==,iv:/O8DdVkHPLammYLNt5KtM2veEff2Fkqj5DAAxoqJGv8=,tag:FtQAXgVFYLqKdsqc8yzQHQ==,type:str]
+ansible_host: ENC[AES256_GCM,data:dNmOmDVlNHatSQ==,iv:RZ9ExZThllLn+Ylcnb5ePswaEXluZ1CZEJuNj7IqB58=,tag:7QlEuhZplBhisc/T81BmQw==,type:str]
+ansible_ssh_private_key_file: ENC[AES256_GCM,data:bRr8KeYvOQ5LSfFKeBQh0pMIEA==,iv:K1C54FZCYCOEM7XhPX89w6ZCBzqt+5PI/jpLR3qpIUk=,tag:16RBHCfITlZWIllDA3EcUQ==,type:str]
 sops:
-  lastmodified: "2026-04-15T21:34:06Z"
-  mac:
-    ENC[AES256_GCM,data:807w11ibBvd8P7fqelxv0XY/UgyUdcihIZTJuGkq91Qe1pNM1SNRXJ2z/1+v/ksixYaRKZr8txkZiXp+Qa6Zm1GcWjBKjflUaaV25azo81f9s09fAGKiBfdmLzCJ4YIzerMlwcMOJISJj+VoDhHInLtj5hQ7p6RPEw6Gst84Bqg=,iv:GbRIKlc0BRGXxLZd5VHWbAXhTRPuPATCIONIuLrlMIk=,tag:3xfeVoTsdirUxyYp9cdwoA==,type:str]
-  pgp:
-    - created_at: "2026-04-15T21:34:06Z"
-      enc: |-
-        -----BEGIN PGP MESSAGE-----
+    lastmodified: "2026-04-27T21:09:04Z"
+    mac: ENC[AES256_GCM,data:LD4JXhADqEZsFrC/2HIizAne4DRZmaidhlK5NGdXVIfubEqx4NTv3c6rqdjAmMMN/KqrHm70tuKqlNAu6GI/AfVow47odYtbOPQOKRwLG5AsvheQ6dKC8DQ1T99QxUURTVpPgMIjl3G+cO/0YwbU/uT4ilREJv2M4Lj+8e8x6Bg=,iv:1iMcnz6VfNAV3fJQo6hwRnuRmwdKraQaKcPqBi1ERtk=,tag:QDm9kk6q7DzzdcggIHg5JA==,type:str]
+    pgp:
+        - created_at: "2026-04-15T21:34:06Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
 
-        hQIMA5NT/LvuRqeGAQ//aXXce2LLMhpiu5y0sk6yM41R7gYc8I+zEyhAo8kfpAmY
-        nJp+PuMW05KHT78VsPnt73P016cou521OkX3xo1JLwRJsk1Idiox4qRGmZAIHglL
-        Cj26urKqWi7fSoNfi9At0p7RYJQSU7KoYgoCB0iF9VS6OMtQxpTar6VkpxXHkkQk
-        HNaEuO3EkSIqAdWPfGVgqkwDryOEaPb87VxGPTf8cuik7/m7Y6UGPVbQjfseZvAo
-        oEg4//5BM+xQs3A35CqJ66VXdFyerNklxJ/fWJDMFR/D1q5FAJG8N5Ag/482tiKB
-        m2MzG47ouY/XD0xgogD2NGWkdMOqyEwn5PMiraOnkbBfMye3wF3a8oqVJUdACVdB
-        9jARe7FhIhpOa3qlMGSzf2qHG84ky/5Mcm+JGtg7T1OqjCQMVSuFwC37BFIb6DF/
-        ZnKLU6kvboq2uNG5did44WJisZ9K8OGMUQycCveJ5bzCpxwxtm4Acjse+axRPrWH
-        /4bWvxa3HI36e5Gg8v6BAVm4hR1qKE3lH5w5G4t3T1oXV6W7nopL7O8vyIp9/UHK
-        Svsx+NwlCx6q2YXyStdG6lSMK5Wm+HfEhsQ6OzdwN/ku2opW1z5K8CZTx1ebHHWL
-        JNg2YNL0Ax7cK8N/YlbooRK1kBZoHAC7ZwPq/h34n6Tr7hXVTqjzkZCBEtd4nwjU
-        aAEJAhAq8Laq74cHW9f5ImW2XXYULxfRzw3/TzmiaLI60kklPkwax2/0qaWImvUE
-        sKrim6sm9qf/Viig3bqiMjcfHhLnpBWw/0JYEV2nzUFYSWghHRu655WgEEAEoiF8
-        gDQtrRsDByU8
-        =36Gn
-        -----END PGP MESSAGE-----
-      fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-  encrypted_regex: ^(token|api_endpoint|tailscale_auth_key|ansible_host|ansible_user|ansible_ssh_private_key_file)$
-  mac_only_encrypted: true
-  version: 3.12.2
+            hQIMA5NT/LvuRqeGAQ//aXXce2LLMhpiu5y0sk6yM41R7gYc8I+zEyhAo8kfpAmY
+            nJp+PuMW05KHT78VsPnt73P016cou521OkX3xo1JLwRJsk1Idiox4qRGmZAIHglL
+            Cj26urKqWi7fSoNfi9At0p7RYJQSU7KoYgoCB0iF9VS6OMtQxpTar6VkpxXHkkQk
+            HNaEuO3EkSIqAdWPfGVgqkwDryOEaPb87VxGPTf8cuik7/m7Y6UGPVbQjfseZvAo
+            oEg4//5BM+xQs3A35CqJ66VXdFyerNklxJ/fWJDMFR/D1q5FAJG8N5Ag/482tiKB
+            m2MzG47ouY/XD0xgogD2NGWkdMOqyEwn5PMiraOnkbBfMye3wF3a8oqVJUdACVdB
+            9jARe7FhIhpOa3qlMGSzf2qHG84ky/5Mcm+JGtg7T1OqjCQMVSuFwC37BFIb6DF/
+            ZnKLU6kvboq2uNG5did44WJisZ9K8OGMUQycCveJ5bzCpxwxtm4Acjse+axRPrWH
+            /4bWvxa3HI36e5Gg8v6BAVm4hR1qKE3lH5w5G4t3T1oXV6W7nopL7O8vyIp9/UHK
+            Svsx+NwlCx6q2YXyStdG6lSMK5Wm+HfEhsQ6OzdwN/ku2opW1z5K8CZTx1ebHHWL
+            JNg2YNL0Ax7cK8N/YlbooRK1kBZoHAC7ZwPq/h34n6Tr7hXVTqjzkZCBEtd4nwjU
+            aAEJAhAq8Laq74cHW9f5ImW2XXYULxfRzw3/TzmiaLI60kklPkwax2/0qaWImvUE
+            sKrim6sm9qf/Viig3bqiMjcfHhLnpBWw/0JYEV2nzUFYSWghHRu655WgEEAEoiF8
+            gDQtrRsDByU8
+            =36Gn
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(token|api_endpoint|tailscale_auth_key|ansible_host|ansible_user|ansible_ssh_private_key_file)$
+    mac_only_encrypted: true
+    version: 3.12.2

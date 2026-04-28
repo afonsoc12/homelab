@@ -3,5 +3,5 @@
   hosts: docker
   become: true
   roles:
-    - docker/provision
-    - docker/daemon-config
+    - docker_provision
+    - docker_daemon_config

@@ -2,24 +2,22 @@
 - name: Update packages
   hosts: k3s_cluster
   become: true
-  gather_facts: true
   tags: [update]
   roles:
-    - maintenance/update
+    - maintenance
 
 - name: Connect to Tailscale
   hosts: k3s_cluster
   become: true
-  gather_facts: true
+  tags: [tailscale]
   roles:
     - role: artis3n.tailscale.machine
       vars:
         tailscale_package: "tailscale={{ tailscale_version }}"
         state: present
 
-- name: K3s cluster prerequisites
+- name: k3s cluster prerequisites
   hosts: k3s_cluster
-  gather_facts: true
   become: true
   any_errors_fatal: true
   roles:
@@ -47,33 +45,82 @@
         name: multipathd
         state: restarted
 
-# - name: Setup K3s masters
-#   hosts: masters
-#   become: true
-#   any_errors_fatal: true
-#   pre_tasks:
-#     - name: Download K3s install script
-#       ansible.builtin.get_url:
-#         url: https://get.k3s.io/
-#         dest: /usr/local/bin/k3s-install.sh
-#         owner: root
-#         group: root
-#         mode: "0755"
-#         timeout: 120
-#   roles:
-#     - k3s.orchestration.k3s_server
+- name: Setup K3s masters
+  hosts: masters
+  become: true
+  gather_facts: false
+  any_errors_fatal: true
+  roles:
+    - k3s.orchestration.k3s_server
 
 - name: Setup K3s nodes
   hosts: nodes
   become: true
+  gather_facts: false
   any_errors_fatal: true
   roles:
     - k3s.orchestration.k3s_agent
 
-- name: Reset k3s cluster
+- name: Reboot k3s masters (rolling)
+  hosts: masters
+  become: true
+  serial: 1
+  tags: [never, reboot]
+  tasks:
+    - name: Reboot
+      ansible.builtin.reboot:
+        test_command: kubectl get nodes
+
+- name: Upgrade K3s masters (rolling)
+  hosts: masters
+  become: true
+  serial: 1
+  tags: [never, upgrade]
+  roles:
+    - role: k3s.orchestration.k3s_upgrade
+
+- name: Upgrade K3s nodes
+  hosts: nodes
+  become: true
+  tags: [never, upgrade]
+  roles:
+    - role: k3s.orchestration.k3s_upgrade
+
+- name: Restart k3s service
   hosts: k3s_cluster
   become: true
-  tags: [never, reset]
+  serial: 1
+  tags: [never, restart]
+  tasks:
+    - name: Restart k3s
+      ansible.builtin.systemd:
+        name: "{{ 'k3s' if inventory_hostname in groups['masters'] else 'k3s-agent' }}"
+        state: restarted
+
+- name: Reboot k3s nodes
+  hosts: nodes
+  become: true
+  gather_facts: true
+  tags: [never, reboot]
+  tasks:
+    - name: Reboot
+      ansible.builtin.reboot:
+
+- name: Prune unused container images
+  hosts: k3s_cluster
+  become: true
+  tags: [never, prune]
+  tasks:
+    - name: Remove all unused images
+      ansible.builtin.command:
+        cmd: k3s crictl rmi --prune -all
+      register: prune_result
+      changed_when: "'Deleted' in prune_result.stdout"
+
+- name: Destroy k3s cluster
+  hosts: k3s_cluster
+  become: true
+  tags: [never, destroy]
   tasks:
     - name: Run k3s uninstall script [master]
       when: "'masters' in group_names"
@@ -101,38 +148,3 @@
       ansible.builtin.file:
         path: /etc/rancher/k3s/config.yaml
         state: absent
-
-- name: Reboot k3s masters (rolling)
-  hosts: masters
-  become: true
-  gather_facts: true
-  serial: 1
-  tags: [never, reboot]
-  tasks:
-    - name: Reboot
-      ansible.builtin.reboot:
-        test_command: kubectl get nodes
-
-- name: Reboot k3s nodes
-  hosts: nodes
-  become: true
-  gather_facts: true
-  tags: [never, reboot]
-  tasks:
-    - name: Reboot
-      ansible.builtin.reboot:
-
-- name: Upgrade K3s masters (rolling)
-  hosts: masters
-  become: true
-  serial: 1
-  tags: [never, upgrade]
-  roles:
-    - role: k3s.orchestration.k3s_upgrade
-
-- name: Upgrade K3s nodes
-  hosts: nodes
-  become: true
-  tags: [never, upgrade]
-  roles:
-    - role: k3s.orchestration.k3s_upgrade

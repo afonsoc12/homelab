@@ -1,0 +1,14 @@
+---
+maintenance_base_apt_repos: {}
+maintenance_group_apt_repos: {}
+maintenance_host_apt_repos: {}
+maintenance_base_apt_packages: []
+maintenance_group_apt_packages: []
+maintenance_host_apt_packages: []
+maintenance_base_pip_packages: []
+maintenance_group_pip_packages: []
+maintenance_host_pip_packages: []
+maintenance_apt_cache_valid_time: 3600
+maintenance_reboot_timeout: 600
+maintenance_inotify_max_user_watches: 524288
+maintenance_inotify_max_user_instances: 512

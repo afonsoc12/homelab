@@ -1,3 +1,0 @@
----
-keyring: /usr/share/keyrings/hyperion.pub.gpg
-apt_key_url: https://releases.hyperion-project.org

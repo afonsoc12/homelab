@@ -1,60 +1,49 @@
----
-token:
-  ENC[AES256_GCM,data:vDcEkO58MfAFCskwqcq/yJB5bMX7CDE4/H6CAW3cPgWpnpzcTu3WPkKAbp9kuIsPcOw3aLOexebmLHIcaxahDgHnHm+BejHZG4b5DV4cqMgn+9EWI+5aG6dxXqJ15Rq9Cj3DeDUfnU1y24Ok,iv:4p18CtsVGSXa6jSV/b9SwR5fcLxII7IIo/Uby3cCrKA=,tag:Mo9yjMrRwhlPLjIaHKNtnw==,type:str]
-api_endpoint:
-  ENC[AES256_GCM,data:BgB7pYjgx58fl4hYlGpoPp1gUMwuBjPfCNDa8ptw01hhowsVDDutGC5q1TGAz6ZcxxfiiZZOFtsJlEipzrGWpVlX4zQvZ0kOMi8F7QojsBbr8UpX30BdSfFC,iv:aLJCtoalOq67N33IC5n2n5puQm80W5HB7gXpxmgb9+M=,tag:6Hz7TO/gtyZ2p1FgEiCvwA==,type:str]
-# ==================================================
-# Role: maintenance/update
-# ==================================================
-group_apt_packages:
-  # Longhorn needs this package to mount RWX
-  - nfs-common
-  - open-iscsi
-  - lshw
-# ==================================================
-# Role: k3s_server (k3s-io/k3s-ansible)
-# ==================================================
-server_group: masters
-agent_group: nodes
-k3s_version: v1.35.3+k3s1
-# K3s server config written to /etc/rancher/k3s/config.yaml on each server node.
-# Jinja2 is supported — ansible_tailscale0 is populated after the tailscale role runs.
-server_config_yaml: |
-  flannel-iface: tailscale0
-  node-ip: "{{ ansible_facts['tailscale0']['ipv4']['address'] }}"
-  advertise-address: "{{ ansible_facts['tailscale0']['ipv4']['address'] }}"
-  node-external-ip: "{{ ansible_facts['tailscale0']['ipv4']['address'] }}"
-  disable:
-    - traefik
-    - servicelb
+token: ENC[AES256_GCM,data:KDxsjTCHm9UT10Y29prhi2SqHD6J6mxUKudpZwa0RS+z8RmBqxuU1Mv2TamJ0joFHfzUDgIboOoL4TFKGZn+C7Zua547hKtvyfZvALgTat0wK7xiJEZNkJkM64iiAY8yOd6cgzSM+HvfVcB7,iv:6hqVXXQETBexYDEJcJhM8EEuXJtjl6CdAn8AiUVWvDw=,tag:4oRsefeYqUhRQOer+5Ai7w==,type:str]
+api_endpoint: ENC[AES256_GCM,data:wvoc/BBI89lU6diXIzguCk5lzJhliEqWJpe1kAgKXsuHkHiBBbudfA9Exqoy7fFBLSOrp/enY7mo26g6Y2XmoBTz6B41LAK4SyfGmrr8322qZrelYfFTSe/H,iv:W1bk1inG1xpoB8UU/1PvI9lCCLiz9IEOK5RhWF2n9hI=,tag:LSjG4Yh5Q4SEd6A1sT8yBg==,type:str]
+#ENC[AES256_GCM,data:Ak9DpDvEYN8CH/h3BxB7f8H978csyNJtIBFp9IGNUKcmWs5Y7ZN1xXgOxolYM6gdtFe9,iv:1aJAthT6qhSPM3cNP+1SSAVxCQCc4UhgPUJ9XmnT3nw=,tag:aT7cDIVwCHAZKGy3YmaoJg==,type:comment]
+#ENC[AES256_GCM,data:bVQZEMdy2cdmrH5bFAIqB4cN,iv:cw6TpbjRO6wRYzEUcW1gKGl8S2xCenYIm1nrYkudzq4=,tag:6YF6t604/zqrgm3wV3eZdA==,type:comment]
+#ENC[AES256_GCM,data:WNnkznpCkPt8LGgQmjLRf+gxZUyasYKybEi9GkbijxQzzEpe+0RZsGBRHMcAYOxRN4FX,iv:SDRFye7yOd6vDuGMBtKffymMdo7rBiSF9fxKL+DX8B0=,tag:EKkx1RSBisqIoTmhKFUqHA==,type:comment]
+maintenance_group_apt_packages:
+    - ENC[AES256_GCM,data:HuUSmNyyPsP9Fh4cnQ+36TIczIF3+h9wFP8gDy5FFMXhfBgnZmOAybg=,iv:ahqGDE8cA9He1O+NQ1Z6usfy9egjqB1d2lqlwiGFZbc=,tag:BdC6gkGF3BrlCiMHKzraIg==,type:comment]
+    - ENC[AES256_GCM,data:zv1Rh4xRSU+ndw==,iv:iC7rxPBr9pZf8JbGat/eiCtPDM3/VZ/s4tidiT6Z5WQ=,tag:HcU1dq6lGt8nkrHOVG9mZA==,type:str]
+    - ENC[AES256_GCM,data:Pr34UErSU9yfDg==,iv:oBdp+JaRKzlsa7vVYHkBRn7Cp8Ki8zBsuUkb0gACtnE=,tag:heu+uAWm2izxEG/YQ30c5Q==,type:str]
+    - ENC[AES256_GCM,data:bJAjKg==,iv:5pBfXt+XnpqqYQ4NVFhWkKt1MNpP5mhp+9UxqGO4mDw=,tag:DD6zsX3UaFss/yPr6VAtag==,type:str]
+#ENC[AES256_GCM,data:T6R1ii2NNpAL7c3V5XI15zNj3YP/XvO47G/EXc1EPk59jfPGx0ZvD1a+iuW/OAjEic5H,iv:XkoERNVNe84ivFsI6YssQXQuncUB3XMRsmcSe7IxAm0=,tag:x8n0tjkXYeoZJbVPocy7og==,type:comment]
+#ENC[AES256_GCM,data:J918jITgF8Bc7IwhbQUB19Dfe/u0F8nfl7NxItLPLxu5B8mQgA0=,iv:7r6edJ8b3NXkJqQLeRw11ZcliDhgBLnoCi9lfO44SBo=,tag:hN08Ynn4DrZWDTw2wIzkFA==,type:comment]
+#ENC[AES256_GCM,data:c76CtHrhNpn6ZZqcByUzbdfRnNCuHJpovjbDMKxVd8OX8TvIoojiYDjCFNL6WCFKkuS9,iv:8UudBynvVdnYtyS5jsTFMSuowU4kllqXovDb7ZqMWLA=,tag:XOHFYlK0A2bD9zY5QpoLdg==,type:comment]
+server_group: ENC[AES256_GCM,data:sqmARbbrFQ==,iv:Ztykie6thOabDYy4XvPRxIqVudMA+AAzEVyLmx4NPrA=,tag:RQ0HHw8LVsMEbUy2Sl274A==,type:str]
+agent_group: ENC[AES256_GCM,data:7C7M300=,iv:I7BEE48mRrjnxKcUfrdJAQM4gVRo5rw1UmTPtMMN280=,tag:HVzBP69skAL4xKhiOgRitg==,type:str]
+k3s_version: ENC[AES256_GCM,data:QziT72dZRY84j0Hv,iv:v+Xtb2juIgMbBbEUkkLCGktDqXyNhd/TokhCRRMK080=,tag:lKrBdnyVu9EqYvMdTs8FaA==,type:str]
+#ENC[AES256_GCM,data:O5qOC3GQABRYaPQTnP1ea88NAhM6VqlM+/IGdqM6W/S8e8242lzwk3aQbVUsadRvGkNcsDoFNx/WtmG3YMLkavsSSm/8LWyb7htk5v6kiA==,iv:omjf7Yn2sAEppZnL68rWqsb1+/R2bwku1jWld5Ld5zY=,tag:MUpYqBG3DroveYfEL+mAtA==,type:comment]
+#ENC[AES256_GCM,data:nvzW8zT+elw4+6c4MfwbX++7hqDzkhkTtOaKSFzo6jcz3CoQpcCa80yMW12ZnHx45WhAF7sp3/FVDJU5yeEG4SqbrFrEW5H+kgyDn23pKU/iYX/LT6NI,iv:UvoFw+wDHi1zeLK1u7EhOpXOsTYPnCaJD/0CdqSan24=,tag:RymoQNLvUhFXeQtcwbbgcg==,type:comment]
+server_config_yaml: ENC[AES256_GCM,data:GamihcPAaQZsIvdVmcCrmoJPhdGuFCRKouIXVL7MbUb8xDefyeTmizeP+8/3/fw2fvH4Qe3hW3Y3HLtEe8DZi2+oOkLQRxX5pWSz9tPtMeKGTOOI80pMAAowhVlaZsZw0Rg9igBr+z7xQLWP9/JMzKax/zEsebD2GT2z4R1Jz0se7sZbvderFhW7b3cCj58ANRnrVovQIJ+BGpjd6X3GBXB/F+S0Uqc9Y62BkqIMSq9oAmPCapEE2kmvS09RIAx8ABkdTqL7sotsU5HO/TkBIQAzYNnqacWswXBdOYHMQAIPY6P3+0q2PJIUch3a1CrPfOs0oeKN+RcBb4bWeapYaFGpbhIJz5dw1Aa9EUIz21Y=,iv:m75ZkTgYn5o6Q+AunN7EyqKza11mMVuctATFor5YKq0=,tag:jQKywf5WYqyjmp12AiXnMA==,type:str]
 extra_server_args: ""
 extra_agent_args: ""
 sops:
-  lastmodified: "2026-04-16T12:55:20Z"
-  mac:
-    ENC[AES256_GCM,data:UgH20qGnfJKShdGXEBVl+NH80uIZi+F2DQ0j5C38LoB2FoLkeaWR06zkAD3LUetZjZtnH3GsW1HKSOgEFRu09mD7lZL6YGivCiHe7nbVuUDsD4oHp0yj0ePBO6W9zwL/9OG6dD7t1vqzmn2oIaR4R+Y4yVHE0NfHPmdA4/KGkgc=,iv:gEfwiDT9h1nRYsc4y+xEmgyHubvojeJ8V4GJv1BpMyo=,tag:COEy1uZKfKubrngIji+zyg==,type:str]
-  pgp:
-    - created_at: "2026-04-15T21:23:26Z"
-      enc: |-
-        -----BEGIN PGP MESSAGE-----
+    lastmodified: "2026-04-27T21:58:56Z"
+    mac: ENC[AES256_GCM,data:hfcls/eeDR8gnjv08SKt4np0p2/4jxhDX7BKi8dw8GUhcaJSe8cJNmkVHzy0/BR0Zraj6uJsJwPfglYFefgJvCVHpL4tkO93bv+06jQXaqOU5Rrx1gOVC88rT0GsGWgagOdZoDO9QUeUcmkcctpNRJjw0/P/bagpFCKShb/t5ws=,iv:N4o4dH27KmgvDwgM6XXAkJ8b0+QHTlH6e4hW/HObG8c=,tag:sSzJ6xQjhkyXvh4bkiM21Q==,type:str]
+    pgp:
+        - created_at: "2026-04-27T21:58:56Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
 
-        hQIMA5NT/LvuRqeGARAAry1x/vWf7ER9zoF14wD2RBg5xMGwr++IgR/ZYLtKj5m1
-        yCFSEUfvB6QMzJ6rC43Y0/oOHJnq+fsLzGcpXDIEGPlgNY5Co2Yf7ZeydI9pDoQs
-        EN68p/5e5nck+4en02Q+MmVQcTq30i9k7sdelpTEPPYnh0ILaWu+6SjJBQtmi0sO
-        2gD/m1PCjPVYxzi0D1xPKyouZ7p7aCFMFA/EBBEehwpKIfGl4uNIISoZhW12iH4J
-        /EW36hz3wzbpTAJ3GiUFFwUQewtlryBFAcqkixpl1vlirVFeY2FL8KnqrPNHMmga
-        DFkrkZ0qEFSI3eHfnjM57CAo0NscMU9qJ6V0wqVhKz/neb+5j+WkRtvVmEV9uMQO
-        5UGx4aweN6uhIyYGR3ZSBEGMjW0Qnyu3qB+YmNhqkW5seS0FEPT7cyb2Nk9J2zZg
-        bLMjBukCsijzFc9jr1l4gcrPNpn/VxIcX7wHR/z2H90UtNghixOqqw9K5+R/rrjs
-        3zO+t2F4ghOnUcAQ0TnONHEFf3Zzovl4Hbj7DMio+FE7h0bp3cmLL3aH8ia0/5j4
-        PntUehU/FbtOTgyksqcslLHKWh7OMUgPIcmgl9uFS12iGDeTMeC1WdnBS4PZ3Pot
-        hhVffKYP5I55NO+TmikUyCFNiaGRUn1fEZuhDvagAMMubS98GQZIoR7QV9I+y6jU
-        aAEJAhDDRMy/I13pzb3LHIQVZCvzFXX96S8HIURW4xtqM7hVPYhCjSWd76hpxIdY
-        4jX7yEqGkQRRrfoSpHrvnq7ADuTc81No6iZgGJ4obinzUS0f55auzwq92m1Dly5a
-        M1fEvtlit+Jy
-        =N4sr
-        -----END PGP MESSAGE-----
-      fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-  encrypted_regex: ^(token|api_endpoint|tailscale_auth_key)$
-  mac_only_encrypted: true
-  version: 3.12.2
+            hQIMA5NT/LvuRqeGAQ/7Bw0ygKPtE5n39xTcnXYkL4UgxbYg71JdJUlDxkQfYlc4
+            6O05rO02zTDQgGY66quIF4e7ndmpP9fhMyGMAMdbkyOGzVJNqqqK09aKuDiCDcW2
+            TdxWZwxLHh50JiyH3M/ArrchgC4JZsFgY1dqlaaBqlEWxbsFJztrYMxii8cAwk06
+            3quJva4fD5Cn4J6P9HbqkaaA/CQe/VzIpASi7ekvLPddnAFL68ZDHvlJ1bJseDKG
+            gmUpe1yrOfcV7wXOJfGF+muanyAESVzaChNXGNVyW+koOasjjEgCuGHAcxeeN99+
+            Ubz8ksOLLn5XhjjrpF3g/1tacORMxwX6V3AqqoyY8utgmnTX51ZY2RICYZVUx0zB
+            H5VDtzgmpu1NLn5dIJm4Y0L7byzZ0v8A9yiqCf1jxWsrQY36wuzdICNmcMwrLaTs
+            WZk9oaf3DMgUD+gsSddWBW//nL+0jBx1wsHZbUA79qnyGiTSyT/gGWTkF56n7s5k
+            Z6F9lBGYteCbXbPjMXAhUWwVpjxhifKOz20GZqvuOPHTTAKDKYOeXoSbS7/SBKoP
+            wJnwy48Pz/5zO6gocASzABfRr1uqBQ53WaNaAQlhNkMwTvJnp0vILfihsv0Dh7bV
+            Ht0R1B/Q4Sl17OxcuP0Sn/fywsqEz3y1+Kvwf5wlodwyQO7AxLU4fupPfa24l+XU
+            ZgEJAhAoTX8YJOZafk1dt4B7I99SaFOWHGTval7913NN+AQEJbNpXxQ46Q8y3J7s
+            h0OAY85x4Jlr7GfHBdBjpkxPkoTw2kNWA0MAXyNrcxf4pyMR8X55lU6J9ob8fSgp
+            2I1RAUx2xQ==
+            =lkVj
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    unencrypted_suffix: _unencrypted
+    mac_only_encrypted: true
+    version: 3.12.2

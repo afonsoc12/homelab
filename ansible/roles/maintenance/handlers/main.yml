@@ -1,0 +1,5 @@
+---
+- name: Reboot server
+  ansible.builtin.reboot:
+    reboot_timeout: "{{ maintenance_reboot_timeout }}"
+    test_command: date

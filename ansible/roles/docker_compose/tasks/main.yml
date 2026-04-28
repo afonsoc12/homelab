@@ -1,16 +1,17 @@
 ---
 - name: Clone compose-files Repository
-  git:
+  ansible.builtin.git:
     repo: https://github.com/afonsoc12/homelab-stackz
-    dest: "{{ repo_dest }}"
+    dest: "{{ docker_compose_repo_dest }}"
+    version: main
     force: true
 
 - name: Copy .env file to homelab-stackz/compose-files
-  copy:
-    src: "{{ docker_env_file_path }}"
-    dest: "{{ repo_dest }}/compose-files"
+  ansible.builtin.copy:
+    src: "{{ docker_compose_env_file_path }}"
+    dest: "{{ docker_compose_repo_dest }}/compose-files"
     mode: "0600"
-  when: compose_files or compose_files_containers
+  when: docker_compose_files or docker_compose_files_containers
 
 - name: Create docker networks
   community.docker.docker_network:
@@ -18,48 +19,48 @@
     driver: "{{ item.value.driver }}"
     ipam_config: "{{ item.value.ipam_config | default(omit) }}"
     attachable: "{{ item.value.attachable | default(omit) }}"
-  with_dict: "{{ docker_networks if docker_networks is iterable else {} }}"
+  with_dict: "{{ docker_compose_networks if docker_compose_networks is iterable else {} }}"
 
 - name: Deploy
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: /home/{{ ansible_user_id }}/homelab-stackz/compose-files
-    env_file: "{{ repo_dest }}/compose-files/{{ docker_env_file_path.split('/')[-1] }}"
+    env_files: "{{ docker_compose_repo_dest }}/compose-files/{{ docker_compose_env_file_path.split('/')[-1] }}"
     files: "{{ item ~ '.yml' }}"
     project_name: "{{ item }}"
-    pull: true
-    build: true
-    recreate: "{{ recreate_policy }}"
+    pull: always
+    build: always
+    recreate: "{{ docker_compose_recreate_policy }}"
     remove_orphans: true
-  loop: "{{ compose_files if compose_files is iterable else [] }}"
+  loop: "{{ docker_compose_files if docker_compose_files is iterable else [] }}"
   loop_control:
     pause: 10
 
 - name: Deploy (specific containers)
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: /home/{{ ansible_user_id }}/homelab-stackz/compose-files
-    env_file: "{{ repo_dest }}/compose-files/{{ docker_env_file_path.split('/')[-1] }}"
+    env_files: "{{ docker_compose_repo_dest }}/compose-files/{{ docker_compose_env_file_path.split('/')[-1] }}"
     files: "{{ item.key ~ '.yml' }}"
     project_name: "{{ item.key }}"
     services: "{{ item.value }}"
-    pull: true
-    build: true
-    recreate: "{{ recreate_policy }}"
+    pull: always
+    build: always
+    recreate: "{{ docker_compose_recreate_policy }}"
     remove_orphans: true
-  with_dict: "{{ compose_files_containers if compose_files_containers is iterable else {} }}"
+  with_dict: "{{ docker_compose_files_containers if docker_compose_files_containers is iterable else {} }}"
   loop_control:
     pause: 10
 
 - name: Tear down
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: /home/{{ ansible_user_id }}/homelab-stackz/compose-files
-    env_file: "{{ repo_dest }}/compose-files/{{ docker_env_file_path.split('/')[-1] }}"
+    env_files: "{{ docker_compose_repo_dest }}/compose-files/{{ docker_compose_env_file_path.split('/')[-1] }}"
     files: "{{ item ~ '.yml' }}"
     project_name: "{{ item }}"
     state: absent
     remove_images: all
     remove_orphans: true
     remove_volumes: true
-  loop: "{{ tear_down_compose_files if tear_down_compose_files is iterable else [] }}"
+  loop: "{{ docker_compose_tear_down_files if docker_compose_tear_down_files is iterable else [] }}"
 
 - name: Prune everything
   community.docker.docker_prune:
@@ -70,4 +71,3 @@
       dangling: false
     networks: true
     volumes: true
-    # builder_cache: yes

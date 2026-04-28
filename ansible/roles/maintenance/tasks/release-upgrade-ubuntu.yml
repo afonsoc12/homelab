@@ -1,0 +1,18 @@
+---
+- name: Ensure update-manager-core is installed
+  ansible.builtin.apt:
+    name: update-manager-core
+    state: present
+
+- name: Run do-release-upgrade non-interactively
+  ansible.builtin.command:
+    cmd: do-release-upgrade -f DistUpgradeViewNonInteractive
+  register: maintenance_release_upgrade_result
+  changed_when: "'No new release found' not in maintenance_release_upgrade_result.stdout"
+  failed_when: maintenance_release_upgrade_result.rc != 0 and 'No new release found' not in maintenance_release_upgrade_result.stdout
+
+- name: Reboot after release upgrade
+  ansible.builtin.reboot:
+    reboot_timeout: "{{ maintenance_reboot_timeout }}"
+  when: "'No new release found' not in maintenance_release_upgrade_result.stdout"
+  serial: 1

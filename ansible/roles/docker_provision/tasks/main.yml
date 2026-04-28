@@ -24,7 +24,7 @@
         force_apt_get: true
         update_cache: true
         name: ["ca-certificates", "curl", "gnupg", "lsb-release"]
-        state: latest
+        state: present
 
     - name: Add Docker GPG apt Key
       ansible.builtin.apt_key:
@@ -33,17 +33,19 @@
 
     - name: Run lsb_release to detect distro
       ansible.builtin.command: lsb_release -is -cs
-      register: lsb_release
+      register: docker_provision_lsb_release
       changed_when: false
 
     - name: Show detected Docker repository
       ansible.builtin.debug:
-        msg: "({{ lsb_release.stdout_lines[0] | lower }} {{ lsb_release.stdout_lines[1] }} stable)"
+        msg: "({{ docker_provision_lsb_release.stdout_lines[0] | lower }} {{ docker_provision_lsb_release.stdout_lines[1] }} stable)"
         verbosity: 2
 
     - name: Add Docker Repository
       ansible.builtin.apt_repository:
-        repo: deb https://download.docker.com/linux/{{ lsb_release.stdout_lines[0] | lower }} {{ lsb_release.stdout_lines[1] }} stable
+        repo: >-
+          deb https://download.docker.com/linux/{{ docker_provision_lsb_release.stdout_lines[0] | lower }}
+          {{ docker_provision_lsb_release.stdout_lines[1] }} stable
         state: present
 
     - name: Install docker-ce and docker-compose-plugin
@@ -51,25 +53,25 @@
         force_apt_get: true
         update_cache: true
         name: ["docker-ce", "docker-compose-plugin"]
-        state: latest
+        state: present
 
 # Without become
 - name: Show Docker version
   ansible.builtin.command: docker --version
-  register: docker_version
-  failed_when: docker_version.stdout.find('Docker version') == -1 or docker_version.stderr
+  register: docker_provision_version
+  failed_when: docker_provision_version.stdout.find('Docker version') == -1 or docker_provision_version.stderr
   changed_when: false
 
 - name: Show Docker Compose version
   ansible.builtin.command: docker compose version
-  register: docker_compose_version
-  failed_when: docker_compose_version.stdout.lower().find('docker compose') == -1 or docker_compose_version.stderr
+  register: docker_provision_compose_version
+  failed_when: docker_provision_compose_version.stdout.lower().find('docker compose') == -1 or docker_provision_compose_version.stderr
   changed_when: false
 
 - name: Print Docker version
   ansible.builtin.debug:
-    var: docker_version.stdout_lines[0]
+    var: docker_provision_version.stdout_lines[0]
 
 - name: Print Docker Compose version
   ansible.builtin.debug:
-    var: docker_compose_version.stdout_lines[0]
+    var: docker_provision_compose_version.stdout_lines[0]
