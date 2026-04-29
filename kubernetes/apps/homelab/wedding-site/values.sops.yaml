@@ -25,7 +25,7 @@ secret:
     stringData:
         WORDPRESS_DATABASE_HOST: ENC[AES256_GCM,data:Dor8lBwi29Jmuq793kwI9x4Iw8Pa4hg0qNCHKXZZ1/cS67A=,iv:63c3KkHnhjIrUhzkIAOnA/pksQxa5aEj65aYISVrfTE=,tag:LST4C1rwlaSHddCdhW0ojw==,type:str]
         WORDPRESS_DATABASE_NAME: ENC[AES256_GCM,data:6hFGD8vPje8Qai17,iv:jnUcfBPlvE0B9sMS7Kd6hHeE9E+AhbTLMtI3UBl78x8=,tag:i+UQZVvt6BbkOIZryIy9PA==,type:str]
-        WORDPRESS_DATABASE_PASSWORD: ENC[AES256_GCM,data:6MeW3ZXO07kxzpGgzSCan3k6jcA=,iv:XnJtKejsmtX8W2F/qe16/hmwQb60OSCnI4gWNYGu7c8=,tag:FHQH//gVPskrZYjE2W5eSg==,type:str]
+        WORDPRESS_DATABASE_PASSWORD: ENC[AES256_GCM,data:mX2T9GfbshjxUmants5ptlaVojQ=,iv:i3izWwj3NclKGWgM1fyO8MfsKBH2WcV/cuSpApK1MJU=,tag:4u8SF+/+onl5dRTLbGLa+g==,type:str]
         WORDPRESS_DATABASE_USER: ENC[AES256_GCM,data:p9r2JuKrPHi5TddP,iv:a+RhfZT5VjtPqZ0mGycrixZSrXUoPhdb2JBWo7Q2LIM=,tag:mVWSIIYGUJQWW+dO7c5L6g==,type:str]
 configmap:
     mountEnv: true
@@ -75,8 +75,8 @@ affinity:
                             - mariadb
                 topologyKey: kubernetes.io/hostname
 sops:
-    lastmodified: "2026-04-18T13:23:36Z"
-    mac: ENC[AES256_GCM,data:o+8Yi5C0FFOb2O/imR8qakCbEjzVr9jEzH2JMmyXA9I9VGhokccneLh+ihJZ1XQ0GJQIwU7E1EVog2pWdQIQFelTqNbyZhrZjEw2UOL8wO1YO8x0lqZ/vJoNxcQBViGt5J8mFAdXny/5ZOvrN5SacH8OYEeKQcd98kacAY3VpkY=,iv:bnqSt+fMvc6OszVcKWwQcRpDK/kR7cTjpV1tLieUMQ4=,tag:U8djqlD5OAsZEK06HXY/rg==,type:str]
+    lastmodified: "2026-04-29T00:18:45Z"
+    mac: ENC[AES256_GCM,data:awqR+6gseFCh9S86ETHCVlnln4JOUEClYcvXLvUxZB6aEQ1PYbv3t3S8DQHop3hKC+JxqNSHXc6DcppwYkHoNH3e08JM6OiHRf6581QUOBnqFKqmj8FsjTE35LCGsWMJ2Ig77/DolEdXAZV5g1buqqJoWd7CwiAdvcnUdFsaz5A=,iv:fnT7YWsrggUW5O58eHF84qWATv45Kpnie731HVKmpZY=,tag:F+auZZGmZ7E1gg4cxCwsxA==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:43Z"
           enc: |-
