@@ -38,7 +38,7 @@ secret:
         CRON_TOKEN: ENC[AES256_GCM,data:999Bl9mzUIhG3IF+gq+sJ7u55nQd4lspwY6RrHZKdKs=,iv:TpXeAIEKqoEL/xTXasBNkWOi0jLiyro8DdV/H65own4=,tag:A9LoMzHSb+WQHliHM09tFA==,type:str]
         DB_DATABASE: ENC[AES256_GCM,data:a8F10MajnA==,iv:qdaIak47u3cGcgRCes4/d1IfZUe8/R3tpB/QoO1l6jg=,tag:Nt8ycGN/aX5TbtLyZcA7/A==,type:str]
         DB_USERNAME: ENC[AES256_GCM,data:pxowDE5OLA==,iv:mhV5coWoZlpRB7zEOoRBMD09Pj7V8xE6gYjJQwm9Ctc=,tag:SfGYPuefUtD8cr8I36MZxA==,type:str]
-        DB_PASSWORD: ENC[AES256_GCM,data:8H/TCt+LAZkj6QlHsQI8SQYj8cM=,iv:q2r6JwvM7imEBgRwsL5O3vtY+PnXak4Xs0V+2a5xtyw=,tag:v5/fR/tbTwsm0GCa0OPrMQ==,type:str]
+        DB_PASSWORD: ENC[AES256_GCM,data:ZMLgN9mkygYqZzkqWEPKKtUqRPQ=,iv:wmfyUOTGVjLV+fClwaesqXova1cp6AriFioWuHF8c34=,tag:ByHrFiIadodA3RQBCbZdmg==,type:str]
         MAIL_FROM: ENC[AES256_GCM,data:jAWAp83bMuUuRRTSNPh45KIJh2Gv,iv:JUgdeul2xptlC4+J8l/o4IQfb50fA3/iBHF6QbSyM9I=,tag:mBXg2RNE9KxL9TtS3i+abw==,type:str]
         MAIL_HOST: ENC[AES256_GCM,data:EUKana+wcIdPa5g9dF7tg0w=,iv:pApe2O5lL6sagTQsPFey5G9hebtELmGmtEuUTwbIRWU=,tag:zH33NPQT5536zRc7gQ/+og==,type:str]
         MAIL_PORT: ENC[AES256_GCM,data:NF5a,iv:Vgp9pcDuaw0Jc3WdO+udLc4bojqORJ2nYeJYsohZrCE=,tag:IoM8nshGPA1eXcyp3EwtGg==,type:str]
@@ -165,8 +165,8 @@ cronjobs:
                                 - '{{ $.Release.Name }}'
                     topologyKey: kubernetes.io/hostname
 sops:
-    lastmodified: "2026-04-13T20:28:41Z"
-    mac: ENC[AES256_GCM,data:DINVkm7pa6GSNGg3QSguptmFvTvtsYutwR+K5HyIKmGWE39IjVE6nKvAKm9+t5pwiN8yqCe+98B+paKgBPgLIj1syyBfP6YLAqhyiAGeeKrdtqovza5iomEhS+OHD16QlV57ndhly1KqPCRxBvecowlTOfmuPCyyEI29+VUL7Rw=,iv:KLzYtfHz41dx4YffWk4W6nh8lNdf2e4x0cWY3MjBqac=,tag:gLZJNx2Hv3Dp3KUbrDAqqA==,type:str]
+    lastmodified: "2026-04-29T12:29:16Z"
+    mac: ENC[AES256_GCM,data:kROTYCCS6ph/UsrCn51RM1Jv+6qWtfdrob+1JBVvholUjeHp8tV2HjCdbPc1oAHvkqkxfs+yBJ8KxhK9HzOCWZrdh1EDjJA0Nq0gIU/dgrjb00eFfN33XQXVh8okKtmJk58UQashPYTILV7JU/NmCIIk1r0NtcMo37zs6VqJGWA=,iv:ARC1v3WvZDNSxmBz7sKFRf0j8SGvNHhzNZACOr34OMg=,tag:9EfPyX4pmts5B6jNL7PlPw==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:41Z"
           enc: |-
