@@ -10,23 +10,36 @@
     ]
   },
   "helmv3": {
-    "enabled": true,
-    "managerFilePatterns": ["/(^|/)Chart\\.ya?ml$/"]
+    "enabled": true
   },
   "helm-values": {
     "enabled": true,
     "managerFilePatterns": [
-      "/(^|/)values\\.ya?ml$/",
-      "/(^|/)values\\.sops\\.ya?ml$/"
+      "/^kubernetes\\/apps\\/.+\\/values\\.ya?ml$/",
+      "/^kubernetes\\/apps\\/.+\\/values\\.sops\\.ya?ml$/"
     ]
-  },
-  "kubernetes": {
-    "enabled": true,
-    "managerFilePatterns": ["/^kubernetes\\/.+\\.ya?ml$/"]
   },
   "terraform": {
     "enabled": true,
     "managerFilePatterns": ["/^terraform\\/.+\\.tf$/"]
+  },
+  "github-actions": {
+    "enabled": true
+  },
+  "dockerfile": {
+    "enabled": true
+  },
+  "docker-compose": {
+    "enabled": true
+  },
+  "ansible-galaxy": {
+    "enabled": true
+  },
+  "pep621": {
+    "enabled": true
+  },
+  "pyenv": {
+    "enabled": true
   },
   "packageRules": [
     {
@@ -46,7 +59,13 @@
       "versioning": "loose"
     },
     {
-      "description": "Preserve range constraints for Helm charts in ArgoCD",
+      "description": "Track hotio release-COMMITHASH tags — filter format, best-effort ordering via registry",
+      "matchPackageNames": ["ghcr.io/hotio/cloudflareddns"],
+      "versioning": "loose",
+      "allowedVersions": "/^release-[a-f0-9]{7}$/"
+    },
+    {
+      "description": "Pin Helm chart versions in ArgoCD (remove range constraints)",
       "matchManagers": ["argocd"],
       "matchDepTypes": ["helm"],
       "rangeStrategy": "pin"
@@ -81,6 +100,30 @@
       "matchManagers": ["terraform"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "terraform providers"
+    },
+    {
+      "description": "Group GitHub Actions minor/patch updates",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "groupName": "github actions"
+    },
+    {
+      "description": "Group Docker Compose image minor/patch updates",
+      "matchManagers": ["docker-compose"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "groupName": "docker compose images"
+    },
+    {
+      "description": "Group Python dependency minor/patch updates",
+      "matchManagers": ["pep621", "pyenv", "dockerfile"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "groupName": "python"
+    },
+    {
+      "description": "Group Ansible collection minor/patch updates",
+      "matchManagers": ["ansible-galaxy"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "groupName": "ansible"
     }
   ],
   "customManagers": [
@@ -122,6 +165,18 @@
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver-coerced",
       "extractVersionTemplate": "^v?(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Update hotio image tags (release-COMMITHASH format) in sops values",
+      "managerFilePatterns": [
+        "/^kubernetes\\/apps\\/ingress\\/cloudflare-ddns-.+\\/values\\.sops\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "repository: (?<depName>ghcr\\.io/hotio/[^\\n]+)\\s+tag: (?<currentValue>[^\\n]+)"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "loose"
     },
     {
       "customType": "regex",

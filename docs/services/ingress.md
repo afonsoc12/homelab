@@ -68,6 +68,16 @@ VPN server. Provides direct, encrypted network-level access to the cluster for t
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cloudflare.png" class="svc-icon"> Cloudflare DDNS
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
+
+Dynamic DNS updater for Cloudflare. Two instances run in parallel — one for the PT zone, one for the UK zone — keeping DNS records in sync with the current public IP.
+
+[:octicons-file-code-16: values-pt.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/cloudflare-ddns-pt/values.yaml) &nbsp;·&nbsp; [:octicons-file-code-16: values-uk.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/cloudflare-ddns-uk/values.yaml)
+
+---
+
 ## DNS Filtering
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/adguard-home.png" class="svc-icon"> AdGuard Home

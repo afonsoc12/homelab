@@ -98,11 +98,21 @@ Personal finance manager. Tracks income, expenses, and budgets with full double-
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/wordpress.png" class="svc-icon"> Wedding Site
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Personal wedding website. Self-hosted static site for RSVP and event information with wordpress.
+
+[:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/wedding-site/values.yaml)
+
+---
+
 ## Books & Reading
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/calibre-web.png" class="svc-icon"> Calibre Web
 
-*hoarder · Docker**
+*hoarder · Docker*
 
 Web interface for a Calibre e-book library. Browse, read, and download books from any browser or e-reader.
 
@@ -112,7 +122,7 @@ Web interface for a Calibre e-book library. Browse, read, and download books fro
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/bookstack.png" class="svc-icon"> BookLore
 
-*hoarder · Docker**
+*hoarder · Docker*
 
 Self-hosted e-book and reading library service.
 
@@ -124,9 +134,29 @@ Self-hosted e-book and reading library service.
 
 Tools for storage management and filesystem operations on `hoarder`.
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" class="svc-icon"> Unraid
+
+*hoarder · Unraid*
+
+Operating system and management UI for the `hoarder` NAS. Manages storage arrays, Docker containers, VMs, and user shares.
+
+[:octicons-book-16: Documentation](https://docs.unraid.net/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/unraid/values.yaml)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kopia.png" class="svc-icon"> Kopia
+
+*hoarder · Docker*
+
+Backup and snapshot tool. Creates encrypted, deduplicated backups to Backblaze B2 and local repositories.
+
+[:octicons-book-16: Documentation](https://kopia.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/kopia/values.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/krusader.png" class="svc-icon"> Krusader
 
-*hoarder · Docker**
+*hoarder · Docker*
 
 Dual-pane file manager used for direct filesystem operations on the NAS.
 
@@ -136,7 +166,7 @@ Dual-pane file manager used for direct filesystem operations on the NAS.
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/scrutiny.png" class="svc-icon"> Scrutiny
 
-*hoarder · Docker**
+*hoarder · Docker*
 
 Disk S.M.A.R.T. monitoring dashboard with historical metrics and alerts.
 
@@ -146,7 +176,7 @@ Disk S.M.A.R.T. monitoring dashboard with historical metrics and alerts.
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/github.png" class="svc-icon"> Ghorg
 
-*hoarder · Docker**
+*hoarder · Docker*
 
 Bulk Git repository cloning and synchronization tool. Mirrors GitHub organisations to the NAS.
 
@@ -156,7 +186,7 @@ Bulk Git repository cloning and synchronization tool. Mirrors GitHub organisatio
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/docker.png" class="svc-icon"> Backup Utils
 
-*hoarder · Docker**
+*hoarder · Docker*
 
 Utility container for backup and data-maintenance tasks on Unraid.
 
@@ -164,7 +194,7 @@ Utility container for backup and data-maintenance tasks on Unraid.
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/portainer.png" class="svc-icon"> Portainer CE
 
-*hoarder · Docker**
+*hoarder · Docker*
 
 Container management UI for Docker environments. Used to manage the Docker stack on `hoarder`.
 

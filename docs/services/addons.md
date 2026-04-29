@@ -46,6 +46,16 @@ Distributed block storage for Kubernetes. Provides persistent volumes backed by 
 
 ---
 
+## <img src="https://go.dev/images/gophers/front.svg" class="svc-icon"> agnhost
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>addons</code></em>
+
+OS-agnostic, multi-purpose cluster diagnostic tool deployed as a DaemonSet on every node. Primarily used for troubleshooting network connectivity between nodes, DNS resolution, and service reachability.
+
+[:octicons-book-16: Documentation](https://github.com/kubernetes/kubernetes/tree/master/test/images/agnhost) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/addons/agnhost/values.yaml)
+
+---
+
 ## Reflector
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>addons</code></em>

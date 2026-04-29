@@ -4,15 +4,39 @@ Local roles live in `ansible/roles/`. External roles and collections are declare
 
 ## Local Roles
 
-### `docker`
+### `docker_compose`
 
-Manages Docker on `rpi-4b`. Composed of three sub-roles:
+Deploys Docker Compose stacks on `rpi-4b`. Stack sources live in `docker/<hostname>/` — one subdirectory per stack. The role:
 
-| Sub-role | Purpose |
-|----------|---------|
-| `provision` | Installs Docker, adds user to the `docker` group |
-| `daemon-config` | Writes `/etc/docker/daemon.json` from a template |
-| `compose` | Clones the compose-files repo and manages Docker Compose stacks |
+1. Finds all stack directories for the target host under `docker/{{ inventory_hostname }}/`
+2. Syncs stack files to `~/homelab/docker/<stack>/` on the host (excluding secrets)
+3. Decrypts `secrets.sops.yaml` → `.env` on the host (mode `0600`)
+4. Creates any required Docker networks
+5. Deploys stacks via `community.docker.docker_compose_v2` (always pulls latest image)
+6. Prunes unused containers, images, and networks
+
+**Stack layout:**
+
+```
+docker/
+└── rpi-4b/
+    └── <stack-name>/
+        ├── docker-compose.yaml
+        ├── secrets.sops.yaml   # encrypted → deployed as .env
+        └── ...                 # any other files synced as-is
+```
+
+**Key defaults** (`roles/docker_compose/defaults/main.yml`):
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `docker_compose_base_dir` | `~/homelab/docker` | Deploy target on host |
+| `docker_compose_volumes_dir` | `/opt/docker` | Persistent volume root |
+| `docker_compose_stacks_src` | `../../docker` (relative to playbook) | Stack source dir |
+| `docker_compose_networks` | `{}` | Extra Docker networks to create |
+| `docker_compose_recreate_policy` | `auto` | When to recreate containers |
+
+Docker itself is installed separately by the `geerlingguy.docker` external role (see `docker.yml` playbook).
 
 ### `hyperion`
 

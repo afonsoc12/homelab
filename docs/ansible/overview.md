@@ -77,6 +77,14 @@ Install or update:
 uv run ansible-galaxy collection install -r ansible/requirements.yml
 ```
 
+### Roles
+
+Galaxy roles install to `~/.local/share/ansible/roles` (outside the repo). Custom roles live in `ansible/roles/` and are committed. The `roles_path` in `ansible.cfg` covers both:
+
+```bash
+uv run ansible-galaxy role install -r ansible/requirements.yml
+```
+
 ## Linting
 
 ```bash
