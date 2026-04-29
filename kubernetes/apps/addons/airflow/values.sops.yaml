@@ -25,7 +25,7 @@ service:
 secret:
     mountEnv: true
     stringData:
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:o9a5m6YXXQgg8z32Ze8TUvM3l9i3Q2U8lmXC0+t7pkDxi8NfAPmRwM+HKxROm63Hv3ClUS4Jb1DOUPAbAgeuM+h/VgFZc8disGXgD/5eVK65edCAlEnzBKtZgZhgdwxlHeM=,iv:JYInj5AABLU2Wlmb2GB6kYKpyQ7NMjDdzFLOSg14ywk=,tag:2eitmzaLKSmsXz8gTyt3FQ==,type:str]
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:1qRZryH7TkfkE7i8/ukc0L7VrHgH59TN/lNv/bUhv+pcz07q6rCkhDqxqLJ0T1WTe1e8V5y5TIxTfOJMqGwBz9JzBltJL/90BbGGMH2exxumfXxjpX0=,iv:UdkoScDzeWz8tITisB0kHvxpUjIb0suTXxzi3JJFI/A=,tag:mVm9UelvyBZS8jMfEYtosA==,type:str]
 extraSecrets:
     - name: airflow-dag-secret
       stringData:
@@ -72,8 +72,8 @@ ingress:
             - path: /
               pathType: ImplementationSpecific
 sops:
-    lastmodified: "2026-04-27T00:18:21Z"
-    mac: ENC[AES256_GCM,data:JHjUAT/vhqAfwAvqcnS87fo+lCtkCuewxS9lk90CcaM8SKeuAA60LZIlSfwk3F/Jivy3COAKBpKMQqVdgllllNiMUGe6kkgPZ1p1kRa0TT4fM9px3KTEH7RmfsqoVfUCcoapXMzsEvnGN4lcQh+UxLRNJBdRtxrkm8h5alVseFQ=,iv:MFlbxlupiY5Tf5q78HvAz7JE4PK/h89amsw7Dunz+AQ=,tag:E7YIJlD52anYlRXSDJ9ZRQ==,type:str]
+    lastmodified: "2026-04-29T19:42:30Z"
+    mac: ENC[AES256_GCM,data:lIaCXxlHgCScKGWPUEB32NZgstZb5NphrikRDM44XBFnMKm/3PHuJ6PKCi9jLkc92jdXCuXChUYN6zRz7Ag5yt7/8sijPO64cIFm7qOA0MK5msPCruzq85hGgqDAn1vu0q8SUIFN3Ey0dIoDjlYcxbhGjabs2sQHPceoPEv020w=,iv:klqS4fzT1nPHJ/CAJ9CTlP9k1+O0oP+bnYOx8nu/fqU=,tag:UcEN0ix1a2UZ3CT5L+WPaQ==,type:str]
     pgp:
         - created_at: "2026-04-24T00:05:20Z"
           enc: |-

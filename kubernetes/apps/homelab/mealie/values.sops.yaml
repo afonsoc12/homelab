@@ -35,7 +35,7 @@ secret:
     mountEnv: true
     stringData:
         POSTGRES_USER: ENC[AES256_GCM,data:Hp+v5BAC,iv:ndcw5cbeu/oLhlnTPzdoqyjkkM8EGDmaKBGIojQtRFk=,tag:uHo3bXf/37BcB0l1xeBrog==,type:str]
-        POSTGRES_PASSWORD: ENC[AES256_GCM,data:8rW7BuZ2XtyYMEeGfY8AVpcDK0E=,iv:DaAr3aZVrAQFLbspkv8devCQYWutycMbvUAKkHqPqec=,tag:dAo5GI9vNxHuA4tJAgJt+g==,type:str]
+        POSTGRES_PASSWORD: ENC[AES256_GCM,data:ak94Z4DWrAbNPihiH8Jzjk8W94s=,iv:SjLK0bAWgZCz4AEiJRuaKZOI4n6dy2sJgw6J9v3Xz/4=,tag:qjFaRIOMidrxi5mLu07hdQ==,type:str]
         OIDC_ADMIN_GROUP: ENC[AES256_GCM,data:QHr+755AMJzK3M3Z,iv:/XMc8LuOVf5hGwrTwTuyaf54deF0+yKicPO7L/X+ab0=,tag:BP99MF9wqfxip/LwTNexMw==,type:str]
         OIDC_USER_GROUP: ENC[AES256_GCM,data:rTeiPr4mMVogQf0=,iv:CXCerbl6f9zaWkQCiQB79gSV/23dG3PpcPetzMWaWlg=,tag:lxXHBRsGtGUXL+UrOu2jmg==,type:str]
         OIDC_CLIENT_ID: ENC[AES256_GCM,data:P3FVVOLbKdBIZZewCPxq0XIGg3lLplP6K+NF18BPU3zIKLCLH4eV0A==,iv:XfhbBkUDpUWevci0LKVS8Yd9cNwzObdCezw8HIPnIkQ=,tag:/90NG3t/TiGx/Lzb3MUIqA==,type:str]
@@ -116,8 +116,8 @@ affinity:
                             - postgres
                 topologyKey: kubernetes.io/hostname
 sops:
-    lastmodified: "2026-04-13T20:28:42Z"
-    mac: ENC[AES256_GCM,data:uUfNP+STeFyslsQR7YvO1fC9uZJi5eifjjNp3m/M9CRTdZEUPsDTi7Ku38ynLBagbKdN9qA7FTPfbDxqWi45PGVeeX0qlskRk1Ba4IcRNss5i4rGqp9QizU9mQOQVYAfz5ViJ2/bY/2PIhUDcvn25EdRk1UKAA09n6i4+ClPVNI=,iv:+2opa9Uz/aALX/qbDoBEeiDfCyLIAnqTCxJQks0OsjQ=,tag:0zF1hKBtUVf8ljGI8A8HFg==,type:str]
+    lastmodified: "2026-04-29T19:45:43Z"
+    mac: ENC[AES256_GCM,data:TA9FBJuiIYZ1lYEJMX0owqtYAtHphN33BECpj3AFKwVxfclw0kmqCoR2dllRB9/UNPNjO+XjlkuzjcuNtsgeiNy1nNGnmxwa+XWfzIAYNRb3s8gyb1onHhgieHFzMf3xP7U3TZgU8jnXGFKklytoVnznMbLnhdn7vU4w3MDWsDY=,iv:ikjIl3eWKET7TDa+rFYXJyRmQKvFTQZAQXgVRdMCUr8=,tag:IB/ooA0torKDDp6RrPPDCA==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:42Z"
           enc: |-

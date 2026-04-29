@@ -20,6 +20,10 @@ secret:
     mountEnv: ENC[AES256_GCM,data:+A2ddg==,iv:hW7v5/lKb5bqSGsif3FjOJeL+aj+USKjlIUK5tcss4g=,tag:/eIHkWfwd86Th/quZt6jhQ==,type:bool]
     stringData:
         OCTOPUS_API_KEY: ENC[AES256_GCM,data:O0PwBphijnZPsd/+uwkSs7d3yqDfArbI73Ha4+/s09c=,iv:nomwswmXpZ+ze5Z+OC5XovLDwx0AymKlaJnaIcM072w=,tag:O5Cy5UapTZ1UIVnSYsqKbg==,type:str]
+        POSTGRESQL_HOST: ENC[AES256_GCM,data:veRtcKpkxTVJtYyLERF/u+Hf,iv:Lo7j+OH9waYhpmJD1P4pft2tiat7vy4KtboHEGf3wqw=,tag:EoUtbwdjGZi8CMKYaO6fjQ==,type:str]
+        POSTGRESQL_DATABASE: ENC[AES256_GCM,data:mgIo2zHZDmDB8g==,iv:08KZ2OLR9pfvoPMf1YXvf849wNqgydhT8CmpaUOlUBI=,tag:aJauxMDfFFJZgoMjLH51wQ==,type:str]
+        POSTGRESQL_USER: ENC[AES256_GCM,data:EAhOqb0UPF3RHQ==,iv:W9UIFeE3OMpewnqvsbTib9KMY3o+2MF8gR3+hbDlVpw=,tag:tIHDjHlIX+EI4Z4AhtJoPQ==,type:str]
+        POSTGRESQL_PASSWORD: ENC[AES256_GCM,data:HK5Na8z3Dx7ywRr9EzH43BGiUau+Wixsxc3yig==,iv:yZLmyBkgEFJwuMLBsSDWjCPeT0VujVM5MPvJKpHuBJI=,tag:glBFUhIUeK+F7v0sn9z/pA==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -44,8 +48,8 @@ ingress:
             - path: /
               pathType: Prefix
 sops:
-    lastmodified: "2026-04-26T22:55:34Z"
-    mac: ENC[AES256_GCM,data:6v1+KgxRNVzaZMgQty6D2d7il4loT461XHeloaWMZlwEj62BLgs59lGPELdLubbJFPVQcZt3Ef9HqSwxOb6jsvrutjZs6BBsQouUYEVHXa9hH4pOINQPSXOT0lQlPPQLmEkxfx57ONmH/mpuafVvxSsNIBIMvUz5eeniAWMNB/k=,iv:QbK6qDacUONUgKI/k5kt6xTQAyhG7vcj/1hbYMMvpPU=,tag:8UgMpsCSWuyNkCQuvtmbyQ==,type:str]
+    lastmodified: "2026-04-29T19:50:48Z"
+    mac: ENC[AES256_GCM,data:f7c70EJwxzdSKvf4DiLpCTP4KPT6Ws2i920ehJuBL54fBARGNTUK1X/8KLV7GXKvNWR64QQyeBxrAUa9/u+Cx3qWJTSpi6+/BxloaEXivlBICV/rW/xFLGI0SihaTfGy/yJsR/lSxpbRw7A1zLXXIweqxFT8JEOUVmpQmhVqx1o=,iv:T6IX/T1DVvlfD0zNYJb7ELggQAUUK/QU2P6iMB7TVkk=,tag:ORsctUAA49HFNkS5tY/EAA==,type:str]
     pgp:
         - created_at: "2026-04-26T22:50:12Z"
           enc: |-
