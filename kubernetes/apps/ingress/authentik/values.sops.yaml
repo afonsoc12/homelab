@@ -27,7 +27,7 @@ authentik:
         host: ENC[AES256_GCM,data:5GkFsRl053hZdwg/eUnohtRN,iv:0p/qu5cfWbLyipmNpXO43TcVPDjKZE9WENphx+MSOt4=,tag:Vw5b8cKpic/nO+yn28Ay5Q==,type:str]
         name: authentik
         user: ENC[AES256_GCM,data:jQzoD+3Q5009,iv:apZp5ICdaHi3iZgnk6GOTPl49fxBWoKlq8pSIdvp4/M=,tag:dntQbybhq+gXnpWXhNqfcg==,type:str]
-        password: ENC[AES256_GCM,data:/1aGx5K2HqLPHezWIm6cwHrEafERXvpQEA==,iv:nuRK4LLEy2VPVdn6MdYJ6rtHwA+fZXik0KQGh8R5ulQ=,tag:A9sVFSeg1c6JMfUU7+6KrA==,type:str]
+        password: ENC[AES256_GCM,data:OsH79vEpmi8T9Excs1LNWLWh9EM=,iv:OTT2OFUmFlghk+n0bqcl/sGbqUrEzwZa/hIWAsUo/nA=,tag:kXCLlzMzDfb3SYnDwxsqUw==,type:str]
         port: 5432
     redis:
         host: ENC[AES256_GCM,data:n/wlfMBjeFrWBTHHyGl4,iv:2bMBzaWqorDqkFv9L+FRIsSfc8MnHoPJV5ZissINzLY=,tag:5j6vkk/rVyHtU79G3S79kQ==,type:str]
@@ -75,8 +75,8 @@ postgresql:
 redis:
     enabled: false
 sops:
-    lastmodified: "2026-04-29T19:42:49Z"
-    mac: ENC[AES256_GCM,data:U28XoNOf69MjovS2DivJfBnZ4z7ZG951hQf3sND0sSkePuETfOi/jkyVyJzb+43Vg7lYAgt57+6kw+auareiAcD+gX5A42AqhfF70kxxLmEzqioaZcxohKW9asEwTamFo7lGDvpDTAV50qElng5/S8bmW2KZrN6U7w8KgrIFfXw=,iv:3HpFDPfemtBnyhYdIz+yFVAGKUPMpGLgeInyCHvhuwI=,tag:u0t6YAeOp3NQHUfssy/8VQ==,type:str]
+    lastmodified: "2026-04-29T20:01:45Z"
+    mac: ENC[AES256_GCM,data:D3u/tKOy5zACUW6OvmqZy3L77EHdMtdvkA6UjfFvY6Djgbnm74Vt2Y3gHWArxI0krvp0UNWfFYVwLQ03NGQMAqWO9y7FRV7ULq7kUzyD6oKjifC0Uz7UsWng4dGeG4MNGN/hn9LjpJstf05cGsxNgGsNXuY99T3039WCRmJ+68o=,iv:FPBIjFS01zaA5MATncczmBT1oTMxX5xagWWT6qERpk4=,tag:ZXyFQlpK7wFmz2WvHEZsPw==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:43Z"
           enc: |-
