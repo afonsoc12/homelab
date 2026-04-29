@@ -13,7 +13,7 @@ maintenance_group_apt_packages:
 # ==================================================
 server_group: masters
 agent_group: nodes
-k3s_version: v1.35.3+k3s1
+k3s_version: v1.35.4+k3s1
 # K3s server config written to /etc/rancher/k3s/config.yaml on each server node.
 # Jinja2 is supported — ansible_tailscale0 is populated after the tailscale role runs.
 server_config_yaml: |
