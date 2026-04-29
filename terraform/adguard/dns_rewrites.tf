@@ -13,19 +13,19 @@ resource "adguard_rewrite" "local-wildcard" {
   answer = "10.0.10.220"
 }
 
+resource "adguard_rewrite" "db" {
+  domain = "db.local.${local.domain}"
+  answer = "10.0.10.223"
+}
+
 resource "adguard_rewrite" "home" {
-  domain = "home.local.${local.domain}"
+  domain = "home.${local.domain}"
   answer = "10.0.10.220"
 }
 
 resource "adguard_rewrite" "firefly" {
-  domain = "firefly.local.${local.domain}"
+  domain = "firefly.${local.domain}"
   answer = "10.0.10.220"
-}
-
-resource "adguard_rewrite" "db" {
-  domain = "db.local.${local.domain}"
-  answer = "10.0.10.223"
 }
 
 resource "adguard_rewrite" "sso" {
