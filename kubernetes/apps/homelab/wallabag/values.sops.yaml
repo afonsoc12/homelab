@@ -35,7 +35,7 @@ secret:
     mountEnv: true
     stringData:
         SYMFONY__ENV__DATABASE_NAME: ENC[AES256_GCM,data:OTI7L5YtxD8=,iv:3bFw98E2xxpjgsj1VrIeuRB2LItb33AB/71r2Sqa1vU=,tag:6GIOSQSdMy3BQ6E3Wz9xsQ==,type:str]
-        SYMFONY__ENV__DATABASE_PASSWORD: ENC[AES256_GCM,data:I1cVNqT1CHnwf83RtSoYs4ZNzF0=,iv:/lVQtazrQMwYwJa0q1QZKepoHQW9iwUa5VpqGeJkQvo=,tag:eJrbwI6pS4s2RWjMzt6GoQ==,type:str]
+        SYMFONY__ENV__DATABASE_PASSWORD: ENC[AES256_GCM,data:4/NT7HekBEKyB18abyJZDMP5Qsg=,iv:5sm2zb9nPkW2bogOnr0WgIOOMavXy8HwuB/k0OfN1T4=,tag:hyDWfxxlbaU0HChBwdcN3Q==,type:str]
         SYMFONY__ENV__DATABASE_USER: ENC[AES256_GCM,data:bBw1gaqBzCI=,iv:nh0UeS1Arty9F5w/uJ2ZTQ8TotwYP6Id0gcYSiKL47A=,tag:PgGt+u/bXgfcHBbxxasdpw==,type:str]
 configmap:
     mountEnv: true
@@ -100,8 +100,8 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 sops:
-    lastmodified: "2026-04-29T00:18:23Z"
-    mac: ENC[AES256_GCM,data:0ztmA/UdUxEKPzlMIJDtQEFuO70ia0YfSfuS/8921WNtvp2CqvOft6GLsVnh+l2PdvECC8v3YSu0Nkmm679sdMEUCNmxxAnTXonrXixtKIl3scIBMzjI+rn0IvXj3Gb8ODYgVwQZlW5VcX2Ojz1yYUMhNnC7SU77NVsd7qYOP70=,iv:WoClKRKTYcRVz1JXB4+xABH0c13KisKxV0/L9FMPTtw=,tag:Yyba9zA69shx7Ed2sP1UXg==,type:str]
+    lastmodified: "2026-04-29T00:26:03Z"
+    mac: ENC[AES256_GCM,data:de0XB93F+gCksvMmB6jOiCBJsmQFDePo3U5PgB9F+Q5jvk/yLXKNr8nAjOgwtVeBy8OjgxfX0kta92HTwdvPR6DxrFJMhL9YKuHirNCyeNB76eHNybKMiiuknbP8UuaOD76AQAk6gEBnJzavVX1gygw5gVsks56ll9FvJIP6YBE=,iv:DkxgyqEl737Wt/d7MSvSYyoshr1760PvQZBTRchwnHc=,tag:8IV7XsE1gO32hNW7T57lIQ==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:43Z"
           enc: |-
