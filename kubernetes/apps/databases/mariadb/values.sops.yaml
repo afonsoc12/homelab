@@ -38,7 +38,7 @@ service:
 secret:
     stringData:
         MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:hTi6Z++v8JWArWHT7XVteRxyBpg=,iv:5YGhq4mda4CtxDEY7G+wZC7eohp2RAuq+ZGR7HEz+rI=,tag:viBWqFcb4UMOlg3hMid22g==,type:str]
-        MYSQLD_EXPORTER_PASSWORD: ENC[AES256_GCM,data:X5/bqsKjPIm1uYC8sXgOxS/xXVE=,iv:84RStmIezmBPvi4U0JzGpcm7Srdm2PFNDDALrkZ8800=,tag:fdqrYAozTGgxHf3SkNA9fg==,type:str]
+        MYSQLD_EXPORTER_PASSWORD: ENC[AES256_GCM,data:BJS4NGfEQnsJqqryoGhrHhdLIZk=,iv:1adj/RJ1R8xF6grtXquOpNCBbr5fPjXHMzdm3aNbbOc=,tag:BjU5Re9u3thgYG05DwNC4w==,type:str]
 configmap: {}
 # config_1: abc
 # config_2: def
@@ -156,8 +156,8 @@ backup:
                             - db
                   topologyKey: kubernetes.io/hostname
 sops:
-    lastmodified: "2026-04-13T20:28:41Z"
-    mac: ENC[AES256_GCM,data:voKw95+DFRkx6iHAqlVp09CMILtIlcuuYoXSH9ZTgxLK+Z+9AuWdIZQfcy6av20/PZ9E/Yt3lQdnYosP+Pgkl3ty2JUegttg++fzZTQNx8pfw3LgIllzPsHGm9pzaepV6Ru2b1GR9Pndup8rWSLxTQTBge5WUCq5zbG6mge/0fs=,iv:XiWlm0HhMfbWUGodeyGrxfjX7Qf8YgSvHlLz7RXQSM4=,tag:nxNXyky4C3u7q6SGY5pCYQ==,type:str]
+    lastmodified: "2026-04-29T18:51:55Z"
+    mac: ENC[AES256_GCM,data:DkbsbLIBNvDnYNmJIngD2SBEdTrqENzUrwgvUIchdaR+C6m0lMpBrB8KnLDvNqvvtBLs3Bw2RjhnHk0jmUdIK7YrlDj+uGgCAgAbZpknMCGpjwjMxGYGGMuUvzEOnc7n3z4amgyjyMQpJ2VTe7KSu6sAmIcDibnNvOFGM4Xuxsg=,iv:eXRUg6zLJkKIjj8sv/bynOWz4IDBl0yiU16ww6EjQoo=,tag:dnN4OSX6vmSoQiXLhF4FvQ==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:41Z"
           enc: |-
