@@ -12,7 +12,7 @@ strategy:
 
 image:
   repository: docker.io/esphome/esphome
-  tag: 2026.4.2
+  tag: 2026.4.3
   pullPolicy: Always
 
 hostNetwork: true
