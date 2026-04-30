@@ -273,7 +273,7 @@ repoServer:
             - name: KUBECTL_VERSION
               value: 1.36.0
             - name: VALS_VERSION
-              value: 0.43.9
+              value: 0.44.0
             - name: SOPS_VERSION
               value: 3.12.2
           args:
