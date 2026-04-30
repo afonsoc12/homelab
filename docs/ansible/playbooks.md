@@ -19,6 +19,7 @@ The primary playbook for managing the k3s cluster. Runs in plays:
 | k3s prerequisites | `k3s_cluster` | *(always)* | System prereqs: inotify, multipath, sysctl |
 | Configure multipath | `k3s_cluster` | *(always)* | Longhorn multipath blacklist in `/etc/multipath.conf` |
 | Setup k3s nodes | `nodes` | *(always)* | Install k3s agent on worker nodes |
+| Bootstrap ArgoCD | `localhost` | `bootstrap` | Runs Helmfile — installs GPG secret, repo key, ArgoCD, root app |
 | Reset cluster | `k3s_cluster` | `reset` | Full uninstall of k3s (destructive — never tagged) |
 | Reboot masters | `masters` | `reboot` | Rolling reboot of masters (serial: 1) |
 | Reboot nodes | `nodes` | `reboot` | Reboot all agent nodes |
@@ -30,6 +31,9 @@ The primary playbook for managing the k3s cluster. Runs in plays:
 ```bash
 # Full cluster run (prereqs + tailscale)
 uv run ansible-playbook ansible/playbooks/k3s-cluster.yml
+
+# Bootstrap ArgoCD on fresh cluster (see runbook/bootstrap.md)
+uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags bootstrap
 
 # Update packages only
 uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags update

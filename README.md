@@ -44,7 +44,8 @@ uv run ansible-playbook ansible/playbooks/k3s-cluster.yml
 ```bash
 cd terraform/cloudflare
 terraform init -backend-config=../.decrypted~backend.sops.tfbackend
-terraform plan && terraform apply
+terraform plan
+terraform apply -auto-aprove
 ```
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/argo-cd.png" width="20" valign="middle"> k8s Apps
@@ -54,6 +55,16 @@ All apps are declared as [ArgoCD](https://argoproj.github.io/cd/) `Application` 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/helm.png" width="20" valign="middle"> Helm Charts
 
 Ad-hoc Kubernetes resources that don't belong to a specific app (CRDs, cluster-wide config) live as [Helm](https://helm.sh/) charts under [`kubernetes/charts/`](kubernetes/charts/).
+
+### <img src="https://github.com/helmfile/helmfile/blob/main/logo/helmfile.png?raw=true" width="20" valign="middle"> helmfile (bootstrap)
+
+A fresh cluster is bootstrapped with [Helmfile](https://helmfile.readthedocs.io/) via the `bootstrap` Ansible tag. Helmfile installs the SOPS GPG key secret, the GitHub deploy key, ArgoCD, and the root `argocd-apps` Application — in dependency order. After that, ArgoCD self-manages via the [App of Apps pattern](https://argo-cd.readthedocs.io/en/latest/operator-manual/cluster-bootstrapping/#app-of-apps-pattern-alternative).
+
+```bash
+uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags bootstrap
+```
+
+See the [bootstrap runbook](docs/runbooks/bootstrap.md) for the full procedure.
 
 ### 🔐 Secrets (SOPS)
 

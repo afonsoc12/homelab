@@ -38,9 +38,12 @@
 ```
 homelab/
 ├── kubernetes/               # All Kubernetes manifests
+│   ├── bootstrap/            # One-time cluster bootstrap (Helmfile)
+│   │   ├── helmfile.yaml     # Installs GPG secret, repo key, ArgoCD, root app
+│   │   └── values/           # Values for bootstrap releases
 │   ├── apps/
 │   │   ├── addons/argocd-apps/    # Master chart — generates all ArgoCD Application CRDs
-│   │   │   ├── application.yaml   # Bootstrap: points ArgoCD at this chart
+│   │   │   ├── application.yaml   # Root ArgoCD Application (applied by bootstrap)
 │   │   │   ├── values.yaml        # Sets cluster destination for all apps
 │   │   │   └── templates/
 │   │   │       ├── <namespace>/   # One .yaml per app, one folder per namespace
@@ -51,6 +54,8 @@ homelab/
 │   └── charts/                    # Ad-hoc Kubernetes resource charts
 ├── ansible/                  # k3s provisioning and server management
 │   ├── playbooks/
+│   │   ├── k3s-cluster.yml   # Main playbook — includes bootstrap tag
+│   │   └── ...
 │   ├── roles/
 │   └── inventory/
 ├── terraform/                # External infrastructure
@@ -59,7 +64,18 @@ homelab/
 └── .sops.yaml                # SOPS encryption rules
 ```
 
-## GitOps Flow
+## Bootstrap vs GitOps
+
+The cluster lifecycle has two phases:
+
+**Bootstrap (once)** — run manually on a fresh cluster:
+```bash
+uv run ansible-playbook ansible/playbooks/k3s-cluster.yml         # provision k3s
+uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags bootstrap  # install ArgoCD
+```
+See [bootstrap runbook](../runbooks/bootstrap.md) for full details.
+
+**GitOps (ongoing)** — ArgoCD takes over after bootstrap:
 
 1. A change is committed and pushed to `master`
 2. ArgoCD detects drift between the cluster state and the Git state

@@ -15,6 +15,9 @@
       "/^kubernetes\\/bootstrap\\/helmfile\\.ya?ml$/"
     ]
   },
+  "helmfile": {
+    "enabled": true
+  },
   "helm-values": {
     "enabled": true,
     "managerFilePatterns": [
