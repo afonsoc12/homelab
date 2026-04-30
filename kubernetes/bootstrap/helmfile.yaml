@@ -1,0 +1,49 @@
+---
+helmDefaults:
+  wait: true
+  waitForJobs: true
+  timeout: 120
+  createNamespace: true
+  historyMax: 2
+
+commonLabels:
+  hemfile: true
+
+repositories:
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+
+releases:
+  - name: homelab-sops-gpg
+    namespace: addons
+    createNamespace: true
+    chart: ../charts/adhoc-resources
+    values:
+      - values/homelab-sops-gpg.yaml.gotmpl
+
+  - name: homelab-repo
+    namespace: addons
+    chart: ../charts/adhoc-resources
+    needs:
+      - homelab-sops-gpg
+    secrets:
+      - values/homelab-repo.sops.yaml
+
+  - name: argocd
+    namespace: addons
+    chart: argo/argo-cd
+    version: 9.5.9
+    needs:
+      - homelab-sops-gpg
+    secrets:
+      - ../apps/values.sops.yaml
+      - ../apps/addons/argocd/values.sops.yaml
+
+  - name: argocd-apps
+    namespace: addons
+    chart: ../charts/adhoc-resources
+    needs:
+      - argocd
+      - homelab-repo
+    values:
+      - values/argocd-apps.yaml

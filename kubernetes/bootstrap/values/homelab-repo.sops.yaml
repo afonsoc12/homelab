@@ -1,0 +1,42 @@
+resources:
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: homelab-repo
+        namespace: addons
+        labels:
+            argocd.argoproj.io/secret-type: repository
+      stringData:
+        project: ENC[AES256_GCM,data:TSRKzdb2/A==,iv:0zbOEy/LD/i5NQRIvWfMloWlc7cBf78E1n/RkIRoz9s=,tag:CnZO59cGUGWAe/MEb9JFhQ==,type:str]
+        name: ENC[AES256_GCM,data:Sj9nsswDkg==,iv:xGc7RTb2a4ARiPX4zxeDMutD52QBZAzkn8nE1mGj4Eo=,tag:jBRqLzFDGhyZ1xiOWTqzVg==,type:str]
+        url: ENC[AES256_GCM,data:SAkXwhHnP9lz34XOYd9M31HDqVa5xeMZY9g8BUdbtMoaItzN,iv:lcXZnFnMSkjXi7oh4ZnOFA5W7p6OmSKplKU8gByeSKI=,tag:Saqt7F2GEq02QsxbRd/BWw==,type:str]
+        type: ENC[AES256_GCM,data:ISHL,iv:sBLx4aS+fWavj+wT1qizogrm1GdEnBsThGq2tUJ+A4g=,tag:n2Ph27A4yMewYw4rf48dOQ==,type:str]
+        sshPrivateKey: ENC[AES256_GCM,data:qjIS8LRr3b+OcGZB6TdRMNTEg2x94g3EuJuh91hVbHhPIFLWzF6hitJBvEymaG+joTB/HclDBGLFm24AVSpmPqYYKH32V64oTEzzDywMSjF06uinm+BGkcPlqgm4sSPbae9qIkp9DaDOfCZytBiDm3u8d1SLmSCBWiGnJe70NuhDqRut6wx09rz/6ho/y+nDGxvWsORmU92dNJoaI2eP/2e/liW793MZdMcufqJUmkR5q8rixmJdRxlQwSYOw6JZTKBP7w+7OD78gCFzFfMvwXvqcFp7wbE045fR7bLoo8pVQd4wFmimULiKbA2NuqBR6ip808Pmt8Nz/hUyB9F1LrBomkYJuLG0HNBle48maTVwe5Ycp30JPpNhBrbMxj8cE0vJ78hbmj6o8KoE5mrLAt8XMehivjpmZHLPZmvPTvYppOg/uCPK4+n4NmXqNyIdJPNtgst47Q7zMZz9O+SM6baicMs16g8uce4Bkp+cctBvJQm3kPvIDgr4kVDQQ6qhPFobykov1SUN/9r0PSs3EfY2kPk096UybW6W,iv:IMIgPmftGQWURGdzA3/KJWDn3bmeUB34/+I2bLInebg=,tag:EGdUUAXBJy0FKSZRsdCJyA==,type:str]
+sops:
+    lastmodified: "2026-04-30T21:43:53Z"
+    mac: ENC[AES256_GCM,data:JwcYQcsZLaEO0JagQF50AP2M1GvbhlAHoDaV0Vp19gsxTvbLJPXvPuQOh1N9u9mfpO8yPv3sLTEiJnsegmE7g6AZxkWXB84kIMUd69c3iYbnXxtyR6cWa8VpziGKXf1bvbL7iY+DalXfL85reKjVCgfiCq4ky9kEuVWetYTYcJ4=,iv:uBsmwpRqP2yO6MLcz6QCnG0EvvmRk7NSpHqWfl3BEaQ=,tag:6ofRNryEeD3Nv74e2yAMMQ==,type:str]
+    pgp:
+        - created_at: "2026-04-30T21:43:53Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//WT7iLnI+KSDSOP/Ca2t7tWmkISoooswt5r4cQlKPqPg9
+            QBsp3x9r0WolUFc/5z4Fil5guIRdAQaNeU0C2es1wo2fzH3YnlTZDJhFQ4MhKv3Q
+            uhcR6m/kV4N6/6SmHjBO/hI3DWvgpQqJr2/jRDaRLZ/jfOfmghMRzgal5omKOrro
+            yAPThcOGgR9tBhCuA3B+mgADqn3W1/R79dw6a/Uj2q4RhFZ3ixDU0SS8ZqkPqYOJ
+            838FjGN82+wCSENYA5261kAxdDo9yAbcrstii7fkJ0MZQnn5bW01IqZyUggv/nDL
+            jIKRrZTbuGIGOxFbq91GWHKySKC9jhRRwIPKvTDDr/chtkx5UzHS4gbH6yA2DDCt
+            pEAsmn565xl+j9sFcFH5EjXcwEm6w2pnuNnLUA0ahaIWvsb19KLtW1elrfgrwfj3
+            nd8BWeLB9+CtZo5ZaXQRBWH/aapuNcowoE03ZOuGDoXP+D8GJjycD7FWlmnDS7P/
+            EKV0It6DcM6Ffqemne/gqXjZNBHHWmdRnL1dhDtvvDWgKuWd077Sb/QEKzgXw5Oq
+            AQkYp9KWcLt+gyex3ku7frEDnDHZYNa/M35hie2Ths8y+x4OyLnpNKD6ZsuOfnud
+            8+0WZrieYL5iCsMLxtS8/r2yVJnSWd//6hwRRt4uj2egLsJsExM8K64nMoiWmGjU
+            aAEJAhBBJbGqrOKj/V+Z8Xs5wMlnaxASirILUO0E3of588LBOeAIxhU4yhS/BNrw
+            L4mIjr+aDKUkWTmuDJQPdmphG+CPUxXA7gFNCBhwBBYAuafgOGMXNqwNnMaigElc
+            S75QfjWs2y+r
+            =5+gI
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    mac_only_encrypted: true
+    version: 3.12.2

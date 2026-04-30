@@ -61,6 +61,28 @@
   roles:
     - k3s.orchestration.k3s_agent
 
+- name: Bootstrap ArgoCD
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tags: [bootstrap]
+  vars:
+    gpg_fingerprint: "47E4999BED565F9874AA0E7C05DA03D000FC10D1"
+    helmfile_path: "{{ playbook_dir }}/../../kubernetes/bootstrap/helmfile.yaml"
+  tasks:
+    - name: Export GPG private key
+      ansible.builtin.command: gpg --export-secret-keys --armor "{{ gpg_fingerprint }}"
+      register: gpg_key
+      changed_when: false
+      no_log: true
+
+    - name: Run helmfile apply
+      ansible.builtin.command: helmfile apply -f "{{ helmfile_path }}" --interactive=false
+      environment:
+        SOPS_GPG_KEY: "{{ gpg_key.stdout }}"
+      register: helmfile_result
+      changed_when: "'UPDATED RELEASES' in helmfile_result.stderr"
+
 - name: Reboot k3s masters (rolling)
   hosts: masters
   become: true

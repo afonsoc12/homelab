@@ -1,0 +1,7 @@
+---
+secrets:
+  - name: homelab-sops-gpg
+    data:
+    stringData:
+      sops.asc: |
+        {{ requiredEnv "SOPS_GPG_KEY" | nindent 8 }}

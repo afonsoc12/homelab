@@ -10,7 +10,10 @@
     ]
   },
   "helmv3": {
-    "enabled": true
+    "enabled": true,
+    "managerFilePatterns": [
+      "/^kubernetes\\/bootstrap\\/helmfile\\.ya?ml$/"
+    ]
   },
   "helm-values": {
     "enabled": true,
