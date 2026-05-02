@@ -76,6 +76,7 @@ certificates:
         - plex.{{ .Values.domain }}
       reflectNamespaces:
         - homelab
+        - ingress
         - sandbox
     - name: rss
       dnsNames:
@@ -118,8 +119,8 @@ certificates:
       reflectNamespaces:
         - clients
 sops:
-    lastmodified: "2026-04-24T00:40:13Z"
-    mac: ENC[AES256_GCM,data:P14hNYiCS4gzJchz2OLiE5+80DStv7OORVmoC9bdY3X8GDn9XvXDgdRlgd1ClBIjPktqvyY9oFjSSD60ODaAibwYWqy1stOww5iMzbt3UBGaFNsO/OFnTJ+sld1MezhgoBOxFfO4X/Pe6a+JgiRF1be1oL8ei+MZUVO3hoU4P1Y=,iv:t73JYjdWjuE1S07XrwEdb4pME60EGzPXmqzm5T+U9ZE=,tag:N0weGvbaOpETgBRiKBperg==,type:str]
+    lastmodified: "2026-05-02T19:51:49Z"
+    mac: ENC[AES256_GCM,data:Pms1TURXGc++67jH9gHCBC4fXMM83qVPAYTOqu8AunfOUt4Fd0rv4caRy9kk9IzzRhpqBHRi3JHCAmDInZc4fbaukFejdN0IylXFPM5cJNA/TN6ynjDlOtqmG9Sjrhd0vrDiRC0i2p/yh91b/QeMu6JVhyfLg9r+RCLJMDuziH4=,iv:n2cDxr9KScToyBl3xv8c+VmEYu+ua4sVZomGGDzjp9Y=,tag:QD1ptKIOPP5Z9F4DeLrUXQ==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:40Z"
           enc: |-
