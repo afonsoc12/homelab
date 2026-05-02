@@ -20,10 +20,8 @@ spec:
       path: kubernetes/charts/homelab-svc
       helm:
         valueFiles:
-          - $values/kubernetes/apps/ingress/plex-relay/values.yaml
-    - repoURL: git@github.com:afonsoc12/homelab.git
-      targetRevision: HEAD
-      ref: values
+          - secrets://../../apps/values.sops.yaml
+          - ../../apps/ingress/plex-relay/values.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: ingress
