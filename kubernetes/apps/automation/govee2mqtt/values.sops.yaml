@@ -23,7 +23,7 @@ secret:
 configmap:
     mountEnv: true
     data:
-        GOVEE_MQTT_HOST: mqtt.local.{{ .Values.domain }}
+        GOVEE_MQTT_HOST: mosquitto
         GOVEE_MQTT_PORT: 1883
         # Specify the temperature scale to use, either C for Celsius
         # or F for Farenheit
@@ -35,8 +35,8 @@ configmap:
 nodeSelector:
     kubernetes.io/hostname: k3s-m1
 sops:
-    lastmodified: "2026-04-18T13:23:08Z"
-    mac: ENC[AES256_GCM,data:LLFcdJXTklhCdMA3Er9yru2s3hhNggeiu6oLlSITbtglv33eRh5TlIvlBbnnXg10hsMsj/R5gxD7v+xb7BisakRzadAFDKp7LHCj+f0TFWMAxPKu7h+H3RM/boKAfMZnhx3skuF9xLVqL03sxKTNHRthkoL1Wh3S72aX8RMmqZI=,iv:rO+p2F0XO/3yGCH85cm/k1A46wO6Mrc0wZY7M16J1dM=,tag:PGx0jURbjLwoyXRii9fpTA==,type:str]
+    lastmodified: "2026-05-04T13:51:29Z"
+    mac: ENC[AES256_GCM,data:03y6cjnXvFqFl3iATxApECEcGBTEhksfewMOEIjWyLOUEGYnJ/SUjPo9CWn5SU3zBcKLf9OvmhpbzGhtcUvVA1OVqaCQwR/8T3MS/NWEKUsU6AlM8FbCpQxUi+Stkc3DE7JhP2ikeCDd00xF95kx09O/60KHbJLRPfZuMf21KtU=,iv:cHy7Dz4SxvKhUZe8MklSRuxrC6+2nHw22+3jBCUxe7E=,tag:gjcKUd0548nZ1ZElLg4yjw==,type:str]
     pgp:
         - created_at: "2026-04-13T20:28:40Z"
           enc: |-
