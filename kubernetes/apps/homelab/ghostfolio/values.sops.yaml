@@ -18,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/ghostfolio/ghostfolio
-    tag: 3.0.1
+    tag: 3.2.0
     pullPolicy: Always
 ports:
     - containerPort: 3333

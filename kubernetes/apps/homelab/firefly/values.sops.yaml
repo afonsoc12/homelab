@@ -129,7 +129,7 @@ cronjobs:
       successfulJobsHistoryLimit: 1
       image:
         repository: docker.io/curlimages/curl
-        tag: 8.19.0
+        tag: 8.20.0
         pullPolicy: Always
       restartPolicy: Never
       command:
