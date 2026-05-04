@@ -1,0 +1,24 @@
+# --------------------
+# Tdarr
+#   - Repo:           https://github.com/HaveAGitGat/Tdarr
+#   - Docs:           https://docs.tdarr.io/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/external-svc/values.yaml
+# --------------------
+---
+labels:
+  host: hoarder
+
+server:
+  ip: "{{ .Values.ips_tailscale.hoarder }}"
+  port: 8265
+
+ingress:
+  enabled: true
+  authelia: true
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: tdarr.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix

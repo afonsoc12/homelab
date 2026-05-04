@@ -1,0 +1,24 @@
+# --------------------
+# Navidrome
+#   - Repo:           https://github.com/navidrome/navidrome
+#   - Docs:           https://www.navidrome.org/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/external-svc/values.yaml
+# --------------------
+---
+labels:
+  host: hoarder
+
+server:
+  ip: "{{ .Values.ips_tailscale.hoarder }}"
+  port: 4533
+
+ingress:
+  enabled: true
+  authelia: true
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: navidrome.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix

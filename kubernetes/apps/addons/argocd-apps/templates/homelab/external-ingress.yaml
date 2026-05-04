@@ -19,18 +19,23 @@ spec:
         elements:
           - app: adguard
           - app: bazarr
+          - app: booklore
           - app: calibre-web
           - app: kopia
+          - app: krusader
           - app: lidarr
           - app: minio
+          - app: navidrome
           - app: seerr
           - app: plex
           - app: prowlarr
           - app: qbittorrent
           - app: radarr
           - app: radarr-4k
+          - app: scrutiny
           - app: sonarr
           - app: tautulli
+          - app: tdarr
           - app: unifi
           - app: unraid
   template:

@@ -126,7 +126,7 @@ Web interface for a Calibre e-book library. Browse, read, and download books fro
 
 Self-hosted e-book and reading library service.
 
-[:octicons-book-16: Documentation](https://github.com/adityachandelgit/booklore)
+[:octicons-book-16: Documentation](https://github.com/adityachandelgit/booklore) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/booklore/values.yaml)
 
 ---
 
@@ -160,7 +160,7 @@ Backup and snapshot tool. Creates encrypted, deduplicated backups to Backblaze B
 
 Dual-pane file manager used for direct filesystem operations on the NAS.
 
-[:octicons-book-16: Documentation](https://krusader.org/)
+[:octicons-book-16: Documentation](https://krusader.org/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/krusader/values.yaml)
 
 ---
 
@@ -170,7 +170,7 @@ Dual-pane file manager used for direct filesystem operations on the NAS.
 
 Disk S.M.A.R.T. monitoring dashboard with historical metrics and alerts.
 
-[:octicons-book-16: Documentation](https://github.com/AnalogJ/scrutiny)
+[:octicons-book-16: Documentation](https://github.com/AnalogJ/scrutiny) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/scrutiny/values.yaml)
 
 ---
 

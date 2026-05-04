@@ -140,7 +140,7 @@ Subtitle manager. Automatically downloads subtitles for movies and TV shows mana
 
 Personal music streaming server. Subsonic-compatible API, works with DSub, Symfonium, and other mobile clients.
 
-[:octicons-book-16: Documentation](https://www.navidrome.org/docs/)
+[:octicons-book-16: Documentation](https://www.navidrome.org/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/navidrome/values.yaml)
 
 ---
 
@@ -152,4 +152,4 @@ Personal music streaming server. Subsonic-compatible API, works with DSub, Symfo
 
 Distributed media transcoding and health-check automation. Converts video files to efficient codecs and validates library integrity.
 
-[:octicons-book-16: Documentation](https://docs.tdarr.io/)
+[:octicons-book-16: Documentation](https://docs.tdarr.io/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/tdarr/values.yaml)
