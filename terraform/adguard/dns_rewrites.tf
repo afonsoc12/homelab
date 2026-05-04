@@ -18,6 +18,11 @@ resource "adguard_rewrite" "db" {
   answer = "10.0.10.223"
 }
 
+resource "adguard_rewrite" "mqtt" {
+  domain = "mqtt.local.${local.domain}"
+  answer = "10.0.10.221"
+}
+
 resource "adguard_rewrite" "home" {
   domain = "home.${local.domain}"
   answer = "10.0.10.220"
