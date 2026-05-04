@@ -10,7 +10,7 @@ All services run on **hoarder** (Docker), managed via the Unraid UI. Download ap
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/plex.png" class="svc-icon"> Plex
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Media server. Streams movies, TV shows, and music to all devices on the network and remotely.
 
@@ -20,7 +20,7 @@ Media server. Streams movies, TV shows, and music to all devices on the network 
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tautulli.png" class="svc-icon"> Tautulli
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Plex monitoring and analytics. Tracks play history, sends notifications, and provides usage statistics.
 
@@ -30,7 +30,7 @@ Plex monitoring and analytics. Tracks play history, sends notifications, and pro
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kometa.png" class="svc-icon"> Kometa
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Plex metadata and collection automation tool (formerly Plex Meta Manager).
 
@@ -40,7 +40,7 @@ Plex metadata and collection automation tool (formerly Plex Meta Manager).
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/seerr.png" class="svc-icon"> Overseerr / Seerr
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Media request management. Lets users browse and request movies and TV shows, which are then routed to Radarr/Sonarr.
 
@@ -54,7 +54,7 @@ All \*arr apps and download clients run inside the PrivoxyVPN network stack.
 
 ### PrivoxyVPN
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 VPN gateway and shared network namespace for all downloader and \*arr containers. All traffic from these containers is routed through the VPN.
 
@@ -64,7 +64,7 @@ VPN gateway and shared network namespace for all downloader and \*arr containers
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/qbittorrent.png" class="svc-icon"> qBittorrent
 
-*hoarder · Docker · via PrivoxyVPN*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker · via PrivoxyVPN</em>
 
 BitTorrent client. Receives download tasks from the \*arr stack and saves completed files to the media library.
 
@@ -74,7 +74,7 @@ BitTorrent client. Receives download tasks from the \*arr stack and saves comple
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/prowlarr.png" class="svc-icon"> Prowlarr
 
-*hoarder · Docker · via PrivoxyVPN*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker · via PrivoxyVPN</em>
 
 Indexer manager. Centralises and syncs indexer configuration across Sonarr, Radarr, Lidarr, and other \*arr apps.
 
@@ -84,7 +84,7 @@ Indexer manager. Centralises and syncs indexer configuration across Sonarr, Rada
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/sonarr.png" class="svc-icon"> Sonarr
 
-*hoarder · Docker · via PrivoxyVPN*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker · via PrivoxyVPN</em>
 
 TV series collection manager. Monitors RSS feeds, grabs releases automatically, and sends them to qBittorrent.
 
@@ -94,7 +94,7 @@ TV series collection manager. Monitors RSS feeds, grabs releases automatically, 
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/radarr.png" class="svc-icon"> Radarr
 
-*hoarder · Docker · via PrivoxyVPN*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker · via PrivoxyVPN</em>
 
 Movie collection manager.
 
@@ -104,7 +104,7 @@ Movie collection manager.
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/radarr-4k.png" class="svc-icon"> Radarr 4K
 
-*hoarder · Docker · via PrivoxyVPN*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker · via PrivoxyVPN</em>
 
 Separate Radarr instance dedicated to 4K/UHD movie quality profiles.
 
@@ -114,7 +114,7 @@ Separate Radarr instance dedicated to 4K/UHD movie quality profiles.
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/lidarr.png" class="svc-icon"> Lidarr
 
-*hoarder · Docker · via PrivoxyVPN*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker · via PrivoxyVPN</em>
 
 Music collection manager. Monitors and automatically grabs music releases.
 
@@ -124,7 +124,7 @@ Music collection manager. Monitors and automatically grabs music releases.
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/bazarr.png" class="svc-icon"> Bazarr
 
-*hoarder · Docker · via PrivoxyVPN*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker · via PrivoxyVPN</em>
 
 Subtitle manager. Automatically downloads subtitles for movies and TV shows managed by Sonarr/Radarr.
 
@@ -136,7 +136,7 @@ Subtitle manager. Automatically downloads subtitles for movies and TV shows mana
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/navidrome.png" class="svc-icon"> Navidrome
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Personal music streaming server. Subsonic-compatible API, works with DSub, Symfonium, and other mobile clients.
 
@@ -148,7 +148,7 @@ Personal music streaming server. Subsonic-compatible API, works with DSub, Symfo
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tdarr.png" class="svc-icon"> Tdarr
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Distributed media transcoding and health-check automation. Converts video files to efficient codecs and validates library integrity.
 

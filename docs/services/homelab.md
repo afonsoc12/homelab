@@ -112,7 +112,7 @@ Personal wedding website. Self-hosted static site for RSVP and event information
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/calibre-web.png" class="svc-icon"> Calibre Web
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Web interface for a Calibre e-book library. Browse, read, and download books from any browser or e-reader.
 
@@ -122,7 +122,7 @@ Web interface for a Calibre e-book library. Browse, read, and download books fro
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/bookstack.png" class="svc-icon"> BookLore
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Self-hosted e-book and reading library service.
 
@@ -136,7 +136,7 @@ Tools for storage management and filesystem operations on `hoarder`.
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" class="svc-icon"> Unraid
 
-*hoarder · Unraid*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Unraid</em>
 
 Operating system and management UI for the `hoarder` NAS. Manages storage arrays, Docker containers, VMs, and user shares.
 
@@ -146,7 +146,7 @@ Operating system and management UI for the `hoarder` NAS. Manages storage arrays
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kopia.png" class="svc-icon"> Kopia
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Backup and snapshot tool. Creates encrypted, deduplicated backups to Backblaze B2 and local repositories.
 
@@ -156,7 +156,7 @@ Backup and snapshot tool. Creates encrypted, deduplicated backups to Backblaze B
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/krusader.png" class="svc-icon"> Krusader
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Dual-pane file manager used for direct filesystem operations on the NAS.
 
@@ -166,7 +166,7 @@ Dual-pane file manager used for direct filesystem operations on the NAS.
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/scrutiny.png" class="svc-icon"> Scrutiny
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Disk S.M.A.R.T. monitoring dashboard with historical metrics and alerts.
 
@@ -174,28 +174,10 @@ Disk S.M.A.R.T. monitoring dashboard with historical metrics and alerts.
 
 ---
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/github.png" class="svc-icon"> Ghorg
+### <img src="https://cdn.simpleicons.org/git" class="svc-icon"> Ghorg
 
-*hoarder · Docker*
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Bulk Git repository cloning and synchronization tool. Mirrors GitHub organisations to the NAS.
 
 [:octicons-book-16: Documentation](https://github.com/gabrie30/ghorg)
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/docker.png" class="svc-icon"> Backup Utils
-
-*hoarder · Docker*
-
-Utility container for backup and data-maintenance tasks on Unraid.
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/portainer.png" class="svc-icon"> Portainer CE
-
-*hoarder · Docker*
-
-Container management UI for Docker environments. Used to manage the Docker stack on `hoarder`.
-
-[:octicons-book-16: Documentation](https://docs.portainer.io/)

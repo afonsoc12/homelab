@@ -47,6 +47,9 @@ Detailed docs live under `docs/`. Keep them up to date when changing the areas t
 uv sync                                              # install deps
 uv run ansible-playbook ansible/playbooks/k3s-cluster.yml
 uv run ansible-lint
+
+# Install galaxy roles (go to ~/.ansible/roles, not the repo)
+uv run ansible-galaxy role install -r ansible/requirements.yml
 ```
 → Full details: @docs/ansible/overview.md
 

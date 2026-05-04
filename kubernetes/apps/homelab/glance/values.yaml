@@ -303,6 +303,14 @@ configmap:
                         description: Ebooks library
                         icon: di:calibre-web
                         url: https://calibre.{{ .Values.domain }}
+                      - title: Navidrome
+                        description: Music streaming
+                        icon: di:navidrome
+                        url: https://navidrome.local.{{ .Values.domain }}
+                      - title: BookLore
+                        description: E-book library
+                        icon: di:bookstack
+                        url: https://booklore.local.{{ .Values.domain }}
                   - title: Media Management
                     links:
                       - title: Sonarr
@@ -333,6 +341,10 @@ configmap:
                         description: Torrent indexer
                         icon: di:prowlarr
                         url: https://prowlarr.local.{{ .Values.domain }}
+                      - title: Tdarr
+                        description: Video transcoding
+                        icon: di:tdarr
+                        url: https://tdarr.local.{{ .Values.domain }}
                   - title: Admin
                     links:
                       - title: UniFi OS
@@ -395,6 +407,14 @@ configmap:
                         description: S3 storage
                         icon: di:minio
                         url: https://minio.local.{{ .Values.domain }}
+                      - title: Scrutiny
+                        description: Disk SMART monitoring
+                        icon: di:scrutiny
+                        url: https://scrutiny.local.{{ .Values.domain }}
+                      - title: Krusader
+                        description: File manager
+                        icon: di:krusader
+                        url: https://krusader.local.{{ .Values.domain }}
 
 
 volumeMounts:
