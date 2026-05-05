@@ -1,3 +1,8 @@
+---
+paths:
+  - "**/*.yaml"
+  - "**/*.yml"
+---
 # YAML File Extension
 
 All YAML files must use the `.yaml` extension.

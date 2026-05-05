@@ -17,7 +17,7 @@ docs/             # Full documentation (see below)
 
 ## Secrets
 
-All secrets are SOPS-encrypted. **Never commit plaintext secrets.**
+All secrets are SOPS-encrypted. **Never commit plaintext secrets.** Use skill `/sops` to manage secrets (files that end with `*.sops.ext`)
 
 - Ansible: `community.sops.sops` vars plugin — `inventory/hosts_secrets.sops.yaml`
 - Terraform: `carlpett/sops` provider — `secrets.sops.yaml` per module; `backend.sops.tfbackend`
@@ -66,10 +66,10 @@ terraform plan && terraform apply
 → Full details: @docs/terraform/overview.md
 
 ### Kubernetes / ArgoCD
+Use skill `/k8s-app` to add new services.
+
 Push to `master` — ArgoCD auto-syncs. To force:
 ```bash
-argocd app sync <app-name>
-
 # Render a chart locally with decrypted SOPS values
 helm secrets template <release> <chart> \
   -f kubernetes/apps/values.sops.yaml \

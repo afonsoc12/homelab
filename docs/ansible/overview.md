@@ -85,6 +85,37 @@ Galaxy roles install to `~/.local/share/ansible/roles` (outside the repo). Custo
 uv run ansible-galaxy role install -r ansible/requirements.yml
 ```
 
+## `maintenance` Role
+
+Runs on every server via all playbooks (no tags required). Handles:
+
+### SSH Hardening (`sshd_config.j2`)
+
+Deployed to `/etc/ssh/sshd_config` on every run. Key settings:
+
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| `PasswordAuthentication` | `no` | Keys only |
+| `PermitRootLogin` | `no` | No direct root access |
+| `AllowUsers` | `{{ ansible_user }}` | Only the inventory-defined user per host |
+| `MaxAuthTries` | `3` | Disconnect after 3 failed attempts |
+| `MaxStartups` | `3:50:10` | Rate-limit pre-auth connections: allow 3, drop 50% above that, hard cap 10 |
+| `ClientAliveInterval` | `300` | Keepalive every 5 min |
+| `ClientAliveCountMax` | `3` | Disconnect after ~15 min idle |
+| `AllowTcpForwarding` | `yes` | Port forwarding (tunnels) |
+| `AllowAgentForwarding` | `no` | Block agent forwarding (hijack risk) |
+| `LogLevel` | `VERBOSE` | Log key fingerprints on auth |
+
+Config is validated with `sshd -t` before the service restarts.
+
+### inotify Limits
+
+Sets `fs.inotify.max_user_watches` and `fs.inotify.max_user_instances` via sysctl — required for k3s and file-watching tools.
+
+### Package Management (tag: `update`)
+
+Only runs with `--tags update`. Runs `apt dist-upgrade`, installs base/group/host packages, cleans up, and reboots if required.
+
 ## Linting
 
 ```bash
