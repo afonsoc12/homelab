@@ -106,10 +106,20 @@ Local speech-to-text powered by OpenAI Whisper. Used for the Home Assistant loca
 
 ---
 
-## <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/hyperion.png" class="svc-icon"> Hyperion.ng
+## <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/png/hyperion.png" class="svc-icon"> Hyperion.ng
 
-*rpi-z2w-hyperion**
+<em><img src="https://cdn.simpleicons.org/raspberrypi" style="height:1em;vertical-align:middle;margin-right:4px"> rpi-z2w-hyperion · bare metal</em>
 
 Ambient LED lighting controller. Captures screen content or applies effects to LED strips connected to the Pi, integrated with Home Assistant for scene control.
 
-[:octicons-book-16: Documentation](https://docs.hyperion-project.org/)
+[:octicons-book-16: Documentation](https://docs.hyperion-project.org/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/hyperion/values.yaml)
+
+---
+
+## <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/wled.png" class="svc-icon"> WLED Kitchen
+
+<em><img src="https://cdn.simpleicons.org/espressif" style="height:1em;vertical-align:middle;margin-right:4px"> wled-kitchen · bare metal</em>
+
+WLED controller for kitchen LED strip. Provides real-time LED effects, integrates with Home Assistant via the WLED integration.
+
+[:octicons-book-16: Documentation](https://kno.wled.ge/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/wled-kitchen/values.yaml)

@@ -43,17 +43,20 @@ Detailed docs live under `docs/`. Keep them up to date when changing the areas t
 ## Quick Commands
 
 ### Ansible
+**Must run from `ansible/` directory.**
 ```bash
+cd ansible
 uv sync                                              # install deps
-uv run ansible-playbook ansible/playbooks/k3s-cluster.yml
+uv run ansible-playbook playbooks/k3s-cluster.yml
 uv run ansible-lint
 
 # Install galaxy roles (go to ~/.ansible/roles, not the repo)
-uv run ansible-galaxy role install -r ansible/requirements.yml
+uv run ansible-galaxy role install -r requirements.yml
 ```
 → Full details: @docs/ansible/overview.md
 
 ### Terraform
+**Must run from `terraform/<module>` directory.**
 ```bash
 cd terraform/<module>
 sops -d ../backend.sops.tfbackend > ../.decrypted~backend.sops.tfbackend

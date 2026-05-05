@@ -9,7 +9,7 @@
 
 # Labels applied to all templates
 labels:
-  host: rpi_4b
+  host: rpi-4b
 
 # External server configuration
 server:

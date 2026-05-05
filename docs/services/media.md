@@ -38,13 +38,13 @@ Plex metadata and collection automation tool (formerly Plex Meta Manager).
 
 ---
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/seerr.png" class="svc-icon"> Overseerr / Seerr
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/seerr.png" class="svc-icon"> Seerr
 
 <em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
 Media request management. Lets users browse and request movies and TV shows, which are then routed to Radarr/Sonarr.
 
-[:octicons-book-16: Documentation](https://docs.overseerr.dev/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/seerr/values.yaml)
+[:octicons-book-16: Documentation](https://docs.seerr.dev/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/seerr/values.yaml)
 
 ---
 

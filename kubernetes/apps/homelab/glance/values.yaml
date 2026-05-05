@@ -297,7 +297,7 @@ configmap:
                         url: https://tautulli.local.{{ .Values.domain }}
                       - title: Seerr
                         description: Media requests
-                        icon: di:overseerr
+                        icon: di:seerr
                         url: https://seerr.{{ .Values.domain }}
                       - title: Calibre
                         description: Ebooks library

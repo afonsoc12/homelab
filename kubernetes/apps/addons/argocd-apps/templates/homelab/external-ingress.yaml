@@ -24,7 +24,6 @@ spec:
           - app: kopia
           - app: krusader
           - app: lidarr
-          - app: minio
           - app: navidrome
           - app: seerr
           - app: plex
@@ -37,7 +36,9 @@ spec:
           - app: tautulli
           - app: tdarr
           - app: unifi
+          - app: hyperion
           - app: unraid
+          - app: wled-kitchen
   template:
     metadata:
       name: '{{`{{`}}app{{`}}`}}-external'
