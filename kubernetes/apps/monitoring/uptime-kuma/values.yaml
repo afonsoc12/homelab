@@ -12,7 +12,7 @@ strategy:
 
 image:
   repository: docker.io/louislam/uptime-kuma
-  tag: 2.2.1
+  tag: 2.3.2
   pullPolicy: Always
 
 ports:

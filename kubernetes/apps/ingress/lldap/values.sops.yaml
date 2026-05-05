@@ -10,7 +10,7 @@ labels: {}
 replicas: 1
 image:
     repository: docker.io/nitnelave/lldap
-    tag: v0.6.2
+    tag: v0.6.3
 ports:
     - containerPort: 17170
       name: web

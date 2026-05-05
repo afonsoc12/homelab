@@ -11,7 +11,7 @@ strategy:
   type: Recreate
 image:
   repository: docker.io/docuseal/docuseal
-  tag: 2.5.1
+  tag: 2.5.2
   pullPolicy: Always
 #   restartPolicy:
 command: {}
