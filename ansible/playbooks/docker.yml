@@ -2,7 +2,6 @@
 - name: Update packages
   hosts: docker
   become: true
-  tags: [update]
   roles:
     - maintenance
 

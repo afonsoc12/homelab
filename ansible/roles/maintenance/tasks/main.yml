@@ -1,4 +1,7 @@
 ---
+- name: Harden SSH
+  ansible.builtin.import_tasks: sshd.yml
+
 - name: Configure inotify limits
   become: true
   ansible.posix.sysctl:

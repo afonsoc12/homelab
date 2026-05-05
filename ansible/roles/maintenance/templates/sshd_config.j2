@@ -1,0 +1,46 @@
+# Ansible-managed — do not edit by hand
+
+Port 22
+AddressFamily any
+ListenAddress 0.0.0.0
+ListenAddress ::
+
+# Authentication
+PermitRootLogin no
+PubkeyAuthentication yes
+PasswordAuthentication no
+PermitEmptyPasswords no
+ChallengeResponseAuthentication no
+UsePAM yes
+MaxAuthTries 3
+MaxSessions 10
+
+# Features
+X11Forwarding no
+PrintMotd no
+PrintLastLog yes
+TCPKeepAlive yes
+PermitUserEnvironment no
+Compression delayed
+ClientAliveInterval 300
+ClientAliveCountMax 3
+AllowTcpForwarding yes
+AllowStreamLocalForwarding no
+AllowAgentForwarding no
+GatewayPorts no
+
+# Logging
+SyslogFacility AUTH
+LogLevel VERBOSE
+
+# Misc
+UseDNS no
+StrictModes yes
+IgnoreRhosts yes
+HostbasedAuthentication no
+KerberosAuthentication no
+GSSAPIAuthentication no
+MaxStartups 3:50:10
+AllowUsers {{ ansible_user }}
+
+Subsystem sftp /usr/lib/openssh/sftp-server -f AUTHPRIV -l INFO

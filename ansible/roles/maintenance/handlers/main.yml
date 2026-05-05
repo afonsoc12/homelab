@@ -3,3 +3,12 @@
   ansible.builtin.reboot:
     reboot_timeout: "{{ maintenance_reboot_timeout }}"
     test_command: date
+
+# poll: 10 = check every 10s, async: 60 = wait up to 1 min
+- name: Restart SSH
+  become: true
+  ansible.builtin.systemd:
+    name: ssh
+    state: restarted
+  async: 60
+  poll: 10
