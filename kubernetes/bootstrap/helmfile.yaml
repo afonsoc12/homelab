@@ -32,7 +32,7 @@ releases:
   - name: argocd
     namespace: addons
     chart: argo/argo-cd
-    version: 9.5.9
+    version: 9.5.11
     needs:
       - homelab-sops-gpg
     secrets:
