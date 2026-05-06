@@ -64,5 +64,5 @@ uv run ansible-galaxy collection install -r ansible/requirements.yml
 | `community.docker` | 5.2.0 | Docker management on `rpi-4b` |
 | `ansible.posix` | 2.1.0 | POSIX utilities |
 | `community.general` | 12.6.0 | General-purpose modules |
-| `k3s-io/k3s-ansible` | 1.2.0 | k3s installation and upgrade |
+| `k3s-io/k3s-ansible` | 1.2.0 | K3s installation and upgrade |
 | `artis3n.tailscale` | 1.2.1 | Tailscale server enrollment |

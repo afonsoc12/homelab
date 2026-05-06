@@ -10,21 +10,21 @@ uv run ansible-playbook ansible/playbooks/<playbook>.yml [--tags <tag>]
 
 ## `k3s-cluster.yml` — Main Cluster Playbook
 
-The primary playbook for managing the k3s cluster. Runs in plays:
+The primary playbook for managing the k3s-cluster. Runs in plays:
 
 | Play | Hosts | Tags | Description |
 |------|-------|------|-------------|
 | Update packages | `k3s_cluster` | `update` | `apt upgrade` on all servers |
 | Connect to Tailscale | `k3s_cluster` | *(always)* | Enroll / re-enroll servers in Tailscale |
-| k3s prerequisites | `k3s_cluster` | *(always)* | System prereqs: inotify, multipath, sysctl |
+| K3s prerequisites | `k3s_cluster` | *(always)* | System prereqs: inotify, multipath, sysctl |
 | Configure multipath | `k3s_cluster` | *(always)* | Longhorn multipath blacklist in `/etc/multipath.conf` |
-| Setup k3s nodes | `nodes` | *(always)* | Install k3s agent on worker nodes |
+| Setup K3s nodes | `nodes` | *(always)* | Install K3s agent on worker nodes |
 | Bootstrap ArgoCD | `localhost` | `bootstrap` | Runs Helmfile — installs GPG secret, repo key, ArgoCD, root app |
-| Reset cluster | `k3s_cluster` | `reset` | Full uninstall of k3s (destructive — never tagged) |
+| Reset cluster | `k3s_cluster` | `reset` | Full uninstall of K3s (destructive — never tagged) |
 | Reboot masters | `masters` | `reboot` | Rolling reboot of masters (serial: 1) |
 | Reboot nodes | `nodes` | `reboot` | Reboot all agent nodes |
-| Upgrade k3s masters | `masters` | `upgrade` | Rolling upgrade (serial: 1) |
-| Upgrade k3s nodes | `nodes` | `upgrade` | Upgrade all agent nodes |
+| Upgrade K3s masters | `masters` | `upgrade` | Rolling upgrade (serial: 1) |
+| Upgrade K3s nodes | `nodes` | `upgrade` | Upgrade all agent nodes |
 
 ### Common invocations
 
@@ -46,7 +46,7 @@ uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags reboot --limit 
 ```
 
 !!! danger "`--tags reset`"
-    The `reset` tag **completely uninstalls k3s** from all servers. It is tagged `never` — it will not run unless explicitly passed with `--tags reset`. Use only for full cluster teardown.
+    The `reset` tag **completely uninstalls K3s** from all servers. It is tagged `never` — it will not run unless explicitly passed with `--tags reset`. Use only for full cluster teardown.
 
 ---
 
@@ -74,7 +74,7 @@ uv run ansible-playbook ansible/playbooks/provision.yml --tags update
 
 ## `docker.yml` — Docker Host Management
 
-Manages Docker-based services on `rpi-4b` (which also runs Docker alongside k3s).
+Manages Docker-based services on `rpi-4b` (which also runs Docker alongside K3s).
 
 ```bash
 uv run ansible-playbook ansible/playbooks/docker.yml

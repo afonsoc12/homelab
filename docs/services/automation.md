@@ -2,7 +2,7 @@
 
 Devices, sensors, flows, integrations, and local voice assistant pipeline.
 
-Most services run on the **k3s cluster** (`automation` namespace). Hyperion.ng runs on a dedicated Pi.
+Most services run on the **k3s-cluster** (`automation` namespace). Hyperion.ng runs on a dedicated Pi.
 
 ---
 

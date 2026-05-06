@@ -2,7 +2,7 @@
 
 Metrics, logs, dashboards, alerting, and uptime monitoring.
 
-All services run on the **k3s cluster** (`monitoring` namespace).
+All services run on the **k3s-cluster** (`monitoring` namespace).
 
 ---
 

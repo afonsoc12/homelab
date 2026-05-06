@@ -4,11 +4,7 @@ All secrets in this repo are encrypted with [SOPS](https://github.com/getsops/so
 
 ## Encryption Key
 
-Encryption is done with a **PGP key**:
-
-```
-47E4999BED565F9874AA0E7C05DA03D000FC10D1
-```
+Encryption is done with a **PGP key**.
 
 The PGP private key must be available in your local keyring to encrypt/decrypt. SOPS resolves it automatically via GPG.
 

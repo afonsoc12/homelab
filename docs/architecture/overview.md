@@ -3,27 +3,27 @@
 ## High-Level Design
 
 ```
-                    ┌─────────────────────────────────────────┐
-                    │              GitHub (this repo)          │
-                    │            master branch = truth         │
-                    └────────────────┬────────────────────────┘
-                                     │ push
-                                     ▼
-  ┌──────────────────────────────────────────────────────────────────┐
-  │                        k3s Cluster                               │
-  │                                                                  │
-  │   ┌──────────┐   ┌──────────┐   ┌──────────────────────────┐   │
-  │   │  k3s-m1  │   │  k3s-m2  │   │  k3s-oci-m3 (OCI)        │   │
-  │   │  master  │   │  master  │   │  master (Tailscale VPN)   │   │
-  │   └──────────┘   └──────────┘   └──────────────────────────┘   │
-  │                                                                  │
-  │   ┌──────────┐   ┌──────────┐                                   │
-  │   │  rpi-4b  │   │  hoarder │  (NAS — storage only)             │
-  │   │  worker  │   │  Unraid  │                                   │
-  │   └──────────┘   └──────────┘                                   │
-  │                                                                  │
-  │   ArgoCD watches GitHub → applies changes automatically          │
-  └──────────────────────────────────────────────────────────────────┘
+                    ┌──────────────────────────────────────────┐
+                    │           GitHub (this repo)             │
+                    │         master branch = truth            │
+                    └─────────────────┬────────────────────────┘
+                                      │ push
+                                      ▼
+  ┌───────────────────────────────────────────────────────────────────┐
+  │                          K3s Cluster                              │
+  │                                                                   │
+  │   ┌──────────┐   ┌──────────┐   ┌───────────────────────────┐   │
+  │   │  k3s-m1  │   │  k3s-m2  │   │  k3s-oci-m3 (OCI)         │   │
+  │   │  master  │   │  master  │   │  master (Tailscale VPN)    │   │
+  │   └──────────┘   └──────────┘   └───────────────────────────┘   │
+  │                                                                   │
+  │   ┌──────────┐                                                   │
+  │   │  hoarder │  (NAS — storage only)                             │
+  │   │  Unraid  │                                                   │
+  │   └──────────┘                                                   │
+  │                                                                   │
+  │   ArgoCD watches GitHub → applies changes automatically           │
+  └───────────────────────────────────────────────────────────────────┘
                     │
           ┌─────────┴──────────┐
           ▼                    ▼
@@ -52,7 +52,7 @@ homelab/
 │   │       ├── values.yaml
 │   │       └── values.sops.yaml   # Encrypted secrets
 │   └── charts/                    # Ad-hoc Kubernetes resource charts
-├── ansible/                  # k3s provisioning and server management
+├── ansible/                  # K3s provisioning and server management
 │   ├── playbooks/
 │   │   ├── k3s-cluster.yml   # Main playbook — includes bootstrap tag
 │   │   └── ...
@@ -70,7 +70,7 @@ The cluster lifecycle has two phases:
 
 **Bootstrap (once)** — run manually on a fresh cluster:
 ```bash
-uv run ansible-playbook ansible/playbooks/k3s-cluster.yml         # provision k3s
+uv run ansible-playbook ansible/playbooks/k3s-cluster.yml         # provision K3s
 uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags bootstrap  # install ArgoCD
 ```
 See [bootstrap runbook](../runbooks/bootstrap.md) for full details.
@@ -88,7 +88,7 @@ The **argocd-apps** chart is the root of the tree. It is itself an ArgoCD Applic
 
 | Layer | Technology |
 |-------|-----------|
-| Kubernetes distribution | [k3s](https://k3s.io/) |
+| Kubernetes distribution | [K3s](https://k3s.io/) |
 | GitOps | [ArgoCD](https://argoproj.github.io/cd/) |
 | Ingress | [ingress-nginx](https://kubernetes.github.io/ingress-nginx/) |
 | TLS | [cert-manager](https://cert-manager.io/) + Let's Encrypt |

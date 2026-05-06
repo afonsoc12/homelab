@@ -2,7 +2,7 @@
 
 Shared stateful services used by apps across multiple namespaces.
 
-All services run on the **k3s cluster** (`databases` namespace).
+All services run on the **k3s-cluster** (`databases` namespace).
 
 ---
 

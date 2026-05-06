@@ -2,9 +2,6 @@
 
 GitOps-driven homelab. Self-hosted. Automated. Encrypted.
 
-!!! warning "Work in progress"
-    This documentation is still being written and may be incomplete or out of date.
-
 <div style="display:flex;justify-content:center;margin:2rem 0;">
   <div style="border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.06) inset;">
     <iframe src="assets/homelab-rack.html" width="820" height="400" scrolling="no" frameborder="0" style="border:none;display:block;"></iframe>
@@ -25,7 +22,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
 -   :simple-ansible: **Server provisioning**
 
-    [k3s](https://k3s.io) cluster setup and server management handled by [Ansible](https://www.ansible.com/).
+    [K3s](https://k3s.io) cluster setup and server management handled by [Ansible](https://www.ansible.com/).
 
 -   :simple-terraform: **Infrastructure**
 
@@ -71,7 +68,7 @@ Single source of truth for my homelab — every piece of infrastructure declared
 
     ---
 
-    Server provisioning, [k3s](https://k3s.io) cluster management, and playbooks.
+    Server provisioning, [K3s](https://k3s.io) cluster management, and playbooks.
 
     [:octicons-arrow-right-24: Ansible docs](ansible/overview.md)
 

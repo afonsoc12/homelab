@@ -2,7 +2,7 @@
 
 Cluster platform components — the foundation everything else runs on.
 
-All services in this section run on the **k3s cluster**.
+All services in this section run on the **k3s-cluster**.
 
 ---
 

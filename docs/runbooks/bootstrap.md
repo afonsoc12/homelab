@@ -22,7 +22,7 @@ helmfile version
 
 ### 1 — Provision servers (Ansible)
 
-Installs k3s, Tailscale, and configures all nodes. Skips bootstrap (that's step 2):
+Installs K3s, Tailscale, and configures all nodes. Skips bootstrap (that's step 2):
 
 ```bash
 uv sync

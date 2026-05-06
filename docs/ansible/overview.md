@@ -1,6 +1,6 @@
 # Ansible Overview
 
-Ansible manages everything below the Kubernetes layer: OS configuration, package installation, k3s installation, Tailscale enrollment, and ongoing server management.
+Ansible manages everything below the Kubernetes layer: OS configuration, package installation, K3s installation, Tailscale enrollment, and ongoing server management.
 
 ## Setup
 
@@ -50,9 +50,9 @@ ansible/inventory/
 
 | Group | Members |
 |-------|---------|
-| `k3s_cluster` | all k3s nodes (masters + nodes) |
+| `k3s_cluster` | all K3s nodes (masters + nodes) |
 | `masters` | k3s-m1, k3s-m2, k3s-oci-m3 |
-| `nodes` | (k3s agent nodes — currently empty) |
+| `nodes` | (K3s agent nodes — currently empty) |
 | `raspberries` | rpi-4b, rpi-z2w-hyperion |
 | `docker` | rpi-4b |
 | `unraid` | hoarder |
@@ -68,7 +68,7 @@ Declared in `ansible/requirements.yml`:
 | `community.docker` | 5.1.0 | Docker management on rpi-4b |
 | `ansible.posix` | 2.1.0 | POSIX utilities |
 | `community.general` | 12.5.0 | General-purpose modules |
-| `k3s-io/k3s-ansible` | 1.2.0 | k3s installation and upgrade |
+| `k3s-io/k3s-ansible` | 1.2.0 | K3s installation and upgrade |
 | `artis3n.tailscale` | 1.2.1 | Tailscale server enrollment |
 
 Install or update:
@@ -110,11 +110,19 @@ Config is validated with `sshd -t` before the service restarts.
 
 ### inotify Limits
 
-Sets `fs.inotify.max_user_watches` and `fs.inotify.max_user_instances` via sysctl — required for k3s and file-watching tools.
+Sets `fs.inotify.max_user_watches` and `fs.inotify.max_user_instances` via sysctl — required for K3s and file-watching tools.
 
 ### Package Management (tag: `update`)
 
 Only runs with `--tags update`. Runs `apt dist-upgrade`, installs base/group/host packages, cleans up, and reboots if required.
+
+## `hyperion` Role
+
+Installs and manages Hyperion.ng on `rpi-z2w-hyperion`. Installs via `apt`, disables the per-user systemd unit, and runs the service as root (`hyperion@root.service`). Validates port 8090 is reachable after start.
+
+## `docker_compose` Role
+
+Deploys Docker Compose stacks to hosts in the `docker` group (`rpi-4b`). Stack definitions live under `docker/<inventory_hostname>/` at the repo root (e.g. `docker/rpi-4b/adguard/`). The role syncs each stack directory to the host, ensures volume directories exist, and manages the compose lifecycle.
 
 ## Linting
 

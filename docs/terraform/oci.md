@@ -1,6 +1,6 @@
 # OCI Module
 
-Manages the Oracle Cloud free-tier ARM instance `k3s-oci-m3` (UK Cardiff region) used as a k3s master server connected via Tailscale.
+Manages the Oracle Cloud free-tier ARM instance `k3s-oci-m3` (UK Cardiff region) used as a K3s master server connected via Tailscale.
 
 ```
 terraform/oci/

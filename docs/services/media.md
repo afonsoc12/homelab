@@ -16,6 +16,21 @@ Media server. Streams movies, TV shows, and music to all devices on the network 
 
 [:octicons-book-16: Documentation](https://support.plex.tv/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/plex/values.yaml)
 
+#### plex-relay
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-oci-m3 · `ingress`</em>
+
+nginx pod running on the OCI node that SSL-proxies port 32400 from the internet to Plex on hoarder via Tailscale. Required because Plex direct play needs port 32400 which cannot go through the Cloudflare tunnel.
+
+[:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/plex-relay/values.yaml)
+
+!!! bug "Real client IP not propagated to Tautulli"
+    The relay correctly sets `X-Real-IP` and `X-Forwarded-For` headers, but Tautulli still shows the Tailscale IP of `k3s-oci-m3` because it reads IPs from Plex's sessions API — Plex reports the relay IP, not the original client.
+
+    **Attempted (both failed):** Trusting the relay IP in Plex Network settings · Plex "List of IP addresses allowed without auth".
+
+    Root cause: Plex ignores `X-Forwarded-For` for private/Tailscale (`100.x.x.x`) source IPs. References: [Tautulli-Issues#28](https://github.com/Tautulli/Tautulli-Issues/issues/28) · [Plex Forum — X-Forwarded-For ignored for Tailscale IPs](https://forums.plex.tv/t/x-forwarded-for-and-x-real-ip-not-used-when-request-is-coming-from-tailscale-ip-100-x-x-x/898294)
+
 ---
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/tautulli.png" class="svc-icon"> Tautulli
@@ -25,6 +40,9 @@ Media server. Streams movies, TV shows, and music to all devices on the network 
 Plex monitoring and analytics. Tracks play history, sends notifications, and provides usage statistics.
 
 [:octicons-book-16: Documentation](https://tautulli.com/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/tautulli/values.yaml)
+
+!!! bug "Client IPs show as relay Tailscale IP"
+    See the known issue documented under [plex-relay](#plex-relay) above.
 
 ---
 

@@ -21,7 +21,7 @@ All public-facing services are routed through Cloudflare. The Terraform `cloudfl
 | Component | Description |
 |-----------|-------------|
 | DNS records | A/CNAME records per zone, encrypted in `dns/zone-*.sops.yaml` |
-| Tunnel | Cloudflared tunnel from k3s cluster → Cloudflare edge |
+| Tunnel | Cloudflared tunnel from k3s-cluster → Cloudflare edge |
 | WAF / Zone settings | SSL strict mode, TLS 1.2+, bot blocking, geo-allowlist |
 
 ### Geo Allowlist
@@ -53,7 +53,7 @@ Tailscale is used for:
 - **Cluster inter-server communication** — especially between home servers and the OCI master
 - **Admin access** — direct `kubectl` / SSH access from trusted devices
 
-All k3s servers are enrolled in the Tailscale network. The `artis3n.tailscale` Ansible role manages installation and auth.
+All K3s servers are enrolled in the Tailscale network. The `artis3n.tailscale` Ansible role manages installation and auth.
 
 ## Wireguard
 

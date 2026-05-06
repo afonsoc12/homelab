@@ -46,8 +46,8 @@ uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags upgrade
 The `k3s_upgrade` role (from `k3s-io/k3s-ansible`) handles:
 
 - Draining the node before upgrade
-- Installing the new k3s binary
-- Restarting the k3s service
+- Installing the new K3s binary
+- Restarting the K3s service
 - Waiting for the node to become Ready before moving to the next
 
 ## 5. Validate

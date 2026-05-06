@@ -1,6 +1,6 @@
 # Runbook: Adding a Server
 
-## Adding a k3s Worker
+## Adding a K3s Worker
 
 ### 1. Add to Inventory
 
@@ -44,7 +44,7 @@ uv run ansible-playbook ansible/playbooks/provision.yml \
 uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --limit k3s-w1
 ```
 
-This will run prerequisites and install the k3s agent, which registers the server with the cluster automatically using the shared `token` from `k3s_cluster.sops.yml`.
+This will run prerequisites and install the K3s agent, which registers the server with the cluster automatically using the shared `token` from `k3s_cluster.sops.yml`.
 
 ### 5. Validate
 
@@ -78,7 +78,7 @@ kubectl drain <node> --ignore-daemonsets --delete-emptydir-data
 kubectl delete node <node>
 ```
 
-### 2. Uninstall k3s (optional)
+### 2. Uninstall K3s (optional)
 
 ```bash
 uv run ansible -m command -a "k3s-agent-uninstall.sh" <node> --become
