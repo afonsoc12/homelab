@@ -32,14 +32,15 @@ extraSecrets:
         test-secret: ENC[AES256_GCM,data:FXruGJKGBHCoJw==,iv:S8EM0gdhKCH40Wd4ZwpOJABs+MGYqPQNho/KONERjP0=,tag:DUjgFIZ1b9nf2AiAD29YdQ==,type:str]
 configmap:
     mountEnv: true
-    SECRETS_PATH: /var/run/secrets/airflow
-    AIRFLOW__CORE__EXECUTOR: LocalExecutor
-    AIRFLOW__CORE__LOAD_EXAMPLES: "False"
-    AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
-    AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/data/logs
-    AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "True"
-    AIRFLOW__SECRETS__BACKEND: airflow.providers.cncf.kubernetes.secrets.kubernetes_secrets_backend.KubernetesSecretsBackend
-    AIRFLOW__SECRETS__BACKEND_KWARGS: '{"namespace": "addons", "connections_label": null, "variables_label": "airflow.apache.org/variable-key", "config_label": null, "variables_data_key": "value"}'
+    data:
+        SECRETS_PATH: /var/run/secrets/airflow
+        AIRFLOW__CORE__EXECUTOR: LocalExecutor
+        AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+        AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
+        AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/data/logs
+        AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "True"
+        AIRFLOW__SECRETS__BACKEND: airflow.providers.cncf.kubernetes.secrets.kubernetes_secrets_backend.KubernetesSecretsBackend
+        AIRFLOW__SECRETS__BACKEND_KWARGS: '{"namespace": "addons", "connections_label": null, "variables_label": "airflow.apache.org/variable-key", "config_label": null, "variables_data_key": "value"}'
 pvc:
     storageClassName: longhorn
     accessModes:
@@ -72,8 +73,8 @@ ingress:
             - path: /
               pathType: ImplementationSpecific
 sops:
-    lastmodified: "2026-04-29T19:42:30Z"
-    mac: ENC[AES256_GCM,data:lIaCXxlHgCScKGWPUEB32NZgstZb5NphrikRDM44XBFnMKm/3PHuJ6PKCi9jLkc92jdXCuXChUYN6zRz7Ag5yt7/8sijPO64cIFm7qOA0MK5msPCruzq85hGgqDAn1vu0q8SUIFN3Ey0dIoDjlYcxbhGjabs2sQHPceoPEv020w=,iv:klqS4fzT1nPHJ/CAJ9CTlP9k1+O0oP+bnYOx8nu/fqU=,tag:UcEN0ix1a2UZ3CT5L+WPaQ==,type:str]
+    lastmodified: "2026-05-06T19:26:39Z"
+    mac: ENC[AES256_GCM,data:LYOtg76jIXZHMTi4ZelIBOYcxEwgaYFXv7JGyXslHguX+NWX/L7hsSRU7TKAwWsf29uCKRGbmLQPcviMJ81MhziECfBWgLQGAjc8SQ7P727FF5JMJhXohnz9VKIiZ5DYR+wIEVBWiaIoFt5QTVvUdGHGUY2ZtO6zGNZbnaaFlNA=,iv:f+j3PmH7RHsWJZdTjLZDhf01N9KLbdniqwC1qC3oPNg=,tag:rXyqgSNuzw6XOUBdyjZWyw==,type:str]
     pgp:
         - created_at: "2026-04-24T00:05:20Z"
           enc: |-
