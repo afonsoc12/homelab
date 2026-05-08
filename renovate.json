@@ -108,9 +108,8 @@
       "groupName": "terraform providers"
     },
     {
-      "description": "Group GitHub Actions minor/patch updates",
+      "description": "Group all GitHub Actions updates",
       "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "github actions"
     },
     {
