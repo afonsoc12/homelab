@@ -1,8 +1,9 @@
 # ==================== General ====================
 
 resource "adguard_list_filter" "hosts_1_lite" {
-  name = "1Hosts (Lite)"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_24.txt"
+  name    = "1Hosts (Lite)"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_24.txt"
+  enabled = false # redundant with OISD Big + HaGeZi Pro
 }
 
 # resource "adguard_list_filter" "hosts_1_pro" {
@@ -21,18 +22,21 @@ resource "adguard_list_filter" "adguard_popup_filter" {
 }
 
 resource "adguard_list_filter" "awavenue_ads_rule" {
-  name = "AWAvenue Ads Rule"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_53.txt"
+  name    = "AWAvenue Ads Rule"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_53.txt"
+  enabled = false # Chinese-focused, low value for PT/UK
 }
 
 resource "adguard_list_filter" "dan_pollocks_list" {
-  name = "Dan Pollock's List"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_4.txt"
+  name    = "Dan Pollock's List"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_4.txt"
+  enabled = false # covered by OISD Big + HaGeZi Pro
 }
 
 resource "adguard_list_filter" "hagezi_normal" {
-  name = "HaGeZi's Normal Blocklist"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_34.txt"
+  name    = "HaGeZi's Normal Blocklist"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_34.txt"
+  enabled = false # strict subset of HaGeZi Pro
 }
 
 resource "adguard_list_filter" "hagezi_pro" {
@@ -41,8 +45,9 @@ resource "adguard_list_filter" "hagezi_pro" {
 }
 
 resource "adguard_list_filter" "oisd_small" {
-  name = "OISD Blocklist Small"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_5.txt"
+  name    = "OISD Blocklist Small"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_5.txt"
+  enabled = false # strict subset of OISD Big
 }
 
 resource "adguard_list_filter" "oisd_big" {
@@ -51,13 +56,15 @@ resource "adguard_list_filter" "oisd_big" {
 }
 
 resource "adguard_list_filter" "peter_lowe_list" {
-  name = "Peter Lowe's Blocklist"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_3.txt"
+  name    = "Peter Lowe's Blocklist"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_3.txt"
+  enabled = false # covered by OISD Big + HaGeZi Pro
 }
 
 resource "adguard_list_filter" "steven_blacks_list" {
-  name = "Steven Black's List"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_33.txt"
+  name    = "Steven Black's List"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_33.txt"
+  enabled = false # covered by OISD Big + HaGeZi Pro
 }
 
 # ==================== Other ====================
@@ -83,8 +90,9 @@ resource "adguard_list_filter" "hagezi_gambling" {
 }
 
 resource "adguard_list_filter" "hagezi_oppo_realme_tracker" {
-  name = "HaGeZi's OPPO & Realme Tracker Blocklist"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_66.txt"
+  name    = "HaGeZi's OPPO & Realme Tracker Blocklist"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_66.txt"
+  enabled = false # devices not in use
 }
 
 resource "adguard_list_filter" "hagezi_samsung_tracker" {
@@ -93,8 +101,9 @@ resource "adguard_list_filter" "hagezi_samsung_tracker" {
 }
 
 resource "adguard_list_filter" "hagezi_vivo_tracker" {
-  name = "HaGeZi's Vivo Tracker Blocklist"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_65.txt"
+  name    = "HaGeZi's Vivo Tracker Blocklist"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_65.txt"
+  enabled = false # devices not in use
 }
 
 resource "adguard_list_filter" "hagezi_windows_office_tracker" {
@@ -202,8 +211,9 @@ resource "adguard_list_filter" "hagezi_dyndns" {
 }
 
 resource "adguard_list_filter" "hagezi_threat_intelligence" {
-  name = "HaGeZi's Threat Intelligence Feeds"
-  url  = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_44.txt"
+  name    = "HaGeZi's Threat Intelligence Feeds"
+  url     = "https://adguardteam.github.io/HostlistsRegistry/assets/filter_44.txt"
+  enabled = false # 1.38M rules — too large for Pi, causes DNS thread block on reload
 }
 
 resource "adguard_list_filter" "hagezi_url_shortener" {

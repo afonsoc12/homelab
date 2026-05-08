@@ -42,6 +42,9 @@ extra_css:
 extra_javascript:
   - assets/header-home-link.js
 
+hooks:
+  - docs/hooks.py
+
 extra:
   generator: false
 

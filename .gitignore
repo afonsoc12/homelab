@@ -9,6 +9,7 @@ backend.tf
 ._*
 .idea/
 .venv/
+.env
 /tmp
 .claude/plans
 site/
@@ -16,5 +17,7 @@ __pycache__/
 .pytest_cache/
 *.py[cod]
 *.so
-airflow/.env
 airflow/local-secrets
+airflow/airflow-data
+.ruff_cache/
+.planning/
