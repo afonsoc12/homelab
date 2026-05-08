@@ -62,12 +62,12 @@ jobs:
         run: zip -r homelab-docs-v${{ steps.version.outputs.version }}.zip site/
 
       - name: ⬆️ Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
       - name: ⬆️ Upload release archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-archive
           path: homelab-docs-v${{ steps.version.outputs.version }}.zip
@@ -92,7 +92,7 @@ jobs:
     if: github.ref == 'refs/heads/master' || github.event_name == 'workflow_dispatch'
     steps:
       - name: ⬇️ Download release archive
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: release-archive
 
