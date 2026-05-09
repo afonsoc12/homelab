@@ -25,22 +25,18 @@ service:
 secret:
     mountEnv: true
     stringData:
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:1qRZryH7TkfkE7i8/ukc0L7VrHgH59TN/lNv/bUhv+pcz07q6rCkhDqxqLJ0T1WTe1e8V5y5TIxTfOJMqGwBz9JzBltJL/90BbGGMH2exxumfXxjpX0=,iv:UdkoScDzeWz8tITisB0kHvxpUjIb0suTXxzi3JJFI/A=,tag:mVm9UelvyBZS8jMfEYtosA==,type:str]
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:gemZMY/A4v4YGTFd1lGMmo2ex27mBKCMXrlM2B/4Xp1BjF1L/O+o3WDdzY+Boc/GwpsSEyXK8fspgI4sxDoxyCsrVrY9Jb0eAd2S6szTdUvk+V/+rNE=,iv:eoO32HtD+r3HYv42zxLJtkV4QA1xu/laWpIU+ASdWxM=,tag:FI+YBX/4BH7Pfxteeu2FNA==,type:str]
+        AIRFLOW__CORE__SECRET_KEY: ENC[AES256_GCM,data:tdC4AiI0oT1Ox5/7NE/a2dFF0+mRoDXe1wxsG67URGYR/0+kRPIElIKRJYXN+wK1KOvOI6Fi1SNsBzVtUrzvBA==,iv:dF0aIaL1Q6I8ITClGLiGF0Dyx1JCmfWsO9UFC3az0vI=,tag:YolkGG5hDLGWwdykwH5CgQ==,type:str]
+        AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:A6ILniBw9ZflfnNvrl7I1vtABVD4U38Ytl8XsOufeV/WT3FP22TDiJm88nG6nlVZ/8UQWDNyk2ml6A4q1Yp1YQ==,iv:LePJ4nOVC/GvQGOodaYJL72AClXS5DEigrom59nMKYQ=,tag:iKE6+MOTjpfQAquq8khSZg==,type:str]
 extraSecrets:
-    - name: airflow-dag-secret
+    - name: airflow-secrets-backend
       stringData:
-        test-secret: ENC[AES256_GCM,data:FXruGJKGBHCoJw==,iv:S8EM0gdhKCH40Wd4ZwpOJABs+MGYqPQNho/KONERjP0=,tag:DUjgFIZ1b9nf2AiAD29YdQ==,type:str]
+        variables.yaml: ENC[AES256_GCM,data:Y5IWX7DVYo8y7j9MOMl8aNrbN9LuEq/Vw1Q4l5ilwuvn39MkeFZfgKA/eo2Tao3f6DKGmnaNwzqA4tlGozTAy/rB2pQK2/rm/lp+eCSZvSh8sWuq2rls/j9G1J2lbJnFwk6ODOs+BOH95aqQlodA09/A2ic9EbGJ,iv:fyaomJQvFPcx87hlM49rH3yj1fCXwcf1iRwMIGTxl6A=,tag:0F1O9dAFF3CO+OkA+sVLCg==,type:str]
+        connections.yaml: ENC[AES256_GCM,data:UVS2mPiDo/DvmlqrILtuZHXQ2zKr8CKmpWWAc+WEQ5xEr5AAnYuJS/KVscGMRpjZ69pGqak6+3KplqxMTMgssKjT7JgafcjwNSnv3Og9GcvHrPYjHVQfyw3T3pDDQE6VKkjdiIt3JHzSjXHwsA4aBSxspR5fqGyTvYg/yOJ8foLqdPmk71CrbZRM2yYyDrrYJiS3q/0r/id5QHl0,iv:SIRLwc1207Rt46Ex+w43SP6HLAx9Mjy0+mqzKePcdFE=,tag:lUByemAbmiSNM4YI/Tpvxg==,type:str]
 configmap:
     mountEnv: true
     data:
-        SECRETS_PATH: /var/run/secrets/airflow
         AIRFLOW__CORE__EXECUTOR: LocalExecutor
-        AIRFLOW__CORE__LOAD_EXAMPLES: "False"
-        AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "True"
-        AIRFLOW__LOGGING__BASE_LOG_FOLDER: /opt/airflow/data/logs
-        AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "True"
-        AIRFLOW__SECRETS__BACKEND: airflow.providers.cncf.kubernetes.secrets.kubernetes_secrets_backend.KubernetesSecretsBackend
-        AIRFLOW__SECRETS__BACKEND_KWARGS: '{"namespace": "addons", "connections_label": null, "variables_label": "airflow.apache.org/variable-key", "config_label": null, "variables_data_key": "value"}'
 pvc:
     storageClassName: longhorn
     accessModes:
@@ -50,51 +46,50 @@ pvc:
             storage: 5Gi
 volumeMounts:
     - name: data
-      mountPath: /opt/airflow/data
-    - name: secret
+      mountPath: /data
+    - name: secrets
       mountPath: /var/run/secrets/airflow
       readOnly: true
 volumes:
     - name: data
       mountPvc: true
-    - name: secret
+    - name: secrets
       secret:
-        secretName: airflow-dag-secret
+        secretName: airflow-secrets-backend
 ingress:
     enabled: true
     authelia: true
     className: nginx
     tls:
         - secretName: local-wildcard-cert
-    # Will assume the first element in .ports, regardless of service
     hosts:
         - host: airflow.local.{{ .Values.domain }}
           paths:
             - path: /
               pathType: ImplementationSpecific
 sops:
-    lastmodified: "2026-05-06T19:26:39Z"
-    mac: ENC[AES256_GCM,data:LYOtg76jIXZHMTi4ZelIBOYcxEwgaYFXv7JGyXslHguX+NWX/L7hsSRU7TKAwWsf29uCKRGbmLQPcviMJ81MhziECfBWgLQGAjc8SQ7P727FF5JMJhXohnz9VKIiZ5DYR+wIEVBWiaIoFt5QTVvUdGHGUY2ZtO6zGNZbnaaFlNA=,iv:f+j3PmH7RHsWJZdTjLZDhf01N9KLbdniqwC1qC3oPNg=,tag:rXyqgSNuzw6XOUBdyjZWyw==,type:str]
+    lastmodified: "2026-05-09T12:13:28Z"
+    mac: ENC[AES256_GCM,data:0p4ukgPlLG7FwSblXH0fLaLFu7i9QZsUZn2+eLVfSyanijE/ldizjyJRGIewYPrOfqWyfvfjEmms/FvgcXooFlls6TtE3usAPDtaBUEc9LQNTcjGw07vmBhm4BW3SkL0LbUOvsg2He7Q+C0WuE/QPnzEdD1rLPBvdY731FFNCIM=,iv:2d1dnnUh2TVjl80yhTcb6hJR9bhz2JyahMuWO9tIyU0=,tag:VHX1zDOMcVkm+ikwn9h8rQ==,type:str]
     pgp:
-        - created_at: "2026-04-24T00:05:20Z"
+        - created_at: "2026-05-09T12:13:28Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/7Bydej8WQSDxopmYxuFATZLkXWvrnU4MUInO5FdsNvOem
-            QyYFnDpAt0QynuoEIyZeWUKNnn+0Znkd6aMYsk1zEzdorwZl86sSqEBCHdp2jqak
-            iP+jsQGFnnjvgGGIw1Jdy6BJHqN6B01Y37Ji2zmpuLWvWmF2xRZKrjmtb8xctiws
-            Hb1kGNmbnQt6dm1c82KSOsomVdVQf8/xKn39yz+H/wBc2iB9lJKupJNJlta7UmOT
-            IRVJ1fJBAk3K78NxD8uwhDIYtkKGc1+RblEqUbwchr40Zj+Q8OuWcfFqvuAdynMW
-            DMV4AEp2sWkgWGZoLvbK1lQ6Ak310Lhmx0eLJhWiXGB5dcg4XK+14ioXPrYgQtnp
-            JnSNqlknJHTpqLUY5Vi0pUVuPSRAcLtdipROfHZD+So7M2fj9QpR9GnkDlGwg0dN
-            2k0nz3mH72xMHbt7UbFY0YMr2sTjjG7iPOMMuAa8MjVysSURso/Ag7GyanQMKCVA
-            GzPo3JrXeXdlpZbDLJPqktbzObLT3OcfyL7VREPJWGN+hjGlEIsjElJoSZA58tYI
-            CfG7Viiz12LYy70shUfJATYh4p96H43LWUTpXdBXcSY3sav3xVBINRWUUW+DG/Mb
-            hH9pP8TocXcouTBfI4otjLvOSoVVpZFEZ/KjJ5c9zouqmHAewv3cHWxzbvsdK2zU
-            aAEJAhDhKLhpa5NRod9tQC5jYzZNXCQm9X3cB+k4st5dpo/BnXWeAy/526zFcLBy
-            RpCQdI0H3T7fGgW3flFrdfkrUL8bNokjRUHM0bdybAjpMjhhnTkxEfX1IrZBVXu5
-            QbHQuax4uI6M
-            =Iloz
+            hQIMA5NT/LvuRqeGAQ//R63u5gJBsqOmuXsRRzrssGWfEnplh2xFxdswrVUbU2JD
+            zqs10doc1XRRCTB6GWSrej96zQBxU7pBTLVnQ3q8ACf3mX5pxE9HEzp1zm6aI0wP
+            cqL3RbnvaOogNHOTEDluYMdYkeUWj2eK3cRq66PXznGEu7tvRQQPdxcXvmdVq891
+            537aqgdtmD2eGJYwfY7ua1G96fFG8cXOSuuJ2KpQZ6NLj0Ex30ik6RGvr55TuJBE
+            AYlNPjFqTsX32U6WraDJYSRCVCoylK5Iap++ySuF4j+YE/CTZtZyhRES6XIH6sUL
+            oSyfxbVvMDa2lnv06dagNwGNzzy6bZ6VbOj/J21kk1DkIgusCc7Pl2yaipoUyLDP
+            W4cnQGTqlC7DK8tiIDv3K3NjOYnQLveUVDZa6Ksu7kgkNVzizIXW2cZowLUGlT/c
+            mVI3B+TnkcS4+ZjWtNK+ozTpJ+C7CFc/6OnFHKwJNosNS/nRqHVXyguLOT6YOyvz
+            f8f848toHPiSWvqYHWt97mf9l6GJZvll3bB0RIw2FFNUFXkKP4DUEmG1tnoL81b4
+            a4ZnjQyyexbae9tYvPjCs91vUGi5g9ReDPeZtRz5rCK+IjcnXH0GOjjofJtuXsEs
+            CViSNU40IPs60ApiTwKOOBrMSqcwJnMIf16Qy94RQa0ODtEousB9DJLGTAD0Bx3U
+            ZgEJAhBMK8Y+wVx5Aj7RbhlyaYmb0eAo4pLjokcQNJ9XbPURFwIm20ssGlLeAPIM
+            tjxrM8Af7JB2VrEmfuZGbnaFduE/XbIRL1F+ALu7+KSxQalTShdACz2nwCcyurHr
+            cZxIBEi1NA==
+            =KJIv
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(stringData)$

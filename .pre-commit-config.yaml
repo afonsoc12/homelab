@@ -46,23 +46,25 @@ repos:
 
       - id: ruff-format
         name: ruff format
-        entry: bash -c 'cd airflow && uv run ruff format'
+        entry: uv run --directory airflow ruff format
         language: system
         types: [python]
+        pass_filenames: false
         require_serial: true
         files: ^airflow/
 
       - id: ruff-check
         name: ruff check
-        entry: bash -c 'cd airflow && uv run ruff check --fix'
+        entry: uv run --directory airflow ruff check --fix
         language: system
         types: [python]
+        pass_filenames: false
         require_serial: true
         files: ^airflow/
 
       - id: pytest
         name: pytest
-        entry: bash -c 'cd airflow && uv run pytest -m "not integration"'
+        entry: uv run --directory airflow pytest
         language: system
         types: [python]
         pass_filenames: false

@@ -2,6 +2,7 @@ locals {
   # Add names here — a role and database with the same name is created automatically
   service_databases = toset([
     "airflow",
+    "airflow_data",
     "authentik",
     "ghostfolio",
     "mealie",

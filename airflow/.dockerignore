@@ -1,8 +1,9 @@
 __pycache__/
 *.py[cod]
 .env
-airflow/local-secrets/
+local-secrets/
 .pytest_cache/
+data/
 .venv/
 .git/
 .gitignore

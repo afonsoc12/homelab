@@ -18,6 +18,6 @@ __pycache__/
 *.py[cod]
 *.so
 airflow/local-secrets
-airflow/airflow-data
+airflow/data
 .ruff_cache/
 .planning/
