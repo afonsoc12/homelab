@@ -100,11 +100,10 @@ def t212_hourly():
     with TaskGroup(group_id="account_a") as tg_a:
         _pipeline_tasks("a")
 
-    # with TaskGroup(group_id="account_m") as tg_m:
-    #     _pipeline_tasks("m")
+    with TaskGroup(group_id="account_m") as tg_m:
+        _pipeline_tasks("m")
 
-    schema >> tg_a
-    # schema >> tg_m
+    schema >> [tg_a, tg_m]
 
 
 t212_hourly()
