@@ -181,9 +181,10 @@
         "/^kubernetes\\/apps\\/ingress\\/cloudflare-ddns-.+\\/values\\.sops\\.ya?ml$/"
       ],
       "matchStrings": [
-        "repository: (?<depName>ghcr\\.io/hotio/[^\\n]+)\\s+tag: (?<currentValue>[^\\s@\\n]+)\\s+digest: (?<currentDigest>sha256:[a-f0-9]+)"
+        "repository: (?<depName>ghcr\\.io/hotio/[^\\n]+)\\s+digest: (?<currentDigest>sha256:[a-f0-9]+)"
       ],
-      "datasourceTemplate": "docker"
+      "datasourceTemplate": "docker",
+      "currentValueTemplate": "latest"
     },
     {
       "customType": "regex",

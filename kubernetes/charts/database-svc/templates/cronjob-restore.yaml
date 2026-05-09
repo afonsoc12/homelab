@@ -24,7 +24,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: db-restore
-              image: {{ required "Must specify image repository" .image.repository }}:{{ .image.tag }}{{ with .image.digest }}{{ "@" }}{{ . }}{{ end }}
+              image: {{ required "Must specify image repository" .image.repository }}{{ if .image.digest }}@{{ .image.digest }}{{ else }}:{{ required "Must specify image tag or digest" .image.tag }}{{ end }}
               imagePullPolicy: {{ .image.pullPolicy }}
               command:
                 - sleep

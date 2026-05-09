@@ -6,16 +6,16 @@
 # --------------------
 secret:
     stringData:
-        CF_APITOKEN: ENC[AES256_GCM,data:vxr/8QqJtpOCq2mL/TxgxYmvqtOen0syATpM2G++l7KG8pJIBCxT3g==,iv:VU6CdYToGP3K6M0LwoAe+rC4dSyBgGV+py3BY+/YY+Q=,tag:jcrdppBlT4yDji2hNI4bNw==,type:str]
-        CF_ZONES: ENC[AES256_GCM,data:MZyC3YPoj9CrayuIl/Y8GfnGyLkc7aUHRwsOqQeOt+c=,iv:acWBL57qgs5vVqcoSGZZlcDfUCktjL5CZMSqdAFA0fE=,tag:Efb/ifsTsY1k58V3vQr8pQ==,type:str]
+        CF_APITOKEN: ENC[AES256_GCM,data:nzpaesivhqLbcnLo/Ia79GKAUeAuoqIe0gK/z//AWsZXfjyJ5I8ZuA==,iv:A2MGKRr5ovPqsPuqJ3vCT7ObitPY6ZVPF1qLUeszGh4=,tag:tRj/jdHJfsOOKCDU24qtfw==,type:str]
+        CF_ZONES: ENC[AES256_GCM,data:Im3ICTio+rR1hyRBPM9M/pNtNQIutTDB4iZ+/dIrsEw=,iv:m5R0o7FBJdX32eg2fFm0dymhv34I4wEOHbHUsTTAF9g=,tag:T8G9fcXD5jCm1mygdnye+g==,type:str]
 configmap:
     data:
-        CF_HOSTS: ENC[AES256_GCM,data:i++6OXtEEbKiWRBHUrLCoBK6MTKiZR9GfcA=,iv:Qe0ga+2wdB+Kq0Sg7JqOBMPkj4SQ7BoyIBh516PSc9A=,tag:E1cLQJuizEZCfYa1wa1Rkw==,type:str]
-        CF_RECORDTYPES: ENC[AES256_GCM,data:yA==,iv:G+cQOLpWGizv/ccw17YddsY3EEfxvjDo7dD+W1jVurI=,tag:+EVbkkX8PAiVx2QUAE6D1g==,type:str]
-        LOG_LEVEL: ENC[AES256_GCM,data:gg==,iv:uivsaTO1bsaFY4obfz1KXD1TrNmLVvGZ+nd877ENcsU=,tag:yaWDDuV7L06wTUEd3CdUrg==,type:int]
-        INTERVAL: ENC[AES256_GCM,data:2w==,iv:3hIvMbg4w5v36itcONgYBWD+WX/gRgM7ATxc9nrgNd4=,tag:SSWyu6eEgPABmkaKBeoxFw==,type:int]
-        DETECTION_MODE: ENC[AES256_GCM,data:lXzAPAEfTd94FiHryCCM0D8vnQMT,iv:wiOaYtRrpWoM4oxWBc4iKrz7YOAqf2iU6UQrLp+fUI4=,tag:bgjX4dLiOhGJHGW/sMaIug==,type:str]
-        APPRISE: ENC[AES256_GCM,data:ICCc/g7PuS4FPsgFKvqI0LxgTMs0bl6WD2cSn7/8,iv:PJmGVm86X9IA3/6D3ArLBnSRbynKjE9jex9+TLWypTA=,tag:UGK0m2/pqknffmHBWBLHRg==,type:str]
+        CF_HOSTS: ENC[AES256_GCM,data:jEWpFPLGXtnClw9Gr5cpH107vXyHPSZZsxU=,iv:qC+CFIIFUArhwEVLqaSPNua0vBtCqW/eo1I4IMY3lsM=,tag:MG8SVubXfz1Dfo6ad+BBjA==,type:str]
+        CF_RECORDTYPES: ENC[AES256_GCM,data:AQ==,iv:gkJDrW19fQOS/PUKvow7UsN7ixeppdDuQFH7oUXovPc=,tag:0MzZn61cN/w0vbCVLqWuMA==,type:str]
+        LOG_LEVEL: ENC[AES256_GCM,data:Sw==,iv:VqqNwh8coscGDcwihWRKQM/9Gxl+0/Oadhio6Nc8RV0=,tag:gtJLLtZBx0PYmpZ7ZOtO1Q==,type:int]
+        INTERVAL: ENC[AES256_GCM,data:8w==,iv:HeSFAxrfHvFF21Djlr2wtTR3BgpvK19x47AC4RTks8Y=,tag:IUaBuwa3iuIqtdQEukUZ9Q==,type:int]
+        DETECTION_MODE: ENC[AES256_GCM,data:4tK7OnOEnmjnyJ/bc8C0xWh7//Qj,iv:/O9g5/1gC/4N6TVYprwh0/p3iv0q1C4obAwD7SinSA4=,tag:g9TPG3w8G+JxAAy/DvidgQ==,type:str]
+        APPRISE: ENC[AES256_GCM,data:bc3WuRjYGiDHEr34zcilUvp7qiw1KNc4G61YJB1r,iv:DCcORuoxFXjx9XEDk71mm7lSn1mxOnGYYiQUbFWCDOo=,tag:2iR0bd0l2XvC6nxyWNWj3Q==,type:str]
 cronjobs:
     - name: cloudflare-ddns-pt
       schedule: '*/15 * * * *'
@@ -25,34 +25,33 @@ cronjobs:
       # suspend: true
       restartPolicy: Never
       image:
-        repository: ghcr.io/hotio/cloudflareddns@sha256:dbdb3f7854ce46ec52abd392920cd74a02b7d0b95543f16c94108cb864d6cec3
-        tag: release-34a15f7
+        repository: ghcr.io/hotio/cloudflareddns
         digest: sha256:dbdb3f7854ce46ec52abd392920cd74a02b7d0b95543f16c94108cb864d6cec3
       nodeSelector:
         kubernetes.io/hostname: k3s-m2
 sops:
-    lastmodified: "2026-05-09T18:33:54Z"
-    mac: ENC[AES256_GCM,data:LoVn+hN8cZVbe4ETGPXR/SSf2QtxrmE1QO7HRdr3DyYX315iM5Os5VNQAC30EjT/TVN2z+Sa2CFd9BSy35kqeNP4Zj3xDdM3PfyzhFvtCOjNWrJNFRzyquR5y8kk8WgIvNSo2zCGJQUXgBbGoLzwlu5e+C+2IEF/uWhT0QQydRo=,iv:JM4NP5grGGyoSGQthkO23K11ZlORA37Pt/B+Zj8P6s0=,tag:no38oDbNlUfQ4VEXweUKsg==,type:str]
+    lastmodified: "2026-05-09T18:49:37Z"
+    mac: ENC[AES256_GCM,data:YA9mIde9apWZXm2UyUVbfpIPG5Z3Jr4V0iida88uDLBwzWPv61nOnaaONNMc0+k/hevQbwSrhgf2WmNL47uSTswWHPtCRiETlxkuNwcxzjRjFMsXv0PYvW14tOS067B0d8pRkjOv9iGmRVg9pXw0wMWUXT2lBCoY05a/Rwxcvio=,iv:P9IaA3wkuzwErto5bZkYXMX74qDOhTd5pjYcg6UUbA8=,tag:dkWoK03a4gZrjVjNnN00DQ==,type:str]
     pgp:
-        - created_at: "2026-05-09T18:33:54Z"
+        - created_at: "2026-05-09T18:49:37Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//c2FdAUQxZy/ZXTOixtYO/oodIfQ5tQprfprji8+aAABk
-            l6dtqEFVvwOTXEps0vA2xX8TgGqHMbP3vVMgAYc9J+myqP/L3Bx6IQiww44pqa/s
-            H/8JRNOIdPwrKwV9zQN1XPxGlg87S7poKZ8pfV53PCFlu8Ww7vee4AecL//m6aFx
-            vuYJHCQYEuJm2QT8tAmmiq2jxBrq1nGMPDCuct3ev2Bn/tQ0ZzuwDv8xjHiXT6WR
-            ix8mVJ0Cx21bfBZzEia8XCJpItP9lMUuH35c2hLZTx1SU+wuCLYJxUROa670Jcyg
-            9d+Tukp3W0295QgmEjcucibuf/IaTr2XtXRS/Hn/Ra98LDu6yd6k3grOxvDegLIe
-            NKoCev6OdavZQRC6YoJYH+cKXrKk6ry556/ReeEeHkzkhxonkjOkymQsPOWTctnG
-            oUIgzICM97UMtCKmmBKdzB5Qv79wQmTdY8dVaF/YTkq2MrbcozRqE6x764JmlIWy
-            jk77sLh/Ehwb/vSVOmoMZqytjB2QxI4s16CirgYCQ9brGwYBMCuoYt/QCYEoCe23
-            EFwDm8rA/WUg3ejNAmgqctoznNIYtexiJP/iIidsWB7ecKpHQkMOv6uhxPw0gkoZ
-            XbOdniPpUOzKlo1+em0XS1+IlPhoIWK8dDP6w2uPdxX2N5O1GjyCKZU8i9Dsfc3U
-            ZgEJAhDaCrBrcc9vnmHI1JtoYV5REWOlgkHEQ2T0jf/Od7Ey9ViO6LIqyn/qBqc+
-            OBRrOe5VqIDLEFWT6u+nTvQFg7SL7ncFgIFaiFrtRpwQVCGSB7j8c9SF/eskYKa9
-            LKQcXrjj8Q==
-            =D1IP
+            hQIMA5NT/LvuRqeGARAAoGMS4Eum/eHQfh8WajjLt3YnwT8zHVPELMRmWRms1ULG
+            73nVJCaZqRv+BEyYM9VVmexOLpOV3UpaVQxhRuvzgFrO/X4EYqaeneVKHBUUtQ0r
+            isugfB4VAsSBijxzq61uauh3n0ZQFbfHf2C4uJUYGctQiXCvrKgVlB4u9PQ04ivq
+            A1RGyxUn0LOuXOyBWlifldM76WB9fO1dxJg6Q902gAprRyd1Vx04JyE/rwKiRemo
+            MDUjcdHKXK+ILcftdDx4Jh4AINm1lAtscCE/GHYpZhWYWjK83nXtUMEIOb/+Fhfv
+            bD6amx0I9RB4Pcx8w+XtFCBBtmgMGwPiy0/xJ8TY/8sGzjzX7jS/NXpjhJ2lsG8f
+            IyflFKxVxj0RYJOivT3Zd8SyybUXizmeWLA0nScPwPSAM1+OSwP2NaRsdjwplNk3
+            std2I2yxOlB4kmKRMpC4ZCsaJUEjfCgWuSjGAJgOyjWbpvdIKQR2ZI3nMyldX01Y
+            UcK152y3sCJkie+y+ZAHThZs1lH15jNjvDSJTdUIsdCTRcGSsJnXQ8dLGrSppQc3
+            ZwFQojswLviVt6sHS32B0BY/+JgGLdmkbGOA5HwFqtRboB20SH06BJgC+VHk7Ra0
+            VHM+i4+W/Cpv/N/pgZhkWr/N4FAvLLpfV1HLmTNPFtlGGKIVznbD1/RoqgL8L1zU
+            aAEJAhDq2ftQEHxsH9FXTdGPNnoobH2HVRvkPpEQ0MvsK/VhxS+FENZuemtvXV9U
+            hpPdMscn3vlVcwcPzbJEl35h7W03wV0a6L9/ljp9mT6q7xik3eW0loAYtrLxWsZ+
+            6NivO9fI3f0n
+            =wc+7
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
