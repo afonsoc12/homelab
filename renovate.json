@@ -2,8 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["0 */4 * * *"]
+    "enabled": true
   },
   "labels": ["renovate"],
   "argocd": {
