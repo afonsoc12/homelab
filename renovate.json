@@ -65,10 +65,9 @@
       "versioning": "regex:^\\d+\\.\\d+\\.\\d+-b(?<patch>\\d+)$"
     },
     {
-      "description": "Track hotio release-COMMITHASH tags — filter format, best-effort ordering via registry",
+      "description": "Track hotio image by digest",
       "matchPackageNames": ["ghcr.io/hotio/cloudflareddns"],
-      "versioning": "loose",
-      "allowedVersions": "/^release-[a-f0-9]{7}$/"
+      "pinDigests": true
     },
     {
       "description": "Pin Helm chart versions in ArgoCD (remove range constraints)",
@@ -173,15 +172,14 @@
     },
     {
       "customType": "regex",
-      "description": "Update hotio image tags (release-COMMITHASH format) in sops values",
+      "description": "Track hotio image digest in sops values",
       "managerFilePatterns": [
         "/^kubernetes\\/apps\\/ingress\\/cloudflare-ddns-.+\\/values\\.sops\\.ya?ml$/"
       ],
       "matchStrings": [
-        "repository: (?<depName>ghcr\\.io/hotio/[^\\n]+)\\s+tag: (?<currentValue>[^\\n]+)"
+        "repository: (?<depName>ghcr\\.io/hotio/[^\\n]+)\\s+tag: (?<currentValue>[^\\s@\\n]+)\\s+digest: (?<currentDigest>sha256:[a-f0-9]+)"
       ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "loose"
+      "datasourceTemplate": "docker"
     },
     {
       "customType": "regex",

@@ -36,7 +36,7 @@ spec:
             - name: {{ .name }}
               securityContext:
                 {{- toYaml .securityContext | nindent 16 }}
-              image: "{{ required "Must specify image repository" .image.repository }}:{{ .image.tag }}"
+              image: "{{ required "Must specify image repository" .image.repository }}:{{ .image.tag }}{{ with .image.digest }}@{{ . }}{{ end }}"
               imagePullPolicy: {{ .image.pullPolicy }}
               {{- with .command }}
               command:

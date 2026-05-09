@@ -6,16 +6,16 @@
 # --------------------
 secret:
     stringData:
-        CF_APITOKEN: ENC[AES256_GCM,data:HJp6TYmuI4V9edVwKQH6o21PySdDTlu+lfI5XernTJtBXXUih/jeqw==,iv:xX33d4R6b+PkQc5uyueQIDvwKKHBKv3S4KelvmZyY+w=,tag:0Z5urJDeQHPXI7XBBACVzA==,type:str]
-        CF_ZONES: ENC[AES256_GCM,data:yC1YYZp1hvWYW6zkO+DoXALwbwGH+ayiAd5Zv1DP5Is=,iv:swHNlxqh1BXDTlYpQeC0U7Yx7foMqlarLKTW/r2evhw=,tag:rpx+TVP1/eEYxHfuCPc+QA==,type:str]
+        CF_APITOKEN: ENC[AES256_GCM,data:vxr/8QqJtpOCq2mL/TxgxYmvqtOen0syATpM2G++l7KG8pJIBCxT3g==,iv:VU6CdYToGP3K6M0LwoAe+rC4dSyBgGV+py3BY+/YY+Q=,tag:jcrdppBlT4yDji2hNI4bNw==,type:str]
+        CF_ZONES: ENC[AES256_GCM,data:MZyC3YPoj9CrayuIl/Y8GfnGyLkc7aUHRwsOqQeOt+c=,iv:acWBL57qgs5vVqcoSGZZlcDfUCktjL5CZMSqdAFA0fE=,tag:Efb/ifsTsY1k58V3vQr8pQ==,type:str]
 configmap:
     data:
-        CF_HOSTS: pt.ip.{{ .Values.domain }}
-        CF_RECORDTYPES: A
-        LOG_LEVEL: 3
-        INTERVAL: 0
-        DETECTION_MODE: dig-whoami.cloudflare
-        APPRISE: ntfy://ntfy.monitoring/homelab
+        CF_HOSTS: ENC[AES256_GCM,data:i++6OXtEEbKiWRBHUrLCoBK6MTKiZR9GfcA=,iv:Qe0ga+2wdB+Kq0Sg7JqOBMPkj4SQ7BoyIBh516PSc9A=,tag:E1cLQJuizEZCfYa1wa1Rkw==,type:str]
+        CF_RECORDTYPES: ENC[AES256_GCM,data:yA==,iv:G+cQOLpWGizv/ccw17YddsY3EEfxvjDo7dD+W1jVurI=,tag:+EVbkkX8PAiVx2QUAE6D1g==,type:str]
+        LOG_LEVEL: ENC[AES256_GCM,data:gg==,iv:uivsaTO1bsaFY4obfz1KXD1TrNmLVvGZ+nd877ENcsU=,tag:yaWDDuV7L06wTUEd3CdUrg==,type:int]
+        INTERVAL: ENC[AES256_GCM,data:2w==,iv:3hIvMbg4w5v36itcONgYBWD+WX/gRgM7ATxc9nrgNd4=,tag:SSWyu6eEgPABmkaKBeoxFw==,type:int]
+        DETECTION_MODE: ENC[AES256_GCM,data:lXzAPAEfTd94FiHryCCM0D8vnQMT,iv:wiOaYtRrpWoM4oxWBc4iKrz7YOAqf2iU6UQrLp+fUI4=,tag:bgjX4dLiOhGJHGW/sMaIug==,type:str]
+        APPRISE: ENC[AES256_GCM,data:ICCc/g7PuS4FPsgFKvqI0LxgTMs0bl6WD2cSn7/8,iv:PJmGVm86X9IA3/6D3ArLBnSRbynKjE9jex9+TLWypTA=,tag:UGK0m2/pqknffmHBWBLHRg==,type:str]
 cronjobs:
     - name: cloudflare-ddns-pt
       schedule: '*/15 * * * *'
@@ -25,35 +25,36 @@ cronjobs:
       # suspend: true
       restartPolicy: Never
       image:
-        repository: ghcr.io/hotio/cloudflareddns
+        repository: ghcr.io/hotio/cloudflareddns@sha256:dbdb3f7854ce46ec52abd392920cd74a02b7d0b95543f16c94108cb864d6cec3
         tag: release-34a15f7
+        digest: sha256:dbdb3f7854ce46ec52abd392920cd74a02b7d0b95543f16c94108cb864d6cec3
       nodeSelector:
         kubernetes.io/hostname: k3s-m2
 sops:
-    lastmodified: "2026-04-19T00:56:32Z"
-    mac: ENC[AES256_GCM,data:5hqiDs1i7+LSF0xFt4/T8Uw23iki2ljhdN4QDRS3nFOx4K40AilbheFIHrwOyC4m44pTbKYPRrLkc+0iT7fM+/ucSRJnGuJgx+u/yg3w5X8leCiByDNXlL726Tb2OyE0To/hClgPUMJ6pmoeUvf8wfW2WyXQ1mBfzYyGKaATWyI=,iv:ro347RQjph0BeZjv0H6iPegMZFK7NiZ8OWHcw2ldUWU=,tag:K8XmQRFKYgaKpsZGOr8oNQ==,type:str]
+    lastmodified: "2026-05-09T18:33:54Z"
+    mac: ENC[AES256_GCM,data:LoVn+hN8cZVbe4ETGPXR/SSf2QtxrmE1QO7HRdr3DyYX315iM5Os5VNQAC30EjT/TVN2z+Sa2CFd9BSy35kqeNP4Zj3xDdM3PfyzhFvtCOjNWrJNFRzyquR5y8kk8WgIvNSo2zCGJQUXgBbGoLzwlu5e+C+2IEF/uWhT0QQydRo=,iv:JM4NP5grGGyoSGQthkO23K11ZlORA37Pt/B+Zj8P6s0=,tag:no38oDbNlUfQ4VEXweUKsg==,type:str]
     pgp:
-        - created_at: "2026-04-13T20:28:43Z"
+        - created_at: "2026-05-09T18:33:54Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//c983JO/fuVtVNWVG/RkMe3rtYw/ejzQBVnkPw1uXVvgj
-            1VPDR7jzdiex03D56tWtxN3dTE7RpZX8738OJ7BXSq2Dr9qk/gQanviI3L8iyvNm
-            jOKZuUjElBLrLkweqtaNwdsp+t7oEZtfT/8N9IeWHXhEQgBoYFfrnjJ65vkiZhIq
-            5L4X6wcZxAolVfH7QYq+G+t0n+1LuBITIwd+vjEANmMsQSBZV24s7ayuoEhK6g0q
-            RaB/b0tlX5N20FCcdL3HOn8HPipG54HxLlIXzvUiyxUgMVApHEgmRqfa6wxtXAtd
-            +9WdVMFuhCDHs75M2igFzlpk0fNAV7WC+0FUqQLjEW5nZb/FnL+mHi7qJk0w9xok
-            U/ZEOfC9frh/SOYmCR55XLluVMMLfe0TxiaqGSeiYHecEuQtx3J8IlVsQJ28h6Oj
-            s5GyIdyRpxliWcm6XX/myKAcOgE72n2/k7vV2IxmeWpz+ITU9UMDB40+isTY7yCQ
-            PxKQuAChGCqO9s4kGKaRxxUpmyWS25rqv3EQJAwaE5GqFfCyXUkgj7VVSZqjSrvs
-            9npoJ6u4dwlwqpfJTCkWTCMHlsjAkb9DKrKznhqwcbbPnJfxhAKQveQJhn4cDvXS
-            5r4TJQopz7XgfTfirk97h2a256ytKIJxPrSJZMiS3SaFrmIhilg4WSfe+XA9uvbU
-            aAEJAhAq4nZ1Ty+PGheUGWi1kVpoz7DNRInQFzo/Yh+ivMkUHdToK0uHYdtIl9Qt
-            yaUiSiHgqTqy3k8htkiaUK7H/8fZ+7hgCoOSqNP9qh/MBN3zOgULbH41AiL3yRX0
-            g9Y1KN1PUzGO
-            =osKh
+            hQIMA5NT/LvuRqeGAQ//c2FdAUQxZy/ZXTOixtYO/oodIfQ5tQprfprji8+aAABk
+            l6dtqEFVvwOTXEps0vA2xX8TgGqHMbP3vVMgAYc9J+myqP/L3Bx6IQiww44pqa/s
+            H/8JRNOIdPwrKwV9zQN1XPxGlg87S7poKZ8pfV53PCFlu8Ww7vee4AecL//m6aFx
+            vuYJHCQYEuJm2QT8tAmmiq2jxBrq1nGMPDCuct3ev2Bn/tQ0ZzuwDv8xjHiXT6WR
+            ix8mVJ0Cx21bfBZzEia8XCJpItP9lMUuH35c2hLZTx1SU+wuCLYJxUROa670Jcyg
+            9d+Tukp3W0295QgmEjcucibuf/IaTr2XtXRS/Hn/Ra98LDu6yd6k3grOxvDegLIe
+            NKoCev6OdavZQRC6YoJYH+cKXrKk6ry556/ReeEeHkzkhxonkjOkymQsPOWTctnG
+            oUIgzICM97UMtCKmmBKdzB5Qv79wQmTdY8dVaF/YTkq2MrbcozRqE6x764JmlIWy
+            jk77sLh/Ehwb/vSVOmoMZqytjB2QxI4s16CirgYCQ9brGwYBMCuoYt/QCYEoCe23
+            EFwDm8rA/WUg3ejNAmgqctoznNIYtexiJP/iIidsWB7ecKpHQkMOv6uhxPw0gkoZ
+            XbOdniPpUOzKlo1+em0XS1+IlPhoIWK8dDP6w2uPdxX2N5O1GjyCKZU8i9Dsfc3U
+            ZgEJAhDaCrBrcc9vnmHI1JtoYV5REWOlgkHEQ2T0jf/Od7Ey9ViO6LIqyn/qBqc+
+            OBRrOe5VqIDLEFWT6u+nTvQFg7SL7ncFgIFaiFrtRpwQVCGSB7j8c9SF/eskYKa9
+            LKQcXrjj8Q==
+            =D1IP
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(stringData)$
+    encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
     mac_only_encrypted: true
     version: 3.12.2

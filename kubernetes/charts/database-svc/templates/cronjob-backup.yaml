@@ -24,7 +24,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: db-backup
-              image: {{ required "Must specify image repository" .image.repository }}:{{ .image.tag }}
+              image: {{ required "Must specify image repository" .image.repository }}:{{ .image.tag }}{{ with .image.digest }}@{{ . }}{{ end }}
               imagePullPolicy: {{ .image.pullPolicy }}
               {{- with .command }}
               command:
