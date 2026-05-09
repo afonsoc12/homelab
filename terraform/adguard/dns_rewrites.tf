@@ -28,6 +28,11 @@ resource "adguard_rewrite" "home" {
   answer = "10.0.10.220"
 }
 
+resource "adguard_rewrite" "calibre" {
+  domain = "calibre.${local.domain}"
+  answer = "10.0.10.220"
+}
+
 resource "adguard_rewrite" "firefly" {
   domain = "firefly.${local.domain}"
   answer = "10.0.10.220"
