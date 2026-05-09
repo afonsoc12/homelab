@@ -5,16 +5,16 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "ansible>=13.5.0",
+    "ansible==13.5.0",
 ]
 
 [dependency-groups]
 dev = [
-    "ansible-lint>=26.4.0",
-    "pre-commit>=4.0.0",
-    "yamllint>=1.38.0",
+    "ansible-lint==26.4.0",
+    "pre-commit==4.5.1",
+    "yamllint==1.38.0",
 ]
 docs = [
-    "mkdocs>=1.6",
-    "mkdocs-material>=9.5",
+    "mkdocs==1.6.1",
+    "mkdocs-material==9.7.6",
 ]

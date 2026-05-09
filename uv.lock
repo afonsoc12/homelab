@@ -361,17 +361,17 @@ docs = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "ansible", specifier = ">=13.5.0" }]
+requires-dist = [{ name = "ansible", specifier = "==13.5.0" }]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "ansible-lint", specifier = ">=26.4.0" },
-    { name = "pre-commit", specifier = ">=4.0.0" },
-    { name = "yamllint", specifier = ">=1.38.0" },
+    { name = "ansible-lint", specifier = "==26.4.0" },
+    { name = "pre-commit", specifier = "==4.5.1" },
+    { name = "yamllint", specifier = "==1.38.0" },
 ]
 docs = [
-    { name = "mkdocs", specifier = ">=1.6" },
-    { name = "mkdocs-material", specifier = ">=9.5" },
+    { name = "mkdocs", specifier = "==1.6.1" },
+    { name = "mkdocs-material", specifier = "==9.7.6" },
 ]
 
 [[package]]
