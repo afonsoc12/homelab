@@ -84,7 +84,7 @@ def _pipeline_tasks(account_id: str) -> None:
     dag_id="t212_hourly",
     description="Trading 212 hourly pipeline — all accounts",
     schedule="@hourly",
-    start_date=datetime(2026, 1, 1),
+    start_date=datetime(2020, 1, 1),
     catchup=False,
     tags=["t212", "finance"],
     default_args={"retries": 2, "retry_delay": timedelta(minutes=1)},
