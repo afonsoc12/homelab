@@ -10,7 +10,7 @@ labels: {}
 replicas: 1
 image:
     repository: ghcr.io/unpoller/unpoller
-    tag: v2.39.0
+    tag: v3.0.0
 ports:
     - name: metrics
       containerPort: 9130
