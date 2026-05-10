@@ -163,7 +163,7 @@ def _j(data) -> str:
 
 def init_schema() -> None:
     log.info("initialising schema")
-    _hook().run(_SCHEMA_SQL)
+    _hook().run(_SCHEMA_SQL, split_statements=True)
     log.info("schema ready")
 
 
