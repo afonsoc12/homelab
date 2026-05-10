@@ -142,26 +142,3 @@ class TestClientMethods:
         client._session.get = MagicMock(return_value=_resp(payload))
         result = client.live_orders()
         assert result == [{"id": "o1"}, {"id": "o2"}]
-
-    def test_get_export_finds_by_report_id(self):
-        client = _make_client()
-        exports = [{"reportId": "42", "status": "Finished"}, {"reportId": "99", "status": "Pending"}]
-        client._session.get = MagicMock(return_value=_resp(exports))
-        result = client.get_export("42")
-        assert result["status"] == "Finished"
-
-    def test_get_export_returns_none_if_not_found(self):
-        client = _make_client()
-        client._session.get = MagicMock(return_value=_resp([]))
-        assert client.get_export("999") is None
-
-    def test_request_export_posts_correct_payload(self):
-        client = _make_client()
-        client._session.post = MagicMock(return_value=_resp({"reportId": "77"}))
-        result = client.request_export("2026-01-01", "2026-01-31")
-        assert result == {"reportId": "77"}
-        call_kwargs = client._session.post.call_args
-        body = call_kwargs.kwargs["json"]
-        assert body["timeFrom"] == "2026-01-01T00:00:00Z"
-        assert body["timeTo"] == "2026-01-31T23:59:59Z"
-        assert body["dataIncluded"]["includeOrders"] is True

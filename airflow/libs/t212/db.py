@@ -5,7 +5,7 @@ import logging
 
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
-from .models import AccountSnapshot, Dividend, HistoricalOrder, Position, Transaction
+from .models import AccountSnapshot, Dividend, Exchange, HistoricalOrder, Instrument, Position, Transaction
 
 log = logging.getLogger(__name__)
 
@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS trading212.orders (
     raw_json            JSONB   NOT NULL,
     is_live             BOOLEAN NOT NULL DEFAULT FALSE,
     extracted_at        TIMESTAMPTZ DEFAULT NOW(),
+    updated_at          TIMESTAMPTZ DEFAULT NOW(),
     CONSTRAINT orders_account_order_fill_uniq UNIQUE NULLS NOT DISTINCT (account_id, order_id, fill_id)
 );
 
@@ -123,31 +124,30 @@ CREATE TABLE IF NOT EXISTS trading212.transactions (
     PRIMARY KEY (account_id, reference)
 );
 
-CREATE TABLE IF NOT EXISTS trading212.exports_log (
-    account_id        TEXT        NOT NULL,
-    export_id         TEXT        NOT NULL,
-    status            TEXT,
-    time_from         TIMESTAMPTZ,
-    time_to           TIMESTAMPTZ,
-    include_orders    BOOLEAN,
-    include_dividends BOOLEAN,
-    include_transactions BOOLEAN,
-    include_interest  BOOLEAN,
-    download_link     TEXT,
-    created_at        TIMESTAMPTZ DEFAULT NOW(),
-    updated_at        TIMESTAMPTZ DEFAULT NOW(),
-    PRIMARY KEY (account_id, export_id)
+CREATE TABLE IF NOT EXISTS trading212.exchanges (
+    exchange_id          INT         PRIMARY KEY,
+    name                 TEXT,
+    working_schedule_id  INT,
+    working_schedules    JSONB,
+    raw_json             JSONB       NOT NULL,
+    extracted_at         TIMESTAMPTZ DEFAULT NOW(),
+    updated_at           TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS trading212.export_rows (
-    id           BIGSERIAL   PRIMARY KEY,
-    account_id   TEXT        NOT NULL,
-    export_id    TEXT        NOT NULL,
-    row_data     JSONB       NOT NULL,
-    extracted_at TIMESTAMPTZ DEFAULT NOW()
+CREATE TABLE IF NOT EXISTS trading212.instruments (
+    ticker          TEXT        PRIMARY KEY,
+    name            TEXT,
+    isin            TEXT,
+    currency        TEXT,
+    exchange_id     INT,
+    instrument_type TEXT,
+    raw_json        JSONB       NOT NULL,
+    extracted_at    TIMESTAMPTZ DEFAULT NOW(),
+    updated_at      TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE INDEX ON trading212.export_rows (account_id, export_id);
+CREATE INDEX IF NOT EXISTS instruments_isin_idx ON trading212.instruments (isin);
+CREATE INDEX IF NOT EXISTS instruments_exchange_idx ON trading212.instruments (exchange_id);
 """
 
 _PG = "airflow_data"
@@ -165,6 +165,68 @@ def init_schema() -> None:
     log.info("initialising schema")
     _hook().run(_SCHEMA_SQL)
     log.info("schema ready")
+
+
+def upsert_exchanges(exchanges: list[Exchange]) -> None:
+    if not exchanges:
+        log.info("no exchanges to upsert")
+        return
+    log.info("upserting %d exchanges", len(exchanges))
+    rows = [
+        (e.exchange_id, e.name, e.working_schedule_id, _j(e.working_schedules) if e.working_schedules is not None else None, _j(e.raw_json))
+        for e in exchanges
+    ]
+    conn = _hook().get_conn()
+    with conn.cursor() as cur:
+        cur.executemany(
+            """
+            INSERT INTO trading212.exchanges (exchange_id, name, working_schedule_id, working_schedules, raw_json)
+            VALUES (%s,%s,%s,%s,%s)
+            ON CONFLICT (exchange_id) DO UPDATE SET
+                name=EXCLUDED.name,
+                working_schedule_id=EXCLUDED.working_schedule_id,
+                working_schedules=EXCLUDED.working_schedules,
+                raw_json=EXCLUDED.raw_json,
+                updated_at=NOW()
+            WHERE
+                trading212.exchanges.name IS DISTINCT FROM EXCLUDED.name
+                OR trading212.exchanges.working_schedule_id IS DISTINCT FROM EXCLUDED.working_schedule_id
+            """,
+            rows,
+        )
+    conn.commit()
+
+
+def upsert_instruments(instruments: list[Instrument]) -> None:
+    if not instruments:
+        log.info("no instruments to upsert")
+        return
+    log.info("upserting %d instruments", len(instruments))
+    rows = [(i.ticker, i.name, i.isin, i.currency, i.exchange_id, i.instrument_type, _j(i.raw_json)) for i in instruments]
+    conn = _hook().get_conn()
+    with conn.cursor() as cur:
+        cur.executemany(
+            """
+            INSERT INTO trading212.instruments (ticker, name, isin, currency, exchange_id, instrument_type, raw_json)
+            VALUES (%s,%s,%s,%s,%s,%s,%s)
+            ON CONFLICT (ticker) DO UPDATE SET
+                name=EXCLUDED.name,
+                isin=EXCLUDED.isin,
+                currency=EXCLUDED.currency,
+                exchange_id=EXCLUDED.exchange_id,
+                instrument_type=EXCLUDED.instrument_type,
+                raw_json=EXCLUDED.raw_json,
+                updated_at=NOW()
+            WHERE
+                trading212.instruments.name IS DISTINCT FROM EXCLUDED.name
+                OR trading212.instruments.isin IS DISTINCT FROM EXCLUDED.isin
+                OR trading212.instruments.currency IS DISTINCT FROM EXCLUDED.currency
+                OR trading212.instruments.exchange_id IS DISTINCT FROM EXCLUDED.exchange_id
+                OR trading212.instruments.instrument_type IS DISTINCT FROM EXCLUDED.instrument_type
+            """,
+            rows,
+        )
+    conn.commit()
 
 
 def insert_account_snapshot(snapshot: AccountSnapshot) -> None:
@@ -322,7 +384,7 @@ def upsert_orders(orders: list[HistoricalOrder]) -> None:
                 taxes=COALESCE(EXCLUDED.taxes, trading212.orders.taxes),
                 is_live=EXCLUDED.is_live,
                 raw_json=EXCLUDED.raw_json,
-                extracted_at=NOW()
+                updated_at=NOW()
             WHERE
                 trading212.orders.status IS DISTINCT FROM EXCLUDED.status
                 OR trading212.orders.filled_quantity IS DISTINCT FROM EXCLUDED.filled_quantity
@@ -418,86 +480,3 @@ def upsert_transactions(transactions: list[Transaction]) -> None:
             rows,
         )
     conn.commit()
-
-
-def log_export(
-    account_id: str,
-    export_id: str,
-    time_from: str,
-    time_to: str,
-) -> None:
-    log.info(
-        "log_export account=%s export_id=%s time_from=%s time_to=%s",
-        account_id,
-        export_id,
-        time_from,
-        time_to,
-    )
-    _hook().run(
-        """
-        INSERT INTO trading212.exports_log
-            (account_id, export_id, status, time_from, time_to)
-        VALUES (%s,%s,'Pending',%s,%s)
-        ON CONFLICT (account_id, export_id) DO NOTHING
-        """,
-        parameters=(account_id, export_id, time_from, time_to),
-    )
-
-
-def update_export_status(
-    account_id: str,
-    export_id: str,
-    status: str,
-    download_link: str | None = None,
-    include_orders: bool | None = None,
-    include_dividends: bool | None = None,
-    include_transactions: bool | None = None,
-    include_interest: bool | None = None,
-    time_from: str | None = None,
-    time_to: str | None = None,
-) -> None:
-    log.info("update_export_status account=%s export_id=%s status=%s", account_id, export_id, status)
-    _hook().run(
-        """
-        UPDATE trading212.exports_log SET
-            status=%s,
-            download_link=%s,
-            include_orders=COALESCE(%s, include_orders),
-            include_dividends=COALESCE(%s, include_dividends),
-            include_transactions=COALESCE(%s, include_transactions),
-            include_interest=COALESCE(%s, include_interest),
-            time_from=COALESCE(%s, time_from),
-            time_to=COALESCE(%s, time_to),
-            updated_at=NOW()
-        WHERE account_id=%s AND export_id=%s
-        """,
-        parameters=(
-            status,
-            download_link,
-            include_orders,
-            include_dividends,
-            include_transactions,
-            include_interest,
-            time_from,
-            time_to,
-            account_id,
-            export_id,
-        ),
-    )
-
-
-def insert_export_rows(account_id: str, export_id: str, rows: list[dict]) -> None:
-    if not rows:
-        log.info("no export rows to insert account=%s export_id=%s", account_id, export_id)
-        return
-    log.info("inserting %d export rows account=%s export_id=%s", len(rows), account_id, export_id)
-    hook = _hook()
-    hook.run(
-        "DELETE FROM trading212.export_rows WHERE account_id=%s AND export_id=%s",
-        parameters=(account_id, export_id),
-    )
-    hook.insert_rows(
-        table="trading212.export_rows",
-        rows=[(account_id, export_id, json.dumps(r)) for r in rows],
-        target_fields=["account_id", "export_id", "row_data"],
-    )

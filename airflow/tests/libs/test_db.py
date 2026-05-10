@@ -216,7 +216,7 @@ class TestUpsertOrders:
             assert "WHERE" in sql
             assert "IS DISTINCT FROM" in sql
 
-    def test_extracted_at_updated_on_conflict(self):
+    def test_updated_at_set_on_conflict(self):
         with _patch_hook() as mock_cls:
             mock_conn = MagicMock()
             mock_cur = MagicMock()
@@ -227,7 +227,7 @@ class TestUpsertOrders:
 
             db.upsert_orders([_order()])
             sql = mock_cur.executemany.call_args[0][0]
-            assert "extracted_at=NOW()" in sql
+            assert "updated_at=NOW()" in sql
 
 
 class TestUpsertDividends:
@@ -276,54 +276,3 @@ class TestUpsertTransactions:
             db.upsert_transactions([_transaction()])
             sql = mock_cur.executemany.call_args[0][0]
             assert "DO NOTHING" in sql
-
-
-class TestLogExport:
-    def test_inserts_with_pending_status(self):
-        with _patch_hook() as mock_cls:
-            mock_hook = MagicMock()
-            mock_cls.return_value = mock_hook
-            from libs.t212 import db
-
-            db.log_export("acc1", "exp-001", "2026-01-01T00:00:00Z", "2026-01-31T23:59:59Z")
-            sql, params = mock_hook.run.call_args[0][0], mock_hook.run.call_args.kwargs["parameters"]
-            assert "Pending" in sql
-            assert "DO NOTHING" in sql
-            assert params[0] == "acc1"
-            assert params[1] == "exp-001"
-
-
-class TestUpdateExportStatus:
-    def test_updates_status_and_updated_at(self):
-        with _patch_hook() as mock_cls:
-            mock_hook = MagicMock()
-            mock_cls.return_value = mock_hook
-            from libs.t212 import db
-
-            db.update_export_status("acc1", "exp-001", "Finished", download_link="https://example.com/file.csv")
-            sql = mock_hook.run.call_args[0][0]
-            assert "updated_at=NOW()" in sql
-            params = mock_hook.run.call_args.kwargs["parameters"]
-            assert params[0] == "Finished"
-            assert params[1] == "https://example.com/file.csv"
-
-
-class TestInsertExportRows:
-    def test_empty_rows_skips(self):
-        with _patch_hook() as mock_cls:
-            mock_hook = MagicMock()
-            mock_cls.return_value = mock_hook
-            from libs.t212 import db
-
-            db.insert_export_rows("acc1", "exp-001", [])
-            mock_hook.return_value.run.assert_not_called()
-
-    def test_deletes_before_inserting(self):
-        with _patch_hook() as mock_cls:
-            mock_hook = MagicMock()
-            mock_cls.return_value = mock_hook
-            from libs.t212 import db
-
-            db.insert_export_rows("acc1", "exp-001", [{"Action": "buy"}])
-            delete_call = mock_hook.run.call_args_list[0]
-            assert "DELETE FROM" in delete_call[0][0]

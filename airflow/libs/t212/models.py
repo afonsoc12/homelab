@@ -14,6 +14,48 @@ def _first_not_none(*values):
 
 
 @dataclass
+class Exchange:
+    exchange_id: int
+    name: Optional[str]
+    working_schedule_id: Optional[int]
+    working_schedules: Optional[list]
+    raw_json: dict
+
+    @classmethod
+    def from_api(cls, data: dict) -> "Exchange":
+        return cls(
+            exchange_id=data["id"],
+            name=data.get("name"),
+            working_schedule_id=data.get("workingScheduleId"),
+            working_schedules=data.get("workingSchedules"),
+            raw_json=data,
+        )
+
+
+@dataclass
+class Instrument:
+    ticker: str
+    name: Optional[str]
+    isin: Optional[str]
+    currency: Optional[str]
+    exchange_id: Optional[int]
+    instrument_type: Optional[str]
+    raw_json: dict
+
+    @classmethod
+    def from_api(cls, data: dict) -> "Instrument":
+        return cls(
+            ticker=data["ticker"],
+            name=data.get("name"),
+            isin=data.get("isin"),
+            currency=data.get("currency"),
+            exchange_id=data.get("exchangeId"),
+            instrument_type=data.get("type"),
+            raw_json=data,
+        )
+
+
+@dataclass
 class AccountSnapshot:
     account_id: str
     snapshot_at: datetime

@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import csv
-import io
 import logging
 import time
 from datetime import datetime, timedelta
@@ -74,6 +72,20 @@ class T212Client:
         )
         return result
 
+    def instruments(self) -> list[dict]:
+        log.info("GET /api/v0/equity/metadata/instruments")
+        data = self._get("/api/v0/equity/metadata/instruments")
+        items = data if isinstance(data, list) else data.get("items", [])
+        log.info("instruments count=%d", len(items))
+        return items
+
+    def exchanges(self) -> list[dict]:
+        log.info("GET /api/v0/equity/metadata/exchanges")
+        data = self._get("/api/v0/equity/metadata/exchanges")
+        items = data if isinstance(data, list) else data.get("items", [])
+        log.info("exchanges count=%d", len(items))
+        return items
+
     def positions(self) -> list[dict]:
         log.info("GET /api/v0/equity/positions")
         data = self._get("/api/v0/equity/positions")
@@ -140,55 +152,9 @@ class T212Client:
                         pass
         return max_ts
 
-    def request_export(self, date_from: str, date_to: str) -> dict:
-        log.info("POST /api/v0/equity/history/exports date_from=%s date_to=%s", date_from, date_to)
-        result = self._post(
-            "/api/v0/equity/history/exports",
-            json={
-                "dataIncluded": {
-                    "includeDividends": True,
-                    "includeInterest": True,
-                    "includeOrders": True,
-                    "includeTransactions": True,
-                },
-                "timeFrom": f"{date_from}T00:00:00Z",
-                "timeTo": f"{date_to}T23:59:59Z",
-            },
-        )
-        log.info("request_export response=%s", result)
-        return result
-
-    def get_export(self, export_id: str) -> dict | None:
-        log.info("GET /api/v0/equity/history/exports (looking for export_id=%s)", export_id)
-        data = self._get("/api/v0/equity/history/exports")
-        items = data if isinstance(data, list) else data.get("items", [])
-        match = next((e for e in items if str(e.get("reportId")) == str(export_id)), None)
-        log.info(
-            "get_export export_id=%s found=%s status=%s",
-            export_id,
-            match is not None,
-            match.get("status") if match else None,
-        )
-        return match
-
-    def download_csv(self, url: str) -> list[dict]:
-        log.info("GET csv url=%s", url)
-        resp = requests.get(url, timeout=60)
-        resp.raise_for_status()
-        rows = list(csv.DictReader(io.StringIO(resp.text)))
-        log.info("download_csv rows=%d", len(rows))
-        return rows
-
     @_RETRY
     def _get(self, path: str, **kwargs) -> dict:
         resp = self._session.get(f"{self._BASE_URL}{path}", timeout=30, **kwargs)
-        self._check_rate_limit(resp)
-        resp.raise_for_status()
-        return resp.json()
-
-    @_RETRY
-    def _post(self, path: str, **kwargs) -> dict:
-        resp = self._session.post(f"{self._BASE_URL}{path}", timeout=30, **kwargs)
         self._check_rate_limit(resp)
         resp.raise_for_status()
         return resp.json()
