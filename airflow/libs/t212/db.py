@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import json
 import logging
+from contextlib import contextmanager
 
 from airflow.providers.postgres.hooks.postgres import PostgresHook
+from psycopg2.extras import execute_values
 
 from .models import AccountSnapshot, Dividend, Exchange, HistoricalOrder, Instrument, Position, Transaction
 
@@ -157,6 +159,19 @@ def _hook() -> PostgresHook:
     return PostgresHook(postgres_conn_id=_PG)
 
 
+@contextmanager
+def _conn():
+    conn = _hook().get_conn()
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
 def _j(data) -> str:
     return json.dumps(data)
 
@@ -176,12 +191,12 @@ def upsert_exchanges(exchanges: list[Exchange]) -> None:
         (e.exchange_id, e.name, e.working_schedule_id, _j(e.working_schedules) if e.working_schedules is not None else None, _j(e.raw_json))
         for e in exchanges
     ]
-    conn = _hook().get_conn()
-    with conn.cursor() as cur:
-        cur.executemany(
+    with _conn() as conn, conn.cursor() as cur:
+        execute_values(
+            cur,
             """
             INSERT INTO trading212.exchanges (exchange_id, name, working_schedule_id, working_schedules, raw_json)
-            VALUES (%s,%s,%s,%s,%s)
+            VALUES %s
             ON CONFLICT (exchange_id) DO UPDATE SET
                 name=EXCLUDED.name,
                 working_schedule_id=EXCLUDED.working_schedule_id,
@@ -194,7 +209,6 @@ def upsert_exchanges(exchanges: list[Exchange]) -> None:
             """,
             rows,
         )
-    conn.commit()
 
 
 def upsert_instruments(instruments: list[Instrument]) -> None:
@@ -203,12 +217,12 @@ def upsert_instruments(instruments: list[Instrument]) -> None:
         return
     log.info("upserting %d instruments", len(instruments))
     rows = [(i.ticker, i.name, i.isin, i.currency, i.exchange_id, i.instrument_type, _j(i.raw_json)) for i in instruments]
-    conn = _hook().get_conn()
-    with conn.cursor() as cur:
-        cur.executemany(
+    with _conn() as conn, conn.cursor() as cur:
+        execute_values(
+            cur,
             """
             INSERT INTO trading212.instruments (ticker, name, isin, currency, exchange_id, instrument_type, raw_json)
-            VALUES (%s,%s,%s,%s,%s,%s,%s)
+            VALUES %s
             ON CONFLICT (ticker) DO UPDATE SET
                 name=EXCLUDED.name,
                 isin=EXCLUDED.isin,
@@ -225,8 +239,8 @@ def upsert_instruments(instruments: list[Instrument]) -> None:
                 OR trading212.instruments.instrument_type IS DISTINCT FROM EXCLUDED.instrument_type
             """,
             rows,
+            page_size=2000,
         )
-    conn.commit()
 
 
 def insert_account_snapshot(snapshot: AccountSnapshot) -> None:
@@ -290,20 +304,19 @@ def insert_positions(positions: list[Position]) -> None:
         )
         for p in positions
     ]
-    conn = _hook().get_conn()
-    with conn.cursor() as cur:
-        cur.executemany(
+    with _conn() as conn, conn.cursor() as cur:
+        execute_values(
+            cur,
             """
             INSERT INTO trading212.positions (
                 account_id, snapshot_at, ticker, instrument_name, isin, instrument_currency,
                 quantity, qty_available, qty_in_pies, current_price, avg_price_paid,
                 position_created_at, wallet_currency, current_value, total_cost,
                 unrealized_pnl, fx_impact, raw_json
-            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            ) VALUES %s
             """,
             rows,
         )
-    conn.commit()
 
 
 def upsert_orders(orders: list[HistoricalOrder]) -> None:
@@ -359,9 +372,9 @@ def upsert_orders(orders: list[HistoricalOrder]) -> None:
         )
         for o in orders
     ]
-    conn = _hook().get_conn()
-    with conn.cursor() as cur:
-        cur.executemany(
+    with _conn() as conn, conn.cursor() as cur:
+        execute_values(
+            cur,
             """
             INSERT INTO trading212.orders (
                 account_id, order_id, fill_id, ticker, instrument_name, isin, instrument_currency,
@@ -370,7 +383,7 @@ def upsert_orders(orders: list[HistoricalOrder]) -> None:
                 created_at, initiated_from, filled_at, fill_quantity, fill_price,
                 fill_type, trading_method, fill_currency, fill_net_value,
                 fill_realized_pnl, fill_fx_rate, taxes, raw_json, is_live
-            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            ) VALUES %s
             ON CONFLICT ON CONSTRAINT orders_account_order_fill_uniq DO UPDATE SET
                 status=EXCLUDED.status,
                 filled_quantity=EXCLUDED.filled_quantity,
@@ -392,7 +405,6 @@ def upsert_orders(orders: list[HistoricalOrder]) -> None:
             """,
             rows,
         )
-    conn.commit()
 
 
 def upsert_dividends(dividends: list[Dividend]) -> None:
@@ -427,20 +439,19 @@ def upsert_dividends(dividends: list[Dividend]) -> None:
         )
         for d in dividends
     ]
-    conn = _hook().get_conn()
-    with conn.cursor() as cur:
-        cur.executemany(
+    with _conn() as conn, conn.cursor() as cur:
+        execute_values(
+            cur,
             """
             INSERT INTO trading212.dividends (
                 account_id, dividend_id, ticker, instrument_name, isin, ticker_currency,
                 quantity, amount, amount_in_euro, currency, gross_amount_per_share,
                 paid_on, dividend_type, raw_json
-            ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            ) VALUES %s
             ON CONFLICT (account_id, dividend_id) DO NOTHING
             """,
             rows,
         )
-    conn.commit()
 
 
 def upsert_transactions(transactions: list[Transaction]) -> None:
@@ -468,15 +479,14 @@ def upsert_transactions(transactions: list[Transaction]) -> None:
         )
         for t in transactions
     ]
-    conn = _hook().get_conn()
-    with conn.cursor() as cur:
-        cur.executemany(
+    with _conn() as conn, conn.cursor() as cur:
+        execute_values(
+            cur,
             """
             INSERT INTO trading212.transactions
                 (account_id, reference, date_time, transaction_type, amount, currency, raw_json)
-            VALUES (%s,%s,%s,%s,%s,%s,%s)
+            VALUES %s
             ON CONFLICT (account_id, reference) DO NOTHING
             """,
             rows,
         )
-    conn.commit()

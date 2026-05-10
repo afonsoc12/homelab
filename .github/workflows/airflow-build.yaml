@@ -10,7 +10,7 @@ on: # yamllint disable-line rule:truthy
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -57,3 +57,21 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository_owner }}/airflow:3.2.1-b${{ github.run_number }}
+
+  bump-tag:
+    runs-on: ubuntu-latest
+    needs: airflow
+    if: github.event_name != 'pull_request'
+
+    steps:
+      - name: "📥 Checkout"
+        uses: actions/checkout@v6
+
+      - name: "🏷️ Bump image tag"
+        run: |
+          yq -i '.image.tag = "3.2.1-b${{ github.run_number }}"' kubernetes/apps/addons/airflow/values.sops.yaml
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add kubernetes/apps/addons/airflow/values.sops.yaml
+          git commit -m "chore: bump airflow image to 3.2.1-b${{ github.run_number }}"
+          git push

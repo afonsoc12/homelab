@@ -12,6 +12,19 @@ def _patch_hook():
     return patch("libs.t212.db.PostgresHook")
 
 
+def _patch_execute_values():
+    return patch("libs.t212.db.execute_values")
+
+
+def _mock_hook_with_conn(mock_cls):
+    mock_conn = MagicMock()
+    mock_cur = MagicMock()
+    mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cur)
+    mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
+    mock_cls.return_value.get_conn.return_value = mock_conn
+    return mock_conn, mock_cur
+
+
 def _snapshot():
     return AccountSnapshot(
         account_id="acc1",
@@ -135,6 +148,15 @@ class TestInitSchema:
             assert "CREATE SCHEMA IF NOT EXISTS trading212" in sql
             assert "CREATE TABLE IF NOT EXISTS trading212.orders" in sql
 
+    def test_uses_split_statements(self):
+        with _patch_hook() as mock_cls:
+            mock_hook = MagicMock()
+            mock_cls.return_value = mock_hook
+            from libs.t212 import db
+
+            db.init_schema()
+            assert mock_hook.run.call_args.kwargs.get("split_statements") is True
+
 
 class TestInsertAccountSnapshot:
     def test_inserts_all_fields(self):
@@ -163,17 +185,13 @@ class TestInsertPositions:
             mock_hook.get_conn.assert_not_called()
 
     def test_inserts_all_positions(self):
-        with _patch_hook() as mock_cls:
-            mock_conn = MagicMock()
-            mock_cur = MagicMock()
-            mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cur)
-            mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
-            mock_cls.return_value.get_conn.return_value = mock_conn
+        with _patch_hook() as mock_cls, _patch_execute_values() as mock_ev:
+            _mock_hook_with_conn(mock_cls)
             from libs.t212 import db
 
             db.insert_positions([_position(), _position()])
-            mock_cur.executemany.assert_called_once()
-            rows = mock_cur.executemany.call_args[0][1]
+            mock_ev.assert_called_once()
+            rows = mock_ev.call_args[0][2]
             assert len(rows) == 2
             assert rows[0][2] == "AAPL"
 
@@ -189,44 +207,33 @@ class TestUpsertOrders:
             mock_hook.get_conn.assert_not_called()
 
     def test_upserts_with_correct_field_count(self):
-        with _patch_hook() as mock_cls:
-            mock_conn = MagicMock()
-            mock_cur = MagicMock()
-            mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cur)
-            mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
-            mock_cls.return_value.get_conn.return_value = mock_conn
+        with _patch_hook() as mock_cls, _patch_execute_values() as mock_ev:
+            _mock_hook_with_conn(mock_cls)
             from libs.t212 import db
 
             db.upsert_orders([_order()])
-            sql, rows = mock_cur.executemany.call_args[0]
+            sql = mock_ev.call_args[0][1]
+            rows = mock_ev.call_args[0][2]
             assert "ON CONFLICT ON CONSTRAINT orders_account_order_fill_uniq DO UPDATE SET" in sql
             assert len(rows[0]) == 34
 
     def test_conflict_update_guarded_by_where_clause(self):
-        with _patch_hook() as mock_cls:
-            mock_conn = MagicMock()
-            mock_cur = MagicMock()
-            mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cur)
-            mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
-            mock_cls.return_value.get_conn.return_value = mock_conn
+        with _patch_hook() as mock_cls, _patch_execute_values() as mock_ev:
+            _mock_hook_with_conn(mock_cls)
             from libs.t212 import db
 
             db.upsert_orders([_order()])
-            sql = mock_cur.executemany.call_args[0][0]
+            sql = mock_ev.call_args[0][1]
             assert "WHERE" in sql
             assert "IS DISTINCT FROM" in sql
 
     def test_updated_at_set_on_conflict(self):
-        with _patch_hook() as mock_cls:
-            mock_conn = MagicMock()
-            mock_cur = MagicMock()
-            mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cur)
-            mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
-            mock_cls.return_value.get_conn.return_value = mock_conn
+        with _patch_hook() as mock_cls, _patch_execute_values() as mock_ev:
+            _mock_hook_with_conn(mock_cls)
             from libs.t212 import db
 
             db.upsert_orders([_order()])
-            sql = mock_cur.executemany.call_args[0][0]
+            sql = mock_ev.call_args[0][1]
             assert "updated_at=NOW()" in sql
 
 
@@ -241,16 +248,12 @@ class TestUpsertDividends:
             mock_hook.get_conn.assert_not_called()
 
     def test_uses_do_nothing_on_conflict(self):
-        with _patch_hook() as mock_cls:
-            mock_conn = MagicMock()
-            mock_cur = MagicMock()
-            mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cur)
-            mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
-            mock_cls.return_value.get_conn.return_value = mock_conn
+        with _patch_hook() as mock_cls, _patch_execute_values() as mock_ev:
+            _mock_hook_with_conn(mock_cls)
             from libs.t212 import db
 
             db.upsert_dividends([_dividend()])
-            sql = mock_cur.executemany.call_args[0][0]
+            sql = mock_ev.call_args[0][1]
             assert "DO NOTHING" in sql
 
 
@@ -265,14 +268,10 @@ class TestUpsertTransactions:
             mock_hook.get_conn.assert_not_called()
 
     def test_uses_do_nothing_on_conflict(self):
-        with _patch_hook() as mock_cls:
-            mock_conn = MagicMock()
-            mock_cur = MagicMock()
-            mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cur)
-            mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
-            mock_cls.return_value.get_conn.return_value = mock_conn
+        with _patch_hook() as mock_cls, _patch_execute_values() as mock_ev:
+            _mock_hook_with_conn(mock_cls)
             from libs.t212 import db
 
             db.upsert_transactions([_transaction()])
-            sql = mock_cur.executemany.call_args[0][0]
+            sql = mock_ev.call_args[0][1]
             assert "DO NOTHING" in sql
