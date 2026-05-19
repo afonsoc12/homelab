@@ -9,7 +9,7 @@ replicas: 1
 
 image:
   repository: docker.io/linuxserver/freshrss
-  tag: 1.28.1
+  tag: 1.29.0
 
 strategy:
   type: Recreate
