@@ -18,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: ghcr.io/mealie-recipes/mealie
-    tag: v3.17.0
+    tag: v3.19.2
     pullPolicy: Always
 #   restartPolicy:
 command: {}
