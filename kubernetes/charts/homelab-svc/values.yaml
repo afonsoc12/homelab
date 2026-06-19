@@ -130,6 +130,7 @@ ingress:
 
 livenessProbe: {}
 readinessProbe: {}
+startupProbe: {}
 resources: {}
   # limits:
   #   cpu: 100m
