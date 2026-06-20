@@ -5,13 +5,13 @@ description = "Airflow DAGs and tooling for homelab"
 requires-python = ">=3.14,<3.15"
 dependencies = [
     "apache-airflow==3.2.2",
-    "apache-airflow-providers-postgres==6.7.0",
+    "apache-airflow-providers-postgres==6.7.1",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest==9.0.3",
-    "ruff==0.15.16",
+    "pytest==9.1.1",
+    "ruff==0.15.18",
 ]
 
 [tool.ruff]
