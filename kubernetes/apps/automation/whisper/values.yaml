@@ -10,7 +10,7 @@ revisionHistoryLimit: 0
 
 image:
   repository: docker.io/rhasspy/wyoming-whisper
-  tag: 3.1.0
+  tag: 3.2.0
   pullPolicy: Always
 
 args:
