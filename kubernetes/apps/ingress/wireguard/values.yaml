@@ -66,15 +66,37 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
-livenessProbe: {}
-readinessProbe: {}
-resources: {}
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
+livenessProbe:
+  httpGet:
+    path: /
+    port: 51821
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 51821
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  failureThreshold: 3
+
+startupProbe:
+  httpGet:
+    path: /
+    port: 51821
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 30
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 128Mi
+  requests:
+    cpu: 25m
+    memory: 64Mi
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext:
