@@ -154,6 +154,14 @@ alloy:
     # affect the watch container.
     extra: []
 
+  resources:
+    limits:
+      cpu: 50m
+      memory: 512Mi
+    requests:
+      cpu: 25m
+      memory: 256Mi
+
 rbac:
   create: false
 

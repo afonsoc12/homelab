@@ -37,6 +37,14 @@ loki:
       chunks_directory: /var/loki/chunks
       rules_directory: /var/loki/rules
 
+  resources:
+    limits:
+      cpu: 50m
+      memory: 256Mi
+    requests:
+      cpu: 25m
+      memory: 128Mi
+
   persistence:
     # -- Enable volume claims in pod spec
     volumeClaimsEnabled: true
