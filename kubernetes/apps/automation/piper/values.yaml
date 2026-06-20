@@ -32,3 +32,32 @@ securityContext: {}
 tolerations: []
 
 affinity: {}
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 512Mi
+  requests:
+    cpu: 25m
+    memory: 256Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 10200
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  failureThreshold: 3
+
+readinessProbe:
+  tcpSocket:
+    port: 10200
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  failureThreshold: 3
+
+startupProbe:
+  tcpSocket:
+    port: 10200
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 30
