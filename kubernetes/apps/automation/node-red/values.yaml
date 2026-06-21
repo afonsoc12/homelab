@@ -15,6 +15,7 @@ image:
   tag: 5.0.0
   pullPolicy: Always
 
+hostNetwork: true
 
 ports:
   - containerPort: 1880
@@ -80,6 +81,7 @@ resources:
 livenessProbe:
   httpGet:
     path: /
+    host: "127.0.0.1"
     port: 1880
   periodSeconds: 10
   failureThreshold: 3
@@ -88,6 +90,7 @@ livenessProbe:
 readinessProbe:
   httpGet:
     path: /
+    host: "127.0.0.1"
     port: 1880
   periodSeconds: 10
   failureThreshold: 3
@@ -96,6 +99,7 @@ readinessProbe:
 startupProbe:
   httpGet:
     path: /
+    host: "127.0.0.1"
     port: 1880
   initialDelaySeconds: 10
   periodSeconds: 10
