@@ -73,24 +73,21 @@ resources:
     memory: 800Mi
 
 livenessProbe:
-  httpGet:
-    path: /api/
+  tcpSocket:
     port: 8123
-  initialDelaySeconds: 60
+  initialDelaySeconds: 120
   periodSeconds: 30
-  failureThreshold: 3
+  failureThreshold: 5
 
 readinessProbe:
-  httpGet:
-    path: /api/
+  tcpSocket:
     port: 8123
-  initialDelaySeconds: 30
+  initialDelaySeconds: 60
   periodSeconds: 15
-  failureThreshold: 3
+  failureThreshold: 5
 
 startupProbe:
-  httpGet:
-    path: /api/
+  tcpSocket:
     port: 8123
   initialDelaySeconds: 30
   periodSeconds: 10
