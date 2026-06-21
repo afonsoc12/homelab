@@ -104,6 +104,13 @@ smtp:
     existingSecret: ""
     userKey: user
     passwordKey: password
+resources:
+    requests:
+        cpu: 50m
+        memory: 128Mi
+    limits:
+        cpu: 200m
+        memory: 256Mi
 sops:
     lastmodified: "2026-04-19T00:58:06Z"
     mac: ENC[AES256_GCM,data:967K2/iQVokY1SM6ZfgDaP0YwFNwuVenVCxQUWRgQRh+xd/sRRi8XqYYG5DWwlchdKCUoDAZcKrfTMY/Zr9l31VgH5CW72lD2wqBYkaCcIa8o/jdJk3IqFnjtJJ7+iK/DGPgipAL1tfwCzkgwN3mfJZFvbgrD0XeLA1YXF23wLY=,iv:qeMhW/Drdco07pTp2zUp+IYy+nfrS4EGhLadYeiYcqI=,tag:CwPo5PFFow7GBuA2cJBJPQ==,type:str]

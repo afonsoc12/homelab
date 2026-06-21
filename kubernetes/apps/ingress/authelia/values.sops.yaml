@@ -53,6 +53,14 @@ readinessProbe:
         port: 9091
     initialDelaySeconds: 5
     periodSeconds: 10
+startupProbe:
+    httpGet:
+        path: /verify
+        port: 9091
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
 resources:
     limits:
         cpu: 100m

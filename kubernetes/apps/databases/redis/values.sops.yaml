@@ -45,14 +45,26 @@ volumeClaimTemplates:
       storageClass: longhorn-persistent
       storage: 5Gi
 livenessProbe:
-    initialDelaySeconds: 5
-    periodSeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
     exec:
         command:
             - redis-cli
             - ping
 readinessProbe:
-    initialDelaySeconds: 5
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+    exec:
+        command:
+            - redis-cli
+            - ping
+startupProbe:
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
     exec:
         command:
             - redis-cli

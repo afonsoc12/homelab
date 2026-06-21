@@ -72,10 +72,10 @@ affinity: {}
 
 resources:
   limits:
-    cpu: 50m
+    cpu: 500m
     memory: 192Mi
   requests:
-    cpu: 25m
+    cpu: 50m
     memory: 96Mi
 
 livenessProbe:

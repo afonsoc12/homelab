@@ -53,9 +53,23 @@ server:
                         number: 9000
               path: /outpost.goauthentik.io
               pathType: Prefix
+    resources:
+        requests:
+            cpu: 100m
+            memory: 256Mi
+        limits:
+            cpu: 500m
+            memory: 512Mi
 worker:
     name: worker
     replicas: 1
+    resources:
+        requests:
+            cpu: 50m
+            memory: 256Mi
+        limits:
+            cpu: 500m
+            memory: 512Mi
 serviceAccount:
     create: true
 prometheus:

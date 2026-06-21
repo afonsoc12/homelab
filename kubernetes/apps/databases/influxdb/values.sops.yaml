@@ -59,18 +59,28 @@ ingress:
           paths:
             - path: /
               pathType: Prefix
-# livenessProbe:
-#   httpGet:
-#     path: "/ping"
-#     port: "{{ .Values.ports[0].containerPort }}"
-#   initialDelaySeconds: 30
-#   timeoutSeconds: 5
-# readinessProbe:
-#   httpGet:
-#     path: "/ping"
-#     port: "{{ .Values.ports[0].containerPort }}"
-#   initialDelaySeconds: 5
-#   timeoutSeconds: 1
+livenessProbe:
+    httpGet:
+        path: /ping
+        port: 8086
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /ping
+        port: 8086
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    httpGet:
+        path: /ping
+        port: 8086
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
 resources:
     requests:
         memory: 128Mi
