@@ -79,10 +79,9 @@ resources:
     memory: 96Mi
 
 livenessProbe:
-  httpGet:
-    path: /
-    host: "127.0.0.1"
+  tcpSocket:
     port: 1880
+    host: "127.0.0.1"
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
@@ -94,7 +93,7 @@ readinessProbe:
     port: 1880
   periodSeconds: 10
   failureThreshold: 3
-  timeoutSeconds: 5
+  timeoutSeconds: 30
 
 startupProbe:
   httpGet:
@@ -104,4 +103,4 @@ startupProbe:
   initialDelaySeconds: 10
   periodSeconds: 10
   failureThreshold: 18
-  timeoutSeconds: 5
+  timeoutSeconds: 30
