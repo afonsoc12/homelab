@@ -271,7 +271,7 @@ repoServer:
             - name: HELM_SECRETS_VERSION
               value: 4.7.7
             - name: KUBECTL_VERSION
-              value: 1.36.1
+              value: 1.36.2
             - name: VALS_VERSION
               value: 0.44.1
             - name: SOPS_VERSION
