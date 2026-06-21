@@ -278,7 +278,7 @@ repoServer:
               value: 3.13.1
           args:
             - |
-              sleep 2000
+              sleep 2
 
               mkdir -p /gitops-tools/helm-plugins
 
