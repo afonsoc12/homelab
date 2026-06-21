@@ -15,12 +15,6 @@ image:
   tag: 5.0.0
   pullPolicy: Always
 
-hostNetwork: true
-
-configmap:
-  mountEnv: true
-  data:
-    UIHOST: "0.0.0.0"
 
 ports:
   - containerPort: 1880
