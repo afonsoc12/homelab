@@ -10,11 +10,11 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/wordpress
-    tag: 7.0.0-fpm-alpine
+    tag: 7.0.0-apache
     pullPolicy: Always
 ports:
-    - containerPort: 9000
-      name: fpm
+    - containerPort: 80
+      name: http
       protocol: TCP
       service: true
 # Uses ports from .ports section, if service is true
@@ -76,29 +76,29 @@ affinity:
                 topologyKey: kubernetes.io/hostname
 resources:
   limits:
-    cpu: 25m
-    memory: 64Mi
+    cpu: 500m
+    memory: 256Mi
   requests:
-    cpu: 10m
-    memory: 32Mi
+    cpu: 100m
+    memory: 128Mi
 
 livenessProbe:
   tcpSocket:
-    port: 9000
+    port: 80
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
 
 readinessProbe:
   tcpSocket:
-    port: 9000
+    port: 80
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
 
 startupProbe:
   tcpSocket:
-    port: 9000
+    port: 80
   initialDelaySeconds: 10
   periodSeconds: 10
   failureThreshold: 18
