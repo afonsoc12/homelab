@@ -4,6 +4,9 @@
 #   - Docs:           https://grafana.com/docs/grafana/
 #   - Chart Defaults: https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
 # --------------------
+deploymentStrategy:
+    type: Recreate
+
 ingress:
     enabled: true
     # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
@@ -111,6 +114,28 @@ resources:
     limits:
         cpu: 200m
         memory: 256Mi
+livenessProbe:
+    httpGet:
+        path: /api/health
+        port: 3000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /api/health
+        port: 3000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    httpGet:
+        path: /api/health
+        port: 3000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
 sops:
     lastmodified: "2026-04-19T00:58:06Z"
     mac: ENC[AES256_GCM,data:967K2/iQVokY1SM6ZfgDaP0YwFNwuVenVCxQUWRgQRh+xd/sRRi8XqYYG5DWwlchdKCUoDAZcKrfTMY/Zr9l31VgH5CW72lD2wqBYkaCcIa8o/jdJk3IqFnjtJJ7+iK/DGPgipAL1tfwCzkgwN3mfJZFvbgrD0XeLA1YXF23wLY=,iv:qeMhW/Drdco07pTp2zUp+IYy+nfrS4EGhLadYeiYcqI=,tag:CwPo5PFFow7GBuA2cJBJPQ==,type:str]
