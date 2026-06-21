@@ -41,6 +41,7 @@ configmap:
   mountEnv: true
   data:
     N8N_PORT: "5678"
+    NODE_OPTIONS: "--max-old-space-size=450"
 
 ingress:
   enabled: true
@@ -84,7 +85,7 @@ resources:
     memory: 256Mi
   limits:
     cpu: 500m
-    memory: 500Mi
+    memory: 600Mi
 
 podSecurityContext:
   fsGroup: 1000
