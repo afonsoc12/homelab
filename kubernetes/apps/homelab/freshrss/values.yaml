@@ -51,3 +51,35 @@ ingress:
         - path: /
           pathType: Prefix
 mydomain: "{{ .Values.local.domain }}"
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 160Mi
+  requests:
+    cpu: 25m
+    memory: 80Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  failureThreshold: 3
+
+startupProbe:
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 30
