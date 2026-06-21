@@ -78,8 +78,7 @@ ingress:
 
 
 livenessProbe:
-  httpGet:
-    path: /
+  tcpSocket:
     port: 5000
   periodSeconds: 10
   failureThreshold: 3
@@ -91,7 +90,7 @@ readinessProbe:
     port: 5000
   periodSeconds: 10
   failureThreshold: 3
-  timeoutSeconds: 5
+  timeoutSeconds: 30
 
 startupProbe:
   httpGet:
