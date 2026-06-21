@@ -92,11 +92,11 @@ tolerations: []
 affinity: {}
 resources:
   limits:
+    cpu: 500m
+    memory: 384Mi
+  requests:
     cpu: 50m
     memory: 192Mi
-  requests:
-    cpu: 25m
-    memory: 96Mi
 
 livenessProbe:
   httpGet:
@@ -120,7 +120,7 @@ startupProbe:
     port: 80
   initialDelaySeconds: 10
   periodSeconds: 10
-  failureThreshold: 30
+  failureThreshold: 60
   timeoutSeconds: 5
 
 sops:

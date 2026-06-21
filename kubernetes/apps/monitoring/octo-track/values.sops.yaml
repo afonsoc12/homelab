@@ -55,27 +55,10 @@ resources:
     cpu: 10m
     memory: 64Mi
 
-livenessProbe:
-  tcpSocket:
-    port: 8501
-  periodSeconds: 10
-  failureThreshold: 3
-  timeoutSeconds: 5
-
-readinessProbe:
-  tcpSocket:
-    port: 8501
-  periodSeconds: 10
-  failureThreshold: 3
-  timeoutSeconds: 5
-
-startupProbe:
-  tcpSocket:
-    port: 8501
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  failureThreshold: 18
-  timeoutSeconds: 5
+# Probes disabled: app silently crashes on startup (0.0.1 bug), port never opens
+livenessProbe: {}
+readinessProbe: {}
+startupProbe: {}
 
 sops:
     lastmodified: "2026-04-29T19:50:48Z"
