@@ -82,15 +82,6 @@ ingress:
           paths:
             - path: /
               pathType: Prefix
-livenessProbe: {}
-readinessProbe: {}
-resources: {}
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext: {}

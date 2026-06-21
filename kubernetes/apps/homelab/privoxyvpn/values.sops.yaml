@@ -69,15 +69,6 @@ volumeMounts:
 volumes:
     - name: config
       emptyDir: {}
-livenessProbe: {}
-readinessProbe: {}
-resources: {}
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
 podSecurityContext: {}
 securityContext:
     capabilities:
