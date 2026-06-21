@@ -78,6 +78,10 @@ spec:
           readinessProbe:
             {{- tpl (toYaml . | nindent 12) $ }}
           {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- tpl (toYaml . | nindent 12) $ }}
+          {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
