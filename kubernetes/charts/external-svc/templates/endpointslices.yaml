@@ -9,7 +9,7 @@ metadata:
 addressType: IPv4
 endpoints:
   - addresses:
-      - {{ tpl ( .Values.server.ip | quote ) $ }}
+      - {{ tpl .Values.server.ip $ | quote }}
 ports:
   - port: {{ .Values.server.port }}
     protocol: {{ .Values.server.protocol }}
