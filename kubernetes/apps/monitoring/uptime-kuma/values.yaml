@@ -65,24 +65,21 @@ resources:
     memory: 128Mi
 
 livenessProbe:
-  httpGet:
-    path: /
+  tcpSocket:
     port: 3001
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
 
 readinessProbe:
-  httpGet:
-    path: /
+  tcpSocket:
     port: 3001
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
 
 startupProbe:
-  httpGet:
-    path: /
+  tcpSocket:
     port: 3001
   initialDelaySeconds: 10
   periodSeconds: 10
