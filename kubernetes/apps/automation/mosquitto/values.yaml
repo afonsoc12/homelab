@@ -1,0 +1,29 @@
+resources:
+  limits:
+    cpu: 25m
+    memory: 32Mi
+  requests:
+    cpu: 10m
+    memory: 16Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 1883
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  tcpSocket:
+    port: 1883
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  tcpSocket:
+    port: 1883
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5

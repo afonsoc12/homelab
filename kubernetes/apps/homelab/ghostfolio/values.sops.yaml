@@ -103,6 +103,39 @@ securityContext: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+resources:
+  limits:
+    cpu: 50m
+    memory: 512Mi
+  requests:
+    cpu: 25m
+    memory: 256Mi
+
+livenessProbe:
+  httpGet:
+    path: /api/v1/health
+    port: 3333
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /api/v1/health
+    port: 3333
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /api/v1/health
+    port: 3333
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-29T19:43:44Z"
     mac: ENC[AES256_GCM,data:YeKtu0A+OehTwj4ItYBsUJw7lQZK82eL+znz08ZMRzRV/ys9AEE0jbf4Iu7Tsh6JRAs5MyUQ9xdDJ3yYahOF+g4k4yO09oTW0P3ViMHdlSeBocLbDJuB5WLpB/FCRbDRqj5CuHjn3jcTAEENuWP3fP5cj+zcTil4PylvTCNXYGo=,iv:tZP5spxOrElYxZi4JkpAVTgssJclUoSgv9QPCEl9X1I=,tag:7zD06P/Nq4So7ZIbzduqEA==,type:str]

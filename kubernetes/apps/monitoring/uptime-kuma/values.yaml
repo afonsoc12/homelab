@@ -68,17 +68,17 @@ livenessProbe:
   httpGet:
     path: /
     port: 3001
-  initialDelaySeconds: 30
-  periodSeconds: 15
+  periodSeconds: 10
   failureThreshold: 3
+  timeoutSeconds: 5
 
 readinessProbe:
   httpGet:
     path: /
     port: 3001
-  initialDelaySeconds: 15
   periodSeconds: 10
   failureThreshold: 3
+  timeoutSeconds: 5
 
 startupProbe:
   httpGet:
@@ -86,4 +86,5 @@ startupProbe:
     port: 3001
   initialDelaySeconds: 10
   periodSeconds: 10
-  failureThreshold: 30
+  failureThreshold: 18
+  timeoutSeconds: 5

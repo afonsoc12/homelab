@@ -67,28 +67,26 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
 livenessProbe:
-  httpGet:
-    path: /
+  tcpSocket:
     port: 51821
-  initialDelaySeconds: 30
-  periodSeconds: 15
-  failureThreshold: 3
-
-readinessProbe:
-  httpGet:
-    path: /
-    port: 51821
-  initialDelaySeconds: 15
   periodSeconds: 10
   failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  tcpSocket:
+    port: 51821
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
 
 startupProbe:
-  httpGet:
-    path: /
+  tcpSocket:
     port: 51821
   initialDelaySeconds: 10
   periodSeconds: 10
-  failureThreshold: 30
+  failureThreshold: 18
+  timeoutSeconds: 5
 
 resources:
   limits:

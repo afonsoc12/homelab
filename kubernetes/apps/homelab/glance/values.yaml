@@ -442,25 +442,26 @@ livenessProbe:
   httpGet:
     path: /
     port: 8080
-  initialDelaySeconds: 20
-  periodSeconds: 15
+  periodSeconds: 10
   failureThreshold: 3
+  timeoutSeconds: 5
 
 readinessProbe:
   httpGet:
     path: /
     port: 8080
-  initialDelaySeconds: 10
   periodSeconds: 10
   failureThreshold: 3
+  timeoutSeconds: 5
 
 startupProbe:
   httpGet:
     path: /
     port: 8080
-  initialDelaySeconds: 5
+  initialDelaySeconds: 10
   periodSeconds: 10
-  failureThreshold: 20
+  failureThreshold: 18
+  timeoutSeconds: 5
 
 resources:
   limits:

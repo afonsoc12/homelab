@@ -55,25 +55,38 @@ ingress:
           paths:
             - path: /
               pathType: Prefix
-# livenessProbe:
-#   httpGet:
-#     path: /verify
-#     port: 9091
-#   initialDelaySeconds: 5
-#   periodSeconds: 10
-# readinessProbe:
-#   httpGet:
-#     path: /verify
-#     port: 9091
-#   initialDelaySeconds: 5
-#   periodSeconds: 10
-# resources:
-#   limits:
-#     cpu: 100m
-#     memory: 128Mi
-#   requests:
-#     cpu: 20m
-#     memory: 64Mi
+resources:
+    limits:
+        cpu: 25m
+        memory: 32Mi
+    requests:
+        cpu: 10m
+        memory: 16Mi
+
+livenessProbe:
+    httpGet:
+        path: /health
+        port: 17170
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+readinessProbe:
+    httpGet:
+        path: /health
+        port: 17170
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+startupProbe:
+    httpGet:
+        path: /health
+        port: 17170
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
 sops:
     lastmodified: "2026-04-13T20:28:44Z"
     mac: ENC[AES256_GCM,data:lCNMi8ysudMVa1G6BO9nQ6iakLUeoVqwuNphVm8KEmfmWyeF3WYe0NlS9AS7Yho7aXUMf6vu4rSXJZEheX0bAkaFmMoTS/jDv0o+Utl8C3j2tUmtgF6YJzDAxPnnWj1rK66P7/5NqVRJLJA+rXATGJzqflFa9RVcGgtlQagLs8I=,iv:8S7xTplXLVDBBTOVBlIHdxtE5DILCAFMQaJKaHtqijM=,tag:oqRpCPl8r0YsEKeozvdLaQ==,type:str]

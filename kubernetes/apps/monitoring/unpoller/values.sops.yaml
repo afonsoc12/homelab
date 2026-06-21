@@ -53,6 +53,31 @@ serviceMonitor:
     endpoints:
         - port: metrics
           interval: 30s
+livenessProbe:
+  httpGet:
+    path: /metrics
+    port: 9130
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /metrics
+    port: 9130
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /metrics
+    port: 9130
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-13T20:28:46Z"
     mac: ENC[AES256_GCM,data:PXyYCve6A4A7xQh82fsbc6ACu/D41nN5vQsH8U5aav1el6Vdum+MFRdAOp2VxIDELxiXYnpE4yoU8nwXVqGLL2ON9k64C3xrUHkDbbI9fGLXyMQ+OLGWpfNhaJPIiUATXZuNmH6nhDJsm/aMhQBdRQGNfxIO6iVUJrFG3HONX8g=,iv:Y56oiiV32749kyjh555akfrKkcBkF6cUmS5lTZ8ochg=,tag:UbC8FSa6rx6QM9dhqirZ8w==,type:str]

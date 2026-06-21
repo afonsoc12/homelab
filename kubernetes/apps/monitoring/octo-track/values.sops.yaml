@@ -47,6 +47,36 @@ ingress:
           paths:
             - path: /
               pathType: Prefix
+resources:
+  limits:
+    cpu: 25m
+    memory: 128Mi
+  requests:
+    cpu: 10m
+    memory: 64Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 8501
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  tcpSocket:
+    port: 8501
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  tcpSocket:
+    port: 8501
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-29T19:50:48Z"
     mac: ENC[AES256_GCM,data:f7c70EJwxzdSKvf4DiLpCTP4KPT6Ws2i920ehJuBL54fBARGNTUK1X/8KLV7GXKvNWR64QQyeBxrAUa9/u+Cx3qWJTSpi6+/BxloaEXivlBICV/rW/xFLGI0SihaTfGy/yJsR/lSxpbRw7A1zLXXIweqxFT8JEOUVmpQmhVqx1o=,iv:T6IX/T1DVvlfD0zNYJb7ELggQAUUK/QU2P6iMB7TVkk=,tag:ORsctUAA49HFNkS5tY/EAA==,type:str]

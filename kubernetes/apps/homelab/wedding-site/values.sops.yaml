@@ -74,6 +74,39 @@ affinity:
                           values:
                             - mariadb
                 topologyKey: kubernetes.io/hostname
+resources:
+  limits:
+    cpu: 25m
+    memory: 64Mi
+  requests:
+    cpu: 10m
+    memory: 32Mi
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 80
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 80
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-29T00:26:36Z"
     mac: ENC[AES256_GCM,data:TYz1j3bLLmZSjXAat+8rFWapT+0wywpxVtkYZikV4GHVxVWcO/c0Oln/3AS33OKrasY5M4n/2Zz3Uf5Ov62FfFpAb0UEBg9U9K+lHer8/JoFG6Qhs0pgh6LbtRBLN7iGHiE2PbHnlna/tJtfEdv0BIQ6dw9vnGtKNFa4lxRXe14=,iv:fnHRKFWdbtrqe3s1JCZ5f4uk9456idOGvxBW7oByVFs=,tag:ZY6hQqjSq3tK4yJeiwf0pw==,type:str]

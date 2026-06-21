@@ -24,20 +24,38 @@ secret:
     mountEnv: true
     stringData:
         TUNNEL_TOKEN: ENC[AES256_GCM,data:vo6TFJBEz0UvTgWEVo4pZtr7FLJLgFSiC6kjsZg3HV2QNxaj+iaeNMrklpI5V2MrqR/xHuS1kGUjoEk1aRgBDVyNXDW20aaBQKwP4vChK8iE9Cxy6NFmubFMnB8HRUBefB87EnTjhyB5TUiUoYUWEDOsGhvUIn29XvUfpYwWZ33MMYHJE20+wWcSwEaOEa+a8T/sHFU273Tt+Rb8nFySjfZjDUU2+0ZrYP1Wkx+4t3A+sYwN,iv:GwjDxf291vSGLyKzlia/szdOW9HGdEBMKQ4PbEog38g=,tag:haPQC0OfRmWkSiK6OxpQKw==,type:str]
-    livenessProbe:
-        httpGet:
-            path: /ready
-            port: 2000
-        failureThreshold: 3
-        initialDelaySeconds: 5
-        periodSeconds: 10
-    readinessProbe:
-        httpGet:
-            path: /ready
-            port: 2000
-        failureThreshold: 3
-        initialDelaySeconds: 5
-        periodSeconds: 10
+resources:
+    limits:
+        cpu: 25m
+        memory: 32Mi
+    requests:
+        cpu: 10m
+        memory: 16Mi
+
+livenessProbe:
+    httpGet:
+        path: /ready
+        port: 2000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+readinessProbe:
+    httpGet:
+        path: /ready
+        port: 2000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+startupProbe:
+    httpGet:
+        path: /ready
+        port: 2000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
 sops:
     lastmodified: "2026-04-13T20:28:44Z"
     mac: ENC[AES256_GCM,data:2zul+SaF/ZlOoP4NESrhZaj5cfx+mb8rhrUPn6MEXDrfr1Tw6MCS9J0r6YbcH7Ij8zuYhigtiyJhUVd3uCPj1UU88PxwtagTEk6aoYq9ajCse1Jh7WEUySdX42K2N6U/xqyFv8mZsb2gnSqcJ8ORXbYNQ6DA+ABAWi9sDeIPpwI=,iv:oKDaPCNv8sC8MnHoACf1/RuhC4Uh3etV20I1/eA2l0o=,tag:LaYyNCJcdq6EFaHrxExqbA==,type:str]

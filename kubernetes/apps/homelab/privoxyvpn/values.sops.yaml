@@ -111,6 +111,36 @@ initContainers:
           cp $PWD/configurations/$SURFSHARK_CONFIG $PWD/openvpn
           ls -alh
           echo "Will use file /config/$SURFSHARK_CONFIG"
+resources:
+  limits:
+    cpu: 25m
+    memory: 64Mi
+  requests:
+    cpu: 10m
+    memory: 32Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 8118
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  tcpSocket:
+    port: 8118
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  tcpSocket:
+    port: 8118
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-13T20:28:42Z"
     mac: ENC[AES256_GCM,data:ZLmBJ/aQhn+KHImtDIkeq6WaQ+n8CbvMNBFT6qTISh372ZAhIPk3FLTOBYkq/2rmFn2mjWiG03tGxSdRsdxExLRiaoJ4P/cVmqu5PV3AvOyQB8mRwimQuDNgXjcULx2ZOMa7oN42IBHRoKXssjw/RxCiMBao1cP0YyrtJ44Phrw=,iv:mj5g4lao4TDpaxEP6lyKfPCiLSKZhkOvckmwS7HgFJc=,tag:2ZSLkz/wsyuFhzeb12EYTw==,type:str]

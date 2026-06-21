@@ -75,20 +75,21 @@ resources:
 livenessProbe:
   tcpSocket:
     port: 8123
-  initialDelaySeconds: 120
-  periodSeconds: 30
-  failureThreshold: 5
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
 
 readinessProbe:
   tcpSocket:
     port: 8123
-  initialDelaySeconds: 60
-  periodSeconds: 15
-  failureThreshold: 5
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
 
 startupProbe:
   tcpSocket:
     port: 8123
-  initialDelaySeconds: 30
+  initialDelaySeconds: 10
   periodSeconds: 10
-  failureThreshold: 60
+  failureThreshold: 18
+  timeoutSeconds: 5

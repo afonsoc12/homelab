@@ -99,6 +99,39 @@ securityContext: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
+resources:
+  limits:
+    cpu: 50m
+    memory: 192Mi
+  requests:
+    cpu: 25m
+    memory: 96Mi
+
+livenessProbe:
+  httpGet:
+    path: /api/version.json
+    port: 80
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /api/version.json
+    port: 80
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /api/version.json
+    port: 80
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-29T00:26:03Z"
     mac: ENC[AES256_GCM,data:de0XB93F+gCksvMmB6jOiCBJsmQFDePo3U5PgB9F+Q5jvk/yLXKNr8nAjOgwtVeBy8OjgxfX0kta92HTwdvPR6DxrFJMhL9YKuHirNCyeNB76eHNybKMiiuknbP8UuaOD76AQAk6gEBnJzavVX1gygw5gVsks56ll9FvJIP6YBE=,iv:DkxgyqEl737Wt/d7MSvSYyoshr1760PvQZBTRchwnHc=,tag:8IV7XsE1gO32hNW7T57lIQ==,type:str]
