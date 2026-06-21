@@ -10,7 +10,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/wordpress
-    tag: 6.9.4-fpm-alpine
+    tag: 7.0.0-fpm-alpine
     pullPolicy: Always
 ports:
     - containerPort: 80
