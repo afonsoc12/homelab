@@ -82,17 +82,17 @@ livenessProbe:
   httpGet:
     path: /
     port: 1880
-  initialDelaySeconds: 30
+  initialDelaySeconds: 90
   periodSeconds: 15
-  failureThreshold: 3
+  failureThreshold: 5
 
 readinessProbe:
   httpGet:
     path: /
     port: 1880
-  initialDelaySeconds: 15
+  initialDelaySeconds: 45
   periodSeconds: 10
-  failureThreshold: 3
+  failureThreshold: 5
 
 startupProbe:
   httpGet:

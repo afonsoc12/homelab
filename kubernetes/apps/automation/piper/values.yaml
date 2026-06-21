@@ -44,16 +44,16 @@ resources:
 livenessProbe:
   tcpSocket:
     port: 10200
-  initialDelaySeconds: 30
+  initialDelaySeconds: 90
   periodSeconds: 15
-  failureThreshold: 3
+  failureThreshold: 5
 
 readinessProbe:
   tcpSocket:
     port: 10200
-  initialDelaySeconds: 15
+  initialDelaySeconds: 45
   periodSeconds: 10
-  failureThreshold: 3
+  failureThreshold: 5
 
 startupProbe:
   tcpSocket:
