@@ -17,6 +17,11 @@ image:
 
 hostNetwork: true
 
+configmap:
+  mountEnv: true
+  data:
+    UIHOST: "0.0.0.0"
+
 ports:
   - containerPort: 1880
     name: http

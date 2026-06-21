@@ -13,8 +13,8 @@ image:
     tag: 7.0.0-fpm-alpine
     pullPolicy: Always
 ports:
-    - containerPort: 80
-      name: http
+    - containerPort: 9000
+      name: fpm
       protocol: TCP
       service: true
 # Uses ports from .ports section, if service is true
@@ -83,25 +83,22 @@ resources:
     memory: 32Mi
 
 livenessProbe:
-  httpGet:
-    path: /
-    port: 80
+  tcpSocket:
+    port: 9000
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
 
 readinessProbe:
-  httpGet:
-    path: /
-    port: 80
+  tcpSocket:
+    port: 9000
   periodSeconds: 10
   failureThreshold: 3
   timeoutSeconds: 5
 
 startupProbe:
-  httpGet:
-    path: /
-    port: 80
+  tcpSocket:
+    port: 9000
   initialDelaySeconds: 10
   periodSeconds: 10
   failureThreshold: 18
