@@ -129,3 +129,25 @@ resources:
   limits:
     cpu: 100m
     memory: 64Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 32400
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  tcpSocket:
+    port: 32400
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  tcpSocket:
+    port: 32400
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5

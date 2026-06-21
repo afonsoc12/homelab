@@ -59,17 +59,17 @@ livenessProbe:
   httpGet:
     path: /healthz
     port: 5678
-  initialDelaySeconds: 90
   periodSeconds: 10
-  failureThreshold: 5
+  failureThreshold: 3
+  timeoutSeconds: 5
 
 readinessProbe:
   httpGet:
-    path: /healthz/readiness
+    path: /healthz
     port: 5678
-  initialDelaySeconds: 60
   periodSeconds: 10
-  failureThreshold: 5
+  failureThreshold: 3
+  timeoutSeconds: 5
 
 startupProbe:
   httpGet:
@@ -77,7 +77,8 @@ startupProbe:
     port: 5678
   initialDelaySeconds: 10
   periodSeconds: 10
-  failureThreshold: 30
+  failureThreshold: 18
+  timeoutSeconds: 5
 
 resources:
   requests:

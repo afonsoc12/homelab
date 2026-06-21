@@ -278,6 +278,8 @@ repoServer:
               value: 3.13.1
           args:
             - |
+              sleep 2000
+
               mkdir -p /gitops-tools/helm-plugins
 
               GO_ARCH=$(uname -m | sed -e 's/x86_64/amd64/')

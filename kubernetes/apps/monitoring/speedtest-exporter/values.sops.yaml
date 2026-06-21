@@ -56,21 +56,38 @@ volumes:
     - name: config
       configMap:
         name: speedtest-exporter
-livenessProbe:
-    httpGet:
-        path: /health
-        port: metrics
-readinessProbe:
-    httpGet:
-        path: /health
-        port: metrics
 resources:
+    limits:
+        cpu: 25m
+        memory: 64Mi
     requests:
         cpu: 10m
-        memory: 64Mi
-    limits:
-        cpu: 100m
-        memory: 256Mi
+        memory: 32Mi
+
+livenessProbe:
+    httpGet:
+        path: /metrics
+        port: 9273
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+readinessProbe:
+    httpGet:
+        path: /metrics
+        port: 9273
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+startupProbe:
+    httpGet:
+        path: /metrics
+        port: 9273
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
 nodeSelector:
     kubernetes.io/hostname: k3s-m1
 prometheusRule:

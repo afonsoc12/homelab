@@ -74,6 +74,39 @@ ingress:
           paths:
             - path: /
               pathType: Prefix
+resources:
+  limits:
+    cpu: 25m
+    memory: 32Mi
+  requests:
+    cpu: 10m
+    memory: 16Mi
+
+livenessProbe:
+  httpGet:
+    path: /v1/health
+    port: 80
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /v1/health
+    port: 80
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /v1/health
+    port: 80
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-13T20:28:45Z"
     mac: ENC[AES256_GCM,data:fL3nmf2ndVQfiwTz6wxd3H79VqwlMbc9BJ1YqjwNwLxFZnFPnvD4LmUZfTuJSlOaLcpUPD06Sf/idcERIYt16jWUQy0n0wqb87IaTxvm+hjilaHz+emTxAdIe83KrEeUUPr+DPzvwZRE2vlZ/9JHJZN2fTOjPQIYcxkfrT6bEZg=,iv:Dk0cJa+ayrq6vy27u5ulbkcjbLDWSry9LHs0dbM7LLg=,tag:MyUtQg1UOnxX9sgNsH51XA==,type:str]

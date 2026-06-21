@@ -82,15 +82,6 @@ ingress:
           paths:
             - path: /
               pathType: ImplementationSpecific
-livenessProbe: {}
-readinessProbe: {}
-resources: {}
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext: {}
@@ -115,6 +106,39 @@ affinity:
                           values:
                             - postgres
                 topologyKey: kubernetes.io/hostname
+resources:
+  limits:
+    cpu: 50m
+    memory: 512Mi
+  requests:
+    cpu: 25m
+    memory: 256Mi
+
+livenessProbe:
+  httpGet:
+    path: /api/app/about
+    port: 9000
+  periodSeconds: 30
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /api/app/about
+    port: 9000
+  periodSeconds: 30
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /api/app/about
+    port: 9000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-29T19:45:43Z"
     mac: ENC[AES256_GCM,data:TA9FBJuiIYZ1lYEJMX0owqtYAtHphN33BECpj3AFKwVxfclw0kmqCoR2dllRB9/UNPNjO+XjlkuzjcuNtsgeiNy1nNGnmxwa+XWfzIAYNRb3s8gyb1onHhgieHFzMf3xP7U3TZgU8jnXGFKklytoVnznMbLnhdn7vU4w3MDWsDY=,iv:ikjIl3eWKET7TDa+rFYXJyRmQKvFTQZAQXgVRdMCUr8=,tag:IB/ooA0torKDDp6RrPPDCA==,type:str]

@@ -86,15 +86,6 @@ ingress:
           paths:
             - path: /
               pathType: ImplementationSpecific
-livenessProbe: {}
-readinessProbe: {}
-resources: {}
-# limits:
-#   cpu: 100m
-#   memory: 128Mi
-# requests:
-#   cpu: 100m
-#   memory: 128Mi
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext: {}
@@ -164,6 +155,39 @@ cronjobs:
                               values:
                                 - '{{ $.Release.Name }}'
                     topologyKey: kubernetes.io/hostname
+resources:
+  limits:
+    cpu: 50m
+    memory: 256Mi
+  requests:
+    cpu: 25m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
 sops:
     lastmodified: "2026-04-29T12:29:16Z"
     mac: ENC[AES256_GCM,data:kROTYCCS6ph/UsrCn51RM1Jv+6qWtfdrob+1JBVvholUjeHp8tV2HjCdbPc1oAHvkqkxfs+yBJ8KxhK9HzOCWZrdh1EDjJA0Nq0gIU/dgrjb00eFfN33XQXVh8okKtmJk58UQashPYTILV7JU/NmCIIk1r0NtcMo37zs6VqJGWA=,iv:ARC1v3WvZDNSxmBz7sKFRf0j8SGvNHhzNZACOr34OMg=,tag:9EfPyX4pmts5B6jNL7PlPw==,type:str]
