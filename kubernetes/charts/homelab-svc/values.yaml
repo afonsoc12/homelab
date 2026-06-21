@@ -132,6 +132,8 @@ livenessProbe: {}
 readinessProbe: {}
 startupProbe: {}
 resources: {}
+
+enableServiceLinks: false
   # limits:
   #   cpu: 100m
   #   memory: 128Mi

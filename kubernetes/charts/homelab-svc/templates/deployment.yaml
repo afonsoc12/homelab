@@ -28,6 +28,7 @@ spec:
       hostNetwork: {{ .Values.hostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
       {{- end }}
+      enableServiceLinks: {{ .Values.enableServiceLinks }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       restartPolicy:  {{ .Values.restartPolicy }}
