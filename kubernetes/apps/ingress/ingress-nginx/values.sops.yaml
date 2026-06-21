@@ -11,6 +11,13 @@ controller:
     service:
         externalTrafficPolicy: Local
         loadBalancerIP: ENC[AES256_GCM,data:F53YVQFAseHyQgc=,iv:AgShoZwEcm5vmEuf2fJaRizQGRKnVWNQajDGP+cCfDk=,tag:IcsGnoOXGfavGxxjcDh2vg==,type:str]
+    resources:
+        limits:
+            cpu: 200m
+            memory: 256Mi
+        requests:
+            cpu: 50m
+            memory: 128Mi
     allowSnippetAnnotations: true
     config:
         enable-real-ip: true
