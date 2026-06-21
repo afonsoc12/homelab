@@ -37,6 +37,11 @@ pvc:
     requests:
       storage: 500Mi
 
+configmap:
+  mountEnv: true
+  data:
+    N8N_PORT: "5678"
+
 ingress:
   enabled: true
   authelia: true
@@ -50,18 +55,28 @@ ingress:
           pathType: Prefix
 
 livenessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 10
   httpGet:
     path: /healthz
     port: 5678
+  initialDelaySeconds: 90
+  periodSeconds: 10
+  failureThreshold: 5
 
 readinessProbe:
-  initialDelaySeconds: 30
-  periodSeconds: 10
   httpGet:
     path: /healthz/readiness
     port: 5678
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  failureThreshold: 5
+
+startupProbe:
+  httpGet:
+    path: /healthz
+    port: 5678
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 30
 
 resources:
   requests:
