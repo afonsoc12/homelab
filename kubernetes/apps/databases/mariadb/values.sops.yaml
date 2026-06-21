@@ -51,31 +51,25 @@ volumeClaimTemplates:
         - ReadWriteOnce
       storageClass: longhorn-persistent
       storage: 10Gi
-# livenessProbe:
-#   initialDelaySeconds: 15
-#   periodSeconds: 5
-#   exec:
-#     command:
-#       - /bin/bash
-#       - -ec
-#       - |
-#         password_aux="${MYSQL_ROOT_PASSWORD:-}"
-#         if [[ -f "${MYSQL_ROOT_PASSWORD_FILE:-}" ]]; then
-#             password_aux=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
-#         fi
-#         mysqladmin status -uroot -p"${password_aux}"
-# readinessProbe:
-#   initialDelaySeconds: 15
-#   exec:
-#     command:
-#       - /bin/bash
-#       - -ec
-#       - |
-#         password_aux="${MYSQL_ROOT_PASSWORD:-}"
-#         if [[ -f "${MYSQL_ROOT_PASSWORD_FILE:-}" ]]; then
-#             password_aux=$(cat "$MYSQL_ROOT_PASSWORD_FILE")
-#         fi
-#         mysqladmin status -uroot -p"${password_aux}"
+livenessProbe:
+    tcpSocket:
+        port: 3306
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    tcpSocket:
+        port: 3306
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    tcpSocket:
+        port: 3306
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
 resources:
     limits:
         cpu: 1
