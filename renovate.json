@@ -69,6 +69,11 @@
       "versioning": "regex:^\\d+\\.\\d+\\.\\d+-b(?<patch>\\d+)$"
     },
     {
+      "description": "Use regex versioning for fireflyiii/core tags (version-X.Y.Z)",
+      "matchPackageNames": ["docker.io/fireflyiii/core"],
+      "versioning": "regex:^version-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+    },
+    {
       "description": "Track hotio image by digest",
       "matchPackageNames": ["ghcr.io/hotio/cloudflareddns"],
       "pinDigests": true
