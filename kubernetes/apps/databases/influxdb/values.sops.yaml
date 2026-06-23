@@ -60,23 +60,20 @@ ingress:
             - path: /
               pathType: Prefix
 livenessProbe:
-    httpGet:
-        path: /ping
-        port: 8086
+    tcpSocket:
+        port: 8181
     periodSeconds: 10
     failureThreshold: 3
     timeoutSeconds: 5
 readinessProbe:
-    httpGet:
-        path: /ping
-        port: 8086
+    tcpSocket:
+        port: 8181
     periodSeconds: 10
     failureThreshold: 3
     timeoutSeconds: 5
 startupProbe:
-    httpGet:
-        path: /ping
-        port: 8086
+    tcpSocket:
+        port: 8181
     initialDelaySeconds: 10
     periodSeconds: 10
     failureThreshold: 30
