@@ -7,10 +7,25 @@
 longhornUI:
     # -- Replica count for Longhorn UI.
     replicas: 1
+longhornManager:
+    # -- Resource requests and limits for Longhorn Manager pods.
+    resources:
+        requests:
+            cpu: 50m
+            memory: 128Mi
+        limits:
+            cpu: 150m
+            memory: 384Mi
 preUpgradeChecker:
     upgradeVersionCheck: false
 upgradeCheck:
     enabled: false
+defaultSettings:
+    # -- Resource limits for system-managed CSI components (csi-attacher, csi-provisioner,
+    # csi-resizer, csi-snapshotter, longhorn-csi-plugin, node-driver-registrar,
+    # longhorn-liveness-probe). JSON object keyed by component name with standard
+    # Kubernetes ResourceRequirements (requests/limits) as values.
+    systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"csi-provisioner":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"csi-resizer":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"csi-snapshotter":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"longhorn-csi-plugin":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"node-driver-registrar":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"longhorn-liveness-probe":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}}}'
 ingress:
     enabled: true
     ingressClassName: nginx

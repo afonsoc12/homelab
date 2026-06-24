@@ -178,6 +178,14 @@ controller:
     # -- The number of application controller pods to run.
     # Additional replicas will cause sharding of managed clusters across number of replicas.
     replicas: 1
+    # -- Resource limits and requests for the application controller pods
+    resources:
+        requests:
+            cpu: 50m
+            memory: 64Mi
+        limits:
+            cpu: 250m
+            memory: 768Mi
 ## Dex
 dex:
     # -- Enable dex
@@ -205,12 +213,40 @@ redis:
 #   existingSecret: ""
 #   # -- External Redis Secret annotations
 #   secretAnnotations: {}
+    # -- Resource limits and requests for redis
+    resources:
+        requests:
+            cpu: 10m
+            memory: 32Mi
+        limits:
+            cpu: 50m
+            memory: 128Mi
+    readinessProbe:
+        enabled: true
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 3
+    livenessProbe:
+        enabled: true
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        timeoutSeconds: 5
+        failureThreshold: 3
 ## Server
 server:
     # -- Argo CD server name
     name: server
     # -- The number of server pods to run
     replicas: 1
+    # -- Resource limits and requests for the server pods
+    resources:
+        requests:
+            cpu: 10m
+            memory: 32Mi
+        limits:
+            cpu: 50m
+            memory: 128Mi
     ingress:
         enabled: true
         annotations:
@@ -229,6 +265,14 @@ repoServer:
     name: repo-server
     # -- The number of repo server pods to run
     replicas: 1
+    # -- Resource limits and requests for the repo server pods
+    resources:
+        requests:
+            cpu: 10m
+            memory: 32Mi
+        limits:
+            cpu: 50m
+            memory: 128Mi
     # -- Environment variables to pass to repo server
     env:
         - name: HELM_PLUGINS
@@ -319,12 +363,28 @@ applicationSet:
     enabled: true
     # -- ApplicationSet controller name string
     name: applicationset-controller
+    # -- Resource limits and requests for the application set controller pods
+    resources:
+        requests:
+            cpu: 10m
+            memory: 32Mi
+        limits:
+            cpu: 50m
+            memory: 128Mi
 ## Notifications controller
 notifications:
     # -- Enable notifications controller
     enabled: true
     # -- Notifications controller name string
     name: notifications-controller
+    # -- Resource limits and requests for the notifications controller pods
+    resources:
+        requests:
+            cpu: 10m
+            memory: 32Mi
+        limits:
+            cpu: 50m
+            memory: 128Mi
     argocdUrl: ENC[AES256_GCM,data:5HpuciM8u+E05liNUwHO9LmPjS5dQBFn0GZ4fUciICfpmA==,iv:tqjlD3ZQdQBcRKlP3SMsOuWZO19SJIfs6iBKzH7T0c8=,tag:A44ctvNaQC0XcCZ9UihGMQ==,type:str]
     secret:
         items:
