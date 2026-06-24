@@ -14,6 +14,13 @@ controller:
   enabled: true
   # -- Controller log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
   logLevel: info
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
 # speaker contains configuration specific to the MetalLB speaker
 # daemonset.
 speaker:
@@ -21,6 +28,13 @@ speaker:
   # command: /speaker
   # -- Speaker log level. Must be one of: `all`, `debug`, `info`, `warn`, `error` or `none`
   logLevel: info
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
 crds:
   enabled: true
   validationFailurePolicy: Fail
