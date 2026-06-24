@@ -46,8 +46,11 @@ volumeClaimTemplates:
         - ReadWriteOnce
       storageClass: longhorn-persistent
       storage: 5Gi
+# Ingress disabled: influxdb3 dropped the bundled UI, so the
+# influxdb.local.{{ .Values.domain }} hostname now points at the
+# influxdb-ui (Explorer) app instead — see kubernetes/apps/databases/influxdb-ui/
 ingress:
-    enabled: true
+    enabled: false
     authelia: true
     className: nginx
     annotations: {}
@@ -85,7 +88,8 @@ resources:
     limits:
         memory: 1Gi
         cpu: 1
-podSecurityContext: {}
+podSecurityContext:
+    fsGroup: 1000
 # fsGroup: 2000
 securityContext: {}
 # capabilities:

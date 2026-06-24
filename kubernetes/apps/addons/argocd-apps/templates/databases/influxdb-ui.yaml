@@ -1,0 +1,35 @@
+# --------------------
+# InfluxDB 3 Explorer
+#   - Repo:  https://github.com/influxdata/influxdb3-ui
+#   - Docs:  https://docs.influxdata.com/influxdb3/explorer/
+#   - Chart: homelab-svc
+# --------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: influxdb-ui
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:afonsoc12/homelab.git
+    targetRevision: HEAD
+    path: kubernetes/charts/homelab-svc
+    helm:
+      valueFiles:
+        - secrets://../../apps/values.sops.yaml
+        - ../../apps/databases/influxdb-ui/values.yaml
+        - secrets://../../apps/databases/influxdb-ui/values.sops.yaml
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: databases
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
