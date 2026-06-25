@@ -40,6 +40,6 @@ In-memory key-value store. Used as a cache and session store by multiple apps.
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>databases</code></em>
 
-Time-series database. Stores sensor readings, energy metrics, and other time-stamped data from Home Assistant and IoT devices. InfluxDB 3 dropped the bundled web UI that 2.x had, so the API-only server (`influxdb` app) is paired with a separate **InfluxDB 3 Explorer** app (`influxdb-ui`) for browsing data — it's the one serving the `influxdb.local.{{ "{{ .Values.domain }}" }}` hostname.
+Time-series database for Home Assistant and IoT sensor data. Paired with **InfluxDB 3 Explorer** (`influxdb-ui`) for browsing — InfluxDB 3 is API-only.
 
-[:octicons-book-16: Documentation](https://docs.influxdata.com/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/databases/influxdb/values.sops.yaml) &nbsp;·&nbsp; [:octicons-file-code-16: influxdb-ui values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/databases/influxdb-ui/values.yaml)
+[:octicons-book-16: Documentation](https://docs.influxdata.com/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/databases/influxdb/values.sops.yaml) &nbsp;·&nbsp; [:octicons-file-code-16: influxdb-ui values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/databases/influxdb-ui/values.sops.yaml)
