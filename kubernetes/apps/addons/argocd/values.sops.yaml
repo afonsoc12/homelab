@@ -229,6 +229,11 @@ repoServer:
     name: repo-server
     # -- The number of repo server pods to run
     replicas: 1
+    livenessProbe:
+        timeoutSeconds: 10
+        initialDelaySeconds: 30
+    readinessProbe:
+        timeoutSeconds: 10
     # -- Environment variables to pass to repo server
     env:
         - name: HELM_PLUGINS
