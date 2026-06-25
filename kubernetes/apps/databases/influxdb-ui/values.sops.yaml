@@ -1,15 +1,106 @@
 # --------------------
-# InfluxDB 3 Explorer — secrets
-#   config.json is consumed by the UI at /app-root/config/config.json
-#   and contains the InfluxDB admin token created via `influxdb3 create
-#   token --admin` (one-time, cannot be regenerated without invalidating
-#   the previous token).
+# InfluxDB 3 Explorer
+#   - Repo:           https://github.com/influxdata/influxdb3-ui
+#   - Docs:           https://docs.influxdata.com/influxdb3/explorer/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
 # --------------------
+image:
+    repository: docker.io/influxdata/influxdb3-ui
+    tag: 1.9.0
+    pullPolicy: IfNotPresent
+
+restartPolicy: Always
+command: {}
+args: {}
+
+ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+      service: true
+
+service:
+    enabled: true
+
 secret:
     stringData:
         config.json: ENC[AES256_GCM,data:9t1lyM8+cugcZxb8aj8ANpNNyQtvWFvc7cimw/7Z868FxVUcQ6NQ8p5scjslKqf+EMkdwfqiIPKuhmv8v9AwSkY6qbWcG2lFmNclmFpSC64NbqTiSM9e6N2jHOLEUtoFmOZtZljIgUXMG83ka8qZvAT3AraZ/CqCykz0twEPCpuNZyEZZubXstsmgp5Zu4AF69nIN/7KdTNq+ckLuafWk+9ce7mJuv5YlQ93mdWPpXJw977hyUI+HCrL0uWP8hj8i2YXiRkviH7CToXGmvN6UeX7UFyW8XRIeFqJKbwKxQ679KCCc/8Ka4wauGT9eea6sgF6MRY+ae2ogqz4Jv9bZz+NJBhfOQC4gcY800BbjJjFF/46KF5GfVDBBAs=,iv:eM8LhT4P+8TM9rhfcWGgXem9bGWvdZWO1dCUQBvA4nQ=,tag:e5sgdsqJNWawK9bqMdZ+UA==,type:str]
+
+# config.json (server URL + admin token) is mounted read-only at /app-root/config
+volumeMounts:
+    - name: config
+      mountPath: /app-root/config
+      readOnly: true
+    - name: db
+      mountPath: /db
+
+volumes:
+    - name: config
+      secret:
+        secretName: influxdb-ui
+    - name: db
+      mountPvc: true
+
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 128Mi
+
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations: {}
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: influxdb.local.{{ .Values.domain }}
+          paths:
+              - path: /
+                pathType: Prefix
+
+podSecurityContext: {}
+securityContext: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+livenessProbe:
+    tcpSocket:
+        port: 8080
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+readinessProbe:
+    tcpSocket:
+        port: 8080
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+
+startupProbe:
+    tcpSocket:
+        port: 8080
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
+
+resources:
+    requests:
+        memory: 64Mi
+        cpu: 25m
+    limits:
+        memory: 256Mi
+        cpu: 100m
+
 sops:
-    encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
     lastmodified: "2026-06-24T23:26:57Z"
     mac: ENC[AES256_GCM,data:MNOD9VrThAiSzYblGnao8MIETF6viRkerfaCkv7sYbVHqjLDLtcx7ZMPFPwl2ImmFq1D76FY3JparpLhbc6zT6+GNZ+Kp6sZN0RmqOJV0P2sUR+O0TDD5oGDaFpbkVP5+pw34mcK2+kbPHRD50b55oIxym6Yb3HJ8g9J3jd/OSw=,iv:V+n+tb7BkExUx3OYvB08+5Tzwco9o5VmHsSANK1PHKI=,tag:02DRBDJSQvKtYs7dnc3gkg==,type:str]
     mac_only_encrypted: true

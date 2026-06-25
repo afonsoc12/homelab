@@ -21,7 +21,6 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - ../../apps/databases/influxdb-ui/values.yaml
         - secrets://../../apps/databases/influxdb-ui/values.sops.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
