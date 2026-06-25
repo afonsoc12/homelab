@@ -6,17 +6,14 @@
 # --------------------
 labels:
     tier: db
-    # label_2: def
 podAnnotations: {}
-# annot_1: abc
-# annot_2: def
 replicas: 1
 revisionHistoryLimit: 0
 strategy:
     type: Recreate
 image:
     repository: docker.io/influxdb
-    tag: 3.10-enterprise
+    tag: 3.10.0-enterprise
 comand:
     - influxdb3
 args:
@@ -31,7 +28,6 @@ ports:
       name: influxdb
       protocol: TCP
       service: true
-# Uses ports from .ports section, if service is true
 service:
     enabled: true
 secret:
@@ -46,19 +42,6 @@ volumeClaimTemplates:
         - ReadWriteOnce
       storageClass: longhorn-persistent
       storage: 5Gi
-ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    annotations: {}
-    tls:
-        - secretName: local-wildcard-cert
-    # Will assume the first element in .ports, regardless of service
-    hosts:
-        - host: influxdb.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: Prefix
 livenessProbe:
     tcpSocket:
         port: 8181
@@ -85,15 +68,9 @@ resources:
     limits:
         memory: 1Gi
         cpu: 1
-podSecurityContext: {}
-# fsGroup: 2000
+podSecurityContext:
+    fsGroup: 1000
 securityContext: {}
-# capabilities:
-#   drop:
-#   - ALL
-# readOnlyRootFilesystem: true
-# runAsNonRoot: true
-# runAsUser: 1000
 nodeSelector: {}
 tolerations: []
 affinity: {}
