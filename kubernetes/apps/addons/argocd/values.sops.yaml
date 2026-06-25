@@ -265,6 +265,11 @@ repoServer:
     name: repo-server
     # -- The number of repo server pods to run
     replicas: 1
+    livenessProbe:
+        timeoutSeconds: 10
+        initialDelaySeconds: 30
+    readinessProbe:
+        timeoutSeconds: 10
     # -- Resource limits and requests for the repo server pods
     resources:
         requests:
