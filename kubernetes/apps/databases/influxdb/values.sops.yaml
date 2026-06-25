@@ -6,10 +6,7 @@
 # --------------------
 labels:
     tier: db
-    # label_2: def
 podAnnotations: {}
-# annot_1: abc
-# annot_2: def
 replicas: 1
 revisionHistoryLimit: 0
 strategy:
@@ -31,7 +28,6 @@ ports:
       name: influxdb
       protocol: TCP
       service: true
-# Uses ports from .ports section, if service is true
 service:
     enabled: true
 secret:
@@ -46,22 +42,6 @@ volumeClaimTemplates:
         - ReadWriteOnce
       storageClass: longhorn-persistent
       storage: 5Gi
-# Ingress disabled: influxdb3 dropped the bundled UI, so the
-# influxdb.local.{{ .Values.domain }} hostname now points at the
-# influxdb-ui (Explorer) app instead — see kubernetes/apps/databases/influxdb-ui/
-ingress:
-    enabled: false
-    authelia: true
-    className: nginx
-    annotations: {}
-    tls:
-        - secretName: local-wildcard-cert
-    # Will assume the first element in .ports, regardless of service
-    hosts:
-        - host: influxdb.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: Prefix
 livenessProbe:
     tcpSocket:
         port: 8181
@@ -90,14 +70,7 @@ resources:
         cpu: 1
 podSecurityContext:
     fsGroup: 1000
-# fsGroup: 2000
 securityContext: {}
-# capabilities:
-#   drop:
-#   - ALL
-# readOnlyRootFilesystem: true
-# runAsNonRoot: true
-# runAsUser: 1000
 nodeSelector: {}
 tolerations: []
 affinity: {}
