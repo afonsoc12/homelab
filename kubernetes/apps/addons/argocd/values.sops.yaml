@@ -111,6 +111,8 @@ configs:
         # -- Run server without TLS
         ## NOTE: This value should be set when you generate params by other means as it changes ports used by ingress template.
         server.insecure: false
+        # -- Bound concurrent manifest generations to cap repo-server memory
+        reposerver.parallelism.limit: "4"
         # -- Value for base href in index.html. Used if Argo CD is running behind reverse proxy under subpath different from /
         # server.basehref: /argocd
         # -- Used if Argo CD is running behind reverse proxy under subpath different from /
@@ -181,11 +183,11 @@ controller:
     # -- Resource limits and requests for the application controller pods
     resources:
         requests:
-            cpu: 50m
-            memory: 64Mi
-        limits:
             cpu: 250m
-            memory: 768Mi
+            memory: 256Mi
+        limits:
+            cpu: 2
+            memory: 2Gi
 ## Dex
 dex:
     # -- Enable dex
@@ -201,26 +203,26 @@ redis:
     # External Redis parameters
     # externalRedis:
     #   # -- External Redis server host
-# host: "redis.databases"
-#   # -- External Redis username
-#   username: ""
-#   # -- External Redis password
-#   password: ""
-#   # -- External Redis server port
-# port: 6379
-#   # -- The name of an existing secret with Redis credentials (must contain key `redis-password`).
-#   # When it's set, the `externalRedis.password` parameter is ignored
-#   existingSecret: ""
-#   # -- External Redis Secret annotations
-#   secretAnnotations: {}
+    # host: "redis.databases"
+    #   # -- External Redis username
+    #   username: ""
+    #   # -- External Redis password
+    #   password: ""
+    #   # -- External Redis server port
+    # port: 6379
+    #   # -- The name of an existing secret with Redis credentials (must contain key `redis-password`).
+    #   # When it's set, the `externalRedis.password` parameter is ignored
+    #   existingSecret: ""
+    #   # -- External Redis Secret annotations
+    #   secretAnnotations: {}
     # -- Resource limits and requests for redis
     resources:
         requests:
             cpu: 10m
             memory: 32Mi
         limits:
-            cpu: 50m
-            memory: 128Mi
+            cpu: 200m
+            memory: 256Mi
     readinessProbe:
         enabled: true
         initialDelaySeconds: 10
@@ -242,11 +244,11 @@ server:
     # -- Resource limits and requests for the server pods
     resources:
         requests:
-            cpu: 10m
-            memory: 32Mi
-        limits:
             cpu: 50m
-            memory: 128Mi
+            memory: 64Mi
+        limits:
+            cpu: 500m
+            memory: 256Mi
     ingress:
         enabled: true
         annotations:
@@ -273,11 +275,11 @@ repoServer:
     # -- Resource limits and requests for the repo server pods
     resources:
         requests:
-            cpu: 10m
-            memory: 32Mi
+            cpu: 250m
+            memory: 256Mi
         limits:
-            cpu: 50m
-            memory: 128Mi
+            cpu: 2
+            memory: 2Gi
     # -- Environment variables to pass to repo server
     env:
         - name: HELM_PLUGINS
@@ -332,7 +334,7 @@ repoServer:
               mkdir -p /gitops-tools/helm-plugins
 
               GO_ARCH=$(uname -m | sed -e 's/x86_64/amd64/')
-              wget -qO /gitops-tools/curl https://github.com/moparisthebest/static-curl/releases/latest/download/curl-${GO_ARCH}
+              wget -qO /gitops-tools/curl https://github.com/moparisthebest/static-curl/releases/download/v8.11.0/curl-${GO_ARCH}
 
               GO_ARCH=$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/') && \
               wget -qO /gitops-tools/kubectl https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${GO_ARCH}/kubectl
@@ -371,11 +373,11 @@ applicationSet:
     # -- Resource limits and requests for the application set controller pods
     resources:
         requests:
-            cpu: 10m
-            memory: 32Mi
-        limits:
             cpu: 50m
-            memory: 128Mi
+            memory: 64Mi
+        limits:
+            cpu: 500m
+            memory: 256Mi
 ## Notifications controller
 notifications:
     # -- Enable notifications controller
@@ -385,11 +387,11 @@ notifications:
     # -- Resource limits and requests for the notifications controller pods
     resources:
         requests:
-            cpu: 10m
-            memory: 32Mi
-        limits:
             cpu: 50m
-            memory: 128Mi
+            memory: 64Mi
+        limits:
+            cpu: 500m
+            memory: 256Mi
     argocdUrl: ENC[AES256_GCM,data:5HpuciM8u+E05liNUwHO9LmPjS5dQBFn0GZ4fUciICfpmA==,iv:tqjlD3ZQdQBcRKlP3SMsOuWZO19SJIfs6iBKzH7T0c8=,tag:A44ctvNaQC0XcCZ9UihGMQ==,type:str]
     secret:
         items:
@@ -465,8 +467,10 @@ notifications:
             - on-health-degraded
             - on-sync-failed
 sops:
-    lastmodified: "2026-04-19T23:13:12Z"
-    mac: ENC[AES256_GCM,data:5ypxN2i6WjurfvfSvd6S0zs3+hIbZPMekq9cNSlnV1dteHG8VeOmpb4HEK2Swd02Hhc2cOUsDe+cw3BgIBZ1Q1FdhrFGyUnA5ZAlKrvGToS6HVyhYV5hRc9o0lvIBPb8aBqpDF0qE0ufVfPAIDYB/LrNj896xQEPaC7XfepYDzg=,iv:etofsmwIiNQ0Fbo7CF7EXUJwydbBfJAvXq3sC7m7oDU=,tag:S0uPrfZMxSGhLmYx4dUxZw==,type:str]
+    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP|nginx\.ingress\.kubernetes\.io/auth-signin)$
+    lastmodified: "2026-06-26T00:33:25Z"
+    mac: ENC[AES256_GCM,data:fkBqI5JyAK/JIgS9lNJhcVVJwGcj4MvP+It3s7p1tGyRq2SXK5lMVfp7+8Xj65A7ikKfG7v3yONJVkkCK77S+MwBWAawd+vueuhD9XKKittUtWpGaGRBqYKihNzV0iANC09t8RBPQRBGGia6Jrd2UGnY3yelk4GxXoROg6pygXc=,iv:GEDflw4AZgRgAE94izNPxQdBFUYCySKcH8o3JSJlNkk=,tag:F/PvS9EMEihuVWLqfx5BYw==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-19T23:13:12Z"
           enc: |-
@@ -489,6 +493,4 @@ sops:
             =dG1F
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP|nginx\.ingress\.kubernetes\.io/auth-signin)$
-    mac_only_encrypted: true
-    version: 3.12.2
+    version: 3.13.1
