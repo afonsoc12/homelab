@@ -62,7 +62,9 @@ ingress:
               - path: /
                 pathType: Prefix
 
-podSecurityContext: {}
+# influxdb3-ui 1.9.0 runs as non-root user influxui (uid 1500); fsGroup lets it own the /db PVC
+podSecurityContext:
+    fsGroup: 1500
 securityContext: {}
 
 nodeSelector: {}
