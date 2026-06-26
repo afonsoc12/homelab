@@ -22,3 +22,27 @@ crds:
   # This option decides if the CRDs should be installed
   # as part of the Helm installation.
   enabled: true
+# Resource requests/limits for the cert-manager controller
+resources:
+  requests:
+    cpu: 10m
+    memory: 32Mi
+  limits:
+    cpu: 50m
+    memory: 192Mi
+webhook:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 50m
+      memory: 192Mi
+cainjector:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      cpu: 50m
+      memory: 192Mi

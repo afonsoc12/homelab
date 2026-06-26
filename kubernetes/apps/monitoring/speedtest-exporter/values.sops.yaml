@@ -59,10 +59,10 @@ volumes:
 resources:
     limits:
         cpu: 25m
-        memory: 64Mi
+        memory: 100Mi
     requests:
         cpu: 10m
-        memory: 32Mi
+        memory: 50Mi
 
 livenessProbe:
     httpGet:

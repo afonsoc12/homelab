@@ -436,10 +436,10 @@ alertmanager:
         externalUrl: ENC[AES256_GCM,data:ZiU5BBz9bt459q4xWcwCH5JNHdfTw3kkXww5n2JeKcP0q8QmDLXx9Q==,iv:Hjh8GolETKg1eypROi5u+0djj9cnnkXv1idmp7Z+0P8=,tag:sA5bSXydOvEHv+y+fJu+Lg==,type:str]
         resources:
             requests:
-                cpu: 20m
-                memory: 64Mi
+                cpu: 10m
+                memory: 32Mi
             limits:
-                cpu: 20m
+                cpu: 50m
                 memory: 128Mi
 grafana:
     enabled: false
@@ -487,12 +487,43 @@ prometheus-node-exporter:
         monitor:
             enabled: true
             jobLabel: jobLabel
+    resources:
+        requests:
+            cpu: 10m
+            memory: 32Mi
+        limits:
+            cpu: 25m
+            memory: 96Mi
+kube-state-metrics:
+    resources:
+        requests:
+            cpu: 10m
+            memory: 64Mi
+        limits:
+            cpu: 50m
+            memory: 192Mi
 ## Manages Prometheus and Alertmanager components
 ##
 prometheusOperator:
     enabled: true
     kubeletEndpointsEnabled: false
     kubeletEndpointSliceEnabled: true
+    resources:
+        requests:
+            cpu: 10m
+            memory: 64Mi
+        limits:
+            cpu: 50m
+            memory: 192Mi
+    admissionWebhooks:
+        deployment:
+            resources:
+                requests:
+                    cpu: 10m
+                    memory: 64Mi
+                limits:
+                    cpu: 50m
+                    memory: 192Mi
 ## Deploy a Prometheus instance
 ##
 prometheus:
@@ -517,11 +548,11 @@ prometheus:
         logLevel: info
         resources:
             requests:
-                cpu: 100m
-                memory: 256Mi
-                # limits:
-                #   cpu: 2
-                #   memory: 4Gi
+                cpu: 150m
+                memory: 1536Mi
+            limits:
+                cpu: 500m
+                memory: 2560Mi
         storageSpec:
             volumeClaimTemplate:
                 spec:
