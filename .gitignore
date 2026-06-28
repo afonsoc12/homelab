@@ -5,6 +5,7 @@
 !*.sops.tfbackend
 .decrypted~*
 backend.tf
+.ansible/
 .DS_Store
 ._*
 .idea/
@@ -12,6 +13,9 @@ backend.tf
 .env
 /tmp
 .claude/plans
+.claude/todo.md
+.claude/worktrees/
+kubernetes/apps/sandbox/
 site/
 __pycache__/
 .pytest_cache/
