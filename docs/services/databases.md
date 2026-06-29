@@ -10,7 +10,7 @@ All services run on the **k3s-cluster** (`databases` namespace).
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>databases</code></em>
 
-Primary relational database. Shared across multiple apps in the cluster (Authentik, Ghostfolio, Firefly, etc.).
+Primary relational database. Shared across multiple apps in the cluster (Authentik, Firefly, etc.).
 
 [:octicons-book-16: Documentation](https://www.postgresql.org/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/databases/postgres/values.sops.yaml)
 

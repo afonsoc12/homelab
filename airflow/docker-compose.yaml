@@ -6,7 +6,7 @@ services:
     image: homelab-airflow:local
     volumes:
       - .:/opt/airflow
-      - airflow-data:/data
+      - ./data:/data
       - ./local-secrets:/var/run/secrets/airflow
     ports:
       - "8080:8080"

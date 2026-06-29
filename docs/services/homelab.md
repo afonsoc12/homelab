@@ -78,13 +78,13 @@ Self-hosted document signing platform. Creates, distributes, and collects signat
 
 ## Finance
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/ghostfolio.png" class="svc-icon"> Ghostfolio
+### <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/png/wealthfolio.png" class="svc-icon"> Wealthfolio
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
 
-Open-source wealth management. Tracks investment portfolios across brokers and asset classes with live market data.
+Investment portfolio tracker. Tracks stocks, ETFs, and other assets with a clean UI and SQLite-backed local storage — no cloud required.
 
-[:octicons-book-16: Documentation](https://ghostfol.io/en/blog/2021/07/ghostfolio-meets-self-hosting) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/ghostfolio/values.sops.yaml)
+[:octicons-book-16: Documentation](https://wealthfolio.app/docs/self-hosting/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/wealthfolio/values.sops.yaml)
 
 ---
 

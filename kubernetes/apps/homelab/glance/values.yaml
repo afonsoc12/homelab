@@ -247,10 +247,10 @@ configmap:
                         description: Electricity usage dashboard
                         icon: si:octopusdeploy
                         url: https://electricity.local.{{ .Values.domain }}
-                      - title: Ghostfolio
-                        description: Stocks tracker
-                        icon: di:ghostfolio
-                        url: https://stocks.{{ .Values.domain }}
+                      - title: Wealthfolio
+                        description: Investment portfolio tracker
+                        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/wealthfolio.png
+                        url: https://wealth.local.{{ .Values.domain }}
                       - title: Wallabag
                         description: Link aggregator
                         icon: di:wallabag
