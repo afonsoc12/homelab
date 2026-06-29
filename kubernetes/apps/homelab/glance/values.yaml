@@ -249,7 +249,7 @@ configmap:
                         url: https://electricity.local.{{ .Values.domain }}
                       - title: Wealthfolio
                         description: Investment portfolio tracker
-                        icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/wealthfolio.png
+                        icon: sh:wealthfolio
                         url: https://wealth.local.{{ .Values.domain }}
                       - title: Wallabag
                         description: Link aggregator
