@@ -1,0 +1,133 @@
+# --------------------
+# Wealthfolio
+#   - Repo:           https://github.com/afadil/wealthfolio
+#   - Docs:           https://wealthfolio.app/docs/self-hosting/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+#   - Notes:          SQLite-only (no Postgres). DB persisted on a Longhorn PVC at /data.
+# --------------------
+replicas: 1
+revisionHistoryLimit: 0
+enableServiceLinks: false
+strategy:
+    type: Recreate
+image:
+    repository: docker.io/wealthfolio/wealthfolio
+    tag: 3.5.3
+    pullPolicy: Always
+command: {}
+args: {}
+ports:
+    - containerPort: 8088
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        WF_SECRET_KEY: ENC[AES256_GCM,data:uOuiZUZcor+QSVEGHrCnw+rkCg8caOISyMtfoBm5/LcDohHh2maDZT2Wet8=,iv:3UFMJxynCtfPkrWlBAewOSZ9Yanjf81YfKDzniDNU2A=,tag:iVuSVW3PGgLk79mvmkLiEQ==,type:str]
+        WF_AUTH_PASSWORD_HASH: ENC[AES256_GCM,data:9WRKecmvaIEYCQn/zdAjvM1l7fQw8Pv11ZqH2FITRcYu6M/n4Z1P8efXKg/wdC9FOj/qHmSxxcdalutjK2/k9TysVaSussD40QEbEo1MLM+/kqBNJd2JAS9vcN9fAqe2AQ==,iv:bxIsNNYjrg0/AE4blfDh3Yekpa7FtWst0DEP7nVJyDc=,tag:5Eijakcl3P/znMQwEWXJBA==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        WF_LISTEN_ADDR: 0.0.0.0:8088
+        WF_DB_PATH: /data/wealthfolio.db
+        WF_AUTH_REQUIRED: "true"
+        WF_CORS_ALLOW_ORIGINS: https://wealth.local.{{ .Values.domain }}
+volumeMounts:
+    - mountPath: /data
+      name: data
+volumes:
+    - name: data
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 2Gi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: wealth.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+livenessProbe:
+    httpGet:
+        path: /api/v1/healthz
+        port: 8088
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 10
+    failureThreshold: 3
+startupProbe:
+    httpGet:
+        path: /api/v1/healthz
+        port: 8088
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 10
+    failureThreshold: 30
+readinessProbe:
+    httpGet:
+        path: /api/v1/healthz
+        port: 8088
+    initialDelaySeconds: 10
+    periodSeconds: 15
+    timeoutSeconds: 10
+    failureThreshold: 3
+resources:
+    limits:
+        cpu: 500m
+        memory: 512Mi
+    requests:
+        cpu: 100m
+        memory: 128Mi
+podSecurityContext:
+    runAsUser: 1000
+    runAsGroup: 1000
+    runAsNonRoot: true
+    fsGroup: 1000
+securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+        drop:
+            - ALL
+nodeSelector: {}
+tolerations: []
+affinity: {}
+sops:
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-06-29T20:57:01Z"
+    mac: ENC[AES256_GCM,data:8c1CsFVM3St8zzOKSh2Mg+EPthkulZtBuUftHQmg8xjfXOc25j5wL1yosqpytsl4q5DvzxoiEv7ZF1heZlJ3V8XMYpdYMFpw+br8hHuKG4M7RFAf3xlbLgPfaRX8lK1b1yOu7D9XCTR5obJksS6GaRPVKC7StlQsjxXPvXtDfiU=,iv:ea/7rbi+RScKg1MQmlU4EBhEVubB8Cef5fhvF0LHJaM=,tag:0qXZaweJ3TYMeUTbRkmF3g==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-06-29T20:57:01Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/7BEQb10BOMOK5u1xLN6m9rowaAK/uD4Yt/DfwxrICqzSK
+            QCEbG3igii5N/o4BY88c83MiwKzBHX6UQuldP2xIlqT4QO+a3bfjyfIuVWohyoJx
+            fjHVtX3ITzWVEpe/dDaKlKbE/wQY0our/TsnUPGB5NKPmoC/YcimuYa8aAK5psRt
+            1zil3FHEXKsrqIT3sCNvpP6afvsfrtit77hfzXzjnHI/UJ6C8/n6VQWVRZ+fr+m7
+            tT8Ef40TuduutQ409QRlqhdXRI3Gp+h9mjHczEOIFpXFVacRX46SBD/AJojd2/CR
+            znWAWEtwrq+402B+SHKo/JhhveYZTOlwvQIXN7Okwpgu+w08xn6ZsPs4whdG9aEb
+            6FQ3mGp4K4y1/XfhFZy/bZX/YXe/4+oneMX69YbF6ey1WyMTbHcG1n+1uTH2dAaR
+            BMf2pl7h1dqMb1Qr0nMNL0k9ctqO620kbmbB00sAHfeKyEAt7A1s/ae/Vi8/P3C8
+            0fk/zrQEYq/iiMt94HBf2jdvbpQALSMHRyFlp4EJIHtnhvVDdXDscjrrPc2PfnPy
+            cO6c45q12+1HG9TABDtVixpGRTz9XPHNVG8F4jd/0lzdT3w1lSrYKt3K6oPmDuFN
+            eXjVKLsCFx+FOK+xXh+yUGn4WD7BqSI+nwtYJWMY3QYEhyInafR3XjwMQ07XiDXU
+            ZgEJAhA42pt3PvsFwLWfL0t6GS+Pe5ZzLB60GtoVLGfWm9m064ZEgggXmeiJtCRP
+            Pv1EmXN8ylttffHBFVRXz3xPNvFBH8+hctb5R5VxzO69KkO0jV0SGI6fwuLfnsI+
+            /6+O6P/Krg==
+            =SGXY
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.1

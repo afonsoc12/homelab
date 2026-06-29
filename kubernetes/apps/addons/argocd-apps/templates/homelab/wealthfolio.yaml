@@ -1,13 +1,14 @@
 # --------------------
-# Ghostfolio
-#   - Docs: https://ghostfol.io/
+# Wealthfolio
+#   - Repo:  https://github.com/afadil/wealthfolio
+#   - Docs:  https://wealthfolio.app/docs/self-hosting/
 #   - Chart: homelab-svc
 # --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ghostfolio
+  name: wealthfolio
   namespace: {{ .Release.Namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -20,7 +21,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - secrets://../../apps/homelab/ghostfolio/values.sops.yaml
+        - secrets://../../apps/homelab/wealthfolio/values.sops.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: homelab

@@ -56,4 +56,4 @@ Media server, download automation, and music streaming.
 
 Self-hosted apps for personal, household, and financial use, plus books and NAS tools.
 
-→ [Productivity & Finance](homelab.md) — Mealie, Ghostfolio, Firefly III, FreshRSS, Glance, Wallabag, BentoPDF, ChangeDetection, Docuseal, Calibre Web, BookLore, Krusader, Scrutiny, Ghorg
+→ [Productivity & Finance](homelab.md) — Mealie, Wealthfolio, Firefly III, FreshRSS, Glance, Wallabag, BentoPDF, ChangeDetection, Docuseal, Calibre Web, BookLore, Krusader, Scrutiny, Ghorg
