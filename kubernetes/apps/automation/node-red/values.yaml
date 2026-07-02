@@ -12,7 +12,7 @@ strategy:
 
 image:
   repository: docker.io/nodered/node-red
-  tag: 5.0.0
+  tag: 5.0.1
   pullPolicy: Always
 
 hostNetwork: true

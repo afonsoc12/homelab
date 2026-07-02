@@ -12,7 +12,7 @@ strategy:
 
 image:
   repository: docker.io/homeassistant/home-assistant
-  tag: 2026.6.4
+  tag: 2026.7.0
   pullPolicy: Always
 
 hostNetwork: true

@@ -9,7 +9,7 @@ replicas: 1
 
 image:
   repository: ghcr.io/alam00000/bentopdf-simple
-  tag: 2.8.5
+  tag: 2.8.6
 
 strategy:
   type: Recreate
