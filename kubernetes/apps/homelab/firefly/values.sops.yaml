@@ -18,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/fireflyiii/core
-    tag: version-6.5.9
+    tag: version-6.6.6
     pullPolicy: Always
 #   restartPolicy:
 command: {}
@@ -120,7 +120,7 @@ cronjobs:
       successfulJobsHistoryLimit: 1
       image:
         repository: docker.io/curlimages/curl
-        tag: 8.20.0
+        tag: 8.21.0
         pullPolicy: Always
       restartPolicy: Never
       command:
