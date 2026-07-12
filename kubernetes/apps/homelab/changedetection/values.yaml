@@ -32,7 +32,7 @@ ports:
 
 additionalContainers:
   - name: playwright
-    image: ghcr.io/browserless/chromium:v2.54.0
+    image: ghcr.io/browserless/chromium:v2.54.2
 
 # Uses ports from .ports section, if service is true
 service:
