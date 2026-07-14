@@ -4,7 +4,7 @@
     paths: "{{ docker_compose_stacks_src }}/{{ inventory_hostname }}"
     file_type: directory
   delegate_to: localhost
-  register: _docker_stacks
+  register: docker_compose_stacks
 
 - name: Ensure base directory exists
   ansible.builtin.file:
@@ -20,7 +20,7 @@
     group: "{{ ansible_facts['user_id'] }}"
     mode: "0750"
   become: true
-  loop: "{{ _docker_stacks.files }}"
+  loop: "{{ docker_compose_stacks.files }}"
 
 - name: Sync stack directories to host
   ansible.posix.synchronize:
@@ -30,22 +30,23 @@
       - "--exclude=secrets.sops.yaml"
       - "--exclude=.env"
     delete: true
-  loop: "{{ _docker_stacks.files }}"
+  loop: "{{ docker_compose_stacks.files }}"
 
 - name: Check for secrets files
   ansible.builtin.stat:
     path: "{{ item.path }}/secrets.sops.yaml"
   delegate_to: localhost
-  register: _secrets_stat
-  loop: "{{ _docker_stacks.files }}"
+  register: docker_compose_secrets_stat
+  loop: "{{ docker_compose_stacks.files }}"
 
 - name: Decrypt secrets to dotenv
   ansible.builtin.command:
     cmd: "sops --decrypt --output-type dotenv {{ item.item.path }}/secrets.sops.yaml"
   delegate_to: localhost
-  register: _env_contents
+  register: docker_compose_env_contents
   no_log: true
-  loop: "{{ _secrets_stat.results }}"
+  changed_when: false
+  loop: "{{ docker_compose_secrets_stat.results }}"
   when: item.stat.exists
 
 - name: Write .env files on host
@@ -54,7 +55,7 @@
     dest: "{{ docker_compose_base_dir }}/{{ item.item.item.path | basename }}/.env"
     mode: "0600"
   no_log: true
-  loop: "{{ _env_contents.results }}"
+  loop: "{{ docker_compose_env_contents.results }}"
   when: item.stdout is defined
 
 - name: Create docker networks
@@ -72,7 +73,7 @@
     build: never
     recreate: "{{ docker_compose_recreate_policy }}"
     remove_orphans: true
-  loop: "{{ _docker_stacks.files }}"
+  loop: "{{ docker_compose_stacks.files }}"
   loop_control:
     pause: 5
 
