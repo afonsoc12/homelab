@@ -12,7 +12,7 @@ collections:
     version: "2.2.1"
   - name: community.general
     version: "13.1.0"
-  - name: git@github.com:k3s-io/k3s-ansible.git
+  - name: https://github.com/k3s-io/k3s-ansible.git
     type: git
     version: "1.2.1"
   - name: artis3n.tailscale

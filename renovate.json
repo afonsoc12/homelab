@@ -53,8 +53,8 @@
   },
   "packageRules": [
     {
-      "description": "Ignore git SSH URL picked up natively by ansible manager — handled by custom manager",
-      "matchPackageNames": ["git@github.com:k3s-io/k3s-ansible.git"],
+      "description": "Ignore git URL picked up natively by ansible manager — handled by custom manager",
+      "matchPackageNames": ["https://github.com/k3s-io/k3s-ansible.git"],
       "enabled": false
     },
     {
@@ -209,7 +209,7 @@
       "description": "Update k3s-ansible git collection in Ansible requirements",
       "managerFilePatterns": ["/^ansible\\/requirements\\.ya?ml$/"],
       "matchStrings": [
-        "name: git@github\\.com:k3s-io/k3s-ansible\\.git\\s+type: git\\s+version: \"(?<currentValue>[^\"]+)\""
+        "name: https://github\\.com/k3s-io/k3s-ansible\\.git\\s+type: git\\s+version: \"(?<currentValue>[^\"]+)\""
       ],
       "depNameTemplate": "k3s-io/k3s-ansible",
       "datasourceTemplate": "github-releases",
