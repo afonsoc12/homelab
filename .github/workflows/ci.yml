@@ -49,8 +49,10 @@ jobs:
       - name: 🔍 Run yamllint
         run: uv run yamllint .
 
-      - name: 📦 Install Ansible Galaxy collections
-        run: uv run ansible-galaxy install -r ansible/requirements.yml
+      - name: 📦 Install Ansible Galaxy collections and roles
+        run: |
+          uv run ansible-galaxy collection install -r ansible/requirements.yml
+          uv run ansible-galaxy role install -r ansible/requirements.yml -p ~/.local/share/ansible/roles
 
       - name: 🔍 Run ansible-lint
         run: cd ansible && uv run ansible-lint .
