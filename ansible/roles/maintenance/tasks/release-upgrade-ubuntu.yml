@@ -15,4 +15,3 @@
   ansible.builtin.reboot:
     reboot_timeout: "{{ maintenance_reboot_timeout }}"
   when: "'No new release found' not in maintenance_release_upgrade_result.stdout"
-  serial: 1

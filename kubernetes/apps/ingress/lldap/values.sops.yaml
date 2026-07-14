@@ -57,10 +57,10 @@ ingress:
               pathType: Prefix
 resources:
     limits:
-        cpu: 25m
+        cpu: 250m
         memory: 128Mi
     requests:
-        cpu: 10m
+        cpu: 50m
         memory: 64Mi
 
 livenessProbe:
