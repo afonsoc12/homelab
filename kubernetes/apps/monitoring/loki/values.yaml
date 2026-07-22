@@ -7,7 +7,7 @@
 ---
 test_pod:
   enabled: true
-  image: docker.io/bats/bats:1.13.0
+  image: docker.io/bats/bats:1.14.0
   pullPolicy: IfNotPresent
 
 loki:

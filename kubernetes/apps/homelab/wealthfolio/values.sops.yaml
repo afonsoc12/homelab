@@ -12,7 +12,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/wealthfolio/wealthfolio
-    tag: 3.6.1
+    tag: 3.6.2
     pullPolicy: Always
 command: {}
 args: {}
