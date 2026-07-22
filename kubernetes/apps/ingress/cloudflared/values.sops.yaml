@@ -7,7 +7,7 @@
 replicas: 2
 image:
     repository: docker.io/cloudflare/cloudflared
-    tag: 2026.7.1
+    tag: 2026.7.2
 service:
     enabled: true
 ports:
