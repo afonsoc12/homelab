@@ -17,7 +17,7 @@ def dagbag():
     dag_folder = Path(__file__).resolve().parent.parent / "dags"
     with patch("libs.t212.client.Variable") as mock_var:
         mock_var.get.return_value = "test-value"
-        bag = DagBag(dag_folder=str(dag_folder), include_examples=False)
+        bag = DagBag(dag_folder=str(dag_folder))
     return bag
 
 
