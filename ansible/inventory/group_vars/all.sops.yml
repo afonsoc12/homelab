@@ -7,7 +7,7 @@ ansible_ssh_private_key_file: ENC[AES256_GCM,data:KkoBnrFBrnKqTg9lXvGK/AQSMg==,i
 # Role: tailscale
 # ==================================================
 tailscale_authkey: ENC[AES256_GCM,data:GG1tW0EXk86nWg/jX6hXIb0hP5zHStHj/8mkk60x3DYfruj6LY4slHbxhX/v/ua64nHi7vbsw5VKUYpqCN8=,iv:VyI1gGdTnrmvxsfWOAGztpklgzTbe6P7KUNwd5dRir8=,tag:49afwdcUZOSXC0kejGiYyg==,type:str]
-tailscale_version: 1.98.5
+tailscale_version: 1.98.9
 tailscale_args: --ssh
 # ==================================================
 # Role: maintenance
