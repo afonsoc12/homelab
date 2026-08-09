@@ -91,6 +91,12 @@
       "enabled": false
     },
     {
+      "description": "Keep HELM3_VERSION pinned to the 3.x line — it's a Helm v3 binary used specifically to work around helm-secrets not yet supporting Helm v4's plugin format; bumping to v4.x would defeat the pin",
+      "matchDepNames": ["helm/helm"],
+      "matchFileNames": ["kubernetes/apps/addons/argocd/values.sops.yaml"],
+      "allowedVersions": "<4.0.0"
+    },
+    {
       "description": "Group ArgoCD app-of-apps minor/patch updates",
       "matchManagers": ["argocd"],
       "matchFileNames": ["kubernetes/apps/addons/argocd-apps/**"],
@@ -148,6 +154,16 @@
       "depNameTemplate": "jkroepke/helm-secrets",
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver-coerced"
+    },
+    {
+      "customType": "regex",
+      "description": "Update helm3 version in ArgoCD init container (helm-secrets delegate)",
+      "managerFilePatterns": ["/^kubernetes\\/apps\\/addons\\/argocd\\/values\\.sops\\.ya?ml$/"],
+      "matchStrings": ["- name: HELM3_VERSION\\s+value: (?<currentValue>[^\\n]+)"],
+      "depNameTemplate": "helm/helm",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver-coerced",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
     },
     {
       "customType": "regex",
