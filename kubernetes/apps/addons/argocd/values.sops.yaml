@@ -19,7 +19,7 @@ crds:
 global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: ENC[AES256_GCM,data:pbuQ7mygL38dSlQticUfm/Sw/v+ZdMoPNX8=,iv:AI96H+Rpr0rRZh6nMtJglZdhqS7E9SNFeBF1NEIVkaE=,tag:yBe8fU9t+Etshdo7BPc2mg==,type:str]
+    domain: ENC[AES256_GCM,data:kBxftVuVqJLy5+7Esmop2RT66UKf2hx62HI=,iv:z0tr7Y33fRV1824P+yoRtOUl5Nye/kj27lg1wS+LftU=,tag:UD86IPiCXlngOg6ygsfUbQ==,type:str]
     # -- Common labels for the all resources
     additionalLabels: {}
     # app: argo-cd
@@ -40,7 +40,7 @@ configs:
         create: true
         helm.valuesFileSchemes: secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import, secrets+age-import-kubernetes, secrets,secrets+literal, https
         admin.enabled: "false"
-        oidc.config: ENC[AES256_GCM,data:gErD3EaFIXRJZXngsKf2b3Cy4GgN372YJGPkQyg5EtxsA5hKnIAsxGW2KnSw2pEREY00MYJuCtPsikdXrn88/s/OR3eqomFbf6reX2q0E+W+vmK2DTzZ6ioRthcpfZOn7pAp4NUGH8ENcevbrM/6rCTA+2JY0eFvkAPR0pE7EZ4Yn/H9K2rmplKl1+44Xhmj/EqmswPU+NdTI1cq8km3Uu/2Y0QMsVD1S8vVb245JLCvIRlqSaYX3a5tUXhfgawq1spDeZIGhCqzxqxqQxSkSXBlKi/Ou27b20Qk7eK2GBfCdE/ju8JlEEY=,iv:e4j9AW5TPGhf3pojLliBi2aOokKpSEyZSWMJG3Tdyag=,tag:xui4PgKlK7me3vZhIpINPw==,type:str]
+        oidc.config: ENC[AES256_GCM,data:lLrj5t3JQ718+gg9OsIpgfXGPWLoMbvC+Q4hwxpGvgDo7veLIF7jPgt1huGScfp9AXgvkNkWCxBzS4PHCB/HuQHnOEePXOa1LjqrvEKGokho6PY1peeim6XIa3r06lRuFwquhjFbZOuOxZ4UdEnaAst2M5rNUXI1pTk63qDer3LWQUYsrL6ufu17Y8JK1LE3YVRGLHohYgbHyzJVm73IfjXvrVK/Op5w/EghPZzSlEO+IEPQVLHGOlvYJdmrbKMR1Xda6elusG+eo9tnSanOmKid1ks/6OhZZ/V8oNLtzFuLX19lk1w9R74=,iv:KJkJTg7aM5CAKrRRI1++mL8EO0QRax2k9pgK2tmc5Yo=,tag:jHyYoTdXapYz84uqDToJzQ==,type:str]
         oidc.tls.insecure.skip.verify: "true"
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
@@ -135,9 +135,9 @@ configs:
         #     command: ["/bin/sh", "-c"]
         #     args: ["cat *.yaml | yq"]
     secret:
-        createSecret: ENC[AES256_GCM,data:PrrJOA==,iv:ShfoOh6fQR/CfFr7qR0duIr6MbdHdoVDHwXdjcb6jww=,tag:9Dnl0YuukYFocsJ5Dd/SnA==,type:bool]
-        oidc.authentik.clientId: ENC[AES256_GCM,data:iWf7wkeuVPb23D5LW1z2ubh50ZD3bMyRn9T3K4fHSx9Ke/kSmkC9nQ==,iv:AaqWKJjalnxd9mqlYqosY0/u1/dtfMvMm8W1m0L8jJ8=,tag:QBO+V+iP9t+zMI3YN13bvA==,type:str]
-        oidc.authentik.secret: ENC[AES256_GCM,data:ARt+3GL4wmvPC4z5uyDAYaDMzaohbI9uR3NHrDTIHXdGycRXCfbu+R6qsagMlLzVHcvE08JkiAjSf6INbi/D3qX7AsQzfQV1Vg5CHg9MoVTFORtJBkiLUQfxk5KBu7fF6nhWoLm2e0TSfrjt+6J9kmY0uLCiR7iGUqEOpwMYFts=,iv:OUmaJ5c2VOEyFtBQnhPvf3eKS3yG10U0C99PhxGaRRU=,tag:eUVZzEyu3QZVc+wGczL78w==,type:str]
+        createSecret: ENC[AES256_GCM,data:IwMvWQ==,iv:UYdQr0MECB7FEg9v+5iDIQjSca4osrXEnkOOvSf88ek=,tag:sBjyXYDcX9EOy6fSH8WFHQ==,type:bool]
+        oidc.authentik.clientId: ENC[AES256_GCM,data:V1XJtBqOuPYanGjw6iClmIEnr3lUzCezil5URC+x2l8pZGeCGukWRQ==,iv:sI9h6Ig+y9QL9ocgJjd0T5a0s2eyFcvdiA/ZNcsjKvE=,tag:GAZG40QhV8kCw47d79eVUw==,type:str]
+        oidc.authentik.secret: ENC[AES256_GCM,data:6q5Q4iehh9KD/2ol+MVnCCD5t5dj91h8RGr6y0eFfk8MW4PtgNjTzABNUgMZJ+3W9SHmf1iPy3eSn004LVvGvKhdQe559I8qxlrX1WxGUHqaooCLbVUQWcBBfVLHp0AkM9elmZ9/vYcWe/VUExQxuxfuXdKf+b7UW+pSRZGEM6Q=,iv:H3wlvLVkGckTf3DUBIFl5mhaNU3506m7twaF6ZMZ1Hg=,tag:qDEqkwyrhDrdRaIoUw+ikg==,type:str]
     rbac:
         # -- Create the argocd-rbac-cm configmap with ([Argo CD RBAC policy]) definitions.
         # If false, it is expected the configmap will be created by something else.
@@ -313,8 +313,13 @@ repoServer:
           value: "true"
         - name: HELM_SECRETS_DECRYPT_SECRETS_IN_TMP_DIR
           value: "true"
+        # helm-secrets' plugin.yaml still uses the legacy (pre-apiVersion) manifest
+        # format, which Helm v4's plugin loader doesn't register as a subcommand.
+        # Helm v3 loads it fine, so the wrapper delegates the actual "helm secrets"
+        # invocation to a pinned v3 binary downloaded by the download-tools
+        # initContainer, instead of the image's embedded Helm v4 binary.
         - name: HELM_SECRETS_HELM_PATH
-          value: /usr/local/bin/helm
+          value: /gitops-tools/helm3
         - name: HELM_SECRETS_LOAD_GPG_KEYS
           # Multiple keys can be separated by space
           value: /homelab-sops-gpg/sops.asc
@@ -329,6 +334,8 @@ repoServer:
           env:
             - name: HELM_SECRETS_VERSION
               value: 4.7.7
+            - name: HELM3_VERSION
+              value: 3.19.0
             - name: KUBECTL_VERSION
               value: 1.36.3
             - name: VALS_VERSION
@@ -349,6 +356,8 @@ repoServer:
               wget -qO /gitops-tools/sops https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.${GO_ARCH}
               wget -qO- https://github.com/helmfile/vals/releases/download/v${VALS_VERSION}/vals_${VALS_VERSION}_linux_${GO_ARCH}.tar.gz | tar zxv -C /gitops-tools vals
               wget -qO- https://github.com/jkroepke/helm-secrets/releases/download/v${HELM_SECRETS_VERSION}/helm-secrets.tar.gz | tar -C /gitops-tools/helm-plugins -xzf-
+              wget -qO- https://get.helm.sh/helm-v${HELM3_VERSION}-linux-${GO_ARCH}.tar.gz | tar -C /gitops-tools --strip-components=1 -xzf- linux-${GO_ARCH}/helm
+              mv /gitops-tools/helm /gitops-tools/helm3
 
               chmod +x /gitops-tools/*
               cp /gitops-tools/helm-plugins/helm-secrets/scripts/wrapper/helm.sh /gitops-tools/helm
@@ -371,7 +380,7 @@ repoServer:
         # kubectl create secret generic homelab-sops-gpg --from-file=sops.asc=assets/gpg/private2.gpg
         - name: homelab-sops-gpg
           secret:
-            secretName: ENC[AES256_GCM,data:+/+BlF2jyC/XPxIPnIvYBw==,iv:ccGdGiUAcJ/H57YScYZlKZc+iR3zjAWy7nola5iQk/w=,tag:iH//zkniGSG36UrL8rV/7w==,type:str]
+            secretName: ENC[AES256_GCM,data:k85xGI0X9FzTttFLwlnsMw==,iv:rRkb3J6vzX66ytnBONQ2xEQ6CLGIzzjsBCt/4f3CyUE=,tag:NbNpyzA9kqVyWzGKh5oZvw==,type:str]
 ## ApplicationSet controller
 applicationSet:
     # -- Enable ApplicationSet controller
@@ -400,10 +409,10 @@ notifications:
         limits:
             cpu: 500m
             memory: 256Mi
-    argocdUrl: ENC[AES256_GCM,data:qwGqkTaz8C7lZX7eZyDH6a0yrqpQ/wDFTnPJdkUy0o8W7A==,iv:Cvpm8K8etOO5Hz6CyBKZGFmTXKaz5KO+q3yoKljzqPM=,tag:ixN03WAAGWEfBUDmmTq5Ew==,type:str]
+    argocdUrl: ENC[AES256_GCM,data:nIva2PSivcIhOGJNOPUk0YULI+SrcujncmKoxZuFhob/wA==,iv:S0Ovkvux6fZS1rQHf7I1/BP48Vetde+Q0wVb3s7oLIg=,tag:DyaQxfrJHdptJyqbBRTLSw==,type:str]
     secret:
         items:
-            discord-webhook: ENC[AES256_GCM,data:BSUZrowoej9npdv7szy4bCoaNmtAdfP9yW83rasy5RKK6CkLJq4dAZHHdGwmLgAYt5q1WoODCWW5yG/Tp/cFRC5jWOrQ0xHsnYNHC0UmlQe719gC7WPr1rX1b/ESfRUIK+o1sHERs08aSkHN4gTdYnDqgHxevB5RMQ==,iv:WiEabEeM52PIf8K3yxg6mMmFpwKTyDnQtcXI5KiRKaw=,tag:6BbokD/WuUcHi+QFxqvWXQ==,type:str]
+            discord-webhook: ENC[AES256_GCM,data:Gnt8c/UYkKvZ9Kx3xNbJpsG1Pl+a8vhSH3zQWVwyxgqI7qYBH9k0cVnU5CWGHOIeNt0D2h8ztFd+q5AuBybeH6Jp3DRZ5PqIRSZ6L/b6OF4hP4+NdnEC1VJSy2Z/G18Q2ZZrXCbyEpA/pKiXRQrVOjuK2c7doY7X2w==,iv:5wjnhRs4FHkm+lyfdtV7QynKIc8Qy2HubajVbjMJgo8=,tag:tRZFAMCV1ak4MpgtcAoZoQ==,type:str]
     notifiers:
         service.webhook.discord: |
             url: $discord-webhook
@@ -476,29 +485,29 @@ notifications:
             - on-sync-failed
 sops:
     encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP|nginx\.ingress\.kubernetes\.io/auth-signin)$
-    lastmodified: "2026-08-09T20:48:36Z"
-    mac: ENC[AES256_GCM,data:/UKnK2e2JyHwb1p51p5cwkjm+Sghowam7AyQmLGvdDNEKn88dQW2BOVlOdy3lGStql9TqdHXCiY1JZdtP6D/CU7f8SmEq2EJt3D959ZiU6HsndPsF5q0w3WYVwRnPYnv/EoW6S4jHGNb/MYbf05UlT7Tl/gJfYU8BDkD02lY2CE=,iv:DpWGp297kIh+xSYLxfRrIjxDbDgHAeiZHZ4RFv36n4U=,tag:BbCM+p8tmCvIORqRIo7uTA==,type:str]
+    lastmodified: "2026-08-09T21:12:53Z"
+    mac: ENC[AES256_GCM,data:0lHlV9f20ArmoRuAz+ZktoO6+5tTU0BNtWH7wfkvJPk6bW1LeEqkF0+BBt/aFZHFBD5yiKVcz88FUK+GeWl2P1OcD+hMllWHnDYFqELo2DF0UzOiF4gUG7k4rUPoInuwwFLlfDG/445uSmyUXdv2BtuS4/0MNbXll+k6Ll/AVN8=,iv:mg8ba4iOXwZFmKUsoER+oKGs6wox2Pkr40/CZjVfLOo=,tag:bkoN8rQ4JvQKWjJrkr+7oQ==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-09T20:48:36Z"
+        - created_at: "2026-08-09T21:12:53Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAg1CduVWvO4zxoOKwD9lS60Ie9LKVDFLzSb4twu6EBUsO
-            HUExbAzIniNaugVvhEF5nvjUYPUW0y/nbbXvkaRdC6GJ23lOP2AJBsVYjSoK9qoF
-            syWpeoYUyDtC6qdsAsnZcGyHDgQ1S3Mtt2XmyLAdA6YERuC08vu3QG3tlX0OJMxa
-            Xu5q1sjtFU+ZAuF0++LU+5RVSnaSQvjr34SKbdsKNjJNa4BxsXb5+78WtRQ4UfHO
-            32I+SlaCsJgaKnXKNHYFo5SfGh1LhvIQ4QRF8iF2I7IF4r9926YQwNHKPBHyGN6t
-            wIpz3mrGI4mM86fDzu6FES+ejMOKxf3Np7qAEMOcIcag4p4085kszH/KKOwd34aU
-            cXbHST24Hq3M01y27pLj1dzzISuWhkH1ZICTsOkIkDoh2H1ZhVn+q77Ga8sNiW3D
-            ZPnRf9lEkX6arlZNdXz65W81eInoGeIWT3VWQyDOkpE71K+W1gReWw9tpM1XaWwJ
-            D69/c8HS6AbhNoEWOVZoavZfkA1MwDWeX7evpcWsYLvu6uRHSnyXW9Q7Hy/yPYzv
-            0TJf4ntQStkwcAFfFZRqmq6coMY4pS2ZpfqBNp2jrEbYx7FE+v3dEMsqsXYVtygl
-            OpDLwbf9nChG8zSCd/1/U2VbM4uKUidVwbaJiwgwekrlm/FtYLzMX2TY2CM+lz7U
-            ZgEJAhAvFd/EvBIYIQ+1q1wgHz31wjoi1jZgtp9BRD1zJApgPIyNEkZa58QFGjvN
-            ATit3cSR736IOUXYfn1EhYlUTbNkZu2rjO0BPtKhngeW/tUdPKGEVfCisBhY2EZl
-            8VpvfAC0bA==
-            =T4GC
+            hQIMA5NT/LvuRqeGARAAqZ+XVxRXTq5yQUDJ9JfW052CNPfITf0kQ5a0Fyg0VfdW
+            qGvHcqthlQomRi0hztIiDEJIsERrzE5i4/1jd8rNUIVaQ06eNrySagOFiKp8Fl7A
+            Krw4K7dPyz/sHOAme+lfd4O76kKHOyaMWXkbIrj/5lJzKhne0N98mrdrKjJWTHSr
+            zNDDvkalNedQNNSCSJdr0M3FwJ937xr73uMYlrKkBwnHeEJDe2bQZdg8MFCGZS7D
+            fkE6jon4iOL9fLjL85ZyhKYpLr7QuQ5a4Bwhvt0rNo0MAUEdOJlvs4hNlDgR/Tpn
+            C7+5tmCTmYYp/3sYfAX+QwDK5pm+SxI5yuNAEEOpcxWhkPif8m1G5FOXOoQp54ba
+            hhPGg9IarLXGi8L9SMIFQ1uWcDjmZuIEYIC6e4r/VvDYbiliqTlYiS+SYvAxePDI
+            P9C6yepjYMMi16NZ2jfy0cUrlNaCxITS3ypFUllit3JOI2Si2I6hQwHkeYO2QAxD
+            nr7q2u2I5MFnoMflEVmEvEcnw0oAXIBVFuVQF0QmhP9ezf1BRM6p2P091wFAN6PR
+            U5HmDTKD4hZ1YfoRZkR3k5dI7Cjr7GYKD06PUegmxYqapxSnMNYoFSvW4lDFvAQi
+            MYPExA6KLSTFrrDh2CffRd6wQDBvwFG+3CT6jjTZyMUCiuwUP+84q6pLZEkQWwnU
+            aAEJAhDFO+sXNoUvyGazrjLXvRenruMt2k77+0q3VK66r4d6+AhtrmKQKG1XR98J
+            o+pdIUoPJKOW8qtvxk7q8Epa2t39lelkXGUMgs1ZGnBfaSAwBuAp0mal7kdbLRu2
+            aJfCTEi1b2Tf
+            =XuAj
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
