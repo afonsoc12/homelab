@@ -11,7 +11,9 @@ image:
 
 restartPolicy: Always
 command: {}
-args: {}
+# --mode=admin enables database/token management (Create Database, etc.) in the UI
+args:
+    - --mode=admin
 
 ports:
     - containerPort: 8080
