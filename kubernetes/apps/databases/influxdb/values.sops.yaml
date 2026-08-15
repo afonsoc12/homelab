@@ -23,10 +23,10 @@ args:
     - --object-store=file
     - --data-dir=/var/lib/influxdb3/data
     - --plugin-dir=/var/lib/influxdb3/plugins
-# explorer-ui listed first so ingress (which always targets the first port) routes to the UI
+# influxdb-ui listed first so ingress (which always targets the first port) routes to the UI
 ports:
     - containerPort: 8080
-      name: explorer-ui
+      name: influxdb-ui
       protocol: TCP
       service: true
     - containerPort: 8181
@@ -85,7 +85,7 @@ extraContainers:
           - --mode=admin
       ports:
           - containerPort: 8080
-            name: explorer-ui
+            name: influxdb-ui
             protocol: TCP
       # influxdb3-ui runs as non-root user influxui (uid 1500); the pod's fsGroup grants it
       # group write access to the ui-db PVC without conflicting with the influxdb container
