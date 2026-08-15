@@ -13,7 +13,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/influxdb
-    tag: 3.11.0-enterprise
+    tag: 3.11.1-core
 comand:
     - influxdb3
 args:

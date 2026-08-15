@@ -3,7 +3,6 @@
 #ENC[AES256_GCM,data:Q8MBYOvzUIXlOsDq6wuW4Gxwyx/I6zjSxQbP0GOGGmbD/eQ9ZxPBUDcUWq2NYrE=,iv:tpqhhsh7YBgWgSgmA2g76qdCKF9apWE0Pfu2qmVGSI0=,tag:PQK18ksBn5hWayLEyv9Z3g==,type:comment]
 #ENC[AES256_GCM,data:HTXisfshiUArKKeltACvZR2Iz6WF,iv:P3upSvrSSvdzrH0hgbIA+N37WuAGLe75u7nej0KMkNw=,tag:zGPnGrYBVBfMLXmsxCgJbQ==,type:comment]
 domain: ENC[AES256_GCM,data:xD/g+ZFyav2iVGmP3w==,iv:9/CP/lG9QOpxLS2h+ibcrmzfEFNE19pxA8l2zdBeiCs=,tag:pHIDiY2GW2hvqlttX4MBNQ==,type:str]
-domain_jrs: ENC[AES256_GCM,data:yUbQwZDorGm+IVteXu3puBZFO4AhKFWdKSUT,iv:COJh6FhxChxpNqU+mSazq6nvBvTBho7biuSaPLxrMPA=,tag:ytbaEfQ6Nq8Ke1w5qjjkoQ==,type:str]
 domain_ldap: ENC[AES256_GCM,data:F4Lhgz8t/hdVpKYNDQlqWCN3tw==,iv:mAZNjE9tx1s8blTTnu0vg8RHEGU8rvbj8l9U+OcWGlk=,tag:sll3B94tA5ps8+LHhLcX1Q==,type:str]
 authelia:
     service: ENC[AES256_GCM,data:+cJ5GteGAnCZS81tc1M7n8LoZKrDVaZgkoUvh7aoC5c85A==,iv:gBNKgNZov8Sy+fLlWJm9CrMXgkIuY8dt/DGqatHgP/c=,tag:JDPs5zGtIqzEz6xaeNNcxw==,type:str]
@@ -25,8 +24,8 @@ ips_tailscale:
     k3s-m2: ENC[AES256_GCM,data:1525Yw236kXwJInD,iv:pUX3w6bSat0RA6hh+DjatkE0Jch/nCtsM+oxaU7wqPY=,tag:9ZS8PYq9Y5GSTrsLtYLhCg==,type:str]
     k3s-oci-m3: ENC[AES256_GCM,data:HjX1hWhriLQIF3WFxPc8,iv:oYpPpjWOGlDs5ZXm1qyNh5AikpQcrD7mLIsmEUTC8C0=,tag:bAbPr8gaHBa7Wr7bvlJjnQ==,type:str]
 sops:
-    lastmodified: "2026-08-09T17:10:29Z"
-    mac: ENC[AES256_GCM,data:g3W4Ih04iiCetNtMp1jBzXn5igayJJIzIKwxXrMOpPH2Ps8bkv0f0E33Ta0Tw99Gb2Zz31lMUsSiupX/R++W1v49qIuHAcBxgo7VPE/0Snrcuq+re8kpWjgwDUvOkTekaKF6BJLfjPZxuAvXpuYCq61sy0Lx+I0VC5G2u/P7x/s=,iv:/KHoNUfC1LtKERudH7dzLyWEmtx53dzPoWTL0tru/yY=,tag:xCmd03gz2uMOaaBFjC8bWw==,type:str]
+    lastmodified: "2026-08-15T12:02:26Z"
+    mac: ENC[AES256_GCM,data:u9i4eYFqb65CZebr150/zXAFiP0zJyCGRi7TR0O90I6iLSKdsfOcQZBYC8Uccq/9voFulPjY4rgw4xMt6jOadHTLH77rVOpC3fDC9DT9JH5cZFzQWp04qGsUWaj3J0/7AuwPDonhCnU33xS1jGBeBc1WRAc0ajzhn8ECG1iGTk4=,iv:SEB9MfCxe87eV1LV0jSr57ZAJQXaoQx2cZzI4HIg7Ko=,tag:fNzOjXKWxMJgVcJs5cOREg==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-05-05T00:27:42Z"

@@ -113,14 +113,11 @@ certificates:
       reflectNamespaces:
         - sandbox
         - ingress
-    - name: jrs
-      dnsNames:
-        - '{{ .Values.domain_jrs }}'
-      reflectNamespaces:
-        - clients
 sops:
-    lastmodified: "2026-05-02T19:51:49Z"
-    mac: ENC[AES256_GCM,data:Pms1TURXGc++67jH9gHCBC4fXMM83qVPAYTOqu8AunfOUt4Fd0rv4caRy9kk9IzzRhpqBHRi3JHCAmDInZc4fbaukFejdN0IylXFPM5cJNA/TN6ynjDlOtqmG9Sjrhd0vrDiRC0i2p/yh91b/QeMu6JVhyfLg9r+RCLJMDuziH4=,iv:n2cDxr9KScToyBl3xv8c+VmEYu+ua4sVZomGGDzjp9Y=,tag:QD1ptKIOPP5Z9F4DeLrUXQ==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-08-15T12:02:56Z"
+    mac: ENC[AES256_GCM,data:0J2wVnx8PH4W5/eZ+PmU5Drxn89Pzd8D8iCDbvXYmMjbrzvTM3GtsPgUmVNOa3p9SJoEYMpiFH0feuudJ4sPYOqKnPewXQdmPJsbJ3aHPMwXp293A+5ftC0apyu/XYwRGSb3PkdrlbnzuxKrowMMtGJhlHO0rzpWmnGfrKs/vhA=,iv:ZMk97y1poIigo7HeGUv/vVLr5Vp06dnvLxuuWy9kfhM=,tag:FNj/tLA6lHpUCZSJ8SbInw==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:40Z"
           enc: |-
@@ -143,6 +140,4 @@ sops:
             =NxlC
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData)$
-    mac_only_encrypted: true
     version: 3.12.2
