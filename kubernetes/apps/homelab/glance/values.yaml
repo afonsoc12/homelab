@@ -267,6 +267,10 @@ configmap:
                         description: Wedding Site
                         icon: https://mariana-afonso.local.{{ .Values.domain }}/wp-content/uploads/2023/12/logo.png
                         url: https://mariana-afonso.local.{{ .Values.domain }}
+                      - title: Bambuddy
+                        description: Bambu printer management
+                        icon: si:bambulab
+                        url: https://bambu.local.{{ .Values.domain }}
                   - title: Home Automation
                     links:
                       - title: Home Assistant

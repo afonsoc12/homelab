@@ -6,6 +6,16 @@ Self-hosted apps for personal, household, and financial use.
 
 ## Productivity
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/bambu-lab.png" class="svc-icon"> Bambuddy
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Bambu Lab 3D printer management. Monitors print jobs, camera feed, and printer status over the local network.
+
+[:octicons-book-16: Documentation](https://wiki.bambuddy.cool/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/bambuddy/values.sops.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/mealie.png" class="svc-icon"> Mealie
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>

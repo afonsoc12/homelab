@@ -14,7 +14,7 @@ strategy:
     type: Recreate
 image:
     repository: ghcr.io/maziggy/bambuddy
-    tag: v0.2.4.8
+    tag: 0.2.4.8-amd64
     pullPolicy: Always
 hostNetwork: true
 ports:
@@ -27,7 +27,7 @@ service:
 secret:
     mountEnv: true
     stringData:
-        DATABASE_URL: ENC[AES256_GCM,data:aGL8ftxt12HSTFsRF+ibXjmW0Cp2yJunItvUUTRXwsxC4OW2tjnb+zAWBHKBg/57DUzbn+aNkoQdFjMiWJfa8l6gAKtlcExSOMSZEYPgkp5NrE8CF5gnsZKImg==,iv:cs8u8VrWWzvoRD/44aZiDroS3IexjbJeBIgLUkxhbJw=,tag:7Fq/u0Zv9B066kYPWN3iyw==,type:str]
+        DATABASE_URL: ENC[AES256_GCM,data:uDKMKEX+8Nnxd31nsYcAJsHlKGLtjJ1XXgEJVMYQk8NNpiwP/qIhijB2nFdGlxo05uMVefkhdVVIVUXSjb0BOg1LHKDuubEcq5mR4e3XdxWjKNRJA2qMwyBREg==,iv:ScYc5vXzCwj9hRy4pPULN/RwEnL1IXPUzIHXpSAnKUM=,tag:KhPSNxYeWKbMSuOZ4wNpiQ==,type:str]
 configmap: {}
 volumeMounts:
     - mountPath: /app/data
@@ -45,7 +45,7 @@ pvc:
         - ReadWriteOnce
     resources:
         requests:
-            storage: 2Gi
+            storage: 1Gi
 ingress:
     enabled: true
     authelia: true
@@ -53,7 +53,7 @@ ingress:
     tls:
         - secretName: local-wildcard-cert
     hosts:
-        - host: bambuddy.local.{{ .Values.domain }}
+        - host: bambu.local.{{ .Values.domain }}
           paths:
             - path: /
               pathType: ImplementationSpecific
@@ -71,29 +71,29 @@ resources:
         memory: 256Mi
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-07-04T17:39:34Z"
-    mac: ENC[AES256_GCM,data:PheVUk5Pa/mxVQ3q09XEMkAJ4u06POVLe+VSJGeHfizmv49gAjtMIn2qIZfegUViXq6Lden1F4USS9hXb/kXaIrTk4xmgQf0qpnSUJy4xjs/YKZoaQDDv8UzYlMipm19XoSWmYqlIwWm3HA1RXItlQ+rDaqXrHoSnIVezI9qZjk=,iv:cnb5KuAzvMLdXakHs+ATmJPdDngo6fYF/HciAa7AAz8=,tag:5Z4XoB8+q6Y1+NYpu7TT1A==,type:str]
+    lastmodified: "2026-07-04T17:52:05Z"
+    mac: ENC[AES256_GCM,data:8lFhMOyhn09lktQC4apv4WLyGhHKnZN/YX37LiOy0eu/eXufvPneyxDH0vpyMwSGMRX588V4+246v9L+5tJj85oBCyVMMau//DxYG3lED8zHNYtNChBC/aWzP2s38dWpaPOYEve+AK97ij9TfohT4uA4cp7dLg+5yx+Ex5jdIAs=,iv:aLmP9+nI+IZdYH4dkUjha4/FtUMeY35tyHQ9PufQWN8=,tag:gRPJIAPvOWAi3aKiJw6gdg==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-07-04T17:39:33Z"
+        - created_at: "2026-07-04T17:52:05Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAl+XLRxaWkeEqQVFuQTkpbUH8yvEeoUQ2ifzLD0gotJpi
-            xTwBC7H6SmnCPMKO75wP8NnxwK5M3vFWVthfZqLv6ZAJEPvPiwygtCAD5wLSEUsc
-            vuexv8odfVwEJgA2lMsTyVnCI6wMerbFsedMZwAkKNV5Qh4p9spF6zA5vNimoLQw
-            dvnVzapjy9XFxRJXngIvOr4+51IOGbfD6SSPKtorCimJ2p0tpzBmx3ccBlS9/H6g
-            d+AqfX8CNBLmjloTL+bfzxO1FmwQCCRhYAelWyWUMZkOD/feRtTE3GOAeLNy79g8
-            wbLeZAeLWbZySWu38ky1wrua31OTyTQRY8xWvZywLrW39f7X0a6LyWgzKKc1RglJ
-            srmP9FteerkHFafWphB7NhEKY4fujj/Ba8DlBJFrhTx1KML1pq5XpoTKNMMVyvbN
-            s1PLgzUiWzUIpIsFCYC4+trBJaJJCD/Vr9Mmfv3rxWLKYCcler/Yyp2jwgj5dTHK
-            N9Uc6FK6/OEKFhtiJp7nvwrdE4nUSa7/K3m9SwswGSnEbNVrUrStCherSI8rP0pG
-            Jo2XH03UWyMNjp3KEBgJwOPh/wBxZBEwihX1Ma2E0z7mFGBH1d2n4h1+wZmad78W
-            fJjJKrXMZFoiVpadYLfoWXALcJUwohblBRz4dAiDOFtR3ShJ51LziFyumx8kqSTU
-            aAEJAhCK52TAXRwO1ZWUOlfv+tK+MagBGjKO7QHaflDtw1yutK7vq2CVjK8C2V8E
-            Gp2jlqYDNzexsyaIvtmU2VyTokLQEcc0Q2gK3AdKYU42s9z2VuRhCAgT0MVogaqS
-            lv8J3f8A4F4w
-            =Ghgi
+            hQIMA5NT/LvuRqeGAQ//b+BXrV4LiwaWddTy4ahRo1lBrDPvO1et/Ekmskg273ER
+            ys5fDCB0muUhYv+D+dkXYW2YGOXZrEFExa+wiNxxAx43U2iu8S9Zyi9qrxxylK9s
+            BR6SjActWALfYA97OWG+/Al3pQc9b+EaRsKe4vEo0GMS2vMbimPsshMYupDunzBr
+            Fh5blQ/1K7NrXN66n07VJVQflC2kj//YsZpo4rv1rJKYqEKYJ4XLuzM3MuOkRAYY
+            SczNoHIC0fA2gPO9BgueUpRBvlJn7yzN0Valhr8jqsZ1vvXaNJ9x2DXIbxuM8cCp
+            4F7DzrwiSUrQ36EBNjN5PiB4rpcoW3mBDn/raexIVzrpYqMqRyNcWl4kDbpMA82V
+            ozFSZ9ZqipBw6Zl4k+ygsrz+baQlR5RpaqQROLXaMGmbdaucbN7EDd0bQQKJN1TX
+            UKWPOSSk0dRqAdpn/ykwApWXLeKzgzNdpFKrjgXjzC35zYkKyFfadikLDjMVSDsL
+            4yyyibJQrXqo2KrX9EyYmI+kLpyV169IC7Vcowp4j8gxBDnUiO5Iu9wz4+uzM+UQ
+            KBVNuiLh8/Ef0K92s+ubK7bzm6y9dC8QXQNAOSFszNOENwLqhrDBjcmp7bVLCEWt
+            ZFZ+vBmzk3HA1YLM6Y4/DcPhkXwMrIpL44NTdZ/g9pnbExycIb2+IxqzGic3Ju7U
+            ZgEJAhDwR6JZ9g2FSufN1s16HU5iU+cIfpiVO3I1J7iTAJ8hy7VkhsUqSBOmOGi7
+            WRZAHFD/QGkxlivwM5KCsuAlU5NzvNxQDd7Up2CiogmywVhKeFapR+UvIa/UaDi3
+            DzizE3XHYQ==
+            =6vUy
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
