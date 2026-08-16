@@ -88,6 +88,9 @@ Network-wide DNS ad blocker. Acts as the local DNS resolver for the LAN, blockin
 
 [:octicons-book-16: Documentation](https://adguard.com/en/adguard-home/overview.html)
 
+!!! warning "DNS queries timing out but the web UI works"
+    Symptom: the AdGuard web UI loads fine, but DNS resolution hangs/times out for LAN clients (and even `dig @127.0.0.1` from the host itself). Check for a backlogged UDP receive queue on port 53 inside the container (`docker exec adguard netstat -tlnup` — a large `Recv-Q` on `:::53` means queries are piling up unprocessed). This has been seen after sustained upstream DNS-over-TLS timeouts (e.g. to `8.8.8.8:853`) appear to wedge the query pipeline. Fix: redeploy the stack via the `docker_compose` Ansible role (`uv run ansible-playbook ansible/playbooks/docker.yml --limit rpi-4b`) rather than a bare `docker restart`, so config/compose drift is corrected at the same time.
+
 ---
 
 ## Network Hardware
