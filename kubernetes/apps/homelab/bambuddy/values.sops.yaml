@@ -1,0 +1,99 @@
+# --------------------
+# Bambuddy
+#   - Repo:           https://github.com/maziggy/bambuddy
+#   - Docs:           https://wiki.bambuddy.cool/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+podAnnotations: {}
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/maziggy/bambuddy
+    tag: 0.2.4.8-amd64
+    pullPolicy: Always
+hostNetwork: true
+ports:
+    - containerPort: 8000
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        DATABASE_URL: ENC[AES256_GCM,data:uDKMKEX+8Nnxd31nsYcAJsHlKGLtjJ1XXgEJVMYQk8NNpiwP/qIhijB2nFdGlxo05uMVefkhdVVIVUXSjb0BOg1LHKDuubEcq5mR4e3XdxWjKNRJA2qMwyBREg==,iv:ScYc5vXzCwj9hRy4pPULN/RwEnL1IXPUzIHXpSAnKUM=,tag:KhPSNxYeWKbMSuOZ4wNpiQ==,type:str]
+configmap: {}
+volumeMounts:
+    - mountPath: /app/data
+      subPath: data
+      name: data
+    - mountPath: /app/logs
+      subPath: logs
+      name: data
+volumes:
+    - name: data
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Gi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: bambu.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+podSecurityContext: {}
+securityContext: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+resources:
+    limits:
+        cpu: 500m
+        memory: 512Mi
+    requests:
+        cpu: 50m
+        memory: 256Mi
+sops:
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-07-04T17:52:05Z"
+    mac: ENC[AES256_GCM,data:8lFhMOyhn09lktQC4apv4WLyGhHKnZN/YX37LiOy0eu/eXufvPneyxDH0vpyMwSGMRX588V4+246v9L+5tJj85oBCyVMMau//DxYG3lED8zHNYtNChBC/aWzP2s38dWpaPOYEve+AK97ij9TfohT4uA4cp7dLg+5yx+Ex5jdIAs=,iv:aLmP9+nI+IZdYH4dkUjha4/FtUMeY35tyHQ9PufQWN8=,tag:gRPJIAPvOWAi3aKiJw6gdg==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-07-04T17:52:05Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//b+BXrV4LiwaWddTy4ahRo1lBrDPvO1et/Ekmskg273ER
+            ys5fDCB0muUhYv+D+dkXYW2YGOXZrEFExa+wiNxxAx43U2iu8S9Zyi9qrxxylK9s
+            BR6SjActWALfYA97OWG+/Al3pQc9b+EaRsKe4vEo0GMS2vMbimPsshMYupDunzBr
+            Fh5blQ/1K7NrXN66n07VJVQflC2kj//YsZpo4rv1rJKYqEKYJ4XLuzM3MuOkRAYY
+            SczNoHIC0fA2gPO9BgueUpRBvlJn7yzN0Valhr8jqsZ1vvXaNJ9x2DXIbxuM8cCp
+            4F7DzrwiSUrQ36EBNjN5PiB4rpcoW3mBDn/raexIVzrpYqMqRyNcWl4kDbpMA82V
+            ozFSZ9ZqipBw6Zl4k+ygsrz+baQlR5RpaqQROLXaMGmbdaucbN7EDd0bQQKJN1TX
+            UKWPOSSk0dRqAdpn/ykwApWXLeKzgzNdpFKrjgXjzC35zYkKyFfadikLDjMVSDsL
+            4yyyibJQrXqo2KrX9EyYmI+kLpyV169IC7Vcowp4j8gxBDnUiO5Iu9wz4+uzM+UQ
+            KBVNuiLh8/Ef0K92s+ubK7bzm6y9dC8QXQNAOSFszNOENwLqhrDBjcmp7bVLCEWt
+            ZFZ+vBmzk3HA1YLM6Y4/DcPhkXwMrIpL44NTdZ/g9pnbExycIb2+IxqzGic3Ju7U
+            ZgEJAhDwR6JZ9g2FSufN1s16HU5iU+cIfpiVO3I1J7iTAJ8hy7VkhsUqSBOmOGi7
+            WRZAHFD/QGkxlivwM5KCsuAlU5NzvNxQDd7Up2CiogmywVhKeFapR+UvIa/UaDi3
+            DzizE3XHYQ==
+            =6vUy
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2
