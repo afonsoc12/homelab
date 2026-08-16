@@ -90,3 +90,4 @@ resources:
 
 podSecurityContext:
   fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch

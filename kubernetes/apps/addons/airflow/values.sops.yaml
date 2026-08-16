@@ -10,6 +10,7 @@ image:
   pullPolicy: Always
 podSecurityContext:
   fsGroup: 50000
+  fsGroupChangePolicy: OnRootMismatch
 securityContext:
   runAsUser: 50000
   runAsGroup: 0
