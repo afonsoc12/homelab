@@ -14,6 +14,13 @@ resources:
       destination:
         name: in-cluster
         namespace: addons
+      ignoreDifferences:
+        - group: argoproj.io
+          kind: Application
+          name: longhorn
+          namespace: addons
+          jsonPointers:
+            - /metadata/finalizers
       syncPolicy:
         automated:
           prune: true
