@@ -75,10 +75,32 @@ resources:
     limits:
         cpu: 150m
         memory: 3200Mi
+livenessProbe:
+    httpGet:
+        path: /health
+        port: 8080
+    periodSeconds: 15
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /health
+        port: 8080
+    periodSeconds: 15
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    httpGet:
+        path: /health
+        port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData)$
-    lastmodified: "2026-08-17T22:59:34Z"
-    mac: ENC[AES256_GCM,data:QhqC+HC7UIBXn+11HaYpbrXt7DzQkUfE8IKtO/jeFNUbc7bTugc/S0TuCNfhmoxAyjiwG70Ubj3ai+XvRW5mYO3YHjcNEBd1pLyuq0H6SHECcFfGMZTb3Pud+9spn/HS4G8mcB0thPHAHgaGuFdwj0ing2vN8O8RX9JtksJeAxY=,iv:+rpMEr9fnkEBFowGSBSKvvZHIq7+1mBge/f2tN2bA/c=,tag:2g0a7uMAMGfjnxkISPP/FQ==,type:str]
+    lastmodified: "2026-08-17T23:19:11Z"
+    mac: ENC[AES256_GCM,data:d2WXX1onyCoiOWfa+4+bRrw6HSsYc7ILFM6myZmRq5codhl8t7pTBu9X3Pug4pqcIweqPjClbvMMx1Ep15Z1xvyLhzkpTt+ry7GOa5mNzlAglFfJFhl54p7TtMzUf/Ar8C4+sB7jCj8JQRPv5yuaos+1jp8wrsCUYs7wlArSC2c=,iv:Xj1dJz+3D62tk3GHMUes/gPY7iR5fZVKLc3j2PykcPw=,tag:VXJdKXzM8mLyPk5VzERrkw==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-05-09T12:13:28Z"

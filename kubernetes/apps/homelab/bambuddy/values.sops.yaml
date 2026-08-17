@@ -69,10 +69,24 @@ resources:
     requests:
         cpu: 50m
         memory: 256Mi
+livenessProbe:
+    httpGet:
+        path: /
+        port: 8000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /
+        port: 8000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-07-04T17:52:05Z"
-    mac: ENC[AES256_GCM,data:8lFhMOyhn09lktQC4apv4WLyGhHKnZN/YX37LiOy0eu/eXufvPneyxDH0vpyMwSGMRX588V4+246v9L+5tJj85oBCyVMMau//DxYG3lED8zHNYtNChBC/aWzP2s38dWpaPOYEve+AK97ij9TfohT4uA4cp7dLg+5yx+Ex5jdIAs=,iv:aLmP9+nI+IZdYH4dkUjha4/FtUMeY35tyHQ9PufQWN8=,tag:gRPJIAPvOWAi3aKiJw6gdg==,type:str]
+    lastmodified: "2026-08-17T23:19:11Z"
+    mac: ENC[AES256_GCM,data:D5hdL70k3zXrHR8BJdbso553h+r2QlOmDlPBQgqsEkKHH9Tz9FiT/79zdmNVpcd8sstk4F/M3Fp72tN+vP3P8da9Ro0Iww5iBovv6nLzMN8A1CEPMbPS9M5vnC7MTE6zXsiZWoy4iiGBYuPf8V3XFzQgq7E4Pp+1Jfa3FDkNvC8=,iv:rW/ED0AeZCDvu5cShHM/jI+4mKffyCyIb2Qe5WzBd2Y=,tag:auzOnHWz/okQnVF0295ZUw==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-07-04T17:52:05Z"
