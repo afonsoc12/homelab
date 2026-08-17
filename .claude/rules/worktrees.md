@@ -9,3 +9,5 @@ built-in EnterWorktree tool.
   drift and cause conflicts later.
 - Create: `git gtr new <branch>` — lands in `../homelab-worktrees/<branch>`
 - Never use `.claude/worktrees/` — it is gitignored and not part of the accepted workflow.
+- After the branch's PR is merged, delete the worktree: `git gtr rm <branch>`.
+  Don't delete it before the PR is merged — the user may still need it.
