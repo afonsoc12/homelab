@@ -42,4 +42,13 @@ resources:
                 periodSeconds: 30
                 failureThreshold: 3
                 timeoutSeconds: 5
+              startupProbe:
+                exec:
+                  command:
+                    - sh
+                    - -c
+                    - pgrep -f 'agnhost pause'
+                periodSeconds: 5
+                failureThreshold: 6
+                timeoutSeconds: 5
           restartPolicy: Always
