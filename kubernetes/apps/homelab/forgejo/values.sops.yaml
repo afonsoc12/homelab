@@ -1,0 +1,82 @@
+# --------------------
+# Forgejo
+#   - Repo:           https://codeberg.org/forgejo/forgejo
+#   - Docs:           https://forgejo.org/docs/latest/
+#   - Chart Defaults: https://code.forgejo.org/forgejo-helm/forgejo-helm/src/branch/main/values.yaml
+# --------------------
+gitea:
+    admin:
+        username: acosta
+        password: ENC[AES256_GCM,data:qKAbRwVsLq6CSsbkF1qQ7YBcZ5DL9uVA,iv:Ls7kP8h+fbqX9/KkyF/ZaOqHt/WRnumCnXYJRgwLHHE=,tag:bHmGuF8yp1KCHtxVOBlOiA==,type:str]
+        email: acosta@local.domain
+        passwordMode: keepUpdated
+    metrics:
+        enabled: false
+    config:
+        APP_NAME: Forgejo
+        RUN_MODE: prod
+        server:
+            DOMAIN: ENC[AES256_GCM,data:9WDWpczL4Q8pU7GYiYVpGbpAH0LfxMY=,iv:vhT+3uxMKnnwwk8wo7Ggz0b/NbWoMyX3z4m8RopapVo=,tag:TG3C7OjW5V+JretO1qlDMA==,type:str]
+            ROOT_URL: ENC[AES256_GCM,data:Qx4GFImwJ35Z+PKlMZmlav0TSn2bVRFxRoWR/m+0tgs=,iv:ThgUurPQ63qNy8jpDYe3c0b9X/yfWAhagS4ec2F4Wh4=,tag:qYyI4OJffmn4MwteZqSwHw==,type:str]
+            SSH_PORT: 22
+            SSH_LISTEN_PORT: 2222
+        database:
+            DB_TYPE: postgres
+            HOST: ENC[AES256_GCM,data:b74rYiQUFvXQU2hFsgi+Lusc0L+U7cyXpWeG6ukZwTGZlKhO0dQi2Iw=,iv:niJgpnsAak3XQ1RgIUu1DiXe/PvnuOdq66rV7B+p0G8=,tag:tzQFHqZT7Pu0hWcgVuf7rg==,type:str]
+            NAME: forgejo
+            USER: forgejo
+            PASSWD: ENC[AES256_GCM,data:LYA1xnBc0GB8gsDgOH6dWNzLmIg=,iv:smGAcz/skG745eU9Ks+dTlG5Rl0Ja+7USSU/NFs8SrU=,tag:fjltdevspzIXQZMGYUrV6w==,type:str]
+        actions:
+            ENABLED: true
+persistence:
+    enabled: true
+    size: 10Gi
+ingress:
+    enabled: true
+    className: nginx
+    annotations: {}
+    hosts:
+        - host: ENC[AES256_GCM,data:rWO2KHEeJvFGpbfA0TdEqMuvzcqoBrU=,iv:dCQl334XvR4KEEprl0+CBMqNI2Z0vLtlgfIIsAh9788=,tag:6PAa2pDcsrq9dF9WOPr0cg==,type:str]
+          paths:
+            - path: ENC[AES256_GCM,data:5g==,iv:jFbPI1QTHD4WsJxVrL5/5YKFzey0pb2S6LMTM+KT6sU=,tag:i7K7BSC8Q1xKpYdX2ulktg==,type:str]
+              pathType: ENC[AES256_GCM,data:c2CGTfRD,iv:1+u6P3Y8I+4yKxdZiEnVQSldJRjkzt5URSCxFsF/RcI=,tag:X8SLBovcMrwyJMfzcgx9iA==,type:str]
+              port: ENC[AES256_GCM,data:Kurwnw==,iv:4X4qv/anYIHyc18gr5QjOi9EMF1aM3XoOuUhZR/t3Sw=,tag:HfBBWYRrDz/EjeyTbnyS0w==,type:str]
+    tls:
+        - secretName: local-wildcard-cert
+          hosts:
+            - ENC[AES256_GCM,data:ALl1NXFHFQY+lCIcMLYMce/PPNxJN90=,iv:M6erHoRf/wzFG4gDn+uhN0ku5HeHJCXuNhU63tPXiuA=,tag:7O8DrMix5eV9OIeQtSHYwg==,type:str]
+resources:
+    requests:
+        cpu: 100m
+        memory: 256Mi
+    limits:
+        cpu: 1000m
+        memory: 1Gi
+sops:
+    encrypted_regex: ^(password|HOST|PASSWD|DOMAIN|ROOT_URL|host|hosts)$
+    lastmodified: "2026-08-16T23:45:01Z"
+    mac: ENC[AES256_GCM,data:L5lMcZKmq0RPzLPUebMev7GhcEHxNfFewJ/VsQ94yApnDa8V3eECZCB4k9lJ+12NHBAUnO+pGXDy74qSZUyHVAuEds1B6W4fYHEEyTLdA/tBPAO/DnEaARqlw+/i2YOuIBWVaqgsyVITRhZ5C1S0DFONuRDTfHdPsvtVgJ0WmfQ=,iv:QJrbfRrTKUuhX+60xQeDQPD2H7VBS+SUklJgqVRMtVM=,tag:kquDe1S4GGxzRfnSKAuUfw==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-08-16T23:22:20Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/+OpbNEYHwP/M/BYtZJIERuyBLcNUZPkPtOMJ5gSnxUm47
+            NhTtkfdxg2hrSviK2Z83S8ogCdMbrDSH8fNElg0XSGVJHcQyT/YnPecWXyaonMbe
+            xGN6ysiHT8jabNHQcvBTSkzYbTQAcz4PQAQLuINnewwfQ7uhwrpyO8Bx3aJ7KnMR
+            42Y10GaGjjrweS7OEj1fWsRq9xShiOq+eARYnUkjOmAWjqr+wDN9WigjKcLWvQyh
+            VWKeLkIL/QSXFOSJZxKzDOsrjO0NiqEr0FhxO4sjG0+4FZ/tqE9qbbMZ43IxQSCl
+            mHov2aHm3peHTHdXpujCgItmwahaRlSp5XNiM0tn1NHinS+wI99W/r68a1DWKjEt
+            xKczrd8hqFdim/bSug+xZ/jiKOwnOF8ezsHIaDZ3Ej/8jB0j+tW2WU9CV7ymf4P+
+            4sw+BVV3o0n6AyS5k6CqJQygo6opgo9W0cmUckp+v2dIUUPYUIsFmWj8L9OxVdof
+            0xVOTBocnix0FyietckYKu5XFF/DZ2e9DpGyD4HmuYEeBgIM2uL06dsl6EMZwwEC
+            yw4rw2II7WvQ0VgHdtAXVne3L8Ppszv1dtSxnuTbrDktM9oHqWsYlIx+JQyLyalt
+            8/DMK+7s0T6BPQqR4dAbrwHd/p1ytsVC5uheocJEi0Brra7yIfGAmAKLDjX5PL3U
+            aAEJAhD01hkkh5IvtVUh1VlFznHzvvmKLowuP9uOMiSTBwLhZASA0rdww8PVtaFQ
+            v3xW7SFH48dU1PEQVbLJEn2p9F/pgeUB6iC/O12IhOMDjJ6o/QASUIoCTQgFKgn4
+            Nmfg2s7lQY0t
+            =mc8+
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

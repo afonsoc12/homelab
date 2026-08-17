@@ -1,0 +1,35 @@
+# --------------------
+# Forgejo
+#   - Docs:  https://forgejo.org/docs/latest/
+#   - Chart: oci://code.forgejo.org/forgejo-helm/forgejo
+# --------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: forgejo
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  sources:
+    - repoURL: oci://code.forgejo.org/forgejo-helm/forgejo
+      targetRevision: 17.1.4
+      helm:
+        valueFiles:
+          - $values/kubernetes/apps/homelab/forgejo/values.sops.yaml
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: homelab
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
