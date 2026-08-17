@@ -54,57 +54,60 @@ kubectl patch pv <old-pv> --type=merge -p '{"spec":{"claimRef":null}}'
 kubectl get pv <old-pv> -o jsonpath='{.status.phase}'   # should print "Available"
 ```
 
-## 5. Recreate the PVC bound directly to the old PV
+## 5. Pre-bind the PV to the exact future claim
 
-Match `storageClassName`, `accessModes`, and `resources.requests.storage` to the old PV's
-capacity — set `volumeName` explicitly so it binds to that PV instead of provisioning a new one:
+Don't hand-set `volumeName` on a manually-applied PVC — that field is immutable once bound,
+and ArgoCD's git-templated PVC (which never specifies `volumeName`) will permanently show
+`OutOfSync` and repeatedly fail to sync trying to patch it back to empty.
 
-```yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: <pvc-name>
-  namespace: <namespace>
-  labels:
-    app: <app>
-    app.kubernetes.io/name: homelab-svc
-    app.kubernetes.io/instance: <app>
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: longhorn-persistent
-  volumeName: <old-pv>
-  resources:
-    requests:
-      storage: <size>
-```
+Instead, reserve the PV for the specific claim ArgoCD is about to create, by setting
+`claimRef` on the **PV** side to the target namespace/name:
 
 ```bash
-kubectl apply -f -  <<< "$above"
-kubectl get pvc -n <namespace> <pvc-name>   # should go Pending -> Bound within seconds
+kubectl patch pv <old-pv> --type=merge -p '{"spec":{"claimRef":{"namespace":"<namespace>","name":"<pvc-name>"}}}'
+kubectl get pv <old-pv> -o jsonpath='{.status.phase} {.spec.claimRef.namespace}/{.spec.claimRef.name}'
+# -> "Available <namespace>/<pvc-name>"
 ```
 
-Applying this by hand (rather than letting ArgoCD template it) is safe: it doesn't specify
-`volumeName`, so ArgoCD's next sync sees no drift on the fields it manages.
+The PV stays `Available` (reserved, not yet bound) until a PVC with that exact
+namespace/name shows up — at which point Kubernetes binds them automatically, with no
+`volumeName` ever written to the PVC spec.
 
-## 6. Scale back up and restore ArgoCD sync policy
+## 6. Restore ArgoCD sync policy and trigger a sync
 
 ```bash
-kubectl scale deploy -n <namespace> <app> --replicas=1
 kubectl patch application <app> -n addons --type=merge -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}'
 kubectl patch application argocd-apps -n addons --type=merge -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}'
 ```
 
-Then watch the pod come up clean on the reattached volume:
+Missing-resource creation isn't always picked up instantly by self-heal (unlike drift on an
+*existing* resource) — if the PVC doesn't reappear within a few seconds, force a sync of just
+the app (not the root) via the Application's `operation` field, which works even without an
+authenticated `argocd` CLI session:
 
 ```bash
-kubectl get pods -n <namespace> -l app.kubernetes.io/instance=<app> -w
+kubectl patch application <app> -n addons --type=merge -p '{"operation":{"sync":{"syncStrategy":{"hook":{}}}}}'
+kubectl get application <app> -n addons -o jsonpath='{.status.operationState.phase}'   # watch for Succeeded
 ```
+
+Then confirm the PVC bound cleanly to the old volume, with the app fully `Synced` (not just `Healthy`):
+
+```bash
+kubectl get pvc -n <namespace> <pvc-name>                  # STATUS Bound, VOLUME = <old-pv>
+kubectl get application <app> -n addons -o jsonpath='{.status.sync.status} {.status.health.status}'
+# -> "Synced Healthy" — if it says "OutOfSync Healthy", the PVC likely still has a stray
+#    manually-set volumeName; redo step 4-5 without setting it by hand.
+```
+
+Deployment replicas don't need manual scale-up — once the PVC is `Bound`, ArgoCD's own
+reconcile brings the pod back (its desired replica count was never actually changed in
+git, only observed live during the pause).
 
 ## Gotchas
 
 - If step 2 is skipped, expect an infinite fight: ArgoCD recreates the replica, it binds
   the new empty PVC, and your delete/patch race against it.
 - Always restore sync policy in step 6 even on failure — don't leave apps un-self-healing.
-- A PVC created by hand with an explicit `volumeName` is functionally identical to one
-  ArgoCD would template (same name/namespace/labels) — no permanent drift once reconciled.
+- Never hand-set `volumeName` on the PVC you apply — pre-bind via the PV's `claimRef`
+  instead (step 5), so the live PVC stays byte-for-byte what ArgoCD would template and
+  the app reports clean `Synced` status, not a permanent `OutOfSync`.
