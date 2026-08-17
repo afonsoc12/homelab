@@ -6,6 +6,16 @@ Self-hosted apps for personal, household, and financial use.
 
 ## Productivity
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/bambu-lab.png" class="svc-icon"> Bambuddy
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Bambu Lab 3D printer management. Monitors print jobs, camera feed, and printer status over the local network.
+
+[:octicons-book-16: Documentation](https://wiki.bambuddy.cool/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/bambuddy/values.sops.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/mealie.png" class="svc-icon"> Mealie
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
@@ -73,6 +83,18 @@ Monitors web pages for changes and sends notifications. Used for tracking price 
 Self-hosted document signing platform. Creates, distributes, and collects signatures on PDF forms.
 
 [:octicons-book-16: Documentation](https://www.docuseal.co/docs) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/docuseal/values.yaml)
+
+---
+
+## Development
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/forgejo.png" class="svc-icon"> Forgejo
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Self-hosted lightweight Git forge with built-in CI/CD (Forgejo Actions). Backs repository hosting and automation for Terraform/Ansible pipelines, kept isolated from the public GitHub-hosted repo.
+
+[:octicons-book-16: Documentation](https://forgejo.org/docs/latest/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/forgejo/values.sops.yaml)
 
 ---
 

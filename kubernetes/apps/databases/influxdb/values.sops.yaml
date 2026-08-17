@@ -13,7 +13,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/influxdb
-    tag: 3.11.0-enterprise
+    tag: 3.11.1-enterprise
 comand:
     - influxdb3
 args:
@@ -23,16 +23,40 @@ args:
     - --object-store=file
     - --data-dir=/var/lib/influxdb3/data
     - --plugin-dir=/var/lib/influxdb3/plugins
+# influxdb-ui listed first so ingress (which always targets the first port) routes to the UI
 ports:
+    - containerPort: 8080
+      name: influxdb-ui
+      protocol: TCP
+      service: true
     - containerPort: 8181
       name: influxdb
       protocol: TCP
       service: true
 service:
     enabled: true
+    type: LoadBalancer
+    loadBalancerIP: ENC[AES256_GCM,data:5Sxc4HK/lSUKAdU=,iv:+qaevk3PvmrrWJHvTKiwgMGxEziL3dSg3SRo8NICkng=,tag:AK5cG+boAMHXDaATX+SxCw==,type:str]
+    annotations:
+        metallb.universe.tf/allow-shared-ip: db-svc
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    annotations: {}
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: influxdb.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
 secret:
     stringData:
-        INFLUXDB3_ENTERPRISE_LICENSE_EMAIL: ENC[AES256_GCM,data:Q+RJsY6/FZs9PcUVY5BsJre+BLJfQTjb1ttInrvqLN/Olg==,iv:qsftmQApQu2bFd74wuZolYe8wcEpz+NMfX5W78B75+g=,tag:kek/LlJ5Y+MNmrxuPO0FhA==,type:str]
+        INFLUXDB3_LICENSE_EMAIL: ENC[AES256_GCM,data:0M9t6lBpn3D2sy4UVHsYgrX2Dwzq7mqQnQ==,iv:l0QFo6iKNjyFsfLSgUdBd/fummCwKV6Ytvwt3gVdRpU=,tag:8dnlRStJatPpyKYuwKdE7w==,type:str]
+        INFLUXDB3_LICENSE_TYPE: ENC[AES256_GCM,data:cr9Ywg==,iv:VwdbNfBVAuFnuy3lNRlM1SO/Ve3XRKEY7IPk/g9Hwo8=,tag:IehDcq2jtbpeti4jvBFqVQ==,type:str]
+        config.json: ENC[AES256_GCM,data:IFwkQx/3woIyVcBDOaGjv6Hawp9sdxel6leSihnCdTbZPJ73BEOSljzLB8JJGXXAP/Av92SzfnnZVeI6ERl9tvY/bAYZQBLFehmenwrq96sNk+1aPdcKNUizNNM9IHHPdB1u42Rx2J+dYBhT5onaPd43Ox8l9c7TLdkqvSQ3kS5E3gB6ixiY6v4NVsKr4Qvqxqote6Yod7XD+gopR1MUk1HH3FsHJlW66+qjyFSqI3h5V8pauP1OvRKWUe9fbykIGMMrExyNIUl56Fab7wsdKbgelNbehJn7FKfyV+CZHAb0qct18HjGciPld3UYVrdUlAxKkvDb4Qzd/kZbRFkZ4Lj9DHgt9fxMZfo8zIeZuF6UyTnXA3vm+rdjrCA=,iv:ypoL/iwuYI27XjsuYMDiFlpiAlv4nRq6T2pabyD7LC8=,tag:xozpiBVLr1P7cxEZ7rRfgg==,type:str]
+        SESSION_SECRET_KEY: ENC[AES256_GCM,data:VLeJCMqJD52g07amw2kd8i9RH1VkwOg1kydPNTjrAuENApblu/wHTlSn3EcC72hw1C4TcGQMtFV/nnpAcgyTvA==,iv:9+xIZLtrGwttiIn+5aY2Lt78+yr5llIKOJY4gqE1AvA=,tag:knml/QzbMJLk8i/M4964NQ==,type:str]
 volumeMounts:
     - name: data
       mountPath: /var/lib/influxdb3
@@ -42,6 +66,71 @@ volumeClaimTemplates:
         - ReadWriteOnce
       storageClass: longhorn-persistent
       storage: 5Gi
+    - name: ui-db
+      accessModes:
+        - ReadWriteOnce
+      storageClass: longhorn-persistent
+      storage: 128Mi
+# config.json (server URL + admin token) is mounted read-only at /app-root/config
+volumes:
+    - name: ui-config
+      secret:
+        secretName: influxdb
+extraContainers:
+    - name: influxdb-ui
+      image: docker.io/influxdata/influxdb3-ui:1.9.0
+      imagePullPolicy: IfNotPresent
+      # --mode=admin enables database/token management (Create Database, etc.) in the UI
+      args:
+        - --mode=admin
+      ports:
+        - containerPort: 8080
+          name: influxdb-ui
+          protocol: TCP
+      # pinned so sessions survive pod restarts instead of a fresh random key invalidating them
+      env:
+        - name: SESSION_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+                name: influxdb
+                key: SESSION_SECRET_KEY
+      # influxdb3-ui runs as non-root user influxui (uid 1500); the pod's fsGroup grants it
+      # group write access to the ui-db PVC without conflicting with the influxdb container
+      securityContext:
+        runAsUser: 1500
+        runAsNonRoot: true
+      volumeMounts:
+        - name: ui-config
+          mountPath: /app-root/config
+          readOnly: true
+        - name: ui-db
+          mountPath: /db
+      livenessProbe:
+        tcpSocket:
+            port: 8080
+        periodSeconds: 10
+        failureThreshold: 3
+        timeoutSeconds: 5
+      readinessProbe:
+        tcpSocket:
+            port: 8080
+        periodSeconds: 10
+        failureThreshold: 3
+        timeoutSeconds: 5
+      startupProbe:
+        tcpSocket:
+            port: 8080
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        failureThreshold: 18
+        timeoutSeconds: 5
+      resources:
+        requests:
+            memory: 64Mi
+            cpu: 25m
+        limits:
+            memory: 256Mi
+            cpu: 100m
 livenessProbe:
     tcpSocket:
         port: 8181
@@ -77,8 +166,10 @@ affinity: {}
 backup:
     enabled: false
 sops:
-    lastmodified: "2026-04-13T20:28:41Z"
-    mac: ENC[AES256_GCM,data:IIjMiLghPnhNdgGDykn0QCgqxyk0RLrVPP7WILW5yfhAcC3Pt+r+Y/jmSziMjpeXCC0buonC9UG9J1TGRLrVv8tOEv9svwpOuCGMx5a5LgLSQTXb7vSH31sqa25mS4ZsV8uMOgoZFYRfjEh9SjGDNhoUP9tQvMV1FUBFQGvSfC0=,iv:wZUlzGFf2rTc+zHlWXBnubTAe63kLyZ+qaAenqzEWw4=,tag:bzlhUJItz4fQGTIXV8vgjg==,type:str]
+    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-08-15T20:32:48Z"
+    mac: ENC[AES256_GCM,data:GT9Z0iKb9ApHhY8F3GOafeb7UtXfutmfIeCOLFMx0Tm9+W8IVu+3akftGiuNeS6c5mNHgsWkVmzY1hav8IVVXUgQiZiUJCCe8rDm3OVGaAzKKe7mZx2Oi27K1ci4DG/pp2TkpHrAnO0eA9QMzFzjRbSFY/UjVp+jQfA6OCuRT18=,iv:teusg05DJkSRY/hcw0Z8JvVXxgiHmdTGE9GKCmY2R4Y=,tag:69HhjQlFWKZR9bUUQFLO9w==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:41Z"
           enc: |-
@@ -101,6 +192,4 @@ sops:
             =5xe6
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    mac_only_encrypted: true
     version: 3.12.2

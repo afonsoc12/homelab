@@ -7,7 +7,7 @@
 ---
 image:
   repository: docker.io/n8nio/n8n
-  tag: 2.34.4
+  tag: 2.35.3
   pullPolicy: Always
 
 # hostNetwork: true
@@ -90,3 +90,4 @@ resources:
 
 podSecurityContext:
   fsGroup: 1000
+  fsGroupChangePolicy: OnRootMismatch

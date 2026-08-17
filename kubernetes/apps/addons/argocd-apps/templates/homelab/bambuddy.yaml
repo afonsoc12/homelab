@@ -1,14 +1,13 @@
 # --------------------
-# InfluxDB 3 Explorer
-#   - Repo:  https://github.com/influxdata/influxdb3-ui
-#   - Docs:  https://docs.influxdata.com/influxdb3/explorer/
+# Bambuddy
+#   - Docs: https://wiki.bambuddy.cool/
 #   - Chart: homelab-svc
 # --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: influxdb-ui
+  name: bambuddy
   namespace: {{ .Release.Namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -21,10 +20,10 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - secrets://../../apps/databases/influxdb-ui/values.sops.yaml
+        - secrets://../../apps/homelab/bambuddy/values.sops.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
-    namespace: databases
+    namespace: homelab
 
   syncPolicy:
     automated:

@@ -1,36 +1,37 @@
 # --------------------
-# kube-prometheus-stack
-#   - Docs: https://prometheus.io/docs/
-#   - Chart: https://prometheus-community.github.io/helm-charts (kube-prometheus-stack)
+# Forgejo
+#   - Docs:  https://forgejo.org/docs/latest/
+#   - Chart: oci://code.forgejo.org/forgejo-helm/forgejo
 # --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: prometheus-stack
+  name: forgejo
   namespace: {{ .Release.Namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+
   sources:
-    - repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: 88.3.0
-      chart: kube-prometheus-stack
+    - repoURL: code.forgejo.org/forgejo-helm
+      chart: forgejo
+      targetRevision: 17.1.4
       helm:
         valueFiles:
           - $values/kubernetes/apps/values.sops.yaml
-          - $values/kubernetes/apps/monitoring/prometheus-stack/values.sops.yaml
+          - $values/kubernetes/apps/homelab/forgejo/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values
   destination:
     name: {{ .Values.spec.destination.name }}
-    namespace: monitoring
+    namespace: homelab
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - ServerSideApply=true

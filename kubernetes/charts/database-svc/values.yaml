@@ -34,6 +34,10 @@ service:
   loadBalancerIP:
   port:
 extraContainers: []
+volumes: []
+# - name: config
+#   secret:
+#     secretName: my-secret
 secret: {}
   # stringData:
   #   secret_string_1: abc
