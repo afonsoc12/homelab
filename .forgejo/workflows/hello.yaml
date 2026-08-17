@@ -1,0 +1,8 @@
+name: hello
+on: [push]
+
+jobs:
+  say-hello:
+    runs-on: self-hosted
+    steps:
+      - run: echo "hello from forgejo actions"
