@@ -24,6 +24,7 @@ server_config_yaml: |
     disable:
       - traefik
       - servicelb
+      - local-storage
 extra_server_args: ""
 extra_agent_args: ""
 sops:
