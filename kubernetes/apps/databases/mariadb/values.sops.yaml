@@ -116,6 +116,13 @@ extraContainers:
         # - --collect.binlog_size
         # - --collect.perf_schema.tableiowaits
         # - --collect.perf_schema.tablelocks
+      resources:
+        requests:
+            cpu: 5m
+            memory: 16Mi
+        limits:
+            cpu: 5m
+            memory: 16Mi
 backup:
     enabled: true
     schedule: 0 3 * * *
@@ -149,9 +156,18 @@ backup:
                           values:
                             - db
                   topologyKey: kubernetes.io/hostname
+    resources:
+        requests:
+            cpu: 100m
+            memory: 256Mi
+        limits:
+            cpu: 100m
+            memory: 256Mi
 sops:
-    lastmodified: "2026-04-29T18:51:55Z"
-    mac: ENC[AES256_GCM,data:DkbsbLIBNvDnYNmJIngD2SBEdTrqENzUrwgvUIchdaR+C6m0lMpBrB8KnLDvNqvvtBLs3Bw2RjhnHk0jmUdIK7YrlDj+uGgCAgAbZpknMCGpjwjMxGYGGMuUvzEOnc7n3z4amgyjyMQpJ2VTe7KSu6sAmIcDibnNvOFGM4Xuxsg=,iv:eXRUg6zLJkKIjj8sv/bynOWz4IDBl0yiU16ww6EjQoo=,tag:dnN4OSX6vmSoQiXLhF4FvQ==,type:str]
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
+    lastmodified: "2026-08-17T22:59:45Z"
+    mac: ENC[AES256_GCM,data:VnhOizbqQmmEKOoECNlJvGFiq+9eWSZwXLS54LkT3v7mBXV3aRYPPueqqL+k3S1Myoml8Q8DPnROlPTSOsO3DkSXpF7HRQZxnIW04srXvnpyWg7632+0L2wlnGJihbN2F5ZYk4DVVjbCfMkvmseAVDaKUEkRx3mLJ3zKQK86FEQ=,iv:E4nKqJEADgxiNY1BO0egUEpRi0GnvKuFKaLzKod6SDU=,tag:sAzhB86AUIO9uwSyRhIE6Q==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:41Z"
           enc: |-
@@ -174,6 +190,4 @@ sops:
             =tF9R
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    mac_only_encrypted: true
     version: 3.12.2

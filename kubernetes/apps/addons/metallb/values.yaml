@@ -38,3 +38,45 @@ speaker:
 crds:
   enabled: true
   validationFailurePolicy: Fail
+# Values passed to the frr-k8s subchart (note the hyphen in "frr-k8s").
+frr-k8s:
+  frrk8s:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 10m
+        memory: 32Mi
+  frr:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 10m
+        memory: 32Mi
+  reloader:
+    resources:
+      requests:
+        cpu: 5m
+        memory: 16Mi
+      limits:
+        cpu: 5m
+        memory: 16Mi
+  frrMetrics:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 48Mi
+      limits:
+        cpu: 10m
+        memory: 48Mi
+  frrStatus:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 32Mi
+      limits:
+        cpu: 10m
+        memory: 32Mi

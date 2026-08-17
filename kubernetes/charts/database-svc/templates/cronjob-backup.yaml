@@ -48,6 +48,10 @@ spec:
               volumeMounts:
               - name: backup
                 mountPath: backup
+              {{- with .resources }}
+              resources:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
           volumes:
           - name: backup
             persistentVolumeClaim:
