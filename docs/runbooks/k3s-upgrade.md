@@ -100,6 +100,9 @@ argocd app list
 
 ## Rollback
 
+!!! danger "Never restore without explicit user confirmation"
+    Restoring an etcd snapshot is destructive and irreversible — it discards every change made to the cluster since the snapshot was taken. Never run the restore commands below autonomously or as a reflex to an error. Always stop and get explicit confirmation from the user first.
+
 If something goes wrong, restore from the etcd snapshot:
 
 ```bash
