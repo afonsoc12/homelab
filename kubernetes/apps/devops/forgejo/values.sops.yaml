@@ -1,8 +1,8 @@
 gitea:
     admin:
-        username: afonsoc12
-        password: uuiLykVw5Di5AHW86cE=_DoJ
-        email: afonsoc1997+forgejo@gmail.com
+        username: ENC[AES256_GCM,data:+n9j5t0CBJWS,iv:aynaS2LnMr3uxypjnRhPnn/qjvyGqAhspLpo4dhJRvI=,tag:6PDyS+jzKCYewvp0tvzH5A==,type:str]
+        password: ENC[AES256_GCM,data:TRpg/Ld37XQ43hD8i4zhfn9KXzn3OrP2,iv:P7foSZKcaHYD/AzeNiDcVdcb5FNv0c3YZ43Ekp/CiVE=,tag:eNCTZOwVQ5mN/GpGYb5cxg==,type:str]
+        email: ENC[AES256_GCM,data:4Ce1frDqJgNHzc1MePK6T5zvW6QHKUxGGgQfl0k=,iv:nBJtS9AQ7Xp6A5juKPdcuI7qXVHlOaOYucCbiS+PGuk=,tag:LBQtTy1Ot4iVX4kQtbSaQg==,type:str]
         passwordMode: keepUpdated
     metrics:
         enabled: false
@@ -10,8 +10,8 @@ gitea:
         APP_NAME: Forgejo
         RUN_MODE: prod
         server:
-            DOMAIN: git.local.mydata247.top
-            ROOT_URL: https://git.local.mydata247.top/
+            DOMAIN: ENC[AES256_GCM,data:iP6kw3uGvhqBKsYTJcGxrKmcQgeGJKs=,iv:VAPsban+87pPwo6SESIwhvIDwXXFzT93qfQOBpLZVFQ=,tag:krmlRltN6ghmHIARrysNCQ==,type:str]
+            ROOT_URL: ENC[AES256_GCM,data:GyqjNEVN778IFCDWi9hGnkhB+cn+qHsf7RsvfWG4MbA=,iv:Y03iQGSikuFxe67fP0yrkLCgCwpPEq/7nwy+GXBEcVI=,tag:gQ6l7Lwogeh7WI+EspxsBg==,type:str]
             SSH_PORT: 22
             SSH_LISTEN_PORT: 2222
         database:
@@ -19,7 +19,7 @@ gitea:
             HOST: postgres.databases.svc.cluster.local:5432
             NAME: forgejo
             USER: forgejo
-            PASSWD: vb.AKEqXPTP_b6A^<LRb
+            PASSWD: ENC[AES256_GCM,data:t6Ddt1LgmlkQzi+m+G+68+ILcfM=,iv:XzekhOt6dZZnwKiS4ze37/nJwu7pPzCUkQf5M9zIMe4=,tag:yDYj4lk5RVnKJxRNknwmYQ==,type:str]
         actions:
             ENABLED: true
 persistence:
@@ -30,12 +30,12 @@ ingress:
     className: nginx
     annotations: {}
     hosts:
-        - host: git.local.mydata247.top
+        - host: ENC[AES256_GCM,data:oaENyo8T+GZ7yuxHWcB8Xfk8OaZDZLk=,iv:vFVlJyeqYyTwhzU3fz3X2MudTDMfoGUqv5+tzgZSYXc=,tag:O0RvC8wiCFd+FgS3vWP9Ww==,type:str]
           paths:
             - path: /
               pathType: Prefix
               port: http
-        - host: git-hook.mydata247.top
+        - host: ENC[AES256_GCM,data:nHhtPajDNMX/IGfgLaRyIr9egM6y5Q==,iv:ERt1P7a/d6jyQaRERkeVwd4KrnMu43AvFV9IgyJGebI=,tag:7N4bgIcQayAGQHeTUBfcLg==,type:str]
           paths:
             - path: /api/v1/repos/afonsoc12/homelab/mirror-sync
               pathType: Exact
@@ -50,30 +50,30 @@ resources:
         cpu: 1000m
         memory: 1Gi
 sops:
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-08-18T20:57:10Z"
-    mac: ENC[AES256_GCM,data:x2yGxrAiKqcXxuX4F052e0Md/LNQ51DwwUC4J0WtOTOZRbXtpLvvGHQ8CTWQCkrJoEfVtUArXznfTq8e2dQtmcdnO6jBe9O1LcBWWj4AAm/Mz6swoCrlA8lu8poDechDX8+vY93mWkR4FsWXmuDPLyKCuxGQZZTUS1kTYgUQySs=,iv:o4QNLKOpZHQqSL0NJGJSkKF7HknHlN198cmaLhOlZr8=,tag:FIi1QMb13NepwyTxcPGWNA==,type:str]
+    encrypted_regex: ^(password|PASSWD|DOMAIN|ROOT_URL|host|username|email)$
+    lastmodified: "2026-08-18T21:19:25Z"
+    mac: ENC[AES256_GCM,data:2wdm4GFLvUmKEbkDrw3tolDQBgj05DKVaQnUNDw6bHmdklTZKqLcawYTimlYS+pihXgahUUJgGeB/rNKb/2kdb4bJSlfP+QlC0Rl8Z0ozsOnG8SiQPEuIhAoI/+l/CAC4PGnpUK8G+w9/MSWpO0ZF0lQG5vxEiKn2tB0SNFnQjs=,iv:iMoxgY4zScZhEHV6xrnvxuLOoAWI8Y8cF2Hh6SRbzcg=,tag:1kkrJhutAypP67ZIwWFF+g==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-18T20:57:10Z"
+        - created_at: "2026-08-18T21:19:25Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAo/KGpFlNGot7N05+TcQYBqXsdCSJbppHPDrH0P6uTSKR
-            +A6kUsZ9JMTCCp4thZi/78XYDZ2vwqq7gsTVztD+A0bA6aDW/cj40ds1tUFAnKKJ
-            9j1L5JR89ZpuOruzy4I44Ay5B+RjB0K9q/70G25qkXYSH2ceGOquc3H+xEIO/eyx
-            +lM18rmpZ3ZSTbut7jxFMPnxbLY7Xbme3YgJaSWLAVHlPA63WxdQ/7dppnfGtHnC
-            EBceGIL38dHNTEEoQgvCIymj2ZK0ywSnxRHnYgoYVxTswGJh5X0MNYDJcqIjq0yJ
-            AlsKX1ynMIXZXI1I9YeaIckk0fgibin//oJIM6/BZ6EgeM7mJrZxh45GvHkiRMJV
-            EdzhhttfCRR8bXNWzPf6+QCpWb5PQ1RXWohj0k2fhN5E/rrytgn8dak0YQMHavVU
-            zYkoTSBMfpVsg8yify3GCK2g3vNeyRkkcxgkvZPj1Wr5N776EgHpFHCJs5U4Mc7q
-            ZtBjZh5IuWrS4CAwy+EqUTeN/+LekpivX+6n4UjSfMbzZIulNrVYArRw8umC4XFj
-            FTALyV7Ma8Vst3I2id8eMb8M/uuil5OBP9mvItm/1PwStZ1/hlMiO8SXTAnGAnMr
-            BUDZNsgOT9Kn37Ts+0oZ4pHLXZz+jijuT7i8R2FJbiWf1S13M0EZHndC0ieOmnrU
-            aAEJAhBgP15BNYlgkfLaqdJxLTWH2ZOCntHEZ8I2RrMz4Cbb2nQ24prcI/gEUzf5
-            4NBu3HJDE+ovuA4e/LnEaPV0VIYTL0N6lvCB5/v7GsA/bgje66WswPxeZa7SUnte
-            g/B9N5IC6fHp
-            =6333
+            hQIMA5NT/LvuRqeGAQ//VSGsuF3MU95S4TiE+J6FbyWM3oO+HAcuNCeBOhX6dXGj
+            A0Hem4ZI+CDmoFEPkGvubDjY0ddrI+mYGcM8pmeIHOAeiyE+9AheIn+/4KDtoA7X
+            PGlVFSF99srx6FqrCrM9YmiWDOWAkr1xC4x1cq1kE3RoK98CY+upOLDqxifLY9Lx
+            A4hIegpihS1GmOEPIck0JUvTB3dCKHTZ0dwF3fHdEY/xRGQNmGKigoxTjoygJakp
+            fn1zFq5/uV2KauvTH4/LqVyTmqBi34pO/HZxiYyf+WIfOW342td5Eq9dzmsSv8BR
+            0ftO0Fww5fqGjeT/37Evo8nvu5PK2Vbc6d4isuxMDE1Bs5n/Kq+LvUXUp1AarGtz
+            yLPsJz9o9WJoqg9hgs0fecGEbuSMAPImhlyytG1XAeO0S3qvwX6ScOXoAx1e3NIG
+            2LU9nJ6w3TURO/7LuL3h0FUldcKGmz4hSF3vFqYW1kuMffZlqknwXDlEPQ0CHy+6
+            w/EVtYUUmUpFhSdzdRWHIamo53bCYxKdTLcD2h/39Hl7xWEyoAgrgxB6kBsuctr6
+            LvNVFQIA7JaDK7o1bfsyuxRnnyV+zwGwqgZWiB6rjsmN5wAt2Ul/cm8HhMa1PYZH
+            5t7OQIMSxHF8jW2G+rD6qluekg8vLmNL/Qlnhj9U2WBLEqxmrmnWGAIhvCpdMZbU
+            aAEJAhDASoKIT6FoZq/p+fNB+X1mlCifcdFsLhUGHf71DhFsSFzns6GHYfy5wA0C
+            roKlkJrtmFTLJWRifnPxlW1pT+W/QGgEhVUo3hTxwi/1ODCsk+fiuTg0F6i19zxf
+            3aAZ99Bb0zG0
+            =8KYz
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
