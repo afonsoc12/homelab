@@ -23,16 +23,43 @@ TERM=xterm sops <file>.sops.yaml
 
 ## Programmatic edit (e.g. adding a key)
 
-Decrypted file lives alongside the original, prefixed `.decrypted~`, and is gitignored:
+`sops --encrypt` picks its encryption rule (`path_regex` in `.sops.yaml`, and any
+per-file `encrypted_regex` override already baked into that file's own metadata
+footer) by matching the **input file's path** — not the output path you redirect
+to. If you decrypt to a differently-named temp file (e.g. `.decrypted~foo.yaml`)
+and then `sops --encrypt` *that* temp file, sops matches rules against the temp
+name, silently falls back to a broader/wrong rule, and can produce a file with a
+perfectly valid SOPS envelope (real MAC, real PGP block) where the fields that
+were supposed to be encrypted are sitting in **plaintext**. `sops -d` will still
+successfully decrypt such a file — that check alone does NOT prove encryption
+was correct, only that the envelope is structurally valid.
+
+**Always pass `--filename-override <original-path>` on both the decrypt and the
+encrypt step**, so sops resolves rules against the real path regardless of the
+temp file's name:
 
 ```bash
-# e.g. for kubernetes/apps/values.sops.yaml
-sops -d <path>/<file>.sops.yaml > <path>/.decrypted~<file>.sops.yaml
+# e.g. for kubernetes/apps/devops/forgejo/values.sops.yaml
+F=<path>/<file>.sops.yaml
+sops --filename-override "$F" -d "$F" > <path>/.decrypted~<file>.sops.yaml
 # make changes to .decrypted~<file>.sops.yaml
-sops --encrypt <path>/.decrypted~<file>.sops.yaml > <path>/<file>.sops.yaml
+sops --filename-override "$F" --encrypt <path>/.decrypted~<file>.sops.yaml > "$F"
 rm <path>/.decrypted~<file>.sops.yaml
-# verify
-sops -d <path>/<file>.sops.yaml | grep <key>
 ```
 
-Never print the decrypted content in full — grep for the specific key to verify.
+Never print the decrypted content in full — grep for the specific key to verify a value changed, but redact/omit the value itself in any output you show.
+
+### Mandatory post-encrypt verification
+
+Before committing, verify **every key that's supposed to be encrypted actually is** — don't just confirm the file decrypts. Pull the file's `encrypted_regex` (or the matching root `.sops.yaml` `path_regex` rule) and check each matching key's line starts with `ENC[`, without printing the value:
+
+```bash
+# swap in the file's actual encrypted_regex key names
+for k in password PASSWD DOMAIN ROOT_URL host username email; do
+  total=$(grep -cE "\b${k}:" "$F")
+  enc=$(grep -E "\b${k}:" "$F" | grep -c "ENC\[")
+  echo "$k: total=$total encrypted=$enc"   # total must equal encrypted for every key
+done
+```
+
+If any key shows `total != encrypted`, the file is broken — do not commit it. Re-run the encrypt step with `--filename-override` and verify again.
