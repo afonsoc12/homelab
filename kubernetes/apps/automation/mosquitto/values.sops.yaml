@@ -64,10 +64,29 @@ resources:
     limits:
         cpu: 10m
         memory: 16Mi
+livenessProbe:
+    tcpSocket:
+        port: 1883
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    tcpSocket:
+        port: 1883
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    tcpSocket:
+        port: 1883
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP)$
-    lastmodified: "2026-08-17T22:59:40Z"
-    mac: ENC[AES256_GCM,data:64hYjdjM/zx/nSz5D7ilKGf8vTccCXihsJgNTsm5Ojy2OkezQA87A7iKMlb9TiqhCrKOLIozesgiLPDrxlxDpSZriyjH9Sy5+dYNlK2kRDI9sx/18ObKLtCOXaDmqbwD3ho+D3oRLM4wN6yvRiGlnBGKoEde/YChhtmvVHy1NDM=,iv:R1ink+kUjsfE9LCFkGafSZm66PA3bNrHHV3QoHEB98Y=,tag:y0qz5NlA+VqWP4u4wsnDPA==,type:str]
+    lastmodified: "2026-08-17T23:18:51Z"
+    mac: ENC[AES256_GCM,data:x/wR1i3h2BuYNX5R9d4YBYllNmmR4JbMJ1NtoA/N6O+xnr2SEgyMbrQjAtf8RinBpH8N1hLNs8oDCdTVkKVKFYbVwb5K+m6dBeMnU8g8Fs8M0e8nBjBdX8enGS5HFQAcho/wVauc+Jv3hykHkYA9Lp9Z/xcHujjqJiqekVoI/yQ=,iv:9w4VEiHjvtseTt77gSqWb/pTBMAvVkIRytJX8LJsYZo=,tag:7b6oMoy4ONxxjB1kpf5Ebw==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:40Z"

@@ -24,4 +24,31 @@ resources:
                 limits:
                   cpu: 10m
                   memory: 16Mi
+              livenessProbe:
+                exec:
+                  command:
+                    - sh
+                    - -c
+                    - pgrep -f 'agnhost pause'
+                periodSeconds: 30
+                failureThreshold: 3
+                timeoutSeconds: 5
+              readinessProbe:
+                exec:
+                  command:
+                    - sh
+                    - -c
+                    - pgrep -f 'agnhost pause'
+                periodSeconds: 30
+                failureThreshold: 3
+                timeoutSeconds: 5
+              startupProbe:
+                exec:
+                  command:
+                    - sh
+                    - -c
+                    - pgrep -f 'agnhost pause'
+                periodSeconds: 5
+                failureThreshold: 6
+                timeoutSeconds: 5
           restartPolicy: Always
