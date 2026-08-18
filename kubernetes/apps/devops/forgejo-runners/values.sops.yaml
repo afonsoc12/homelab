@@ -1,0 +1,40 @@
+replicaCount: 2
+runner:
+    config:
+        instance: http://forgejo-http.devops.svc.cluster.local:3000
+        token: ENC[AES256_GCM,data:y4lSiZbSBVhLLzLyEwkVD2qAmiJVy39pYfDhUBVOo4fiONKGofKvhViRPA==,iv:hT3casNKl3BgLiNJZzVjNKsOurkXNqD6vIoXZeq/H/M=,tag:9DEb+xp+baDTJHqcByzG5g==,type:str]
+resources:
+    requests:
+        cpu: 100m
+        memory: 256Mi
+    limits:
+        cpu: 1000m
+        memory: 1Gi
+sops:
+    encrypted_regex: ^(token)$
+    lastmodified: "2026-08-18T00:32:30Z"
+    mac: ENC[AES256_GCM,data:+ppxWE/UMf28J7Wn6R+XQhReibmhf/0SCFjMq/6Gsqv86PVZiwB9pgCvZKkloCPkRllH94smIcH6/68ffkKqB9UHMf93gZn4SichFFCsLsVwnNkLijtyvQXWfXHsKflVd7NSG8VeKurL9eWMMIJvoltkQtl4djIjJrc/2/XvVvs=,iv:b66295bmdE38iCjb9x50WrYDyddpAjP6IgogJSA6NcA=,tag:JwhYCPDLTR530RINETthmw==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-08-18T00:32:30Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAApqktSa5pCe8Gaxcp19SyeBNayCmix9o8Tab+KVk8Qira
+            4IVBdquWXGf4DkNAE+PRpxuopaK8+R1RLeUZg8LyQlH6O2HzAqXrD8jEORSHnvnM
+            LZOBcotXdGt7UQIQjoEBnluMFUXX5Uz5vAAG+7PC0/+XnGtwJeUz19i2bLPQLA23
+            3gnykIOw/+1E6Zk7c0gvRf1fsv6m+EJOVbI/M664ZpKBYI9d7mmpD8JbeG8pz3Ff
+            UqmP8qir70G9ECRhTdPjtIUF2EgW/zD73Fyim1OcuDdmEThtNhnx2mq6xKGE6vRi
+            lBzr/GX2p19tOoxQUlYZmryJcWEhNqrVfwzxTB9ZUZj7+Vdi/Z6qWdFPKGPgAuEX
+            fMdiHcmGa7mNdnlBU2vwR65yd/6S12FqgtjLJy28cpaVATX2zMijDtCb3Uk/48nF
+            cpjBxRxtScH1ca9c66ZZo97SY+fFyUx7ApsMR0elVbratlbV63BqOqrlPtmWOwxr
+            kmXV65d9JNV1GTULAATdeYXhP31Cxy+Z9xWtIMlCUutMLcyIvduumH74+Ptt9Ie8
+            fEfHAR2SZdGjjua4mMtbbyEAAjievjfVJyz3q7Hi+DMH8K/vfn/HD5rEYBt35xUk
+            WvdjUWjZwv12AkQqNG6pld5rPAb75deIKzzMz+uBk460UMB0D01toVe6f35H2zjU
+            ZgEJAhAVSu0LXmR4PK+OvI3xNJOPxqLYJCG3g6UVZx+cRS0FPDRYQz3vFI82kgPN
+            8dW8FvtbFoLKbtFjB1gbFpclbt2zWk9nFsbnWyXvQUy7KLGF5HhVob/wiLrA2ztk
+            u/KRAKku/w==
+            =tqdJ
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

@@ -1,13 +1,13 @@
 # --------------------
-# Forgejo
-#   - Docs:  https://forgejo.org/docs/latest/
-#   - Chart: oci://code.forgejo.org/forgejo-helm/forgejo
+# Forgejo Runner
+#   - Docs:  https://forgejo.org/docs/latest/admin/actions/
+#   - Chart: oci://code.forgejo.org/forgejo-helm/forgejo-runner
 # --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: forgejo
+  name: forgejo-runners
   namespace: {{ .Release.Namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -16,18 +16,18 @@ spec:
 
   sources:
     - repoURL: code.forgejo.org/forgejo-helm
-      chart: forgejo
-      targetRevision: 17.1.4
+      chart: forgejo-runner
+      targetRevision: 0.7.5
       helm:
         valueFiles:
           - $values/kubernetes/apps/values.sops.yaml
-          - $values/kubernetes/apps/homelab/forgejo/values.sops.yaml
+          - $values/kubernetes/apps/devops/forgejo-runners/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values
   destination:
     name: {{ .Values.spec.destination.name }}
-    namespace: homelab
+    namespace: devops
 
   syncPolicy:
     automated:
