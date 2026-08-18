@@ -21,13 +21,13 @@ spec:
       helm:
         valueFiles:
           - $values/kubernetes/apps/values.sops.yaml
-          - $values/kubernetes/apps/homelab/forgejo/values.sops.yaml
+          - $values/kubernetes/apps/forgejo/forgejo/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values
   destination:
     name: {{ .Values.spec.destination.name }}
-    namespace: homelab
+    namespace: forgejo
 
   syncPolicy:
     automated:
