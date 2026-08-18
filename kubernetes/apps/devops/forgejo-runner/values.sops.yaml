@@ -6,7 +6,7 @@
 replicaCount: 2
 runner:
     config:
-        instance: http://forgejo-http.forgejo.svc.cluster.local:3000
+        instance: http://forgejo-http.devops.svc.cluster.local:3000
         token: ENC[AES256_GCM,data:DCS6AETeKraLh19eFOcJ4x4fTdZtsR35RuCNtXAL9GBnB2i4lkm8Q2n9zQ==,iv:aAzqqlWQdOjGl8z9UcGt62UsyNuzon5pd5p/xYwT+/g=,tag:h8jagAp3jVMKZ32U4RRq4A==,type:str]
         file:
             runner:
@@ -23,8 +23,8 @@ resources:
         memory: 1Gi
 sops:
     encrypted_regex: ^(token)$
-    lastmodified: "2026-08-18T00:18:31Z"
-    mac: ENC[AES256_GCM,data:w+W9tgt8HHiKRHLb/JPINXoGCv5kILA870eZzEZVfCKqlh+0nXy+DcgJzBi+Vm5mAEQGogf3X+TOBmHn5HXK+HCoErI25cF5BhYSvK9jVSuJglfa9ofX+o3P3xJI5ShyQz/q8ovMkoKY/Jd15NPH8qBumfXMa6N4DE9jwnNeZk8=,iv:MeEu6YpbRb1s0YJAwpqEIWxi3nKonrnjPkETkIvQ+oo=,tag:ZHK/nB6Z1ZAHZAPFYTtb1w==,type:str]
+    lastmodified: "2026-08-18T00:22:13Z"
+    mac: ENC[AES256_GCM,data:wdkern7qZq6vXJ3ZYNq+cbBV8cQYYsiYMet2XN+XAKbVHErDeUECsW5IROm/GE7z/enG241JbgR2fVpZPeryqtPFgbcxojMLTnAt6iLlkWzkzpBmjhLHTI67C9WUbe82PdYXLZl5xGx+Zq3c4b0a3r10yZtTrwDpT7YBDKTE5zc=,iv:sTzBfUem+47oZi650+Z1oA9eIVAjcA4S+e2iuIj7LVg=,tag:RGoh17BQla8Hqc2ImQtSBg==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-08-18T00:18:31Z"
