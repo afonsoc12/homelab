@@ -34,8 +34,8 @@ cronjobs:
             cpu: 10m
             memory: 32Mi
         limits:
-            cpu: 10m
-            memory: 32Mi
+            cpu: 200m
+            memory: 64Mi
 sops:
     encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
     lastmodified: "2026-08-17T23:00:03Z"
