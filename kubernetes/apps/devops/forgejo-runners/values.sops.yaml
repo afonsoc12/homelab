@@ -1,8 +1,9 @@
-replicaCount: 2
 runner:
     config:
         instance: http://forgejo-http.devops.svc.cluster.local:3000
-        token: ENC[AES256_GCM,data:y4lSiZbSBVhLLzLyEwkVD2qAmiJVy39pYfDhUBVOo4fiONKGofKvhViRPA==,iv:hT3casNKl3BgLiNJZzVjNKsOurkXNqD6vIoXZeq/H/M=,tag:9DEb+xp+baDTJHqcByzG5g==,type:str]
+        token: ENC[AES256_GCM,data:7cEG6870+gLstSPQ2HgLubMpJLHZh6GBQ37dZHA9E6gpX1EfCbseX5TuRA==,iv:OKR3iNbp6K94AwVe0QLNLXM0kUbB3CuLUS58r15p4uo=,tag:pQ5GEzXwN1HmAAOZCiemZw==,type:str]
+knownLastVersion: true
+replicaCount: 1
 resources:
     requests:
         cpu: 100m
@@ -10,31 +11,39 @@ resources:
     limits:
         cpu: 1000m
         memory: 1Gi
+dind:
+    resources:
+        requests:
+            cpu: 100m
+            memory: 256Mi
+        limits:
+            cpu: 1000m
+            memory: 1Gi
 sops:
     encrypted_regex: ^(token)$
-    lastmodified: "2026-08-18T00:32:30Z"
-    mac: ENC[AES256_GCM,data:+ppxWE/UMf28J7Wn6R+XQhReibmhf/0SCFjMq/6Gsqv86PVZiwB9pgCvZKkloCPkRllH94smIcH6/68ffkKqB9UHMf93gZn4SichFFCsLsVwnNkLijtyvQXWfXHsKflVd7NSG8VeKurL9eWMMIJvoltkQtl4djIjJrc/2/XvVvs=,iv:b66295bmdE38iCjb9x50WrYDyddpAjP6IgogJSA6NcA=,tag:JwhYCPDLTR530RINETthmw==,type:str]
+    lastmodified: "2026-08-18T20:20:49Z"
+    mac: ENC[AES256_GCM,data:3kvFBeasGk7ptFGTyckpI52pDUUQNrUZg/mTL277cv/YtqZKkmgTYxklKt+BUsVCkJbdNIZb9gpujfUJB99RpIcZx1wj8uWYmaDHgFNIZ80oNgS8ZpbpbpyWY76Hqylf9hqRt+IVLhhgMAcYY8mpYOJpOHBjGGgEvAorwS8p+uI=,iv:nZTVvkVF8j5nWhTKSeetLs7lfkqZcKIRZWXaxvVKh4Q=,tag:nsUQlD6VOSthTrV0TfF6TA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-18T00:32:30Z"
+        - created_at: "2026-08-18T20:20:49Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAApqktSa5pCe8Gaxcp19SyeBNayCmix9o8Tab+KVk8Qira
-            4IVBdquWXGf4DkNAE+PRpxuopaK8+R1RLeUZg8LyQlH6O2HzAqXrD8jEORSHnvnM
-            LZOBcotXdGt7UQIQjoEBnluMFUXX5Uz5vAAG+7PC0/+XnGtwJeUz19i2bLPQLA23
-            3gnykIOw/+1E6Zk7c0gvRf1fsv6m+EJOVbI/M664ZpKBYI9d7mmpD8JbeG8pz3Ff
-            UqmP8qir70G9ECRhTdPjtIUF2EgW/zD73Fyim1OcuDdmEThtNhnx2mq6xKGE6vRi
-            lBzr/GX2p19tOoxQUlYZmryJcWEhNqrVfwzxTB9ZUZj7+Vdi/Z6qWdFPKGPgAuEX
-            fMdiHcmGa7mNdnlBU2vwR65yd/6S12FqgtjLJy28cpaVATX2zMijDtCb3Uk/48nF
-            cpjBxRxtScH1ca9c66ZZo97SY+fFyUx7ApsMR0elVbratlbV63BqOqrlPtmWOwxr
-            kmXV65d9JNV1GTULAATdeYXhP31Cxy+Z9xWtIMlCUutMLcyIvduumH74+Ptt9Ie8
-            fEfHAR2SZdGjjua4mMtbbyEAAjievjfVJyz3q7Hi+DMH8K/vfn/HD5rEYBt35xUk
-            WvdjUWjZwv12AkQqNG6pld5rPAb75deIKzzMz+uBk460UMB0D01toVe6f35H2zjU
-            ZgEJAhAVSu0LXmR4PK+OvI3xNJOPxqLYJCG3g6UVZx+cRS0FPDRYQz3vFI82kgPN
-            8dW8FvtbFoLKbtFjB1gbFpclbt2zWk9nFsbnWyXvQUy7KLGF5HhVob/wiLrA2ztk
-            u/KRAKku/w==
-            =tqdJ
+            hQIMA5NT/LvuRqeGAQ/9HIOUEohKXW9uxyf7IxCr2nuiHNgP1zAuMr0SnE9BwXd7
+            125pUa8ivtGI56QU4LvzBQwk/Oh4HKGd/Frjvjxr4JJ7Gp0JELdycFaofwwMGEdD
+            l+ZXeTLrNpnpuNieuTzq/kt6YFsnZCdlD5uWf0vVgnKQUxROEPSIJHuLYqAv32YW
+            4jKwZjY2SielZCCtyiEYeVyf+b63hfi/q8BAJev39K1xS+D/FQXD3GTLNKtFAHWg
+            bU+7MHZrdotxzWvCFYyS7Ttd7LMdGbDWjpHqTXMWFfflzagIzGBzws+YfRBbjM/t
+            QwzOdqRDAKiQIm3/aRLnhKSuAhoInP0C6x1jJrbLGkmJzQQsJ5PCXrsVg5PToXBx
+            Ghw7iSEXrmGpIYSv35UGJmmPA16r5OdYs5Zj6o/2iVNVuq5HFqQ4z1I8c4mDc0nX
+            u+y24mjXHObaql7/CNhoqHS+nJAvqRF1OrA6YrneHJaX3yYbAwnZ8gxl0fbOSk6n
+            XfGRCOKdftONlX4sWvWriHy9cH7hTbsN3/ERLZWJJl7NILSObjc3islN24otOX2E
+            xLquBStuwQ/vMhCv3t4hLL49jWyriyLAyKShJO7y9932GCCg6oVRQInPTtHJXeUh
+            hnLUEUbhw/5RHN+cRmqZ8sx36BKxFQ8sl1hPBWzv8vlVslhmmi0lIoiDfbl3LXLU
+            aAEJAhBcgqeYZo/i6FN67f0yZ0V0nahMLZXc+yQ78I0Wda+vabNLj0iKzc5DP6cW
+            UwYHjy2OAELoVd0UBcxVq8qszwtWWgsltWdbbAeNqBtn8HdT8Y078pyiYfHo0l6P
+            gbeDZ0BqCe6n
+            =hrP6
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2

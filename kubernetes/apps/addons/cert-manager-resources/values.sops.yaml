@@ -59,6 +59,7 @@ certificates:
         - addons
         - automation
         - databases
+        - devops
         - homelab
         - ingress
         - longhorn-system

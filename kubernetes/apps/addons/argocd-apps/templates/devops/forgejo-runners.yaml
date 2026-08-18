@@ -1,7 +1,9 @@
 # --------------------
 # Forgejo Runner
 #   - Docs:  https://forgejo.org/docs/latest/admin/actions/
-#   - Chart: oci://code.forgejo.org/forgejo-helm/forgejo-runner
+#   - Chart: oci://codeberg.org/wrenix/helm-charts/forgejo-runner
+#            (community-maintained mirror; Forgejo does not publish an
+#            official runner chart — see forgejo/discussions#66)
 # --------------------
 ---
 apiVersion: argoproj.io/v1alpha1
@@ -15,9 +17,9 @@ spec:
   project: default
 
   sources:
-    - repoURL: code.forgejo.org/forgejo-helm
+    - repoURL: codeberg.org/wrenix/helm-charts
       chart: forgejo-runner
-      targetRevision: 0.7.5
+      targetRevision: 0.7.6
       helm:
         valueFiles:
           - $values/kubernetes/apps/values.sops.yaml
