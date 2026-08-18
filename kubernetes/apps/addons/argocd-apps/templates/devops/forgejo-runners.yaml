@@ -7,7 +7,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: forgejo-runner
+  name: forgejo-runners
   namespace: {{ .Release.Namespace }}
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -20,7 +20,8 @@ spec:
       targetRevision: 0.7.5
       helm:
         valueFiles:
-          - $values/kubernetes/apps/devops/forgejo-runner/values.sops.yaml
+          - $values/kubernetes/apps/values.sops.yaml
+          - $values/kubernetes/apps/devops/forgejo-runners/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values

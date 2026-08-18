@@ -22,4 +22,4 @@ Self-hosted lightweight Git forge with built-in CI/CD (Forgejo Actions). Mirrors
 
 Forgejo Actions runners (2 replicas), docker-exec mode via a bundled Docker-in-Docker sidecar. Executes CI workflows for the mirrored repo.
 
-[:octicons-book-16: Documentation](https://forgejo.org/docs/latest/admin/actions/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/devops/forgejo-runner/values.sops.yaml)
+[:octicons-book-16: Documentation](https://forgejo.org/docs/latest/admin/actions/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/devops/forgejo-runners/values.sops.yaml)
