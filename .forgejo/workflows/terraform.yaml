@@ -1,0 +1,109 @@
+# --------------------
+# Terraform CI
+#   - Plans changed modules on PRs.
+#   - On push to master: plans, opens an approval issue with the plan
+#     output, waits for a maintainer to comment "approve", then applies.
+#   - Requires runner labeled `docker` (tj-actions/changed-files needs
+#     Node — the host-mode "self-hosted" test runner won't run this).
+#   - Requires repo secret SOPS_PGP_KEY: the ASCII-armored private key
+#     (`gpg --export-secret-keys --armor <fingerprint>`) used to decrypt
+#     backend.sops.tfbackend and per-module secrets.sops.yaml files.
+#     Not wired up here — add it via repo Settings > Actions > Secrets.
+# --------------------
+name: terraform
+on:
+  pull_request:
+    paths:
+      - terraform/**
+  push:
+    branches: [master]
+    paths:
+      - terraform/**
+
+jobs:
+  detect-changes:
+    runs-on: docker
+    outputs:
+      modules: ${{ steps.changed-modules.outputs.all_changed_files }}
+      any-changed: ${{ steps.changed-modules.outputs.any_changed }}
+    steps:
+      - uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+      - name: Get changed terraform module directories
+        id: changed-modules
+        uses: tj-actions/changed-files@v47.0.5
+        with:
+          files: terraform/**
+          dir_names: true
+          dir_names_max_depth: 2
+          json: true
+          exclude_submodules: true
+
+  plan-and-apply:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.any-changed == 'true'
+    runs-on: docker
+    container: hashicorp/terraform:1.9
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJSON(needs.detect-changes.outputs.modules) }}
+    steps:
+      - uses: actions/checkout@v7.0.0
+
+      - name: Skip non-module paths
+        id: guard
+        run: |
+          if [ ! -f "${{ matrix.module }}/terraform.tf" ] && [ ! -f "${{ matrix.module }}/main.tf" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Import SOPS PGP key
+        if: steps.guard.outputs.skip != 'true'
+        run: |
+          apk add --no-cache gnupg sops
+          echo "$SOPS_PGP_KEY" | gpg --batch --import
+        env:
+          SOPS_PGP_KEY: ${{ secrets.SOPS_PGP_KEY }}
+
+      - name: Decrypt backend config
+        if: steps.guard.outputs.skip != 'true'
+        run: sops -d terraform/backend.sops.tfbackend > terraform/.decrypted~backend.sops.tfbackend
+
+      - name: Terraform init
+        if: steps.guard.outputs.skip != 'true'
+        working-directory: ${{ matrix.module }}
+        run: terraform init -backend-config=../.decrypted~backend.sops.tfbackend -input=false
+
+      - name: Terraform plan
+        if: steps.guard.outputs.skip != 'true'
+        working-directory: ${{ matrix.module }}
+        run: |
+          terraform plan -input=false -no-color -out=tfplan | tee plan-output.txt
+          {
+            echo "plan<<PLAN_EOF"
+            cat plan-output.txt
+            echo "PLAN_EOF"
+          } >> "$GITHUB_OUTPUT"
+        id: plan
+
+      - name: Wait for manual approval
+        if: steps.guard.outputs.skip != 'true' && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: trstringer/manual-approval@v1.13.0
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: afonsoc12
+          minimum-approvals: 1
+          issue-title: "terraform apply: ${{ matrix.module }} (${{ github.sha }})"
+          issue-body: |
+            Plan for `${{ matrix.module }}`:
+            ```
+            ${{ steps.plan.outputs.plan }}
+            ```
+            Comment `approve` to apply, `deny` to abort.
+
+      - name: Terraform apply
+        if: steps.guard.outputs.skip != 'true' && github.event_name == 'push' && github.ref == 'refs/heads/master'
+        working-directory: ${{ matrix.module }}
+        run: terraform apply -input=false tfplan
