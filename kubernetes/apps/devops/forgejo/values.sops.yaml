@@ -1,8 +1,8 @@
 gitea:
     admin:
-        username: ENC[AES256_GCM,data:BjZEJxFo9QMm,iv:h5rFbjzwoJuRQc7aJeuVD5wTqNiXR1xH7gReZtVc7WM=,tag:t8HhV65oGthh2tIi1K3bQw==,type:str]
-        password: ENC[AES256_GCM,data:1hAjZBaTNgeKTKWqLy1Ny/amr/aOqI5l,iv:B+9J1Gu4f5sr5nt1VDHiCzGxxaAd0xmLItzWHMS765Y=,tag:99X3nX3hj3ZKkkFfroQO3Q==,type:str]
-        email: ENC[AES256_GCM,data:RZZ1Kk4DS6uucrtcASiQused5nSr+WmXff64gUA=,iv:8xBhktGAhAO6Cg0I6hmYo2fTr0NCaqnMcPy0gfsqTrQ=,tag:Rn5a20pv5NMTz1VmWwa+gg==,type:str]
+        username: ENC[AES256_GCM,data:aaojU63FBZQg,iv:oSre2GhtUQLnGiTOG/Adz7HtTBU30mGzlgVbUYZI+Yw=,tag:7NhU6kdfyLhMlDigdedrgA==,type:str]
+        password: ENC[AES256_GCM,data:Bof6EF6p0Tt63vG7Lw55+Ok8MZpGFHnshuiGoQ==,iv:s99jdujp0PzJCgTLMSPBnvxHIOWv1W8ECc5m0dJYFXA=,tag:A5XQzQp8fYN+UZ+Pf/wqYQ==,type:str]
+        email: ENC[AES256_GCM,data:I4b6NDRYwGagj7VSylZK+e6e5bTQfMWtnx2SKdw=,iv:cZpooW6I8nHSybdB4AWOO9wISacytF+lUps0jdronus=,tag:KL7IJW7HWQ5MvyU1cR3IxQ==,type:str]
         passwordMode: keepUpdated
     metrics:
         enabled: false
@@ -10,8 +10,8 @@ gitea:
         APP_NAME: Forgejo
         RUN_MODE: prod
         server:
-            DOMAIN: ENC[AES256_GCM,data:+dTy/jqfVnD0fmpHmXLMku5YHrWJFW8=,iv:Mt9qVk02C02tvEiUuI4jtrbz7SMu8iXFnYwktddMXUU=,tag:49+TT3V/Atx8AbJH51L4OA==,type:str]
-            ROOT_URL: ENC[AES256_GCM,data:ccCokqF09+99VcCwxySUt5q1XGyFhjonoxypDRfftUA=,iv:Oxf9UKIdVS2nsV6H8ZZwvwKDcD9sj9g4Em9GymcelJM=,tag:H72chfZ2sRsA6OLg/c0ySw==,type:str]
+            DOMAIN: ENC[AES256_GCM,data:lALxSRmK5a0zPApSWvYjGE47pTzp5AE=,iv:EDKdgYubSo/pLzI+Sp1r0VJ2OHRn+Cyih56KYjG9N7g=,tag:p2oliB1fnxTRJ95V56W2jw==,type:str]
+            ROOT_URL: ENC[AES256_GCM,data:239kTAdXa6NtxhKOMVZbZS0UH5tXTTKcW6dPBr56PQU=,iv:rTjBxehFysE4SGUV+t0VXCt3X2BDuh/aHEKy/lBC6Rg=,tag:tuXGa0y2YGl4eCPTaHVTOg==,type:str]
             SSH_PORT: 22
             SSH_LISTEN_PORT: 2222
         database:
@@ -19,7 +19,7 @@ gitea:
             HOST: postgres.databases.svc.cluster.local:5432
             NAME: forgejo
             USER: forgejo
-            PASSWD: ENC[AES256_GCM,data:41P2ufL55igMlwhKRuR28TyfcWk=,iv:0JmRMw1+LgUU6kHPEzAzF3jI2YDKt1foxisS/PKTXPY=,tag:kQor4WwwXcus2P1rDecJdw==,type:str]
+            PASSWD: ENC[AES256_GCM,data:bI8VX1pzSZ6PUnhg3305690C4Ns=,iv:lpFfVqLZtxuz4euNlm94swmUN6+wh3l9m210cu/Xwp8=,tag:0KvXVkXKO1jXKHohJHUw8g==,type:str]
         actions:
             ENABLED: true
 persistence:
@@ -30,10 +30,15 @@ ingress:
     className: nginx
     annotations: {}
     hosts:
-        - host: ENC[AES256_GCM,data:rXOH9ig2Uwxjebh8LmRZYrmavfd/gZI=,iv:fON0U0jSwvFswVTxyEb419vSn8lW2ghazPZYLGReoX4=,tag:lTLXZEmsY7CgP0eidJx9CQ==,type:str]
+        - host: ENC[AES256_GCM,data:Tnb1PmaAfzcsjHYpKUGmeBRXg3+tURE=,iv:JFoi9vOT4AzBoqztQCgxHz50a+P00znYSN0H4PVB9S8=,tag:b4h9R5oiL4Kb6qSV4+vmaw==,type:str]
           paths:
             - path: /
               pathType: Prefix
+              port: http
+        - host: ENC[AES256_GCM,data:n3LAOf6Z63xf252qwaM9ql32KATn8g==,iv:dgTkfyx+c9pfqxP0G/iM5ma/6C8bMticFhm8HBRlWZM=,tag:5fQOzU8gAk0VLR0s5U4E3w==,type:str]
+          paths:
+            - path: /api/v1/repos/afonsoc12/homelab/mirror-sync
+              pathType: Exact
               port: http
     tls:
         - secretName: local-wildcard-cert
@@ -46,29 +51,29 @@ resources:
         memory: 1Gi
 sops:
     encrypted_regex: ^(password|PASSWD|DOMAIN|ROOT_URL|host|username|email)$
-    lastmodified: "2026-08-18T18:23:12Z"
-    mac: ENC[AES256_GCM,data:Pz3eLW4HkOZB4uS10CpqMIOwNnYt3t83pJbqlomIqXVU1lId6vDQsdtI5CDLpHBWJpKT75yNdSyeToTLDZcKjhHWiTJUbdRWMtAVopVNQEU0rPXSQxG2ddmEWVNNGUN2EgwzDun1DhwlLQRUQt90qNE52ykPcxRgORj9V4JTgOk=,iv:qAvMiRqMSBZ9HTwdr1Bbsyk0hHC69SxNzPWQLjKS1wA=,tag:H6OyMEcURzHB2v3fySMBZQ==,type:str]
+    lastmodified: "2026-08-18T21:27:56Z"
+    mac: ENC[AES256_GCM,data:wZIpbJxsRflgf3RRgrhQKiOtoEHabhfsUrUmZ8wLowQAwGbP8DKlcfXSmZLsWVakmuUaXWeXApWSuIZ/n6v4tHdDFgwu5J2+Sfrvynp3/GP7z5IOtMowTvIURDyOOWg7rJ+W9qITHjp/lpW9FTEW/zUKFGCNd6rc8/tmisXsqi4=,iv:NLC3lnAAnPud5pE4ll0IHPbKsser1Np0x3HCH1vYCNE=,tag:mYWHrWTchpHhFw4j+499GA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-17T20:10:01Z"
+        - created_at: "2026-08-18T21:27:56Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/+KW/VYJIFxbtWjPcMuqOWGpgIiFDRpIwkdtP3lUizX7JZ
-            doIMQcUeqJ2UayY9XNNw6xU75JVJfTIfYgUifscWaml3r0VYhSYVCDrPK4psbUmr
-            SJt4pu3pgvNvHnffoe0CoDXs7OBrp30B1j3+VU2ntS4rWNwqu1immlk+AdeDaUAo
-            UQmsQeGQ2n1ZhQRv2b1UZsKlAbnfRKZgTqwd/hJeqPhJD+0H06znYUBIchWTQ2wA
-            hZ7Z+mPpO3XLc+Taa2Se/HIRQLmO7+6wxhiP4kaDMAsPUEK8+F1uGhxsfDgA2WXP
-            0qk3FOVbuV9hq0PEeWUoh19T/RHgUpXFjjaZQ3hG8EsyrIYvAjlPLqRgNl7GOFjv
-            gI2EzC0fpSxhc9ZB6D7FZyiUpat5DfrCxeNIDv8301C53qQ5WsI6mh+nmRwrrXAl
-            rNaN17im976P0YgayY7oPz28PupWcu+LlBqcAC353KzObpb3a6Zd/wNAK+SNLaes
-            nG/b4QGQvtt/QEj/wCT0f//W4ZaU3649Uy9rh2dh5waOHEPoxfq4wOYOD6TSRzT0
-            g8ncDvnm7pPAv/BsoW+MKkZ40MrbXnjzv0GjrO871A9p3k9ewrbwcADyTwV16DBu
-            ACAE23LPgH/SSlHkegRSpCQHkZFi7ahDjexzrT1tnkeUgezHyqjAaP3WRA5k7oTU
-            aAEJAhDK3Mqx8JEG4s0A0gsyE4+VhvqPul3ZleqRCS9TjUY45c/YeeFABKsbEOeq
-            DPfR/Fh2KCwdcZLAkddqqdF7/nOfrZsyyCEeEy1lt15Eg4B8FbbWFArni49fD/Mc
-            mM9vt7efPc3f
-            =oZZ/
+            hQIMA5NT/LvuRqeGAQ//RnRcA6ykzKyTg6LJnH8DgtEg2EjcvsdUr0rVlIKSoMjC
+            QHxjrncP+eA529sv5oIU5vhabC4G4we8W/5eg7V2qqomFTexV1g4bI+feVZqB739
+            a0GDNpHeGHkHM2JYd6jxHWV28DNUdEyU7Z729/1ONGApiLI2Rzi4/dDBBWWDwpM/
+            Rh2RjHthxH2JHV1iUseqMVm3JtsVGL3sS5ztbrxKeZIui/+LluU6DD0y+XI57RPF
+            McpnSwfDtpjVMr9PrrgILSiuT/Kg8H/joe4FlL6/tK9QYpD4dFsKDnzwfCHLboBu
+            553Bm7ZcB90n3459SeFqZBKQo9XOsP35qhBCjJU9eqn/my2/wVCzyXw40aCaoo9T
+            4RuSlSQ1gRZLsLrPuJTV+PGzf9P8zcq8gWNBCOeoLucpNvBRNsZ9ek11tpBZLuLu
+            BJSDE57wLDIqIA14Elj+vRDYNmFoa28x/h0XHL1w73Pt6Q43CsrPrzxuTTQKMHP5
+            TYv9QfvDfIeU+zxl5iwcBFEe4FXhx2UJdoQT3ImVkU2l/jMyYCTgghhGvz6M2hM2
+            KfpyzSY7WGED1QCWi1cACDld8UeBe97BHSheSnTwthLWXyrcizUsOn4ZHv1HeogT
+            LEQqST4mZhg3Q3fU0xymmhsAMZwrLlYtYDmNM4xet7EJdfcm5N2zvdnwJXI8VyLU
+            ZgEJAhALxEI6Km72nNiFbkRRnxZSaebqpoO/zItIXiknG9m2/Kd7eUexqMIl6/pa
+            zfoSBwmiztyguW5xE2GDXRbsJe6CbKpZ/uye6eTknnolkgvceGTURBsAUZ3XA9V/
+            ZZ449XGmIA==
+            =iAmb
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
