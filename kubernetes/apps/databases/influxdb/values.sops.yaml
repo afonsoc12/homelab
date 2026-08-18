@@ -36,7 +36,7 @@ ports:
 service:
     enabled: true
     type: LoadBalancer
-    loadBalancerIP: ENC[AES256_GCM,data:5Sxc4HK/lSUKAdU=,iv:+qaevk3PvmrrWJHvTKiwgMGxEziL3dSg3SRo8NICkng=,tag:AK5cG+boAMHXDaATX+SxCw==,type:str]
+    loadBalancerIP: ENC[AES256_GCM,data:EDvg8iw15o0hszw=,iv:OcKywMnW9YdoUQT22nGkZjwKt9y9Lj4/7cQ/xja8Uzg=,tag:t9c183mKBTgLK0j+HaI/aA==,type:str]
     annotations:
         metallb.universe.tf/allow-shared-ip: db-svc
 ingress:
@@ -53,10 +53,10 @@ ingress:
               pathType: Prefix
 secret:
     stringData:
-        INFLUXDB3_LICENSE_EMAIL: ENC[AES256_GCM,data:0M9t6lBpn3D2sy4UVHsYgrX2Dwzq7mqQnQ==,iv:l0QFo6iKNjyFsfLSgUdBd/fummCwKV6Ytvwt3gVdRpU=,tag:8dnlRStJatPpyKYuwKdE7w==,type:str]
-        INFLUXDB3_LICENSE_TYPE: ENC[AES256_GCM,data:cr9Ywg==,iv:VwdbNfBVAuFnuy3lNRlM1SO/Ve3XRKEY7IPk/g9Hwo8=,tag:IehDcq2jtbpeti4jvBFqVQ==,type:str]
-        config.json: ENC[AES256_GCM,data:IFwkQx/3woIyVcBDOaGjv6Hawp9sdxel6leSihnCdTbZPJ73BEOSljzLB8JJGXXAP/Av92SzfnnZVeI6ERl9tvY/bAYZQBLFehmenwrq96sNk+1aPdcKNUizNNM9IHHPdB1u42Rx2J+dYBhT5onaPd43Ox8l9c7TLdkqvSQ3kS5E3gB6ixiY6v4NVsKr4Qvqxqote6Yod7XD+gopR1MUk1HH3FsHJlW66+qjyFSqI3h5V8pauP1OvRKWUe9fbykIGMMrExyNIUl56Fab7wsdKbgelNbehJn7FKfyV+CZHAb0qct18HjGciPld3UYVrdUlAxKkvDb4Qzd/kZbRFkZ4Lj9DHgt9fxMZfo8zIeZuF6UyTnXA3vm+rdjrCA=,iv:ypoL/iwuYI27XjsuYMDiFlpiAlv4nRq6T2pabyD7LC8=,tag:xozpiBVLr1P7cxEZ7rRfgg==,type:str]
-        SESSION_SECRET_KEY: ENC[AES256_GCM,data:VLeJCMqJD52g07amw2kd8i9RH1VkwOg1kydPNTjrAuENApblu/wHTlSn3EcC72hw1C4TcGQMtFV/nnpAcgyTvA==,iv:9+xIZLtrGwttiIn+5aY2Lt78+yr5llIKOJY4gqE1AvA=,tag:knml/QzbMJLk8i/M4964NQ==,type:str]
+        INFLUXDB3_LICENSE_EMAIL: ENC[AES256_GCM,data:pmcAaNoFgXez8ESR0E2MPfACdc29kpq9Gg==,iv:ThdvC2KXakOP4GhMVaajAofsQct90qxzOwR1POBID2A=,tag:AQM1Urm43VofLUHGIf0RPw==,type:str]
+        INFLUXDB3_LICENSE_TYPE: ENC[AES256_GCM,data:ORozNg==,iv:wQx5ArLIgqlZL1LrbsU75qjpSOz4cjTxmyrGnBayL8o=,tag:NOxrRdGi/vWrNJpm8k85Mw==,type:str]
+        config.json: ENC[AES256_GCM,data:07vqsLpeKqwHPjj5z0bOgrGnp4VOWpQ+JzNdtVtDPs5iYstb/fbx9MjHXD9PpE8rNpUm3d8v++YlWMtO5x9darZg/wnmQihZIwYRu0kEZnl4gfvyKOtZgTW+oqB7o5ZxvWgd/AVWhlelTF5hePoWpVHRPrFRhuWNDn3/dhPvIvd4UIk6710rxufnpBK+YQz9V9HLx6jdN6LC9QlL3p5APWZJ+sQsyXNq4g7j53wSYodrHu0lShXPI5bQfcSou2oQVSjLJFdwA1407aehDheDyh00M0TWnJ1+D/jO36lIcNKdfCZmsWoXecbgZwTnpLgRjcqwBdQnScyKacEL0GMb1MA1fqFOoq5hx/M0Mi33fZnj0VNAmUC04wmbaOI=,iv:Tn4ZyqsMEfOI0f/cDBJrR590E0YLqQdV+mLkEGINAuw=,tag:8Cd7TmHCL8Mnk0nBlol/OA==,type:str]
+        SESSION_SECRET_KEY: ENC[AES256_GCM,data:n3WWTVCtJRpMNwXhw/Bmo3Ui6tQp/QzjXCyDSjNeprGcTq3BfIDtUt+mDq7cg4YvXgjIOxUK22uJOgxucZkTsw==,iv:kOoGkmgFmCTWOw1ue92a2MTzwn9Tsw47HCjheW4iKfw=,tag:AWyOkc7fd00JeHxhY8ne7A==,type:str]
 volumeMounts:
     - name: data
       mountPath: /var/lib/influxdb3
@@ -66,11 +66,6 @@ volumeClaimTemplates:
         - ReadWriteOnce
       storageClass: longhorn-persistent
       storage: 5Gi
-    - name: ui-db
-      accessModes:
-        - ReadWriteOnce
-      storageClass: longhorn-persistent
-      storage: 128Mi
 # config.json (server URL + admin token) is mounted read-only at /app-root/config
 volumes:
     - name: ui-config
@@ -95,7 +90,7 @@ extraContainers:
                 name: influxdb
                 key: SESSION_SECRET_KEY
       # influxdb3-ui runs as non-root user influxui (uid 1500); the pod's fsGroup grants it
-      # group write access to the ui-db PVC without conflicting with the influxdb container
+      # group write access to the data PVC without conflicting with the influxdb container
       securityContext:
         runAsUser: 1500
         runAsNonRoot: true
@@ -103,8 +98,10 @@ extraContainers:
         - name: ui-config
           mountPath: /app-root/config
           readOnly: true
-        - name: ui-db
+        # shares the influxdb data PVC, isolated under its own subPath directory
+        - name: data
           mountPath: /db
+          subPath: influxdb-ui
       livenessProbe:
         tcpSocket:
             port: 8080
@@ -166,30 +163,30 @@ affinity: {}
 backup:
     enabled: false
 sops:
-    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-08-15T20:32:48Z"
-    mac: ENC[AES256_GCM,data:GT9Z0iKb9ApHhY8F3GOafeb7UtXfutmfIeCOLFMx0Tm9+W8IVu+3akftGiuNeS6c5mNHgsWkVmzY1hav8IVVXUgQiZiUJCCe8rDm3OVGaAzKKe7mZx2Oi27K1ci4DG/pp2TkpHrAnO0eA9QMzFzjRbSFY/UjVp+jQfA6OCuRT18=,iv:teusg05DJkSRY/hcw0Z8JvVXxgiHmdTGE9GKCmY2R4Y=,tag:69HhjQlFWKZR9bUUQFLO9w==,type:str]
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-08-18T00:02:47Z"
+    mac: ENC[AES256_GCM,data:vgXA+Feh+VK2++aEZd7RWiSSrATniDEXmPjUh9GCgbK/wBZBvP5gtV5SNiVEAB2kUSCbSEcKMQGLXmpsifU5Kl4zLpCTNLX5xTg6mHP2GAfBM6hTmyV4s1VuD2a+I4fz17FjM5CAMcAIkcZUIWfio5+i1Rb/w8vrCN+Xc6fF66k=,iv:xAyZ9zoHLA7O1SdxPWQon8trDdP35wP+Xmw0S1HRPks=,tag:koqFZJt8S2nDVTrUsm7Dig==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-04-13T20:28:41Z"
+        - created_at: "2026-08-18T00:02:47Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//em+sj9gdASh5LrcjZzD/tLo/n1tw6qLB/4+dBUBf7F6P
-            XoCtL79Ug513XhhoTe106tP9ZfA8AMc5DSNOA9R6HVG31HCpJwZzjhWupt3DkWFV
-            914ARkw0XJDgJr3SaX6+0bCeQLgDmQb99Vup0D20KisQfQXfXijJJ99OVFK2eejg
-            RiuL+c9jQNU6vy1ppW8VV0xS0MEgyBCnp0RuQPdhv9rNMPoRZuywYPKDCvovnpxn
-            sq53ujafek+e1S64EyWh3f5YNGYbJ3gJc+fs/OhWLpDfPRlRodOp+FtLTn0QpVkH
-            kfvJYUKdQJOYYsaiSN0CX2xRRHOGAzlOQO5LRwHFoBsNbTpdIpZgKzMyfJTMDsbu
-            J68m25GvKRNS+LukhJQSyywWvc3oLFTidsMH9JTz9TwQWtu65qziR34AmGY4QwMV
-            izaeFAY28h2sPxmJaeCdJINL7dxpW+/ZqRgO9FPNwfzjB/WKGNXZzI8j7eWDzB98
-            YFowj+BATrGx3qGWWvHZ2b/biiRdfthGFnaaxD3D/h6bMv6qgfpHabZyWb22BPhJ
-            BfZmQMhphJcnlcCzC1C0l69RyLQ7zWrrgJGeWlAX0dkiqKoQq70xC03N/uM3R2Hw
-            v2kqd3KkIlnefShwn1aqNRHoT9/OTafzme7OYLnuWBtJd/l128umh21xGG/hTirU
-            aAEJAhB40B4I4XkUTpg4snlj4De7N/rygJqKd7sqjWp4yvHumOxUjFUvkxcYeLqN
-            cDROUZzEyvE5jQN46hCpcgHPkePGuxz3UJg+96n0i9wd+dOV4OUIZPuWyOVXBwgC
-            /2qme9Gl6/cP
-            =5xe6
+            hQIMA5NT/LvuRqeGAQ/9HhpdVk4eOoUz6Q9ee/kGQwAUXnOO7OZRm9fi7onRAQt9
+            ddIGyBFecJU/lxZMaZR5lxIuDAzTfr8BNc6lav/guNUs+AzzejbkokaCMS5IEy1G
+            Ejr0mM2TA7ZK6kqMv3Jaql8NVDRttTMYk3q32WD6SYCIxINzIASN3kixb5GgYk0Y
+            XU7t1+fwOeHeNnK7Ldpx1ci56OSd/3fpzFsr86uPOOCEI4nzy7o1wMTkNfwtd99w
+            iRcJ2k/0m5d4YczmpSTDvnBXMkU+CEaMvzaalpgORQVfD/5J9ipbKez/vdYGZlZx
+            t56HqPDGqesdipWU9vekyMUbRN/Eohw3d8Oj/IxhaC2EWtEAzCgkcPoAHhpNwdW+
+            KZ4VsJhJrpsoOKgedE4F7lfT/7iSi/6RasLWAs7xOJSxR4ZWqX1cjUI90BqBqcm5
+            xzDZheKYw3Lt446itxMNJMS6ZaDuNLNUE3xkOvXF4s0e8pE2Ir1bhPBcA+cn3+tT
+            8GJ9VqzgzLgoAMqzXrNldWsXnnRwHSXPPQFzrAUlDjvnwlU7D8ydzwpn5yYh9p9m
+            ad48bEnMdwJwZ2sruNRDwp93WqBw3Qcxw1sITqt/sL1piohPVI0rCG+fD2wj5oQG
+            bPpZ19RzjOzjUMp2VHdLsStAzumOtWor4WVFd8p++YtC5OX8IiB9Re18kG/L8JrU
+            aAEJAhBHhtZLd3oxkVOsaVtqmCKYfwgjal9zh+pqJ/8L6+oxX0Z9BANFvD0uqTDg
+            hdFWBxGej13/BSIwkO6sLoWhEFlDus4qu3FAi6uZ/auSaxRyYSBBwA4TVi5F2NAU
+            zw4tpvoBOxYD
+            =IIK6
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.12.2
+    version: 3.13.2
