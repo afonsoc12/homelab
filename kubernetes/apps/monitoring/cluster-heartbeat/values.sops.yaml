@@ -29,7 +29,7 @@ cronjobs:
       args:
         - |
           sleep 2
-          curl -vfsS \
+          curl -vfsS -4 \
           --data-raw=${NODE_NAME} \
           https://hc-ping.com/${PING_KEY}/k3s-cluster
       resources:
@@ -37,8 +37,8 @@ cronjobs:
             cpu: 10m
             memory: 16Mi
         limits:
-            cpu: 10m
-            memory: 16Mi
+            cpu: 100m
+            memory: 32Mi
 sops:
     encrypted_regex: ^(stringData)$
     lastmodified: "2026-08-17T23:00:03Z"

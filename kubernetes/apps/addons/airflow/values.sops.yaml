@@ -70,11 +70,11 @@ ingress:
               pathType: ImplementationSpecific
 resources:
     requests:
-        cpu: 150m
-        memory: 3200Mi
+        cpu: 500m
+        memory: 512Mi
     limits:
-        cpu: 150m
-        memory: 3200Mi
+        cpu: "2"
+        memory: 2500Mi
 livenessProbe:
     httpGet:
         path: /health

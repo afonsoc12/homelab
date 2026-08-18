@@ -46,37 +46,37 @@ frr-k8s:
         cpu: 10m
         memory: 32Mi
       limits:
-        cpu: 10m
-        memory: 32Mi
+        cpu: 200m
+        memory: 64Mi
   frr:
     resources:
       requests:
         cpu: 10m
         memory: 32Mi
       limits:
-        cpu: 10m
-        memory: 32Mi
+        cpu: 200m
+        memory: 64Mi
   reloader:
     resources:
       requests:
         cpu: 5m
         memory: 16Mi
       limits:
-        cpu: 5m
-        memory: 16Mi
+        cpu: 100m
+        memory: 32Mi
   frrMetrics:
     resources:
       requests:
         cpu: 10m
         memory: 48Mi
       limits:
-        cpu: 10m
-        memory: 48Mi
+        cpu: 100m
+        memory: 64Mi
   frrStatus:
     resources:
       requests:
         cpu: 10m
         memory: 32Mi
       limits:
-        cpu: 10m
-        memory: 32Mi
+        cpu: 100m
+        memory: 48Mi
