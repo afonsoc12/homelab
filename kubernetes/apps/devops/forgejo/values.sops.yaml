@@ -1,6 +1,6 @@
 gitea:
     admin:
-        username: ENC[AES256_GCM,data:W14Gd7hy,iv:k94IrQXMdHi89BH/leL9kJpQXkgc+jqXLyNQpDvSbkc=,tag:r5ZPDgobG9Hh8ChNGrfXug==,type:str]
+        username: ENC[AES256_GCM,data:BjZEJxFo9QMm,iv:h5rFbjzwoJuRQc7aJeuVD5wTqNiXR1xH7gReZtVc7WM=,tag:t8HhV65oGthh2tIi1K3bQw==,type:str]
         password: ENC[AES256_GCM,data:1hAjZBaTNgeKTKWqLy1Ny/amr/aOqI5l,iv:B+9J1Gu4f5sr5nt1VDHiCzGxxaAd0xmLItzWHMS765Y=,tag:99X3nX3hj3ZKkkFfroQO3Q==,type:str]
         email: ENC[AES256_GCM,data:RZZ1Kk4DS6uucrtcASiQused5nSr+WmXff64gUA=,iv:8xBhktGAhAO6Cg0I6hmYo2fTr0NCaqnMcPy0gfsqTrQ=,tag:Rn5a20pv5NMTz1VmWwa+gg==,type:str]
         passwordMode: keepUpdated
@@ -46,8 +46,8 @@ resources:
         memory: 1Gi
 sops:
     encrypted_regex: ^(password|PASSWD|DOMAIN|ROOT_URL|host|username|email)$
-    lastmodified: "2026-08-17T20:10:01Z"
-    mac: ENC[AES256_GCM,data:mlrWjE19WWCtUx9xn62vT/ZNYLat86OmImJ8SGjeOrC5X/M8ogfpH14FQIJ7d132dntyNieBKEWrF3xUzvL3CrnLpXjdsAgS4U0PNpAJiktKfIdC9AfghN3/U1ynArrt6GXIKuU7arG78Qq0dAERdFa0TXh/kB+vImc9cI7WA0g=,iv:xsU+pn7LwMbqJCCEcME7nGdipHDo9Eo5HZxqiSkg6ws=,tag:/UjTDCEcXc2CDKe8cwaE9A==,type:str]
+    lastmodified: "2026-08-18T18:23:12Z"
+    mac: ENC[AES256_GCM,data:Pz3eLW4HkOZB4uS10CpqMIOwNnYt3t83pJbqlomIqXVU1lId6vDQsdtI5CDLpHBWJpKT75yNdSyeToTLDZcKjhHWiTJUbdRWMtAVopVNQEU0rPXSQxG2ddmEWVNNGUN2EgwzDun1DhwlLQRUQt90qNE52ykPcxRgORj9V4JTgOk=,iv:qAvMiRqMSBZ9HTwdr1Bbsyk0hHC69SxNzPWQLjKS1wA=,tag:H6OyMEcURzHB2v3fySMBZQ==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-08-17T20:10:01Z"
