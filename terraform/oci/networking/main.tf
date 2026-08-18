@@ -86,16 +86,10 @@ resource "oci_core_default_security_list" "main" {
 
 resource "oci_core_default_dhcp_options" "main" {
   manage_default_resource_id = oci_core_vcn.main.default_dhcp_options_id
-  domain_name_type           = "CUSTOM_DOMAIN"
 
   options {
     type        = "DomainNameServer"
     server_type = "VcnLocalPlusInternet"
-  }
-
-  options {
-    type                = "SearchDomain"
-    search_domain_names = ["vcn05261919.oraclevcn.com"]
   }
 }
 
