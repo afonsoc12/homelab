@@ -43,3 +43,18 @@ jobs:
                   failed = True
           sys.exit(1 if failed else 0)
           "
+
+  say-hello-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "hello from the new ubuntu-latest label"
+      - name: what's in here?
+        run: |
+          cat /etc/os-release
+          for bin in node npm git curl bash python3 sudo apt-get make gcc; do
+            if command -v "$bin" >/dev/null 2>&1; then
+              printf "%-10s %s\n" "$bin" "$("$bin" --version 2>&1 | head -1)"
+            else
+              printf "%-10s NOT PRESENT\n" "$bin"
+            fi
+          done

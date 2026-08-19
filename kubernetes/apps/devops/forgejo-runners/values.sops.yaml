@@ -3,6 +3,11 @@ runner:
         instance: http://forgejo-http.devops.svc.cluster.local:3000
         name: forgejo-runner
         token: ENC[AES256_GCM,data:7cEG6870+gLstSPQ2HgLubMpJLHZh6GBQ37dZHA9E6gpX1EfCbseX5TuRA==,iv:OKR3iNbp6K94AwVe0QLNLXM0kUbB3CuLUS58r15p4uo=,tag:pQ5GEzXwN1HmAAOZCiemZw==,type:str]
+        file:
+            runner:
+                labels:
+                    - docker:docker://data.forgejo.org/oci/node:lts
+                    - ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:runner-24.04
 knownLastVersion: true
 replicaCount: 1
 resources:
