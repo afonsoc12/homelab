@@ -42,6 +42,9 @@ ingress:
               port: http
     tls:
         - secretName: local-wildcard-cert
+        - secretName: git-hook-cert
+          hosts:
+            - git-hook.{{ .Values.domain }}
 resources:
     requests:
         cpu: 100m
