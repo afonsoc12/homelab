@@ -15,6 +15,97 @@
         tailscale_package: "tailscale={{ tailscale_version }}"
         state: present
 
+- name: Stop OCI VCN DHCP from leaking its DNS search domain to pods
+  hosts: k3s-oci-m3
+  become: true
+  tasks:
+    - name: Discover the OCI VCN interface (default route device)
+      ansible.builtin.command: ip -4 -o route show default
+      register: k3s_oci_m3_default_route
+      changed_when: false
+
+    - name: Set OCI VCN interface name fact
+      ansible.builtin.set_fact:
+        k3s_oci_m3_vcn_iface: "{{ k3s_oci_m3_default_route.stdout.split()[4] }}"
+
+    - name: Disable use of DHCP-provided search domains on the OCI VCN interface
+      ansible.builtin.copy:
+        dest: /etc/netplan/99-oci-vcn-no-dhcp-domains.yaml
+        mode: "0600"
+        content: |
+          network:
+            version: 2
+            ethernets:
+              {{ k3s_oci_m3_vcn_iface }}:
+                dhcp4: true
+                dhcp4-overrides:
+                  use-domains: false
+      notify: Apply netplan
+  handlers:
+    - name: Apply netplan
+      ansible.builtin.command: netplan apply
+      changed_when: true
+
+- name: Manage UFW on k3s-oci-m3
+  hosts: k3s-oci-m3
+  become: true
+  vars:
+    # Mirrors the rules already active on this node (captured via `ufw status numbered`)
+    # so bringing UFW under Ansible management doesn't change existing behavior.
+    k3s_oci_m3_ufw_allow_in_ports:
+      - { port: "32400", proto: "tcp" }
+      - { port: "32400", proto: "udp" }
+      - { port: "6443", proto: "tcp" }
+      - { port: "2379:2381", proto: "tcp" }
+      - { port: "5001", proto: "tcp" }
+      - { port: "8472", proto: "udp" }
+      - { port: "10250", proto: "tcp" }
+      - { port: "51820", proto: "udp" }
+      - { port: "51821", proto: "udp" }
+    k3s_oci_m3_ufw_allow_in_from:
+      - "10.42.0.0/16" # k3s pod CIDR
+      - "10.43.0.0/16" # k3s service CIDR
+  tasks:
+    - name: Allow all traffic on tailscale0
+      community.general.ufw:
+        rule: allow
+        interface: tailscale0
+        direction: in
+
+    - name: Allow inbound ports required by k3s / longhorn / plex / wireguard
+      community.general.ufw:
+        rule: allow
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+      loop: "{{ k3s_oci_m3_ufw_allow_in_ports }}"
+
+    - name: Allow inbound traffic from the pod and service CIDRs
+      community.general.ufw:
+        rule: allow
+        src: "{{ item }}"
+      loop: "{{ k3s_oci_m3_ufw_allow_in_from }}"
+
+    # Root cause of the pod egress flakiness: UFW's default policy for the FORWARD chain
+    # is `deny (routed)`. kube-router explicitly ACCEPTs marked CNI traffic before it
+    # reaches UFW's forward chain, but that mark isn't guaranteed to be set for every new
+    # connection (observed dropping fresh SYNs and cross-node pod DNS queries in
+    # /var/log/ufw.log: `IN=cni0 OUT=enp0s6/flannel.1 ... [UFW BLOCK]`). Explicitly
+    # allowing routed traffic to/from the pod CIDR closes that race instead of relying on
+    # kube-router's mark always landing first.
+    - name: Allow routed (forwarded) traffic to/from the pod CIDR
+      community.general.ufw:
+        rule: allow
+        route: true
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      loop:
+        - { src: "10.42.0.0/16", dest: "0.0.0.0/0" }
+        - { src: "0.0.0.0/0", dest: "10.42.0.0/16" }
+
+    - name: Ensure UFW is enabled
+      community.general.ufw:
+        state: enabled
+
 - name: K3s cluster prerequisites
   hosts: k3s_cluster
   become: true

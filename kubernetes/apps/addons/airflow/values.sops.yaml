@@ -93,7 +93,7 @@ startupProbe:
     httpGet:
         path: /health
         port: 8080
-    initialDelaySeconds: 30
+    initialDelaySeconds: 60
     periodSeconds: 10
     failureThreshold: 30
     timeoutSeconds: 5

@@ -22,6 +22,7 @@ gitea:
             PASSWD: ENC[AES256_GCM,data:bI8VX1pzSZ6PUnhg3305690C4Ns=,iv:lpFfVqLZtxuz4euNlm94swmUN6+wh3l9m210cu/Xwp8=,tag:0KvXVkXKO1jXKHohJHUw8g==,type:str]
         actions:
             ENABLED: true
+            DEFAULT_ACTIONS_URL: github
 persistence:
     enabled: true
     size: 10Gi
