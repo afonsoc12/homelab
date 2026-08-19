@@ -39,12 +39,6 @@ certificates:
       reflectNamespaces:
         - homelab
         - sandbox
-    - name: git
-      dnsNames:
-        - git.{{ .Values.domain }}
-      reflectNamespaces:
-        - homelab
-        - sandbox
     - name: git-hook
       dnsNames:
         - git-hook.{{ .Values.domain }}
