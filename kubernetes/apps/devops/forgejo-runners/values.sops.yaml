@@ -6,7 +6,6 @@ runner:
         file:
             runner:
                 labels:
-                    - docker:docker://data.forgejo.org/oci/node:lts
                     - ubuntu-latest:docker://ghcr.io/catthehacker/ubuntu:runner-24.04
 knownLastVersion: true
 replicaCount: 1
