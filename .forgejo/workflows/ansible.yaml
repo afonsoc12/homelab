@@ -1,0 +1,100 @@
+# --------------------
+# Ansible CI
+#   - Lints on every change under ansible/**.
+#   - On PRs: dry-runs (--check --diff) changed playbooks against
+#     inventory.
+#   - On push to master: opens an approval issue, then runs the changed
+#     playbooks for real once approved.
+#   - Requires runner labeled `docker`.
+#   - Requires repo secret ANSIBLE_SSH_KEY: the private key used to
+#     reach the inventory hosts. Not wired up here — add it via repo
+#     Settings > Actions > Secrets.
+#   - Requires SOPS_PGP_KEY (same as terraform.yaml) since inventory
+#     secrets are SOPS-encrypted.
+# --------------------
+name: ansible
+on:
+  pull_request:
+    paths:
+      - ansible/**
+  push:
+    branches: [master]
+    paths:
+      - ansible/**
+
+jobs:
+  lint:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v7.0.0
+      - uses: ansible/ansible-lint@v26.6.0
+        with:
+          path: ansible/
+
+  detect-changes:
+    runs-on: docker
+    outputs:
+      playbooks: ${{ steps.changed.outputs.all_changed_files }}
+      any-changed: ${{ steps.changed.outputs.any_changed }}
+    steps:
+      - uses: actions/checkout@v7.0.0
+        with:
+          fetch-depth: 0
+      - name: Get changed playbooks
+        id: changed
+        uses: tj-actions/changed-files@v47.0.5
+        with:
+          files: ansible/playbooks/**.yml
+
+  run-playbooks:
+    needs: [lint, detect-changes]
+    if: needs.detect-changes.outputs.any-changed == 'true'
+    runs-on: docker
+    container: python:3.12-slim
+    strategy:
+      fail-fast: false
+      matrix:
+        playbook: ${{ fromJSON(needs.detect-changes.outputs.playbooks) }}
+    steps:
+      - uses: actions/checkout@v7.0.0
+
+      - name: Install dependencies
+        run: |
+          apt-get update && apt-get install -y --no-install-recommends gnupg sops openssh-client
+          pip install uv
+          cd ansible && uv sync
+
+      - name: Import SOPS PGP key
+        run: echo "$SOPS_PGP_KEY" | gpg --batch --import
+        env:
+          SOPS_PGP_KEY: ${{ secrets.SOPS_PGP_KEY }}
+
+      - name: Setup SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "$ANSIBLE_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+        env:
+          ANSIBLE_SSH_KEY: ${{ secrets.ANSIBLE_SSH_KEY }}
+
+      - name: Dry-run (PR)
+        if: github.event_name == 'pull_request'
+        working-directory: ansible
+        run: uv run ansible-playbook "${{ matrix.playbook }}" --check --diff
+
+      - name: Wait for manual approval
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: trstringer/manual-approval@v1.13.0
+        with:
+          secret: ${{ secrets.GITHUB_TOKEN }}
+          approvers: afonsoc12
+          minimum-approvals: 1
+          issue-title: "ansible-playbook run: ${{ matrix.playbook }} (${{ github.sha }})"
+          issue-body: |
+            Run `${{ matrix.playbook }}` for real against the inventory?
+            Comment `approve` to run, `deny` to abort.
+
+      - name: Run playbook
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        working-directory: ansible
+        run: uv run ansible-playbook "${{ matrix.playbook }}"
