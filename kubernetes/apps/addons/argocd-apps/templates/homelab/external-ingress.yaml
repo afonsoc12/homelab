@@ -21,6 +21,7 @@ spec:
           - app: bazarr
           - app: booklore
           - app: calibre-web
+          - app: decide
           - app: kopia
           - app: krusader
           - app: lidarr

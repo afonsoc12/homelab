@@ -1,0 +1,40 @@
+---
+# Renders one DockerMan XML template per service in a stack's docker-compose.yaml,
+# so containers deployed via docker_compose_v2 show up as native apps in the
+# Unraid GUI (icon, WebUI link, editable fields) instead of "unmanaged" containers.
+# Included per-stack from tasks/main.yml when the host is in the `unraid` group.
+
+- name: "Unraid | Load docker-compose.yaml for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_stack_compose: "{{ lookup('ansible.builtin.file', stack.path + '/docker-compose.yaml') | from_yaml }}"
+  delegate_to: localhost
+
+- name: "Unraid | Check for template metadata for {{ stack.path | basename }}"
+  ansible.builtin.stat:
+    path: "{{ stack.path }}/unraid.yml"
+  delegate_to: localhost
+  register: docker_compose_unraid_meta_stat
+
+- name: "Unraid | Load template metadata for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_stack_meta: "{{ lookup('ansible.builtin.file', stack.path + '/unraid.yml') | from_yaml }}"
+  delegate_to: localhost
+  when: docker_compose_unraid_meta_stat.stat.exists
+
+- name: "Unraid | Default empty template metadata for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_stack_meta: {}
+  when: not docker_compose_unraid_meta_stat.stat.exists
+
+- name: "Unraid | Render DockerMan templates for {{ stack.path | basename }}"
+  ansible.builtin.template:
+    src: unraid-template.xml.j2
+    dest: "{{ docker_compose_unraid_templates_dir }}/{{ item.key }}.xml"
+    mode: "0644"
+  vars:
+    service_name: "{{ item.key }}"
+    service: "{{ item.value }}"
+    meta: "{{ docker_compose_unraid_stack_meta[item.key] | default({}) }}"
+  loop: "{{ docker_compose_unraid_stack_compose.services | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"

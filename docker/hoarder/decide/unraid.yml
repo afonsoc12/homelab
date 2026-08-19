@@ -1,0 +1,42 @@
+---
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name. Any field left out falls back to a sane default -
+# this file can be omitted entirely.
+#
+# Icon/overview/category pulled from the project's own official Unraid CA
+# template (https://github.com/hk21x/decide/blob/main/unraid-ca/templates/decide.xml) -
+# neither dashboard-icons nor selfhst/icons carry this app.
+decide:
+  icon: https://raw.githubusercontent.com/hk21x/decide/main/frontend/public/decide-icon-512.png
+  project_url: https://github.com/hk21x/decide
+  support_url: https://github.com/hk21x/decide/issues
+  license: MIT
+  webui: "http://[IP]:[PORT:8080]/"
+  category: "MediaApp:Video Tools:Utilities"
+  overview: |
+    decide — Swipe. Decide. Watch.
+
+    A self-hosted swipe-to-match film picker for your Plex library. Two to
+    four people swipe through the same small, filtered deck of films from
+    your server; when everyone says "Tonight" to the same one it's a match,
+    a Final Round crowns the winner, and ticket stubs remember your movie
+    nights.
+
+    Plex is linked in-app via the setup wizard (plex.tv/link) on first boot.
+
+    decide is an independent project that works with Plex Media Server. It
+    is not affiliated with or endorsed by Plex, Inc.
+  volume_descriptions:
+    /data: "SQLite database and artwork cache."
+  env_descriptions:
+    LOCAL_URL: "Address the join QR shows to people on your LAN (e.g. http://192.168.1.10:8090). Also settable in-app."
+    REMOTE_URL: "Address the join QR shows to remote friends. Points at the Authelia-fronted ingress hostname."
+    PUID: "User ID to run as (99 = nobody on Unraid)."
+    PGID: "Group ID to run as (100 = users on Unraid)."
+    UMASK: "Umask for files created by the container. Not confirmed used by this image, set for consistency with other stacks."
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced

@@ -32,6 +32,29 @@
     delete: true
   loop: "{{ docker_compose_stacks.files }}"
 
+- name: "Unraid | Check for template metadata (pre-deploy label pass)"
+  ansible.builtin.stat:
+    path: "{{ item.path }}/unraid.yml"
+  delegate_to: localhost
+  register: docker_compose_unraid_predeploy_meta_stat
+  loop: "{{ docker_compose_stacks.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Add the DockerMan-managed/webui/icon labels to every service"
+  ansible.builtin.template:
+    src: unraid-labels.yaml.j2
+    dest: "{{ docker_compose_base_dir }}/{{ item.item.path | basename }}/docker-compose.yaml"
+    mode: "0644"
+  vars:
+    stack_compose: "{{ lookup('ansible.builtin.file', item.item.path + '/docker-compose.yaml') | from_yaml }}"
+    stack_meta: "{{ (lookup('ansible.builtin.file', item.item.path + '/unraid.yml') | from_yaml) if item.stat.exists else {} }}"
+  loop: "{{ docker_compose_unraid_predeploy_meta_stat.results }}"
+  loop_control:
+    label: "{{ item.item.path | basename }}"
+  when: "'unraid' in group_names"
+
 - name: Check for secrets files
   ansible.builtin.stat:
     path: "{{ item.path }}/secrets.sops.yaml"
@@ -76,6 +99,15 @@
   loop: "{{ docker_compose_stacks.files }}"
   loop_control:
     pause: 5
+
+- name: Render DockerMan templates (Unraid hosts)
+  ansible.builtin.include_tasks: unraid_templates.yml
+  vars:
+    stack: "{{ item }}"
+  loop: "{{ docker_compose_stacks.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  when: "'unraid' in group_names"
 
 - name: Prune unused resources
   community.docker.docker_prune:
