@@ -3,6 +3,43 @@ on: [push]
 
 jobs:
   say-hello:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - run: echo "hello from forgejo actions"
+
+      - name: what am I actually running in?
+        run: |
+          cat /etc/os-release
+          echo "--- versions ---"
+          for bin in node npm git curl bash python3 python sh wget openssl sudo apt-get make gcc; do
+            if command -v "$bin" >/dev/null 2>&1; then
+              printf "%-10s %s\n" "$bin" "$("$bin" --version 2>&1 | head -1)"
+            else
+              printf "%-10s NOT PRESENT\n" "$bin"
+            fi
+          done
+
+      - name: install uv and run python
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+          uv --version
+          uv run --python 3.12 -- python3 -c "import sys; print('python', sys.version)"
+
+      - uses: actions/checkout@v7.0.0
+
+      - name: real CI step - validate this repo's own workflow YAML
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          uv run --with pyyaml -- python3 -c "
+          import pathlib, sys, yaml
+          failed = False
+          for f in pathlib.Path('.forgejo/workflows').glob('*.yaml'):
+              try:
+                  yaml.safe_load(f.read_text())
+                  print(f'OK   {f}')
+              except yaml.YAMLError as e:
+                  print(f'FAIL {f}: {e}')
+                  failed = True
+          sys.exit(1 if failed else 0)
+          "
