@@ -3,6 +3,6 @@ on: [push]
 
 jobs:
   say-hello:
-    runs-on: self-hosted
+    runs-on: docker
     steps:
       - run: echo "hello from forgejo actions"
