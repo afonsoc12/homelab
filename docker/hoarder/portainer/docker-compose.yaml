@@ -1,0 +1,16 @@
+---
+# --------------------
+# portainer
+#   - Project: https://portainer.io
+# --------------------
+services:
+  portainer:
+    image: portainer/portainer-ce:2.43.0
+    container_name: portainer
+    restart: unless-stopped
+    ports:
+      - "9000:9000/tcp"
+      - "8000:8000/tcp"
+    volumes:
+      - "/mnt/user/appdata/portainer:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"

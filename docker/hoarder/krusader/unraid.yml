@@ -1,0 +1,45 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-Krusader.xml).
+krusader:
+  icon: https://raw.githubusercontent.com/ich777/docker-templates/master/ich777/images/krusader.png
+  webui: "http://[IP]:[PORT:8088]/vnc.html?autoconnect=true"
+  ingress_host: krusader.local
+  category: "Productivity: Tools:Utilities"
+  overview: |
+    Krusader is an advanced orthodox file manager for KDE and other desktops in the Unix world. It is similar to the console-based GNU Midnight Commander, GNOME Commander
+    for the GNOME desktop environment, or Total Commander for Windows, all of which can trace their paradigmatic features to the original Norton Commander for DOS. It
+    supports extensive archive handling, mounted filesystem support, FTP, advanced search, viewer/editor, directory synchronisation, file content comparisons, batch
+    renaming, etc.
+
+    Language Notice: Enter your prefered locales, you can find a full list of supported languages in: '/usr/share/i18n/SUPPORTED' simply open up a console from the
+    Container and type in 'cat /usr/share/i18n/SUPPORTED' (eg: 'en_US.UTF-8 UTF8' or 'de_DE.UTF-8 UTF-8', 'fr_FR.UTF-8 UTF-8'...)
+
+    ATTENTION: Wronge usage of this tool can lead to data loss, be carefull when using Krusader with Unraid.
+    You can delete your whole Array with a single button press if you don't be carefull!!!
+  registry: "https://hub.docker.com/r/ich777/krusader"
+  project_url: "https://krusader.org/"
+  support_url: "https://forums.unraid.net/topic/83786-support-ich777-application-dockers/"
+  port_descriptions:
+    "8080": "noVNC Port"
+  volume_descriptions:
+    "/mnt": >-
+      Main data path to your unRAID shares (if you want to get access to a disk mounted through UnassignedDevices change the Host Path to '/mnt', if you want to get
+      system level access change the Host Path to '/', you will then find the mounted path in Kruser in '/mnt/user').
+  env_descriptions:
+    USER_LOCALES: >-
+      Enter your prefered locales, you can find a full list of supported languages in: '/usr/share/i18n/SUPPORTED' simply open up a console from the Container and type in
+      'cat /usr/share/i18n/SUPPORTED' (eg: 'en_US.UTF-8 UTF8' or 'de_DE.UTF-8 UTF-8', 'fr_FR.UTF-8 UTF-8'...)
+    RUNASROOT: >-
+      Set this variable to 'true' if you want to run Krusader as root to edit system files (please remember you have to also change the Data Path to edit system level
+      files)
+    NOVNC_RESIZE: "Delete this value if you don't want local scaling."
+    CUSTOM_RES_W: "Enter the preferred resolution width"
+    CUSTOM_RES_H: "Enter the preferred resolution height"
+  env_display:
+    NOVNC_RESIZE: advanced
+    CUSTOM_RES_W: advanced
+    CUSTOM_RES_H: advanced

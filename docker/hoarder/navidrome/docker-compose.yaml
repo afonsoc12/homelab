@@ -1,0 +1,21 @@
+---
+# --------------------
+# navidrome
+#   - Project: https://github.com/navidrome/navidrome
+# --------------------
+services:
+  navidrome:
+    image: deluan/navidrome:0.63.1
+    container_name: navidrome
+    restart: unless-stopped
+    ports:
+      - "4533:4533/tcp"
+    environment:
+      ND_SCANSCHEDULE: "1m"
+      ND_LOGLEVEL: "info"
+      ND_SESSIONTIMEOUT: "24h"
+      ND_BASEURL: ""
+      ND_IMAGECACHESIZE: "200MB"
+    volumes:
+      - "/mnt/user/appdata/navidrome:/data"
+      - "/mnt/user/media/music/:/music"

@@ -16,8 +16,6 @@
   ansible.builtin.file:
     path: "{{ docker_compose_volumes_dir }}/{{ item.path | basename }}"
     state: directory
-    owner: "{{ ansible_facts['user_id'] }}"
-    group: "{{ ansible_facts['user_id'] }}"
     mode: "0750"
   become: true
   loop: "{{ docker_compose_stacks.files }}"
@@ -26,9 +24,11 @@
   ansible.posix.synchronize:
     src: "{{ item.path }}/"
     dest: "{{ docker_compose_base_dir }}/{{ item.path | basename }}"
-    rsync_opts:
-      - "--exclude=secrets.sops.yaml"
-      - "--exclude=.env"
+    rsync_opts: >-
+      {{
+        ['--exclude=secrets.sops.yaml', '--exclude=.env']
+        + (['--exclude=docker-compose.yaml'] if 'unraid' in group_names else [])
+      }}
     delete: true
   loop: "{{ docker_compose_stacks.files }}"
 
@@ -89,15 +89,13 @@
     attachable: "{{ item.value.attachable | default(omit) }}"
   with_dict: "{{ docker_compose_networks if docker_compose_networks is iterable else {} }}"
 
-- name: Deploy stacks
-  community.docker.docker_compose_v2:
-    project_src: "{{ docker_compose_base_dir }}/{{ item.path | basename }}"
-    pull: always
-    build: never
-    recreate: "{{ docker_compose_recreate_policy }}"
-    remove_orphans: true
+- name: Deploy stacks (and prune after each)
+  ansible.builtin.include_tasks: deploy_stack.yml
+  vars:
+    stack: "{{ item }}"
   loop: "{{ docker_compose_stacks.files }}"
   loop_control:
+    label: "{{ item.path | basename }}"
     pause: 5
 
 - name: Render DockerMan templates (Unraid hosts)
@@ -109,11 +107,74 @@
     label: "{{ item.path | basename }}"
   when: "'unraid' in group_names"
 
-- name: Prune unused resources
-  community.docker.docker_prune:
-    timeout: 180
-    containers: true
-    images: true
-    images_filters:
-      dangling: false
-    networks: true
+- name: "Unraid | Build autostart container list"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_autostart_containers: >-
+      {{
+        (docker_compose_unraid_autostart_containers | default([]))
+        + ((lookup('ansible.builtin.file', item.path + '/docker-compose.yaml') | from_yaml).services.values()
+            | selectattr('restart', 'defined')
+            | rejectattr('restart', 'equalto', 'no')
+            | map(attribute='container_name')
+            | list)
+      }}
+  delegate_to: localhost
+  loop: "{{ docker_compose_stacks.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Write autostart list (derived from each service's restart policy)"
+  ansible.builtin.copy:
+    content: "{{ docker_compose_unraid_autostart_containers | sort | join('\n') }}\n"
+    dest: /var/lib/docker/unraid-autostart
+    mode: "0644"
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Collect all container names"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_all_containers: >-
+      {{
+        (docker_compose_unraid_all_containers | default([]))
+        + ((lookup('ansible.builtin.file', item.path + '/docker-compose.yaml') | from_yaml).services.values()
+            | map(attribute='container_name')
+            | list)
+      }}
+  delegate_to: localhost
+  loop: "{{ docker_compose_stacks.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Slurp existing Docker tab order"
+  ansible.builtin.slurp:
+    src: /boot/config/plugins/dockerMan/userprefs.cfg
+  register: docker_compose_unraid_userprefs_raw
+  failed_when: false
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Build Docker tab display order (preserve existing order, drop stale entries, append new ones, kopia last)"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_existing_order: >-
+      {{
+        (docker_compose_unraid_userprefs_raw.content | b64decode | regex_findall('="([^"]+)"'))
+        if (docker_compose_unraid_userprefs_raw.content is defined) else []
+      }}
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Compute final Docker tab display order"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_order_containers: >-
+      {{
+        (docker_compose_unraid_existing_order | select('in', docker_compose_unraid_all_containers) | reject('equalto', 'kopia') | list)
+        + (docker_compose_unraid_all_containers | reject('in', docker_compose_unraid_existing_order) | reject('equalto', 'kopia') | list)
+        + (['kopia'] if 'kopia' in docker_compose_unraid_all_containers else [])
+      }}
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Write Docker tab display order"
+  ansible.builtin.template:
+    src: unraid-userprefs.cfg.j2
+    dest: /boot/config/plugins/dockerMan/userprefs.cfg
+    mode: "0644"
+  when: "'unraid' in group_names"

@@ -62,7 +62,9 @@ group (e.g. `docker/rpi-4b/adguard/`). A second Unraid box would get its own
      icon: <url>              # prefer https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/<name>.png
                                # or https://cdn.jsdelivr.net/gh/selfhst/icons/png/<name>.png (same convention
                                # docs/ uses). Falls back to the app's own hosted icon if neither has it.
-     webui: "http://[IP]:[PORT:8080]/"   # literal placeholder syntax, Unraid resolves it
+     webui: "http://[IP]:[PORT:8080]/"   # literal placeholder syntax - fallback when no ingress (step 8)
+     ingress_host: myapp.local           # subdomain prefix, e.g. "bazarr.local" - preferred over webui,
+                                          # renders as https://<ingress_host>.<DOMAIN>/ (see step 8)
      category: "MediaApp:Video"          # see Unraid CA category list
      overview: "..."
      registry: <url>           # optional -> <Registry>, see below
@@ -129,33 +131,42 @@ group (e.g. `docker/rpi-4b/adguard/`). A second Unraid box would get its own
    ssh root@<host> "yes | un-get install python-requests python-urllib3 python-idna python-certifi python-charset-normalizer"
    ```
 
-7. **If the container isn't editable, or the WebUI/icon don't show in the
-   container list**, check labels — this is two *separate* mechanisms that
-   are easy to conflate:
-   - The `<WebUI>`/`<Icon>` fields in the DockerMan **XML** only affect the
-     Edit form.
-   - The clickable WebUI link and icon in the main container **list** are
-     read from the running container's own **labels**
-     (`net.unraid.docker.webui`, `net.unraid.docker.icon`), not the XML.
+7. **If the container isn't editable, or WebUI/icon don't show in the list**,
+   check labels — `<WebUI>`/`<Icon>` in the XML only affect the Edit form,
+   the list view reads `net.unraid.docker.webui`/`.icon` labels on the
+   running container instead:
    ```bash
    docker inspect <name> --format '{{json .Config.Labels}}' | python3 -m json.tool | grep unraid
    ```
-   Should show `net.unraid.docker.managed=dockerman` plus `webui`/`icon` if
-   set in `unraid.yml`. The role injects all three into every service on
-   `unraid`-group hosts automatically (`unraid-labels.yaml.j2`, overwrites
-   the synced compose file before deploy, reading `webui`/`icon` straight
-   out of that stack's `unraid.yml`) — if any are missing, the container was
-   deployed some other way (manual `docker compose up`, Unraid's own "Add
-   Container" GUI flow, etc.) and needs a `docker compose up --force-recreate`
-   through Ansible to pick them up. **Labels are immutable** — `docker update`
-   cannot add them after the fact, the container must be recreated.
+   The role injects these automatically (`unraid-labels.yaml.j2`). If
+   missing, the container was created some other way and needs a
+   `docker compose up --force-recreate` through Ansible — labels are
+   immutable, `docker update` can't add them after the fact.
 
-8. **Register cluster-side ingress** if this app needs a hostname reachable
-   from inside the cluster (Authelia, TLS, etc.) — see the `k8s-app` skill's
-   "External service" section. Same pattern as `radarr`/`sonarr`/etc.:
-   `kubernetes/apps/homelab/external-ingress/<app>/values.yaml` pointing at
-   `{{ .Values.ips_tailscale.hoarder }}:<port>`, registered in the
-   `external-ingress` ApplicationSet.
+8. **Register cluster-side ingress** for every new app with a web UI — see
+   the `k8s-app` skill's "External service" section, same pattern as
+   `radarr`/`sonarr`/etc. Then wire the DockerMan WebUI link to it:
+   - Add `ingress_host: <prefix>` to that service in `unraid.yml` (the part
+     of the ingress `host:` before `.{{ .Values.domain }}`, e.g.
+     `bazarr.local`).
+   - Make sure that stack's `secrets.sops.yaml` has a `DOMAIN` key (copy the
+     encrypted value from another stack via `sops -d`/`sops -e` — never
+     type the domain in plaintext anywhere).
+   - Apps with no ingress (`privoxyvpn`, `kometa`) just keep the `webui:`
+     placeholder — `ingress_host` is skipped automatically.
+
+## Autostart and Docker tab order (both Ansible-managed)
+
+Both separate from compose's `restart:` policy, both handled automatically
+in `main.yml` after the DockerMan render step — don't edit by hand:
+
+- **Autostart** (`/var/lib/docker/unraid-autostart`) — flat list of
+  container names Unraid starts on boot. Derived from `restart != "no"`
+  across all stacks. Set `restart: "no"` for one-off tools (`kopia`,
+  `calibre`) to drop them out.
+- **Docker tab order** (`/boot/config/plugins/dockerMan/userprefs.cfg`) —
+  numbered `N="name"` entries, cosmetic only. Existing order is preserved
+  across runs; stale entries drop, new apps get appended at the end.
 
 ## Verifying
 

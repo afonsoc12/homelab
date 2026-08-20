@@ -79,6 +79,11 @@
       "pinDigests": true
     },
     {
+      "description": "Track Unraid docker-compose images with no published version tags by digest",
+      "matchPackageNames": ["ich777/krusader", "ghcr.io/afonsoc12/kopia-temp"],
+      "pinDigests": true
+    },
+    {
       "description": "Pin Helm chart versions in ArgoCD (remove range constraints)",
       "matchManagers": ["argocd"],
       "matchDepTypes": ["helm"],

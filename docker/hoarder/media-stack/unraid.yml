@@ -1,0 +1,402 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# media-stack: privoxyvpn + the *arr apps sharing its network namespace,
+# plus seerr/plex/decide/kometa/tautulli/tdarr - everything Plex-adjacent.
+
+#
+# Migrated from the pre-existing DockerMan template (my-privoxyvpn.xml).
+privoxyvpn:
+  icon: https://raw.githubusercontent.com/binhex/docker-templates/master/binhex/images/privoxy-icon.png
+  webui: "http://config.privoxy.org/"
+  category: "Productivity: Tools:"
+  overview: |
+    Privoxy is a free non-caching web proxy with filtering capabilities for enhancing privacy, manipulating cookies and modifying web page data and HTTP headers before
+    the page is rendered by the browser. Privoxy is a "privacy enhancing proxy", filtering web pages and removing advertisements. Privoxy can be customized by users, for
+    both stand-alone systems and multi-user networks. Privoxy can be chained to other proxies and is frequently used in combination with Squid and can be used to bypass
+    Internet censorship.
+    microsocks is a SOCKS5 service that you can run on your remote boxes to tunnel connections through them, if for some reason SSH doesn't cut it for you. It's very
+    lightweight, and very light on resources too: for every client, a thread with a stack size of 8KB is spawned. the main process basically doesn't consume any resources
+    at all. The only limits are the amount of file descriptors and the RAM.
+    This Docker includes OpenVPN and WireGuard to ensure a secure and private connection to the Internet, including use of iptables to prevent IP leakage when the tunnel
+    is down.
+  registry: "https://registry.hub.docker.com/r/binhex/arch-privoxyvpn/"
+  project_url: "http://www.privoxy.org/"
+  support_url: "https://forums.unraid.net/topic/78028-support-binhex-privoxyvpn/"
+  secret_env:
+    - VPN_PASS
+    - LAN_NETWORK
+    - VPN_USER
+    - SOCKS_PASS
+    - SOCKS_USER
+
+#
+# Migrated from the pre-existing DockerMan template (my-bazarr.xml).
+bazarr:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/bazarr-logo.png
+  webui: "http://[IP]:[PORT:6767]"
+  ingress_host: bazarr.local
+  overview: |
+    Bazarr(https://www.bazarr.media/) is a companion application to Sonarr and Radarr. It can manage and download subtitles based on your requirements. You define your
+    preferences by TV show or movie and Bazarr takes care of everything for you.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/bazarr"
+  project_url: "https://www.bazarr.media/"
+  support_url: "https://github.com/linuxserver/docker-bazarr/issues/new/choose"
+  port_descriptions:
+    "6767": "Allows HTTP access to the internal webserver."
+  volume_descriptions:
+    "/media": "Location of your movies"
+    "/config": "Bazarr data"
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-lidarr.xml).
+lidarr:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/lidarr-logo.png
+  webui: "http://[IP]:[PORT:8686]"
+  ingress_host: lidarr.local
+  category: "Downloaders: MediaApp:Music"
+  overview: |
+    Lidarr(https://github.com/lidarr/Lidarr) is a music collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new tracks from your
+    favorite artists and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality
+    format becomes available.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/lidarr"
+  project_url: "https://github.com/lidarr/Lidarr"
+  support_url: "https://github.com/linuxserver/docker-lidarr/issues/new/choose"
+  port_descriptions:
+    "8686": "Application WebUI"
+  volume_descriptions:
+    "/config": "Configuration files for Lidarr."
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-prowlarr.xml).
+prowlarr:
+  icon: https://hotio.dev/webhook-avatars/prowlarr.png
+  webui: "http://[IP]:[PORT:9696]"
+  ingress_host: prowlarr.local
+  category: "Downloaders: MediaApp:Other"
+  overview: |
+    Prowlarr is a indexer manager/proxy built on the popular arr .net/reactjs base stack to integrate with your various PVR apps.
+  registry: "https://hub.docker.com/r/hotio/prowlarr"
+  project_url: "https://hotio.dev/containers/prowlarr"
+  support_url: "https://hotio.dev/discord"
+
+#
+# Migrated from the pre-existing DockerMan template (my-qbittorrent.xml).
+qbittorrent:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/qbittorrent-logo.png
+  webui: "http://[IP]:[PORT:6880]"
+  ingress_host: qbit.local
+  category: "Downloaders:"
+  overview: |
+    The Qbittorrent(https://www.qbittorrent.org/) project aims to provide an open-source software alternative to µTorrent. qBittorrent is based on the Qt toolkit and
+    libtorrent-rasterbar library.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/qbittorrent"
+  project_url: "https://www.qbittorrent.org/"
+  support_url: "https://github.com/linuxserver/docker-qbittorrent/issues/new/choose"
+  port_descriptions:
+    "8080": "WebUI"
+    "6881": "udp connection port"
+  volume_descriptions:
+    "/config": "Contains all relevant configuration files."
+  env_descriptions:
+    WEBUI_PORT: "for changing the port of the web UI, see below for explanation"
+    TORRENTING_PORT: "for changing the port of tcp/udp connection, see below for explanation"
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-radarr.xml).
+radarr:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr-logo.png
+  webui: "http://[IP]:[PORT:7878]"
+  ingress_host: radarr.local
+  overview: |
+    Radarr(https://github.com/Radarr/Radarr) - A fork of Sonarr to work with movies à la Couchpotato.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/radarr"
+  project_url: "https://github.com/Radarr/Radarr"
+  support_url: "https://github.com/linuxserver/docker-radarr/issues/new/choose"
+  port_descriptions:
+    "7878": "The port for the Radarr webinterface"
+  volume_descriptions:
+    "/media": "Location of download managers output directory (See note in Application setup)"
+    "/config": "Database and Radarr configs"
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-radarr-4k.xml).
+radarr-4k:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/radarr-logo.png
+  webui: "http://[IP]:[PORT:7879]"
+  ingress_host: radarr-4k.local
+  overview: |
+    Radarr(https://github.com/Radarr/Radarr) - A fork of Sonarr to work with movies à la Couchpotato.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/radarr"
+  project_url: "https://github.com/Radarr/Radarr"
+  support_url: "https://github.com/linuxserver/docker-radarr/issues/new/choose"
+  port_descriptions:
+    "7878": "The port for the Radarr webinterface"
+  volume_descriptions:
+    "/media": "Location of download managers output directory (See note in Application setup)"
+    "/config": "Database and Radarr configs"
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-sonarr.xml).
+sonarr:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/sonarr-logo.png
+  webui: "http://[IP]:[PORT:8989]"
+  ingress_host: sonarr.local
+  overview: |
+    Sonarr(https://sonarr.tv/) (formerly NZBdrone) is a PVR for usenet and bittorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and
+    will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes
+    available.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/sonarr"
+  project_url: "https://sonarr.tv/"
+  support_url: "https://github.com/linuxserver/docker-sonarr/issues/new/choose"
+  port_descriptions:
+    "8989": "The port for the Sonarr webinterface"
+  volume_descriptions:
+    "/media": "Location of download managers output directory (See note in Application setup)"
+    "/config": "Database and sonarr configs"
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-seerr.xml).
+seerr:
+  icon: https://hotio.dev/webhook-avatars/seerr.png
+  webui: "http://[IP]:[PORT:5055]"
+  ingress_host: seerr
+  category: "Downloaders: MediaApp:Other"
+  overview: |
+    WireGuard VPN, Privoxy and Unbound built-in! Open-source media request and discovery manager for Jellyfin, Plex, and Emby.
+  registry: "https://github.com/hotio/seerr/pkgs/container/seerr"
+  project_url: "https://hotio.dev/containers/seerr"
+  support_url: "https://hotio.dev/discord"
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-plex.xml).
+plex:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/plex-logo.png
+  webui: "http://[IP]:[PORT:32400]"
+  ingress_host: plex
+  overview: |
+    Plex(https://plex.tv) organizes video, music and photos from personal media libraries and streams them to smart TVs, streaming boxes and mobile devices. This
+    container is packaged as a standalone Plex Media Server. has always been a top priority. Straightforward design and bulk actions mean getting things done faster.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/plex"
+  project_url: "https://plex.tv"
+  support_url: "https://github.com/linuxserver/docker-plex/issues/new/choose"
+  volume_descriptions:
+    "/albums": "Media goes here. Add as many as needed e.g. `/movies`, `/tv`, etc."
+    "/config": "Plex library location. *This can grow very large, 50gb+ is likely for a large collection.*"
+  env_descriptions:
+    VERSION: "Set whether to update plex or not - see Application Setup section."
+    PLEX_CLAIM: "Optionally you can obtain a claim token from https://plex.tv/claim and input here. Keep in mind that the claim tokens expire within 4 minutes."
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+  secret_env:
+    - PLEX_CLAIM
+
+# compose service name. Any field left out falls back to a sane default -
+# this file can be omitted entirely.
+#
+# Icon/overview/category pulled from the project's own official Unraid CA
+# template (https://github.com/hk21x/decide/blob/main/unraid-ca/templates/decide.xml) -
+# neither dashboard-icons nor selfhst/icons carry this app.
+decide:
+  icon: https://raw.githubusercontent.com/hk21x/decide/main/frontend/public/decide-icon-512.png
+  project_url: https://github.com/hk21x/decide
+  support_url: https://github.com/hk21x/decide/issues
+  license: MIT
+  webui: "http://[IP]:[PORT:8080]/"
+  ingress_host: decide.local
+  category: "MediaApp:Video Tools:Utilities"
+  overview: |
+    decide — Swipe. Decide. Watch.
+
+    A self-hosted swipe-to-match film picker for your Plex library. Two to
+    four people swipe through the same small, filtered deck of films from
+    your server; when everyone says "Tonight" to the same one it's a match,
+    a Final Round crowns the winner, and ticket stubs remember your movie
+    nights.
+
+    Plex is linked in-app via the setup wizard (plex.tv/link) on first boot.
+
+    decide is an independent project that works with Plex Media Server. It
+    is not affiliated with or endorsed by Plex, Inc.
+  volume_descriptions:
+    /data: "SQLite database and artwork cache."
+  env_descriptions:
+    LOCAL_URL: "Address the join QR shows to people on your LAN (e.g. http://192.0.2.10:8090, a documentation-range example - use your own LAN IP). Also settable in-app."
+    REMOTE_URL: "Address the join QR shows to remote friends. Points at the Authelia-fronted ingress hostname."
+    PUID: "User ID to run as (99 = nobody on Unraid)."
+    PGID: "Group ID to run as (100 = users on Unraid)."
+    UMASK: "Umask for files created by the container. Not confirmed used by this image, set for consistency with other stacks."
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-kometa.xml).
+kometa:
+  icon: https://raw.githubusercontent.com/Kometa-Team/Kometa/nightly/docs/_static/logomark-color.png
+  category: "Tools:Utilities"
+  overview: |
+    Kometa is an open source Python 3 project that has been designed to ease the creation and maintenance of metadata, collections, and playlists within a Plex Media
+    Server. The script is designed to be run continuously and be able to update information based on sources outside your plex environment. Kometa supports Movie/TV/Music
+    libraries and Playlists.
+
+    Unraid Setup Guide: https://kometa.wiki/en/latest/kometa/install/unraid/
+  registry: "https://hub.docker.com/r/kometateam/kometa"
+  project_url: "https://kometa.wiki/en/latest/home/"
+  support_url: "https://github.com/Kometa-Team/Kometa/issues/new/choose"
+  env_descriptions:
+    KOMETA_CONFIG: "Specify the location of the configuration YAML file."
+    KOMETA_TIME: "Specify the times of day that Kometa will run with comma-separated list of times in HH:MM format."
+    KOMETA_RUN: "Set as 'true' to perform a run immediately, bypassing the time to run flag."
+    KOMETA_TEST: "Set as 'true' to perform a debug test run immediately, bypassing the time to run flag. This will only run collections with test: true in the definition."
+    KOMETA_DEBUG: "Set as 'true' to run with Debug Logs Reporting to the Command Window."
+    KOMETA_TRACE: "Set as 'true' to run with extra Trace Debug Logs."
+    KOMETA_LOG_REQUESTS: "Set as 'true' to run with every network request printed to the Logs. This can potentially have personal information in it."
+    KOMETA_TIMEOUT: "Change the main Kometa timeout. This timeout is overwritten by those in your config file for those services."
+    KOMETA_COLLECTIONS_ONLY: "Set as 'true' to only run collection files, skip metadata, library operations, overlays, and playlists."
+    KOMETA_METADATA_ONLY: "Set as 'true' to only run metadata files, skip library operations, overlays, playlists, and collections."
+    KOMETA_PLAYLISTS_ONLY: "Set as 'true' to only run playlist files, skip metadata, library operations, overlays, and collections."
+    KOMETA_OPERATIONS_ONLY: "Set as 'true' to only run library operations skipping metadata, collections, playlists, and overlays."
+    KOMETA_OVERLAYS_ONLY: "Set as 'true' to only run library overlays skipping metadata, collections, playlists, and library operations."
+    KOMETA_RUN_COLLECTIONS: "Will immediately run the comma-separated list of Collection Names given, bypassing the time to run flag."
+    KOMETA_RUN_LIBRARIES: "Will immediately run the comma-separated list of Library Names given, bypassing the time to run flag."
+    KOMETA_RUN_FILES: "Will immediately run the comma-separated list of File Names given, bypassing the time to run flag."
+    KOMETA_IGNORE_SCHEDULES: "Set as 'true' to ignore all schedules for the run."
+    KOMETA_IGNORE_GHOST: "Set as 'true' to ignore all ghost logging for the run. A ghost log is what’s printed to the console to show progress during steps."
+    KOMETA_DELETE_COLLECTIONS: "Set as 'true' to delete all collections in a Library prior to running collections/operations."
+    KOMETA_DELETE_LABELS: "Set as 'true' to delete all labels on every item in a Library prior to running collections/operations."
+    KOMETA_RESUME: "Name of Collection to immediately resume running from the first instance of the specified collection, bypassing the time to run flag."
+    KOMETA_NO_COUNTDOWN: "Set as 'true' to run without displaying a countdown to the next scheduled run."
+    KOMETA_NO_MISSING: "Set as 'true' to run without utilizing the missing movie/show functions."
+    KOMETA_NO_REPORT: "Set as 'true' to run without saving the report."
+    KOMETA_READ_ONLY_CONFIG: "Set as 'true' to run without writing to the configuration file."
+    KOMETA_DIVIDER: "Character to use as a divider in the logs."
+    KOMETA_WIDTH: "Width of the Log Output. Integer between 90 and 300."
+    KOMETA_PLEX_URL: "Plex URL to replace ENV in the config file."
+    KOMETA_PLEX_TOKEN: "Plex Token to replace ENV in the config file."
+  env_display:
+    KOMETA_CONFIG: advanced
+    KOMETA_TIME: advanced
+    KOMETA_RUN: advanced
+    KOMETA_TEST: advanced
+    KOMETA_DEBUG: advanced
+    KOMETA_TRACE: advanced
+    KOMETA_LOG_REQUESTS: advanced
+    KOMETA_TIMEOUT: advanced
+    KOMETA_COLLECTIONS_ONLY: advanced
+    KOMETA_METADATA_ONLY: advanced
+    KOMETA_PLAYLISTS_ONLY: advanced
+    KOMETA_OPERATIONS_ONLY: advanced
+    KOMETA_OVERLAYS_ONLY: advanced
+    KOMETA_RUN_COLLECTIONS: advanced
+    KOMETA_RUN_LIBRARIES: advanced
+    KOMETA_RUN_FILES: advanced
+    KOMETA_IGNORE_SCHEDULES: advanced
+    KOMETA_IGNORE_GHOST: advanced
+    KOMETA_DELETE_COLLECTIONS: advanced
+    KOMETA_DELETE_LABELS: advanced
+    KOMETA_RESUME: advanced
+    KOMETA_NO_COUNTDOWN: advanced
+    KOMETA_NO_MISSING: advanced
+    KOMETA_NO_REPORT: advanced
+    KOMETA_READ_ONLY_CONFIG: advanced
+    KOMETA_DIVIDER: advanced
+    KOMETA_WIDTH: advanced
+    KOMETA_PLEX_URL: advanced
+    KOMETA_PLEX_TOKEN: advanced
+  secret_env:
+    - KOMETA_PLEX_TOKEN
+
+#
+# Migrated from the pre-existing DockerMan template (my-tautulli.xml).
+tautulli:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/tautulli-logo.png
+  webui: "http://[IP]:[PORT:8181]"
+  ingress_host: tautulli.local
+  overview: |
+    Tautulli(http://tautulli.com) is a python based web application for monitoring, analytics and notifications for Plex Media Server.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/tautulli"
+  project_url: "http://tautulli.com"
+  support_url: "https://github.com/linuxserver/docker-tautulli/issues/new/choose"
+  port_descriptions:
+    "8181": "WebUI"
+  volume_descriptions:
+    "/config": "Contains tautulli config and database."
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+
+#
+# Migrated from the pre-existing DockerMan template (my-tdarr.xml).
+tdarr:
+  icon: https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/tdarr.png
+  webui: "http://[IP]:[PORT:8265]"
+  ingress_host: tdarr.local
+  category: "Productivity: MediaApp:Video spotlight:"
+  overview: |
+    (Tdarr_Node included) Tdarr V2 is a distributed transcoding system for automating media library transcode/remux management and making sure your files are exactly how
+    you need them to be in terms of codecs/streams/containers and so on. Put your spare hardware to use with Tdarr Nodes for Windows, Linux (including Linux arm) and
+    macOS.
+
+
+    Designed to work alongside applications like Sonarr/Radarr and built with the aim of modularisation, parallelisation and scalability, each library you add has its own
+    transcode settings, filters and schedule. Workers can be fired up and closed down as necessary, and are split into 4 types - Transcode CPU/GPU and Health Check
+    CPU/GPU. Worker limits can be managed by the scheduler as well as manually.
+
+
+    For a desktop application with similar functionality please see HBBatchBeast.
+
+
+    Docs here: https://tdarr.io/docs/
+
+
+    Plugins here: https://github.com/HaveAGitGat/Tdarr_Plugins
+  registry: "https://hub.docker.com/r/haveagitgat/tdarr/"
+  project_url: "https://github.com/HaveAGitGat/Tdarr"
+  support_url: "https://forums.unraid.net/topic/84070-support-haveagitgat-tdarr-audiovideo-library-analytics-transcode-automation/"
+  port_descriptions:
+    "8266": "Server Port"
+    "8265": "WebUI Port"
+    "8264": "Node Port"
+  env_descriptions:
+    serverIP: "Server IP. Required if using Tdarr Nodes on your local network"
+    internalNode: "Enable/disable the Node within the server container by setting true/false"
+    nodeIP: "Node IP"
+    nodeID: "Node ID Name"
+    CA_TS_FALLBACK_DIR: "Fallback container directory for tailscale state information - Added By Community Applications"
+  env_display:
+    CA_TS_FALLBACK_DIR: advanced

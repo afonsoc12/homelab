@@ -26,6 +26,20 @@
     docker_compose_unraid_stack_meta: {}
   when: not docker_compose_unraid_meta_stat.stat.exists
 
+- name: "Unraid | Extract DOMAIN secret for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_stack_domain: >-
+      {{
+        (docker_compose_env_contents.results
+          | selectattr('item.item.path', 'equalto', stack.path)
+          | map(attribute='stdout')
+          | list | first | default(''))
+        | regex_search("^DOMAIN=['\"]?([^'\"\n]*)", '\1', multiline=True)
+        | default('', true)
+      }}
+  no_log: true
+  delegate_to: localhost
+
 - name: "Unraid | Render DockerMan templates for {{ stack.path | basename }}"
   ansible.builtin.template:
     src: unraid-template.xml.j2
@@ -35,6 +49,7 @@
     service_name: "{{ item.key }}"
     service: "{{ item.value }}"
     meta: "{{ docker_compose_unraid_stack_meta[item.key] | default({}) }}"
+    domain: "{{ docker_compose_unraid_stack_domain }}"
   loop: "{{ docker_compose_unraid_stack_compose.services | dict2items }}"
   loop_control:
     label: "{{ item.key }}"

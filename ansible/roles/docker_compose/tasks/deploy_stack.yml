@@ -1,0 +1,19 @@
+---
+# Prunes right after each stack instead of batching at the end.
+
+- name: "Deploy stack {{ stack.path | basename }}"
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_compose_base_dir }}/{{ stack.path | basename }}"
+    pull: missing
+    build: never
+    recreate: "{{ docker_compose_recreate_policy }}"
+    remove_orphans: true
+
+- name: "Prune unused resources after {{ stack.path | basename }}"
+  community.docker.docker_prune:
+    timeout: 180
+    containers: true
+    images: true
+    images_filters:
+      dangling: false
+    networks: true

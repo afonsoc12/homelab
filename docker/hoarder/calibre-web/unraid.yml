@@ -1,0 +1,31 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-calibre-web.xml).
+calibre-web:
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/calibre-web-logo.png
+  webui: "http://[IP]:[PORT:8083]"
+  ingress_host: calibre
+  category: "Cloud: MediaApp:Books MediaServer:Books"
+  overview: |
+    Calibre-web(https://github.com/janeczku/calibre-web) is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre
+    database.   It is also possible to integrate google drive and edit metadata and your calibre library through the app itself.
+
+    This software is a fork of library and licensed under the GPL v3 License.
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/calibre-web"
+  project_url: "https://github.com/janeczku/calibre-web"
+  support_url: "https://github.com/linuxserver/docker-calibre-web/issues/new/choose"
+  volume_descriptions:
+    "/books": "Where your preexisting calibre database is located."
+    "/config": "Where calibre-web stores the internal database and config."
+  env_descriptions:
+    DOCKER_MODS: "#optional and **x86-64 only** Adds the ability to perform ebook conversion"
+    OAUTHLIB_RELAX_TOKEN_SCOPE: "Optionally set this to allow Google OAUTH to work"
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+  secret_env:
+    - OAUTHLIB_RELAX_TOKEN_SCOPE

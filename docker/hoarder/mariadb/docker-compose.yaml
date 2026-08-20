@@ -1,0 +1,19 @@
+---
+# --------------------
+# mariadb
+#   - Project: https://mariadb.org/
+# --------------------
+services:
+  mariadb:
+    image: mariadb:12.3.2
+    container_name: mariadb
+    restart: unless-stopped
+    mem_limit: 2G
+    ports:
+      - "3306:3306/tcp"
+    environment:
+      MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
+      CA_TS_FALLBACK_DIR: "/var/lib/mysql"
+    volumes:
+      - "/mnt/user/appdata/mariadb/data:/var/lib/mysql"
+      - "/mnt/user/appdata/mariadb/config:/etc/mysql/conf.d"
