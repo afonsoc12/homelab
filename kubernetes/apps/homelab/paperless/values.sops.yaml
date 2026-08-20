@@ -7,37 +7,173 @@
 secret:
     mountEnv: true
     stringData:
-        PAPERLESS_DBUSER: ENC[AES256_GCM,data:7MymuwValjqY,iv:Vuj2BRYUrgX1m5+WniTn51iFdEelIVeZBVvlXUhNDt4=,tag:FxcCUByOmYZHfe5BqAq8JA==,type:str]
-        PAPERLESS_DBPASS: ENC[AES256_GCM,data:HGb3cx/58YFPqa4Q8DIs9D2KyIk=,iv:fS7sXiABZ7O4+faUm4uLl0kmg61HazubB5ApqorIydk=,tag:cdTRxN56hyzvjmsAx/5lLw==,type:str]
-        PAPERLESS_SECRET_KEY: ENC[AES256_GCM,data:lK/2T6z4gcV1S4TY+wY5F31RqPcWfM0gZR4zlsP1uUOErFMXPNafZ16ti7vupSc6Ru79+HbnRHdpz1/fzv5CQA==,iv:6hrKbWpTBaBtMwwTqffhw5Sjt8VUN4AT0NPnbbJRKWg=,tag:I8nKDOAQkXQ5kfRvs8UrDw==,type:str]
-        PAPERLESS_ADMIN_USER: ENC[AES256_GCM,data:kA/TedYc,iv:WD3WX8PG/MC9OPjMLNZoAML7ND21Bhuyk4zD+wYpyfw=,tag:6m3Bbql0OuOgkEAf0LPzOw==,type:str]
-        PAPERLESS_ADMIN_PASSWORD: ENC[AES256_GCM,data:L1VVHRia5c8vnfIG9a3LedvumxrTvArV,iv:DaFL2Smi+caW6kYXOYqwR7as4IPQBL0j1JQNXorhQHk=,tag:CQECRHSWhCm+0UfYW5uIIg==,type:str]
-        PAPERLESS_ADMIN_MAIL: ENC[AES256_GCM,data:GwZqlRzUjcYisYj91gHWpU/0x2kX8hHRMwA=,iv:7DHe8zRIU6qqZzpS7EG44InJsJn0xEYIU0MP1mBej8k=,tag:DEy3WYee9EjJaMbyesFeJQ==,type:str]
+        PAPERLESS_DBUSER: ENC[AES256_GCM,data:XhxcJHmHGgK4,iv:2LL+R+bH1+1oOUOBWYYaL/CSnYsX/q+s1kwKVPL6GgA=,tag:TZmin8sMVj8eOU3rK8rGAA==,type:str]
+        PAPERLESS_DBPASS: ENC[AES256_GCM,data:7VNtikzv1eMHawmg0pmWQJUVvYA=,iv:NLGl4p0yAr9KvI56zyfpurGnVa70u/9M+4EAHmnGsXk=,tag:WuEcKe3IOleK1o21SpFbjQ==,type:str]
+        PAPERLESS_SECRET_KEY: ENC[AES256_GCM,data:mwCz4LTATThlC/7awXNAtORo7QQibMu5pO1vBKspQTvoPCOpvzuYVfekv7oZF+o9z+bwOy5CcJ/tMvEUXcT3HQ==,iv:s+w/Wn8rWPv5wRWlkTqaOwdWjQVACFeYLNjWgbpZoPI=,tag:HCYt4HP8ElQi/a0/sFMiTg==,type:str]
+        PAPERLESS_ADMIN_USER: ENC[AES256_GCM,data:W0WBa/FY,iv:KyrtD2McuPutkGJ0YYPDMI7yrOKtiQPGRIOU2svWdxQ=,tag:XDhMVdtURl3RhGYD+eCqkA==,type:str]
+        PAPERLESS_ADMIN_PASSWORD: ENC[AES256_GCM,data:QxYiCWI5lJJCkQ3oESr4eQyP1FTrDzU4,iv:DuNspets5IW8xhTIUz7aJbIhu0FKcA/zsiwXXXSHd28=,tag:CSsgKwDkzsETaawtWOvIhg==,type:str]
+        PAPERLESS_ADMIN_MAIL: ENC[AES256_GCM,data:9siJGxNZcDZWA9r2PLbp7oSuncL9bUThO2w=,iv:c5eFb4QKhB7l1albX+jL/aJGplhwEYzcGtLPfVEuePY=,tag:TMPZ8y5FLune7hEkQc2Buw==,type:str]
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+podAnnotations: {}
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/paperless-ngx/paperless-ngx
+    tag: 3.0.5
+    pullPolicy: Always
+ports:
+    - containerPort: 8000
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+configmap:
+    mountEnv: true
+    data:
+        PAPERLESS_URL: https://paperless.local.{{ .Values.domain }}
+        PAPERLESS_DBHOST: postgres.databases
+        PAPERLESS_DBPORT: "5432"
+        PAPERLESS_DBNAME: paperless
+        PAPERLESS_REDIS: redis://redis.databases:6379
+        PAPERLESS_TIME_ZONE: '{{ .Values.tz }}'
+        PAPERLESS_OCR_LANGUAGE: eng
+        PAPERLESS_TIKA_ENABLED: "1"
+        PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
+        PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
+        PAPERLESS_CONSUMER_RECURSIVE: "true"
+additionalContainers:
+    - name: gotenberg
+      image: docker.io/gotenberg/gotenberg:8
+      command:
+        - gotenberg
+        - --chromium-disable-javascript=true
+        - --chromium-allow-list=file:///tmp/.*
+      resources:
+        requests:
+            cpu: 10m
+            memory: 128Mi
+        limits:
+            cpu: 500m
+            memory: 512Mi
+    - name: tika
+      image: docker.io/apache/tika:latest-full
+      ports:
+        - containerPort: 9998
+          name: tika
+          protocol: TCP
+      resources:
+        requests:
+            cpu: 10m
+            memory: 256Mi
+        limits:
+            cpu: 500m
+            memory: 1Gi
+volumeMounts:
+    - mountPath: /usr/src/paperless/data
+      name: paperless
+      subPath: data
+    - mountPath: /usr/src/paperless/media
+      name: paperless
+      subPath: media
+    - mountPath: /usr/src/paperless/export
+      name: paperless
+      subPath: export
+    - mountPath: /usr/src/paperless/consume
+      name: paperless
+      subPath: consume
+volumes:
+    - name: paperless
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 10Gi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: paperless.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+affinity:
+    podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                namespaceSelector: {}
+                labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - postgres
+                topologyKey: kubernetes.io/hostname
+resources:
+    limits:
+        cpu: 1000m
+        memory: 1Gi
+    requests:
+        cpu: 100m
+        memory: 512Mi
+livenessProbe:
+    httpGet:
+        path: /
+        port: 8000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /
+        port: 8000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    httpGet:
+        path: /
+        port: 8000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-08-20T20:19:31Z"
-    mac: ENC[AES256_GCM,data:McGy8ens77h4/aYx7rZs1/QVEyX4F6lmuZbS78W4GWYDaNnuRR8NHb3hPpPDiz2s+FNYvWGifqtyvNub0M56L8vlwoy2gUrLi4zcxTOnKQJuDM9+mvWv/Ph3pQXDScWuzI3bT6f5pi2jtjRwftCXEw2sc2kVlMvDVMoE2isZsCA=,iv:6TnbF2O/05+O1PDhJxhh4TffRrOVoCIqHa9C6pUoNHU=,tag:nmovF233/b9r5M/utV3bHQ==,type:str]
+    lastmodified: "2026-08-20T20:33:03Z"
+    mac: ENC[AES256_GCM,data:MP4+2vdS3pabqUHOXSjWocVMH9n63U5VE5I9tyF83iLgtdLM5egmMiN+ztal27pmPd2FbBpgKB3+BoqWxe6JbZ0YhUua2Ue7YsuIFs+REtnA7Gc8fjuNdq7d0bvtFad7XkKklbXID7nRM7SQAEr6RX7L0wvZnLkUAWPhS/IFxic=,iv:JBugUpMA3h1QOLYPLsLtFryTiJ8OGPHd/Z8CJltMgr0=,tag:vUGG7HomCBTDRehccJpPIg==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-20T20:19:31Z"
+        - created_at: "2026-08-20T20:33:02Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/7B3KiZs71aHMm1qjgiFYgJLAnNXa8Qfd23kgTDSJUVRNc
-            Hz055N5WYBqaH8OR0RLg/KkW45auiWiVqkjQrQojXygDu2KBSCEf6BKo0cc47TY7
-            yU9jRBMwaOi8dyJPknrVpm6qjH3sedN/2rrMboTH1HcB2sRlY4uce1oDbYf6oygJ
-            YR01NRnjJwuUIjZMOBJe7Tvf0MrBS7zwRfj+f2MEfUfexlGSh08d0LvGsv4uGgil
-            BkDqHp9Q1tprsAYr2cygGVTiWP5/YwbT0lWVByLaHoAyMb1DGfMCCP/OYvbL+bxO
-            wxui8A3cWQGmT8qDMOJJC4VJmzmw4bHMa0nmu9DnuYAKAEQCBBm3GxOFGWgf7btG
-            027PTMhHjgZOpPDdIpS/3e/3jP+KOBmGwnLIzSje9uGfXg9U+9jtL5xDydbbH2Lw
-            6XBJOnolw+KlQuUhJPOPmBPOKMImtMWSDPTWVRDl0n9UND6/0j/CZ7Wu/EES83mq
-            ZpLNS5sfavyaUCurnIKqVFr3QS/jNkN+ZLJ4g04UomYgKUcjQPajS1d1nZJnA4SB
-            8duDTZmM0zvsLll6ZlkZEXR6g3RAxE4s2ADhkjCs7O1Ll+2dQ3q1kU/+Qo1CYOcr
-            JLwwh2qspjWZdxxLovKD+VCdvjiTAeQiibu3XU54DoLPiIpuEnnnrXFapdXYq+3U
-            aAEJAhCg0YOEsVVchjJEIiiTR5U75UxPvlDZ96WbkqVmCJMhDckszkCrb9fQN2Ge
-            sqXrfL4ILbTNnT3SyTB4XH+M55C70WPyVqXhUPGifND8FHiyg61sjgrtu1/elSzG
-            pf5mTKHZX8f1
-            =MH5A
+            hQIMA5NT/LvuRqeGAQ//Yve/mX4uwDfRKzumt3jU/Xi4c1hQp3ktbAyOR0i0nsA3
+            jV0ObmsF/TSuExtH0cl+yWwaB9XqHkhUzemnoX99iBfmOMQJaEGTwxZpQR6StfF5
+            6iLXdH3oLIx2nzLbpIUgdXWKi/4dhefwna2aIlWMgjup5oQWqeYsV/X79Xwy9lJl
+            CODSJpDgzlhSuy2oC6PTPm55MkDtAp9XDoEII43stEsa8be/Gc6rRaF81vNYySzV
+            fU1YmS1kgFZiTJfpEXpdJCD9Fzfi+BwDV5zqAk8v7c8ltZ6P561jbd00FKi/Aacc
+            xH89slbT/bAg93bkWUjHjj0s/Axp0cnvFxB7JMpMoipvJumOmK/ZYBVbEzWidw/Z
+            aoijHF59kvwHODBYrtDSnRkjqSqZC8oggpkV+TFq7ZM4agUuwz6uFTFuIi/MXSD0
+            nnVJst7ZiFB15N1QxsydcqLHOoOIiV/qmvg3CruzHze6C5Z81V6ACcZWmOOA8/5j
+            1Y/SmODJkL8KLSgPyGt37dJJubBF7JslbUjy+VCov0Qf5GaenaV/gHRWug4T2G5+
+            ysk9QaJpZ0P8iX0lFs00qMpH7jmyqZgk/1h9ao3Q2Haf6vkN5u1DiE5pvdAvZ4QR
+            svObsy4caAQfl6yq+g7YDwZhUfskFIE65pXjSLSiS/zJLZeTke3jNPHoMgptr7zU
+            aAEJAhCYxptI5d6Eck9+dwP6GP48jcm3uHFKpGwdkCM2L/Zz65eQYSimV6cmSEwv
+            SilG+DnfWXpc2oKu/Y67mWBRrJMvsDM9KDv6xVrS9940RKUmplQ/FWU/KyIPZDPT
+            90QdXfaBCCWU
+            =lfaM
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2

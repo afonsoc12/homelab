@@ -20,7 +20,6 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - ../../apps/homelab/paperless/values.yaml
         - secrets://../../apps/homelab/paperless/values.sops.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
