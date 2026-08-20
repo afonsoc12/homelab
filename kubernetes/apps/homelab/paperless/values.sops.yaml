@@ -4,19 +4,6 @@
 #   - Docs:           https://docs.paperless-ngx.com/
 #   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
 # --------------------
-secret:
-    mountEnv: true
-    stringData:
-        PAPERLESS_DBUSER: ENC[AES256_GCM,data:XhxcJHmHGgK4,iv:2LL+R+bH1+1oOUOBWYYaL/CSnYsX/q+s1kwKVPL6GgA=,tag:TZmin8sMVj8eOU3rK8rGAA==,type:str]
-        PAPERLESS_DBPASS: ENC[AES256_GCM,data:7VNtikzv1eMHawmg0pmWQJUVvYA=,iv:NLGl4p0yAr9KvI56zyfpurGnVa70u/9M+4EAHmnGsXk=,tag:WuEcKe3IOleK1o21SpFbjQ==,type:str]
-        PAPERLESS_SECRET_KEY: ENC[AES256_GCM,data:mwCz4LTATThlC/7awXNAtORo7QQibMu5pO1vBKspQTvoPCOpvzuYVfekv7oZF+o9z+bwOy5CcJ/tMvEUXcT3HQ==,iv:s+w/Wn8rWPv5wRWlkTqaOwdWjQVACFeYLNjWgbpZoPI=,tag:HCYt4HP8ElQi/a0/sFMiTg==,type:str]
-        PAPERLESS_ADMIN_USER: ENC[AES256_GCM,data:W0WBa/FY,iv:KyrtD2McuPutkGJ0YYPDMI7yrOKtiQPGRIOU2svWdxQ=,tag:XDhMVdtURl3RhGYD+eCqkA==,type:str]
-        PAPERLESS_ADMIN_PASSWORD: ENC[AES256_GCM,data:QxYiCWI5lJJCkQ3oESr4eQyP1FTrDzU4,iv:DuNspets5IW8xhTIUz7aJbIhu0FKcA/zsiwXXXSHd28=,tag:CSsgKwDkzsETaawtWOvIhg==,type:str]
-        PAPERLESS_ADMIN_MAIL: ENC[AES256_GCM,data:9siJGxNZcDZWA9r2PLbp7oSuncL9bUThO2w=,iv:c5eFb4QKhB7l1albX+jL/aJGplhwEYzcGtLPfVEuePY=,tag:TMPZ8y5FLune7hEkQc2Buw==,type:str]
-nameOverride: ""
-fullnameOverride: ""
-labels: {}
-podAnnotations: {}
 replicas: 1
 revisionHistoryLimit: 0
 strategy:
@@ -30,22 +17,6 @@ ports:
       name: http
       protocol: TCP
       service: true
-service:
-    enabled: true
-configmap:
-    mountEnv: true
-    data:
-        PAPERLESS_URL: https://paperless.local.{{ .Values.domain }}
-        PAPERLESS_DBHOST: postgres.databases
-        PAPERLESS_DBPORT: "5432"
-        PAPERLESS_DBNAME: paperless
-        PAPERLESS_REDIS: redis://redis.databases:6379
-        PAPERLESS_TIME_ZONE: '{{ .Values.tz }}'
-        PAPERLESS_OCR_LANGUAGE: eng
-        PAPERLESS_TIKA_ENABLED: "1"
-        PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
-        PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
-        PAPERLESS_CONSUMER_RECURSIVE: "true"
 additionalContainers:
     - name: gotenberg
       image: docker.io/gotenberg/gotenberg:8
@@ -73,6 +44,31 @@ additionalContainers:
         limits:
             cpu: 500m
             memory: 1Gi
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        PAPERLESS_DBUSER: ENC[AES256_GCM,data:tYBNxc8TD5Ym,iv:oEangT588jDNtT2XSlrOYZIhlOa+xB1R3nBzy9ZTWWo=,tag:6TfpA0b7QLcNmYAlDT93oA==,type:str]
+        PAPERLESS_DBPASS: ENC[AES256_GCM,data:R6vzXipbXZa+ljbfUVHAtPfkcEY=,iv:TQuk3dDnYiPc40TCCmwcgbdfA/dE6dtptcqEKZcGcZ0=,tag:1vJ/GxgXBD683d/WJQKarQ==,type:str]
+        PAPERLESS_SECRET_KEY: ENC[AES256_GCM,data:gKsyS2dQMkpEQMkcqGw5qYOxtLYOZ0nlpA9ie9/DHxOqEW6zvqC6VeLeI8cUtdqESCV6T+eke14u+z/yKEoLbg==,iv:hP72OO9K5H6gr7a5Kco9nhdIU4e0Js8yuLh4C+gv7vM=,tag:OtTwnJ0fGXMeyE5xUVr/0A==,type:str]
+        PAPERLESS_ADMIN_USER: ENC[AES256_GCM,data:p4ONsb4Q,iv:nSfCglwPObtWd9fUSWSDmbn/zrzuCUdjK8dINLwk1QE=,tag:wN/i0evlNAt+fw1fFvVWTA==,type:str]
+        PAPERLESS_ADMIN_PASSWORD: ENC[AES256_GCM,data:EQ+h/emi/MC+vlmhKGtlOI4Fba2+hANq,iv:MlYN7UTZIIhmrxNaB/yDE1RysKk2TVBuDQzcHnDKvYg=,tag:MxLz8Cu2mgTcGIu5mT5Fqw==,type:str]
+        PAPERLESS_ADMIN_MAIL: ENC[AES256_GCM,data:ups1gUU6IW4HmE0CBsbwNR29bd+bWLrYSl4=,iv:3UQ+a/N17zlpdM+f+HibvVTZTBD7jDl0R4H76Az1si0=,tag:stiBE5YmhHfMsYlUmHbJmA==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        PAPERLESS_URL: https://paperless.local.{{ .Values.domain }}
+        PAPERLESS_DBHOST: postgres.databases
+        PAPERLESS_DBPORT: "5432"
+        PAPERLESS_DBNAME: paperless
+        PAPERLESS_REDIS: redis://redis.databases:6379
+        PAPERLESS_TIME_ZONE: '{{ .Values.tz }}'
+        PAPERLESS_OCR_LANGUAGE: eng
+        PAPERLESS_TIKA_ENABLED: "1"
+        PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
+        PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
+        PAPERLESS_CONSUMER_RECURSIVE: "true"
 volumeMounts:
     - mountPath: /usr/src/paperless/data
       name: paperless
@@ -151,29 +147,29 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-08-20T20:33:03Z"
-    mac: ENC[AES256_GCM,data:MP4+2vdS3pabqUHOXSjWocVMH9n63U5VE5I9tyF83iLgtdLM5egmMiN+ztal27pmPd2FbBpgKB3+BoqWxe6JbZ0YhUua2Ue7YsuIFs+REtnA7Gc8fjuNdq7d0bvtFad7XkKklbXID7nRM7SQAEr6RX7L0wvZnLkUAWPhS/IFxic=,iv:JBugUpMA3h1QOLYPLsLtFryTiJ8OGPHd/Z8CJltMgr0=,tag:vUGG7HomCBTDRehccJpPIg==,type:str]
+    lastmodified: "2026-08-20T20:40:05Z"
+    mac: ENC[AES256_GCM,data:ucZDUZTXRPQaneb6YuZfFrUI4YUhQj0aWppY3iCUTToZK1lyqjGbWyfHSjmpdx/c0YhFMaoL/XwwQVe/g0lD63a+uhdiDCxFvs2o2mQjfuny6cK59FzORKYfp0oM+ce8nxrj1JT6glQ1Qnc+1C82z+5V6KkMZiqy1sQeV0Xxr8M=,iv:/KB1b/eLR5VuT5ZDamX0zf1F8eIo3hS2QlxrNuqsl20=,tag:luOwW1ATqa0QjtQdhHnj5A==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-20T20:33:02Z"
+        - created_at: "2026-08-20T20:40:04Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//Yve/mX4uwDfRKzumt3jU/Xi4c1hQp3ktbAyOR0i0nsA3
-            jV0ObmsF/TSuExtH0cl+yWwaB9XqHkhUzemnoX99iBfmOMQJaEGTwxZpQR6StfF5
-            6iLXdH3oLIx2nzLbpIUgdXWKi/4dhefwna2aIlWMgjup5oQWqeYsV/X79Xwy9lJl
-            CODSJpDgzlhSuy2oC6PTPm55MkDtAp9XDoEII43stEsa8be/Gc6rRaF81vNYySzV
-            fU1YmS1kgFZiTJfpEXpdJCD9Fzfi+BwDV5zqAk8v7c8ltZ6P561jbd00FKi/Aacc
-            xH89slbT/bAg93bkWUjHjj0s/Axp0cnvFxB7JMpMoipvJumOmK/ZYBVbEzWidw/Z
-            aoijHF59kvwHODBYrtDSnRkjqSqZC8oggpkV+TFq7ZM4agUuwz6uFTFuIi/MXSD0
-            nnVJst7ZiFB15N1QxsydcqLHOoOIiV/qmvg3CruzHze6C5Z81V6ACcZWmOOA8/5j
-            1Y/SmODJkL8KLSgPyGt37dJJubBF7JslbUjy+VCov0Qf5GaenaV/gHRWug4T2G5+
-            ysk9QaJpZ0P8iX0lFs00qMpH7jmyqZgk/1h9ao3Q2Haf6vkN5u1DiE5pvdAvZ4QR
-            svObsy4caAQfl6yq+g7YDwZhUfskFIE65pXjSLSiS/zJLZeTke3jNPHoMgptr7zU
-            aAEJAhCYxptI5d6Eck9+dwP6GP48jcm3uHFKpGwdkCM2L/Zz65eQYSimV6cmSEwv
-            SilG+DnfWXpc2oKu/Y67mWBRrJMvsDM9KDv6xVrS9940RKUmplQ/FWU/KyIPZDPT
-            90QdXfaBCCWU
-            =lfaM
+            hQIMA5NT/LvuRqeGAQ/9H6O1Pa3NBkxLPbf+XxU+W9QGSt9PrpJFH9lQNNQmCgVj
+            IatJlc1g1IKNt6+U/8TVzi+7Cn++WXijC/8rckmykpQYO2qDGszWirnYtYyldf+y
+            nRgK4zwkaVlwrVmS/Q9xMG56qmZWBg5neskC0TfytOx5LG9ZFqg51vewuNWtSrF2
+            YhCAAcSFQjTDrtntA/kMy13BI+0RTVUAkK+Ac+dbDnrOvZmNQHww9PF0TNAeEmnb
+            FbTuno6TLEZ2Lm/AUAGYeQPCiQcrbZaIhErS04xbZGMTJEhoeXLuPjJAEcLVoH8n
+            9hwnQG3g0TtyO4u5g4MD09oxbrIJ3b7TEVgXKKolhnPzQWvzT2NjHc+PxfuqW1Ow
+            uV8wg1UFh6l/0z+PGVNDRQRJEmGKYATLwLCsT8FzxnqM8TNJfvB1+FOP04XA5TKQ
+            pJOsBG3yJfLmDNVvAzY8nEL0c3n+AvYDkepFYeJ3gmwz9yFyxeJgbfCfQCHwWlm3
+            iMBq9VQHMl9psVFXOU+UbZz3r3uD0YrD3PPMKjdNt9VDE4xF8yRr9LQePQ1zSNWS
+            +9j8tE5UWG2mQi8K9JukSUa1EcVahZ4UJAGLZPCZzMvxjjkcE0q/8TpxpnrB5fUu
+            HHkCbPUEjRVQv8rkC9yloAKC4ISN65CnIRauMX7xEvSki0uYacA6V4FlstLoO4bU
+            ZgEJAhDSG1lkn5T53c9OKdAs0I857J+AK/VdcFbqipABu7zVlqcb4ZNVY4zxCtou
+            pU+waUe1bqwyotyCgTFw0ZBWGRCKq+mp3iemaX/hnO7al/P364DsmUClz4X1ZFIG
+            8L4pkxKaUw==
+            =Ac2B
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
