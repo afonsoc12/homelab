@@ -5,7 +5,7 @@
 # --------------------
 services:
   calibre:
-    image: linuxserver/calibre:v9.13.0-ls415
+    image: ghcr.io/linuxserver/calibre:9.13.0
     container_name: calibre
     restart: "no"
     ports:

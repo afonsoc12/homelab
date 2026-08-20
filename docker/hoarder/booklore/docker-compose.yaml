@@ -5,7 +5,7 @@
 # --------------------
 services:
   booklore:
-    image: ghcr.io/booklore-app/booklore:latest@sha256:d3d3af34bc2cc44349178535ce19e86049968fba2e7d2acf965f770bf37bad01
+    image: ghcr.io/booklore-app/booklore:v2.3.0
     container_name: booklore
     restart: unless-stopped
     ports:

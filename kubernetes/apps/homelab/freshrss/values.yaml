@@ -8,7 +8,7 @@
 replicas: 1
 
 image:
-  repository: docker.io/linuxserver/freshrss
+  repository: ghcr.io/linuxserver/freshrss
   tag: 1.29.1
 
 strategy:

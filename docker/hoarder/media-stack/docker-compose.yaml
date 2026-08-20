@@ -50,7 +50,7 @@ services:
       - "/mnt/user/appdata/privoxyvpn:/config"
 
   bazarr:
-    image: linuxserver/bazarr:v1.6.0-ls359
+    image: ghcr.io/linuxserver/bazarr:1.6.0
     container_name: bazarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -65,7 +65,7 @@ services:
       - "/mnt/user/appdata/bazarr:/config"
 
   lidarr:
-    image: linuxserver/lidarr:3.1.0.4875-ls38
+    image: ghcr.io/linuxserver/lidarr:3.1.0
     container_name: lidarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -81,7 +81,7 @@ services:
 
   prowlarr:
     # develop channel has no stable version tags - pinned by digest, see renovate.json packageRules
-    image: linuxserver/prowlarr:develop@sha256:dcb53158072c700ab578e6f89d5b4d6efd784e74496e567f98bfa96cd1db3a31
+    image: ghcr.io/linuxserver/prowlarr:develop@sha256:dcb53158072c700ab578e6f89d5b4d6efd784e74496e567f98bfa96cd1db3a31
     container_name: prowlarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -95,7 +95,7 @@ services:
       - "/mnt/user/appdata/prowlarr:/config"
 
   qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:5.2.3_v2.0.14-ls471
+    image: ghcr.io/linuxserver/qbittorrent:5.2.3
     container_name: qbittorrent
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -112,7 +112,7 @@ services:
       - "/mnt/user/appdata/qbittorrent:/config"
 
   radarr:
-    image: linuxserver/radarr:6.3.0.10514-ls312
+    image: ghcr.io/linuxserver/radarr:6.3.0
     container_name: radarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -127,7 +127,7 @@ services:
       - "/mnt/user/appdata/radarr:/config"
 
   radarr-4k:
-    image: linuxserver/radarr:6.3.0.10514-ls312
+    image: ghcr.io/linuxserver/radarr:6.3.0
     container_name: radarr-4k
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -142,7 +142,7 @@ services:
       - "/mnt/user/appdata/radarr-4k:/config"
 
   sonarr:
-    image: linuxserver/sonarr:4.0.19.2979-ls320
+    image: ghcr.io/linuxserver/sonarr:4.0.19
     container_name: sonarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -157,7 +157,7 @@ services:
       - "/mnt/user/appdata/sonarr:/config"
 
   seerr:
-    image: ghcr.io/seerr-team/seerr:latest@sha256:f4768de5f616248d723e05891f3345a1402123775d03bf0890dbfedc0831bda1
+    image: ghcr.io/seerr-team/seerr:v3.4.1
     container_name: seerr
     restart: unless-stopped
     depends_on:
@@ -172,7 +172,7 @@ services:
       - "/mnt/user/appdata/seerr:/app/config"
 
   plex:
-    image: linuxserver/plex:1.43.3.10861-07dfddaeb-ls320
+    image: ghcr.io/linuxserver/plex:1.43.3
     container_name: plex
     restart: unless-stopped
     network_mode: host
@@ -243,7 +243,7 @@ services:
       - "/mnt/user/appdata/kometa:/config"
 
   tautulli:
-    image: linuxserver/tautulli:v2.17.2-ls239
+    image: ghcr.io/linuxserver/tautulli:2.17.2
     container_name: tautulli
     restart: unless-stopped
     ports:
@@ -257,7 +257,7 @@ services:
       - "/mnt/user/appdata/tautulli:/config"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:latest@sha256:45742f00e51a58553844c8b13d97e7ae9b2ee9a056bd8e5993d9a8282a45a23f
+    image: ghcr.io/haveagitgat/tdarr:2.50.01
     container_name: tdarr
     restart: unless-stopped
     ports:
