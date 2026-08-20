@@ -1,0 +1,43 @@
+# --------------------
+# Paperless-ngx
+#   - Repo:           https://github.com/paperless-ngx/paperless-ngx
+#   - Docs:           https://docs.paperless-ngx.com/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+secret:
+    mountEnv: true
+    stringData:
+        PAPERLESS_DBUSER: ENC[AES256_GCM,data:lsQIc36DPqbp,iv:lSNUT1qezHiDMcoj+Wprs6aHXKy8bwCO9I8/3HDB5ww=,tag:3nu2cxfSQ4y7+PevL/27rA==,type:str]
+        PAPERLESS_DBPASS: ENC[AES256_GCM,data:XsDmInframeSFK1dD3Zfkn/yDRU=,iv:la+wvZiL3+7slYbAZjCpV9mBWMo9UrYCLr7m1uV/XkQ=,tag:K3mDSXYiMzYiWQR4tnjAyQ==,type:str]
+        PAPERLESS_SECRET_KEY: ENC[AES256_GCM,data:9cW3U9B3mnlQ+C3eJhbZhOQYfTy1ngYSOSY2L2TyiRg62jJMPgFKfIWTz0retWAujfIYlUzfKzKX8zhMopa54Q==,iv:URQOqQqYx4cZIiiQiuJBEsmtvSn4acOg3rhuVaSgy1c=,tag:68xbRTUfzA8wbADyX+bEBw==,type:str]
+        PAPERLESS_ADMIN_USER: ENC[AES256_GCM,data:qBlQDM4=,iv:PA12STrNMygXVCpbKj6eR9rzCg6g+sSIea0wXKfw+5o=,tag:OxqfaWU0y4y/sx+6822ZuA==,type:str]
+        PAPERLESS_ADMIN_PASSWORD: ENC[AES256_GCM,data:dW8Qfs5CKJ6Wzhg3jo23JPWUikYbn3pi,iv:06xS1/afGoA8nDvXOBiAhUZHC1UmYHXFAV+Vgb3UB6c=,tag:R4cukUI6gjfDxBn3W98bSw==,type:str]
+        PAPERLESS_ADMIN_MAIL: ENC[AES256_GCM,data:4bD5WOXv0a4HKVlPk8SLLo/UJBu2GgeBsbs=,iv:4Wy5t2YMOgirYr+5jgmKyvMQQP4csFKlg02hspCCKd4=,tag:9BYlDtp4oOBH/T8IPba9ug==,type:str]
+sops:
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-08-20T20:00:03Z"
+    mac: ENC[AES256_GCM,data:y7gPk2A3oYklLsPbjlVWNgvvHQaXKTWMiNz+157aX1pamseP52nxD9wCRWDQH+feztShw+1ECS2samletHXAkizmy+b7e6WJp9ivPuMwbqjXZp5C2oqdfcs8aEzZA/JCRHQP+W40KJkiFWxUzivkgs3VqHo/An4nTIhNc5lliek=,iv:Og88T+GTloQQcWaVU7LXkZPtATERsMep5UD7Zpg42Yg=,tag:t3TKKlCUEP4Ng5IIdPxANw==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-08-20T20:00:03Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/7BNF5eBP75hMKpUiYYAx1P+xZVNd1nYPNLThRjIz1Cd10
+            0cYN8K36YIHCbSwpAkEUXmtTtDqV51dcqQHsS2X5lPaH/gy3Fv4nIEW483tFvKKb
+            idSeuvOV6zaAK0QMar0tLTUm9DkezX5SUrx7HAPromdmPUqj9gzeKnwooZnW7yok
+            ZeaRPOOi2ocsg4xfPmlWFFBq7O5wLa9SNWYCpkOWRsrn22uyhxmWxOweRhstj1PW
+            FsGxRTeDPW9zRSwbBYrpUnbx+Bn2ja97U8/7zbZGjy30ubhc8rJEAWTnt810ysfp
+            VwEcScKYmuPj/TRhlo4hpbbx0OP9BHyBaj6Wesw/8RAqH02dEVjy1/bv7APcDeMB
+            xoTtLieugQ6G3L+GKi2SDjtLlqU8aSoUUYG0YngxF+NcryI3uptadI7V0L6gTkCY
+            2DRzcDY3F8E+Z+iAkWFiLVP+sS/WRl35t5vzye+ZivM7VvprsjEFxJ7st0C3it4o
+            lVUfshghoNiGPFm0OQwp40LFYC+vi9XCTDK22QPlSHshuuB5yLGXM6SqFc7LKGgJ
+            LnvgCz0G8pOlWESQ316ZRMFAEv9cL+pjo7o+LOOhpP+WOdr28EhNEQb6aMTZQsz9
+            aAhNZSySzlbVQtZ6hPI+eWasPqqag1hZ1ysFAjRq4ScwLdUW+ZXVQZJ/NWxm5WfU
+            aAEJAhDwIdMVoaD6+XXt4PG4f5z1pz6qCJTi5pxsFcaIJznefVkNb8zVZ2U9Mp5z
+            OosRkIIZsCT5c+rytyqGj7DOgebyY3f0or8Go8tCfQ76aK0Okq5vkXwc8a7erkqm
+            qMhlOXlKCTzM
+            =EFvI
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2
