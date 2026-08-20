@@ -19,7 +19,7 @@ ports:
       service: true
 additionalContainers:
     - name: gotenberg
-      image: docker.io/gotenberg/gotenberg:8
+      image: docker.io/gotenberg/gotenberg:8.36.0
       command:
         - gotenberg
         - --chromium-disable-javascript=true
@@ -32,7 +32,7 @@ additionalContainers:
             cpu: 500m
             memory: 512Mi
     - name: tika
-      image: docker.io/apache/tika:latest-full
+      image: docker.io/apache/tika:3.3.1.0-full
       ports:
         - containerPort: 9998
           name: tika
@@ -49,12 +49,12 @@ service:
 secret:
     mountEnv: true
     stringData:
-        PAPERLESS_DBUSER: ENC[AES256_GCM,data:tYBNxc8TD5Ym,iv:oEangT588jDNtT2XSlrOYZIhlOa+xB1R3nBzy9ZTWWo=,tag:6TfpA0b7QLcNmYAlDT93oA==,type:str]
-        PAPERLESS_DBPASS: ENC[AES256_GCM,data:R6vzXipbXZa+ljbfUVHAtPfkcEY=,iv:TQuk3dDnYiPc40TCCmwcgbdfA/dE6dtptcqEKZcGcZ0=,tag:1vJ/GxgXBD683d/WJQKarQ==,type:str]
-        PAPERLESS_SECRET_KEY: ENC[AES256_GCM,data:gKsyS2dQMkpEQMkcqGw5qYOxtLYOZ0nlpA9ie9/DHxOqEW6zvqC6VeLeI8cUtdqESCV6T+eke14u+z/yKEoLbg==,iv:hP72OO9K5H6gr7a5Kco9nhdIU4e0Js8yuLh4C+gv7vM=,tag:OtTwnJ0fGXMeyE5xUVr/0A==,type:str]
-        PAPERLESS_ADMIN_USER: ENC[AES256_GCM,data:p4ONsb4Q,iv:nSfCglwPObtWd9fUSWSDmbn/zrzuCUdjK8dINLwk1QE=,tag:wN/i0evlNAt+fw1fFvVWTA==,type:str]
-        PAPERLESS_ADMIN_PASSWORD: ENC[AES256_GCM,data:EQ+h/emi/MC+vlmhKGtlOI4Fba2+hANq,iv:MlYN7UTZIIhmrxNaB/yDE1RysKk2TVBuDQzcHnDKvYg=,tag:MxLz8Cu2mgTcGIu5mT5Fqw==,type:str]
-        PAPERLESS_ADMIN_MAIL: ENC[AES256_GCM,data:ups1gUU6IW4HmE0CBsbwNR29bd+bWLrYSl4=,iv:3UQ+a/N17zlpdM+f+HibvVTZTBD7jDl0R4H76Az1si0=,tag:stiBE5YmhHfMsYlUmHbJmA==,type:str]
+        PAPERLESS_DBUSER: ENC[AES256_GCM,data:DFWydHKEXFc4,iv:XjpzI4HP3HC34xllqeg8lYcM1PRRik/tldS8cn9Gqbo=,tag:2wCQHsyno0VpuGyrZ1wrLA==,type:str]
+        PAPERLESS_DBPASS: ENC[AES256_GCM,data:oh6J/tYiDw/11jTa3kl+0Jt2wpE=,iv:SRKNvPOTlFprZZyRaWE8PlQAgRbMMkIaxhHzMWOhb7Q=,tag:5xmp3rYjdQSgmOkiAp9/Cw==,type:str]
+        PAPERLESS_SECRET_KEY: ENC[AES256_GCM,data:pAGFdg8mMA116ZLQX53xiEZI2Kks5q2BG8iczwevtDo/qdbYUtRB4tVj2DbMWfuS6T+rddy/hNvQAY6Syx5KYQ==,iv:d7bAnig2FXaRst0Gyc0D4i+iBHluos6HEzXfxt+rq0w=,tag:Lrh+3ct6o7yKKI4jxKljIg==,type:str]
+        PAPERLESS_ADMIN_USER: ENC[AES256_GCM,data:9VL8Z6Oh,iv:fFTMC3+RrY3fi/IjIXg0G0DOsPifa4YIKYvvUUJeQ4M=,tag:rUUOXwKv8aWY6qm1DgMHPA==,type:str]
+        PAPERLESS_ADMIN_PASSWORD: ENC[AES256_GCM,data:JmAr24jAlM4CfjS81OfOIaILuYY1FWFf,iv:qSgTDBB2Hk8DyVHK1wAfl0uKcrDIAXnsUF+d0vw3rGI=,tag:Ub4UcVh4h5vL/XiW3bQSpA==,type:str]
+        PAPERLESS_ADMIN_MAIL: ENC[AES256_GCM,data:ale4O+LXAJw4WmRCgdK//C0pmyiGH9RJ81c=,iv:Iq7Z7oeqXdOnx1U3dchFnuXEC7HyGD6Xx6kjZdgRsWw=,tag:mzPtXddnGbULIOGJyVPNBA==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -147,29 +147,29 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-08-20T20:40:05Z"
-    mac: ENC[AES256_GCM,data:ucZDUZTXRPQaneb6YuZfFrUI4YUhQj0aWppY3iCUTToZK1lyqjGbWyfHSjmpdx/c0YhFMaoL/XwwQVe/g0lD63a+uhdiDCxFvs2o2mQjfuny6cK59FzORKYfp0oM+ce8nxrj1JT6glQ1Qnc+1C82z+5V6KkMZiqy1sQeV0Xxr8M=,iv:/KB1b/eLR5VuT5ZDamX0zf1F8eIo3hS2QlxrNuqsl20=,tag:luOwW1ATqa0QjtQdhHnj5A==,type:str]
+    lastmodified: "2026-08-20T21:26:58Z"
+    mac: ENC[AES256_GCM,data:pbqoj/R0pIVH2fvy5to6IUjaVadZMfHqHTct9B1MtViHCLdCCaAZ2HZ6/gwF7SqLX/MKPpkJ4wNb6dyAMDgYe7RUFZOrvFmrywKbevClkHEdurknbWJOoIFjDFR94KDqKZxcvtKoQ9b4BJdUx6+rxK4Fohx+o9NnuW7V01rO8x4=,iv:t5+9rknWBHloCl8mU4pscWNw98frfDx5AkGezCA93VM=,tag:ZcmSoKpHLT/l60+o+pKQgA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-20T20:40:04Z"
+        - created_at: "2026-08-20T21:26:58Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/9H6O1Pa3NBkxLPbf+XxU+W9QGSt9PrpJFH9lQNNQmCgVj
-            IatJlc1g1IKNt6+U/8TVzi+7Cn++WXijC/8rckmykpQYO2qDGszWirnYtYyldf+y
-            nRgK4zwkaVlwrVmS/Q9xMG56qmZWBg5neskC0TfytOx5LG9ZFqg51vewuNWtSrF2
-            YhCAAcSFQjTDrtntA/kMy13BI+0RTVUAkK+Ac+dbDnrOvZmNQHww9PF0TNAeEmnb
-            FbTuno6TLEZ2Lm/AUAGYeQPCiQcrbZaIhErS04xbZGMTJEhoeXLuPjJAEcLVoH8n
-            9hwnQG3g0TtyO4u5g4MD09oxbrIJ3b7TEVgXKKolhnPzQWvzT2NjHc+PxfuqW1Ow
-            uV8wg1UFh6l/0z+PGVNDRQRJEmGKYATLwLCsT8FzxnqM8TNJfvB1+FOP04XA5TKQ
-            pJOsBG3yJfLmDNVvAzY8nEL0c3n+AvYDkepFYeJ3gmwz9yFyxeJgbfCfQCHwWlm3
-            iMBq9VQHMl9psVFXOU+UbZz3r3uD0YrD3PPMKjdNt9VDE4xF8yRr9LQePQ1zSNWS
-            +9j8tE5UWG2mQi8K9JukSUa1EcVahZ4UJAGLZPCZzMvxjjkcE0q/8TpxpnrB5fUu
-            HHkCbPUEjRVQv8rkC9yloAKC4ISN65CnIRauMX7xEvSki0uYacA6V4FlstLoO4bU
-            ZgEJAhDSG1lkn5T53c9OKdAs0I857J+AK/VdcFbqipABu7zVlqcb4ZNVY4zxCtou
-            pU+waUe1bqwyotyCgTFw0ZBWGRCKq+mp3iemaX/hnO7al/P364DsmUClz4X1ZFIG
-            8L4pkxKaUw==
-            =Ac2B
+            hQIMA5NT/LvuRqeGAQ/+K2zg6BrEKVNR22bxbIsiRo1MjloExJhF8UpXNMowV2DW
+            +HxzMpbhYRw5YZw7v26/a+XQmst1RvzbOc5mTCDSMTbme9Y/eCXU1p2tcKbAaezS
+            bZjAwQ7Eydp1OLzKz4QNzK3mhrdzj7L/VjKqLLmcUhGbDkwmPUMUkwHdnOdwbeK3
+            /J3V+UuD8RvwL6KKyzqFmuY8QQLqFpfMz3ZXICCvPjvzh60SW0nj4Wd9FXF3/jtV
+            6hhVYCW+VyjUsY+wcEhWHw4uQL0y3cTo88SUWDgF6ipsKgfhk39pU7ehXUXwzNzq
+            CbCjgmZKPNewwUFSTrv3X7Uo9RpXe8OO7d/HofKwrhvvFj2JqgMXCDSkPMzsMbVi
+            c/eyP3Rw7JAfOg/aZMvh+pujxWl+2PNwvmTx5pi9MLVQSbVxfDEcw/bRrMFNmi6m
+            MIwDMHnjh6UMV9niEacAh4NT2CojGeJL05jUXlriPqx4kAWdJTL9zDGhZwxJAAuq
+            NRPNmXbtvGL8JwoJvB4dwzwzH0q4WYHzaBGSx+Kg1wTAASsh2gKfY5w8c0DTddZJ
+            UxON2fNYe5pjTrPgiKoN2MRAqFMGXV7UMW/xr4K+EH2xPTRACQMJ5X/ZZUNqsNgR
+            beXulgbsnP/NF8GvsWyaeXdkdF4ukYXhypDDYCJ0EcSHUAyyHPCAoi5VhDOg6GDU
+            ZgEJAhDv6FGGQPlkLzIYACWaEh4b4uaz/4lyFi4JqzYBfUkwqaXGmeHYP6uHoDDG
+            F+AUPGMy264l7rLU1GNAn67+JYzluBtzGRkeYew6mIYf28BFQQvq6SCTfkw1bZgT
+            +GwcUgm7ew==
+            =E2Eq
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
