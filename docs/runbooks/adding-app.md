@@ -85,11 +85,23 @@ spec:
     namespace: homelab
 ```
 
-## Step 3 — Commit and Push
+## Step 3 — Add a Glance Bookmark
+
+Add a link to the dashboard in `kubernetes/apps/homelab/glance/values.yaml` (`configmap.data."home.yml"`), under the relevant bookmarks group on the Homelab page:
+
+```yaml
+- title: My App
+  description: What it does
+  icon: di:myapp   # dashboard-icons slug, same one used in docs/services/*.md
+  url: https://myapp.local.{{ .Values.domain }}
+```
+
+## Step 4 — Commit and Push
 
 ```bash
 git add kubernetes/apps/homelab/myapp/ \
-        kubernetes/apps/addons/argocd-apps/templates/homelab/myapp.yaml
+        kubernetes/apps/addons/argocd-apps/templates/homelab/myapp.yaml \
+        kubernetes/apps/homelab/glance/values.yaml
 git commit -m "feat: add myapp to homelab namespace"
 git push
 ```

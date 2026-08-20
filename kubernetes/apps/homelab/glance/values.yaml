@@ -271,6 +271,10 @@ configmap:
                         description: Bambu printer management
                         icon: si:bambulab
                         url: https://bambu.local.{{ .Values.domain }}
+                      - title: Paperless-ngx
+                        description: Document management
+                        icon: di:paperless-ngx
+                        url: https://paperless.local.{{ .Values.domain }}
                   - title: Home Automation
                     links:
                       - title: Home Assistant
