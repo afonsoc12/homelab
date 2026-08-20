@@ -187,6 +187,38 @@ group (e.g. `docker/rpi-4b/adguard/`). A second Unraid box would get its own
      with the `[IP]:[PORT]` placeholder — `ingress_host` is skipped and the
      template falls back automatically.
 
+## Autostart and Docker tab order (both Ansible-managed)
+
+Two Unraid-only mechanisms that are **not** the same as compose's `restart:`
+policy and are easy to conflate with it:
+
+- **Autostart** — whether Unraid starts the container when the array/Docker
+  service comes up. Stored as a flat list of container names, one per line,
+  in `/var/lib/docker/unraid-autostart` on the host — completely separate
+  from Docker's own `--restart` policy. A container can have
+  `restart: unless-stopped` and still show Autostart OFF in the GUI if it's
+  missing from this file.
+- **Docker tab display order** — the row order in Unraid's Docker tab.
+  Stored as numbered entries (`0="name"`, `1="name"`, ...) in
+  `/boot/config/plugins/dockerMan/userprefs.cfg`. Purely cosmetic, unrelated
+  to autostart or restart policy.
+
+Both are derived and rewritten by the `docker_compose` role on every run
+(`main.yml`, after the DockerMan template render step) — not something you
+edit by hand:
+
+- Autostart list = every service across every stack whose `restart` is not
+  `"no"`, sorted. So the only lever is the `restart:` field in
+  `docker-compose.yaml` — set an app to `restart: "no"` (one-off/manual
+  tools like `kopia`, `calibre`) and it drops out of autostart automatically
+  on the next deploy. No separate step, and no stale entries survive an app
+  being removed since the list is fully regenerated each run.
+- Display order = every container name across every stack, alphabetical,
+  with `kopia` forced last (arbitrary tie-breaker chosen while testing this
+  mechanism — adjust the `reject`/`+ ['kopia']` logic in `main.yml` if you
+  want a different rule, e.g. preserve manual GUI reordering instead of
+  fully regenerating).
+
 ## Verifying
 
 ```bash

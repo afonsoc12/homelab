@@ -104,3 +104,58 @@
   loop_control:
     label: "{{ item.path | basename }}"
   when: "'unraid' in group_names"
+
+- name: "Unraid | Build autostart container list"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_autostart_containers: >-
+      {{
+        (docker_compose_unraid_autostart_containers | default([]))
+        + ((lookup('ansible.builtin.file', item.path + '/docker-compose.yaml') | from_yaml).services.values()
+            | selectattr('restart', 'defined')
+            | rejectattr('restart', 'equalto', 'no')
+            | map(attribute='container_name')
+            | list)
+      }}
+  delegate_to: localhost
+  loop: "{{ docker_compose_stacks.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Write autostart list (derived from each service's restart policy)"
+  ansible.builtin.copy:
+    content: "{{ docker_compose_unraid_autostart_containers | sort | join('\n') }}\n"
+    dest: /var/lib/docker/unraid-autostart
+    mode: "0644"
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Collect all container names"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_all_containers: >-
+      {{
+        (docker_compose_unraid_all_containers | default([]))
+        + ((lookup('ansible.builtin.file', item.path + '/docker-compose.yaml') | from_yaml).services.values()
+            | map(attribute='container_name')
+            | list)
+      }}
+  delegate_to: localhost
+  loop: "{{ docker_compose_stacks.files }}"
+  loop_control:
+    label: "{{ item.path | basename }}"
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Build Docker tab display order (kopia last, for testing)"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_order_containers: >-
+      {{
+        (docker_compose_unraid_all_containers | reject('equalto', 'kopia') | sort | list)
+        + (['kopia'] if 'kopia' in docker_compose_unraid_all_containers else [])
+      }}
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Write Docker tab display order"
+  ansible.builtin.template:
+    src: unraid-userprefs.cfg.j2
+    dest: /boot/config/plugins/dockerMan/userprefs.cfg
+    mode: "0644"
+  when: "'unraid' in group_names"

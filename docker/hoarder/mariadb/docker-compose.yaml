@@ -8,7 +8,6 @@ services:
     image: mariadb:12.3.2
     container_name: mariadb
     restart: unless-stopped
-    user: "99:100"
     mem_limit: 2G
     ports:
       - "3306:3306/tcp"
