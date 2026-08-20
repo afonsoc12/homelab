@@ -24,9 +24,11 @@
   ansible.posix.synchronize:
     src: "{{ item.path }}/"
     dest: "{{ docker_compose_base_dir }}/{{ item.path | basename }}"
-    rsync_opts:
-      - "--exclude=secrets.sops.yaml"
-      - "--exclude=.env"
+    rsync_opts: >-
+      {{
+        ['--exclude=secrets.sops.yaml', '--exclude=.env']
+        + (['--exclude=docker-compose.yaml'] if 'unraid' in group_names else [])
+      }}
     delete: true
   loop: "{{ docker_compose_stacks.files }}"
 
@@ -144,11 +146,28 @@
     label: "{{ item.path | basename }}"
   when: "'unraid' in group_names"
 
-- name: "Unraid | Build Docker tab display order (kopia last, for testing)"
+- name: "Unraid | Slurp existing Docker tab order"
+  ansible.builtin.slurp:
+    src: /boot/config/plugins/dockerMan/userprefs.cfg
+  register: docker_compose_unraid_userprefs_raw
+  failed_when: false
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Build Docker tab display order (preserve existing order, drop stale entries, append new ones, kopia last)"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_existing_order: >-
+      {{
+        (docker_compose_unraid_userprefs_raw.content | b64decode | regex_findall('="([^"]+)"'))
+        if (docker_compose_unraid_userprefs_raw.content is defined) else []
+      }}
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Compute final Docker tab display order"
   ansible.builtin.set_fact:
     docker_compose_unraid_order_containers: >-
       {{
-        (docker_compose_unraid_all_containers | reject('equalto', 'kopia') | sort | list)
+        (docker_compose_unraid_existing_order | select('in', docker_compose_unraid_all_containers) | reject('equalto', 'kopia') | list)
+        + (docker_compose_unraid_all_containers | reject('in', docker_compose_unraid_existing_order) | reject('equalto', 'kopia') | list)
         + (['kopia'] if 'kopia' in docker_compose_unraid_all_containers else [])
       }}
   when: "'unraid' in group_names"

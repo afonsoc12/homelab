@@ -1,16 +1,8 @@
 ---
 # --------------------
 # media-stack
-#   Everything Plex/movie-adjacent in one project: privoxyvpn + the *arr apps
-#   that route through it (bazarr, lidarr, prowlarr, qbittorrent, radarr,
-#   radarr-4k, sonarr), seerr (request management, needs to reach the *arr
-#   apps via privoxyvpn's shared network stack), plex, decide (swipe-to-match
-#   picker for Plex), kometa (Plex metadata), and tautulli (Plex stats).
-#
-#   One compose project = one shared default network, so seerr can reach
-#   privoxyvpn (and everything sharing its netns) by container name with no
-#   external/manually-created Docker network needed. plex stays on
-#   network_mode: host - it doesn't need or use the project network.
+#   privoxyvpn + *arr apps + seerr/plex/decide/kometa/tautulli/tdarr, one
+#   project so seerr can reach the *arr apps via the shared default network.
 # --------------------
 services:
   privoxyvpn:
@@ -198,8 +190,6 @@ services:
       - "/mnt/user/appdata/plex:/config"
 
   decide:
-    # Self-hosted swipe-to-match film picker for Plex. Plex is linked in-app
-    # via the setup wizard (plex.tv/link) on first boot.
     image: ghcr.io/hk21x/decide:0.1.2
     container_name: decide
     restart: unless-stopped

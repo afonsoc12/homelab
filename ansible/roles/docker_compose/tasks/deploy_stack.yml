@@ -1,13 +1,10 @@
 ---
-# Deploys one stack and prunes immediately after, rather than batching prune
-# for the end of the run - keeps docker.img headroom free while pulling
-# through a long list of stacks instead of risking it filling up mid-run.
-# Included per-stack from tasks/main.yml.
+# Prunes right after each stack instead of batching at the end.
 
 - name: "Deploy stack {{ stack.path | basename }}"
   community.docker.docker_compose_v2:
     project_src: "{{ docker_compose_base_dir }}/{{ stack.path | basename }}"
-    pull: always
+    pull: missing
     build: never
     recreate: "{{ docker_compose_recreate_policy }}"
     remove_orphans: true
