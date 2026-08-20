@@ -77,21 +77,21 @@ resources:
         memory: 2500Mi
 livenessProbe:
     httpGet:
-        path: /health
+        path: /api/v2/monitor/health
         port: 8080
     periodSeconds: 15
     failureThreshold: 3
     timeoutSeconds: 5
 readinessProbe:
     httpGet:
-        path: /health
+        path: /api/v2/monitor/health
         port: 8080
     periodSeconds: 15
     failureThreshold: 3
     timeoutSeconds: 5
 startupProbe:
     httpGet:
-        path: /health
+        path: /api/v2/monitor/health
         port: 8080
     initialDelaySeconds: 60
     periodSeconds: 10
