@@ -33,6 +33,9 @@ module "zone_homelab" {
   allow_aws         = true
   geo_block_enabled = true
   geo_allowlist     = ["PT", "GB"]
+
+  domain             = data.sops_file.secrets.data["zones.0.domain"]
+  allow_github_hooks = true
 }
 
 module "zone_personal" {

@@ -49,3 +49,15 @@ variable "geo_allowlist" {
   type        = list(string)
   default     = ["PT", "GB"]
 }
+
+variable "domain" {
+  description = "Base domain — only required when allow_github_hooks = true"
+  type        = string
+  default     = ""
+}
+
+variable "allow_github_hooks" {
+  description = "Skip geo-block for GitHub's published webhook IPs, scoped to git-hook.<domain> only — used to let GitHub's push webhook reach the Forgejo mirror-sync API"
+  type        = bool
+  default     = false
+}

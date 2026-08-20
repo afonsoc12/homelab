@@ -34,9 +34,41 @@ configmap:
         #RUST_LOG: govee=trace
 nodeSelector:
     kubernetes.io/hostname: k3s-m1
+resources:
+    requests:
+        cpu: 50m
+        memory: 128Mi
+    limits:
+        cpu: 200m
+        memory: 128Mi
+livenessProbe:
+    httpGet:
+        path: /
+        port: 8056
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+    initialDelaySeconds: 15
+readinessProbe:
+    httpGet:
+        path: /
+        port: 8056
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    httpGet:
+        path: /
+        port: 8056
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 12
+    timeoutSeconds: 5
 sops:
-    lastmodified: "2026-05-04T13:51:29Z"
-    mac: ENC[AES256_GCM,data:03y6cjnXvFqFl3iATxApECEcGBTEhksfewMOEIjWyLOUEGYnJ/SUjPo9CWn5SU3zBcKLf9OvmhpbzGhtcUvVA1OVqaCQwR/8T3MS/NWEKUsU6AlM8FbCpQxUi+Stkc3DE7JhP2ikeCDd00xF95kx09O/60KHbJLRPfZuMf21KtU=,iv:cHy7Dz4SxvKhUZe8MklSRuxrC6+2nHw22+3jBCUxe7E=,tag:gjcKUd0548nZ1ZElLg4yjw==,type:str]
+    encrypted_regex: ^(stringData)$
+    lastmodified: "2026-08-17T23:38:01Z"
+    mac: ENC[AES256_GCM,data:WB9QbnnmXUWzVThAMx81gNYESc1/YonvOLW8MDPXSHGDzRucxv/fj6V25Mm9yVdnjLXEW0hjw0okw7s88Uw3ZAaQc88bQaNzS3oAnymIhiiDqAti2AD4Fxqvo2ZQEeHX4LqrJBVt+Cv5I7/ivP3LngZbEhPAqH58VNNRzdyZ2js=,iv:mi2jKAtZOeOK2aeqkHHMWuBBh7xZlRvtfp5F4bB+zMw=,tag:1gBSLFbSnPMGYI0ThZDOZw==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:40Z"
           enc: |-
@@ -59,6 +91,4 @@ sops:
             =JZUf
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(stringData)$
-    mac_only_encrypted: true
     version: 3.12.2

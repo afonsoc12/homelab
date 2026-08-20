@@ -1,0 +1,39 @@
+# --------------------
+# Forgejo Runner
+#   - Docs:  https://forgejo.org/docs/latest/admin/actions/
+#   - Chart: oci://codeberg.org/wrenix/helm-charts/forgejo-runner
+#            (community-maintained mirror; Forgejo does not publish an
+#            official runner chart — see forgejo/discussions#66)
+# --------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: forgejo-runners
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  sources:
+    - repoURL: codeberg.org/wrenix/helm-charts
+      chart: forgejo-runner
+      targetRevision: 0.7.6
+      helm:
+        valueFiles:
+          - $values/kubernetes/apps/values.sops.yaml
+          - $values/kubernetes/apps/devops/forgejo-runners/values.sops.yaml
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: devops
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

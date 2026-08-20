@@ -39,12 +39,11 @@ certificates:
       reflectNamespaces:
         - homelab
         - sandbox
-    - name: git
+    - name: git-hook
       dnsNames:
-        - git.{{ .Values.domain }}
+        - git-hook.{{ .Values.domain }}
       reflectNamespaces:
-        - homelab
-        - sandbox
+        - devops
     - name: home
       dnsNames:
         - home.{{ .Values.domain }}
@@ -59,6 +58,7 @@ certificates:
         - addons
         - automation
         - databases
+        - devops
         - homelab
         - ingress
         - longhorn-system

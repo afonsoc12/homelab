@@ -155,42 +155,47 @@ cronjobs:
                               values:
                                 - '{{ $.Release.Name }}'
                     topologyKey: kubernetes.io/hostname
+      resources:
+        requests:
+            cpu: 10m
+            memory: 32Mi
+        limits:
+            cpu: 10m
+            memory: 32Mi
 resources:
-  limits:
-    cpu: 1000m
-    memory: 512Mi
-  requests:
-    cpu: 200m
-    memory: 256Mi
-
+    limits:
+        cpu: 1000m
+        memory: 512Mi
+    requests:
+        cpu: 200m
+        memory: 256Mi
 livenessProbe:
-  httpGet:
-    path: /health
-    port: 8080
-  periodSeconds: 10
-  failureThreshold: 3
-  timeoutSeconds: 5
-
+    httpGet:
+        path: /health
+        port: 8080
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
 readinessProbe:
-  httpGet:
-    path: /health
-    port: 8080
-  periodSeconds: 10
-  failureThreshold: 3
-  timeoutSeconds: 5
-
+    httpGet:
+        path: /health
+        port: 8080
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
 startupProbe:
-  httpGet:
-    path: /health
-    port: 8080
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  failureThreshold: 60
-  timeoutSeconds: 5
-
+    httpGet:
+        path: /health
+        port: 8080
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    failureThreshold: 60
+    timeoutSeconds: 5
 sops:
-    lastmodified: "2026-04-29T12:29:16Z"
-    mac: ENC[AES256_GCM,data:kROTYCCS6ph/UsrCn51RM1Jv+6qWtfdrob+1JBVvholUjeHp8tV2HjCdbPc1oAHvkqkxfs+yBJ8KxhK9HzOCWZrdh1EDjJA0Nq0gIU/dgrjb00eFfN33XQXVh8okKtmJk58UQashPYTILV7JU/NmCIIk1r0NtcMo37zs6VqJGWA=,iv:ARC1v3WvZDNSxmBz7sKFRf0j8SGvNHhzNZACOr34OMg=,tag:9EfPyX4pmts5B6jNL7PlPw==,type:str]
+    encrypted_regex: ^(stringData)$
+    lastmodified: "2026-08-17T23:00:03Z"
+    mac: ENC[AES256_GCM,data:kYGQI76X2yQd54d/VQPDTch1b/yJXI+pFogLw+fFtWd5DeEqp7j+ZEdGS0BhnY4knLlQp7YshFowZIj5CGKz3gaEko7T6Tq1cj4CgiDHwGfVnUpN4KCYOsYLZCYkKpPIIrSMv2GBykasQD0Wy6Vlbi7fTsXIYzY0SZiWFy311f0=,iv:PpCv3hGCqxpQqRmTwPtQZrVg8/rEGSBCKHLOCOkBFRU=,tag:Iski96gZ68BhHU1W84PyvQ==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:41Z"
           enc: |-
@@ -213,6 +218,4 @@ sops:
             =WQ5L
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(stringData)$
-    mac_only_encrypted: true
     version: 3.12.2

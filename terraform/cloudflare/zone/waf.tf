@@ -1,5 +1,15 @@
+data "http" "github_meta" {
+  count = var.allow_github_hooks ? 1 : 0
+
+  url = "https://api.github.com/meta"
+}
+
 locals {
   geo_expr = "(not ip.geoip.country in {${join(" ", [for c in var.geo_allowlist : format("\"%s\"", c)])}})"
+
+  # GitHub's published webhook-delivery source IPs, fetched live so this
+  # allowlist doesn't silently rot as GitHub rotates ranges.
+  github_hook_cidrs = var.allow_github_hooks ? jsondecode(data.http.github_meta[0].response_body)["hooks"] : []
 
   waf_rules = concat(
     # Allow AWS first so bot/geo rules don't block legitimate AWS callbacks
@@ -11,6 +21,32 @@ locals {
         ruleset = "current"
       }
       enabled = true
+    }] : [],
+
+    # GitHub's webhook delivery isn't a browser, so Cloudflare's bot heuristics
+    # flag it — without an explicit skip here it sails past the block rule
+    # below (which only rejects non-GitHub IPs) and then gets caught by the
+    # "Block bots" rule instead. Skip bot+geo checks entirely for GitHub's IPs
+    # on this one hostname, same pattern as "Allow AWS" above.
+    var.allow_github_hooks ? [{
+      action      = "skip"
+      description = "Allow GitHub webhook IPs on git-hook.${var.domain}"
+      expression  = "(http.host eq \"git-hook.${var.domain}\" and ip.src in {${join(" ", local.github_hook_cidrs)}})"
+      action_parameters = {
+        ruleset = "current"
+      }
+      enabled = true
+    }] : [],
+
+    # Deny-by-default on this hostname regardless of geography — the geo rule
+    # below only blocks *non*-PT/GB traffic, so without this explicit block
+    # anyone physically in PT/GB could reach the mirror-sync hook too. Only
+    # GitHub's own published webhook source IPs may reach this hostname.
+    var.allow_github_hooks ? [{
+      action      = "block"
+      description = "Block git-hook.${var.domain} except from GitHub's webhook IPs"
+      expression  = "(http.host eq \"git-hook.${var.domain}\" and not (ip.src in {${join(" ", local.github_hook_cidrs)}}))"
+      enabled     = true
     }] : [],
 
     var.block_bots ? [{

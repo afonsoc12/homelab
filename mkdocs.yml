@@ -89,6 +89,7 @@ nav:
       - Home Automation: services/automation.md
       - Media & Entertainment: services/media.md
       - Productivity & Finance: services/homelab.md
+      - DevOps: services/devops.md
   - Kubernetes:
       - GitOps with ArgoCD: kubernetes/argocd.md
       - Namespaces & Apps: kubernetes/namespaces.md

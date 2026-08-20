@@ -1,0 +1,83 @@
+gitea:
+    admin:
+        username: ENC[AES256_GCM,data:aaojU63FBZQg,iv:oSre2GhtUQLnGiTOG/Adz7HtTBU30mGzlgVbUYZI+Yw=,tag:7NhU6kdfyLhMlDigdedrgA==,type:str]
+        password: ENC[AES256_GCM,data:Bof6EF6p0Tt63vG7Lw55+Ok8MZpGFHnshuiGoQ==,iv:s99jdujp0PzJCgTLMSPBnvxHIOWv1W8ECc5m0dJYFXA=,tag:A5XQzQp8fYN+UZ+Pf/wqYQ==,type:str]
+        email: ENC[AES256_GCM,data:I4b6NDRYwGagj7VSylZK+e6e5bTQfMWtnx2SKdw=,iv:cZpooW6I8nHSybdB4AWOO9wISacytF+lUps0jdronus=,tag:KL7IJW7HWQ5MvyU1cR3IxQ==,type:str]
+        passwordMode: keepUpdated
+    metrics:
+        enabled: false
+    config:
+        APP_NAME: Forgejo
+        RUN_MODE: prod
+        server:
+            DOMAIN: ENC[AES256_GCM,data:lALxSRmK5a0zPApSWvYjGE47pTzp5AE=,iv:EDKdgYubSo/pLzI+Sp1r0VJ2OHRn+Cyih56KYjG9N7g=,tag:p2oliB1fnxTRJ95V56W2jw==,type:str]
+            ROOT_URL: ENC[AES256_GCM,data:239kTAdXa6NtxhKOMVZbZS0UH5tXTTKcW6dPBr56PQU=,iv:rTjBxehFysE4SGUV+t0VXCt3X2BDuh/aHEKy/lBC6Rg=,tag:tuXGa0y2YGl4eCPTaHVTOg==,type:str]
+            SSH_PORT: 22
+            SSH_LISTEN_PORT: 2222
+        database:
+            DB_TYPE: postgres
+            HOST: postgres.databases.svc.cluster.local:5432
+            NAME: forgejo
+            USER: forgejo
+            PASSWD: ENC[AES256_GCM,data:bI8VX1pzSZ6PUnhg3305690C4Ns=,iv:lpFfVqLZtxuz4euNlm94swmUN6+wh3l9m210cu/Xwp8=,tag:0KvXVkXKO1jXKHohJHUw8g==,type:str]
+        actions:
+            ENABLED: true
+            DEFAULT_ACTIONS_URL: github
+persistence:
+    enabled: true
+    size: 10Gi
+ingress:
+    enabled: true
+    className: nginx
+    annotations: {}
+    hosts:
+        - host: ENC[AES256_GCM,data:Tnb1PmaAfzcsjHYpKUGmeBRXg3+tURE=,iv:JFoi9vOT4AzBoqztQCgxHz50a+P00znYSN0H4PVB9S8=,tag:b4h9R5oiL4Kb6qSV4+vmaw==,type:str]
+          paths:
+            - path: /
+              pathType: Prefix
+              port: http
+        - host: ENC[AES256_GCM,data:n3LAOf6Z63xf252qwaM9ql32KATn8g==,iv:dgTkfyx+c9pfqxP0G/iM5ma/6C8bMticFhm8HBRlWZM=,tag:5fQOzU8gAk0VLR0s5U4E3w==,type:str]
+          paths:
+            - path: /api/v1/repos/afonsoc12/homelab/mirror-sync
+              pathType: Exact
+              port: http
+    tls:
+        - secretName: local-wildcard-cert
+        - secretName: git-hook-cert
+          hosts:
+            - git-hook.{{ .Values.domain }}
+resources:
+    requests:
+        cpu: 100m
+        memory: 256Mi
+    limits:
+        cpu: 1000m
+        memory: 1Gi
+sops:
+    encrypted_regex: ^(password|PASSWD|DOMAIN|ROOT_URL|host|username|email)$
+    lastmodified: "2026-08-18T21:27:56Z"
+    mac: ENC[AES256_GCM,data:wZIpbJxsRflgf3RRgrhQKiOtoEHabhfsUrUmZ8wLowQAwGbP8DKlcfXSmZLsWVakmuUaXWeXApWSuIZ/n6v4tHdDFgwu5J2+Sfrvynp3/GP7z5IOtMowTvIURDyOOWg7rJ+W9qITHjp/lpW9FTEW/zUKFGCNd6rc8/tmisXsqi4=,iv:NLC3lnAAnPud5pE4ll0IHPbKsser1Np0x3HCH1vYCNE=,tag:mYWHrWTchpHhFw4j+499GA==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-08-18T21:27:56Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//RnRcA6ykzKyTg6LJnH8DgtEg2EjcvsdUr0rVlIKSoMjC
+            QHxjrncP+eA529sv5oIU5vhabC4G4we8W/5eg7V2qqomFTexV1g4bI+feVZqB739
+            a0GDNpHeGHkHM2JYd6jxHWV28DNUdEyU7Z729/1ONGApiLI2Rzi4/dDBBWWDwpM/
+            Rh2RjHthxH2JHV1iUseqMVm3JtsVGL3sS5ztbrxKeZIui/+LluU6DD0y+XI57RPF
+            McpnSwfDtpjVMr9PrrgILSiuT/Kg8H/joe4FlL6/tK9QYpD4dFsKDnzwfCHLboBu
+            553Bm7ZcB90n3459SeFqZBKQo9XOsP35qhBCjJU9eqn/my2/wVCzyXw40aCaoo9T
+            4RuSlSQ1gRZLsLrPuJTV+PGzf9P8zcq8gWNBCOeoLucpNvBRNsZ9ek11tpBZLuLu
+            BJSDE57wLDIqIA14Elj+vRDYNmFoa28x/h0XHL1w73Pt6Q43CsrPrzxuTTQKMHP5
+            TYv9QfvDfIeU+zxl5iwcBFEe4FXhx2UJdoQT3ImVkU2l/jMyYCTgghhGvz6M2hM2
+            KfpyzSY7WGED1QCWi1cACDld8UeBe97BHSheSnTwthLWXyrcizUsOn4ZHv1HeogT
+            LEQqST4mZhg3Q3fU0xymmhsAMZwrLlYtYDmNM4xet7EJdfcm5N2zvdnwJXI8VyLU
+            ZgEJAhALxEI6Km72nNiFbkRRnxZSaebqpoO/zItIXiknG9m2/Kd7eUexqMIl6/pa
+            zfoSBwmiztyguW5xE2GDXRbsJe6CbKpZ/uye6eTknnolkgvceGTURBsAUZ3XA9V/
+            ZZ449XGmIA==
+            =iAmb
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

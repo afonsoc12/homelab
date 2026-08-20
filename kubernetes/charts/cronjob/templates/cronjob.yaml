@@ -73,6 +73,10 @@ spec:
               volumeMounts:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
+              {{- with .resources }}
+              resources:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
           {{- with .volumes }}
           volumes:
             {{- toYaml . | nindent 12 }}

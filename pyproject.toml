@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "ansible==14.3.0",
+    "ansible==14.3.1",
 ]
 
 [dependency-groups]

@@ -29,9 +29,18 @@ cronjobs:
         digest: sha256:dbdb3f7854ce46ec52abd392920cd74a02b7d0b95543f16c94108cb864d6cec3
       nodeSelector:
         kubernetes.io/hostname: k3s-m1
+      resources:
+        requests:
+            cpu: 10m
+            memory: 32Mi
+        limits:
+            cpu: 200m
+            memory: 64Mi
 sops:
-    lastmodified: "2026-05-09T18:49:37Z"
-    mac: ENC[AES256_GCM,data:TYJGmj/57m4zdVfkQZSW4ngGbi82C0eorIapQbIhre5JPxGyP2rIQ7s6ijgDXbzSPXYEdYecU2PYJyBmFMixj3541FyLUWR+eYexLDVgqwW1yiii2W2TbjVRZvL9WPmtQPBDcmeFM7ob6hNZ9JXv0bM+36dpDdytV2ZrzRO2JmE=,iv:riNQF7+0ULrguVGpPTLVyzoicxbS9NA1VRCTJ16ryVM=,tag:g3Frq+egriQPf/IzFNgzug==,type:str]
+    encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-08-17T23:00:03Z"
+    mac: ENC[AES256_GCM,data:+JfsOLUpEM+xTWZTHez1y22sZs7kVfVBLYAUCnpIjFr4icEDVacrUAd4/a5W2pmWjtsawEdhBmUY8pycFxCb7IkLC4pMvwYajVRCj8NOnmEk79Pj7XRws0K8rUX4Xmd26Hx/CpGJSLPXFc+Gbo5R/NuNaBLh/2Vhr4HcIJrFTU0=,iv:uEhbegyjf8vVZ9exH9bkw0OQmcNhguIJPwzhpmjyrWk=,tag:0f/XIn01r7MQJ1Krq9myEw==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-05-09T18:49:37Z"
           enc: |-
@@ -54,6 +63,4 @@ sops:
             =jPxv
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    mac_only_encrypted: true
     version: 3.12.2

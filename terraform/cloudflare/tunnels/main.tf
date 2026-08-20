@@ -150,7 +150,19 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         }
       },
       {
-        hostname = "git.${var.domain}"
+        hostname = "sso.${var.domain}"
+        service  = "https://ingress-nginx-controller"
+        origin_request = {
+          origin_server_name = "sso.${var.domain}"
+        }
+      },
+      {
+        # Public entry point solely for GitHub's push webhook to hit Forgejo's
+        # mirror-sync API. Path-scoped to that one endpoint via a second entry
+        # in the Forgejo chart's own ingress.hosts (values.sops.yaml), and
+        # IP-blocked to everyone but GitHub's hook CIDRs by ../zone/waf.tf —
+        # Forgejo itself stays LAN-only (git.local).
+        hostname = "git-hook.${var.domain}"
         service  = "https://ingress-nginx-controller"
         origin_request = {
           connect_timeout          = 30
@@ -160,20 +172,9 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
           keep_alive_timeout       = 90
           no_happy_eyeballs        = false
           no_tls_verify            = false
-          origin_server_name       = "git.${var.domain}"
+          origin_server_name       = "git-hook.${var.domain}"
           tcp_keep_alive           = 30
           tls_timeout              = 10
-        }
-      },
-      {
-        hostname = "git-ssh.${var.domain}"
-        service  = "ssh://gitea-ssh.homelab"
-      },
-      {
-        hostname = "sso.${var.domain}"
-        service  = "https://ingress-nginx-controller"
-        origin_request = {
-          origin_server_name = "sso.${var.domain}"
         }
       },
       {
@@ -184,7 +185,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
 }
 
 locals {
-  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git", "git-ssh", "home", "rss", "seerr", "sso", "status", "wallabag"])
+  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git-hook", "home", "rss", "seerr", "sso", "status", "wallabag"])
 }
 
 # Keys use "subdomain|CNAME" format to match import addresses

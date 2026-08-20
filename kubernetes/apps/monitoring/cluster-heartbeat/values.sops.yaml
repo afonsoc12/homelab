@@ -29,12 +29,21 @@ cronjobs:
       args:
         - |
           sleep 2
-          curl -vfsS \
+          curl -vfsS -4 \
           --data-raw=${NODE_NAME} \
           https://hc-ping.com/${PING_KEY}/k3s-cluster
+      resources:
+        requests:
+            cpu: 10m
+            memory: 16Mi
+        limits:
+            cpu: 100m
+            memory: 32Mi
 sops:
-    lastmodified: "2026-04-13T20:28:44Z"
-    mac: ENC[AES256_GCM,data:qUK7qJnw2WyDbvk48nBeTLS+rHb/XnJBWEldCMg1isjeEKL5Ajp/Y7z/XjFZbVKDlmkhQibPyP/SmGv2VkDNk/eiZt94prk/Jsh1uXmKzUajt1fz5xGYrNrU2cZc3eBaGhFYIxiJaT38yUx6/dqnjrjrQ5mBNNMKdHx8Uo/nfL4=,iv:KmHXMwshe/t/u0Sw6dOng75ppy2e/w20+Xn86rdCTxo=,tag:kuQj9iP1vvmOqNMPYXqtyA==,type:str]
+    encrypted_regex: ^(stringData)$
+    lastmodified: "2026-08-17T23:00:03Z"
+    mac: ENC[AES256_GCM,data:oSEfycAg/iQkppMxe6dUFpB9FalCQMXqgLKPON7/RFl8DEOMIe8ixpHiz3LXPh+BQXHaTQnvAVrF0qWGUVPVnnPrumxulief047ZQ1MZDpuxI7scGTRpJs26MNoUzgOJ0jdSecei971t0j7GGNuZYav93znCHFpyo/dJqVDsD+Y=,iv:YtuIuP1mZ7Ftaaw5mWGEbjNVtmGtmrcpPjIfsRNHyok=,tag:DoP8M8ATEqfxZrBkn6WWlg==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:44Z"
           enc: |-
@@ -57,6 +66,4 @@ sops:
             =N7Ev
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(stringData)$
-    mac_only_encrypted: true
     version: 3.12.2

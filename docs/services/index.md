@@ -57,3 +57,11 @@ Media server, download automation, and music streaming.
 Self-hosted apps for personal, household, and financial use, plus books and NAS tools.
 
 → [Productivity & Finance](homelab.md) — Mealie, Wealthfolio, Firefly III, FreshRSS, Glance, Wallabag, BentoPDF, ChangeDetection, Docuseal, Calibre Web, BookLore, Krusader, Scrutiny, Ghorg
+
+---
+
+## DevOps
+
+Self-hosted Git forge and CI/CD automation.
+
+→ [DevOps](devops.md) — Forgejo, Forgejo Runner
