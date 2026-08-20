@@ -66,6 +66,16 @@ Media request management. Lets users browse and request movies and TV shows, whi
 
 ---
 
+### <img src="https://raw.githubusercontent.com/hk21x/decide/main/frontend/public/decide-icon-512.png" class="svc-icon"> decide
+
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
+
+Self-hosted swipe-to-match film picker for Plex. Two to four people swipe through the same small deck; a unanimous match crowns tonight's film.
+
+[:octicons-book-16: Documentation](https://github.com/hk21x/decide#readme) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/decide/values.yaml)
+
+---
+
 ## Download Automation
 
 All \*arr apps and download clients run inside the PrivoxyVPN network stack.

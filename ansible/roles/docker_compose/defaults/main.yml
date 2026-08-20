@@ -4,3 +4,4 @@ docker_compose_volumes_dir: /opt/docker
 docker_compose_stacks_src: "{{ playbook_dir }}/../../docker"
 docker_compose_networks: {}
 docker_compose_recreate_policy: auto
+docker_compose_unraid_templates_dir: /boot/config/plugins/dockerMan/templates-user

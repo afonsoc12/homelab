@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>{{ service_name }}</Name>
+  <Repository>{{ service.image }}</Repository>
+{#
+  Best-effort link to the actual repo/package page (not just the registry
+  root) so Unraid's "check for updates" has somewhere real to point at.
+  Always overridable via meta.registry - auto-derivation can't know whether
+  a docker.io image is an "official" single-segment image (hub.docker.com/_/name)
+  vs a user one (hub.docker.com/r/user/name), so it guesses from segment count.
+
+  For ghcr.io it assumes a personal-account owner
+  (github.com/<owner>/<repo>/pkgs/container/<repo>). Org-owned packages (e.g.
+  linuxserver/*) use a DIFFERENT URL shape -
+  github.com/orgs/<org>/packages/container/package/<repo> - and there's no
+  way to tell user vs org from the image name alone without a live GitHub
+  API call, so those need an explicit `registry:` override in unraid.yml.
+  Check with: gh api users/<owner> --jq .type  ->  "User" or "Organization".
+#}
+{% set repo_no_tag = service.image.split('@')[0].split(':')[0] %}
+{% if meta.registry is defined %}
+{% set default_registry = meta.registry %}
+{% elif 'ghcr.io/' in repo_no_tag %}
+{% set gh_path = repo_no_tag.split('ghcr.io/')[1] %}
+{% set gh_owner = gh_path.split('/')[0] %}
+{% set gh_repo = gh_path.split('/')[-1] %}
+{% set default_registry = 'https://github.com/' ~ gh_owner ~ '/' ~ gh_repo ~ '/pkgs/container/' ~ gh_repo %}
+{% else %}
+{% set dh_path = repo_no_tag.split('docker.io/')[-1] %}
+{% set dh_parts = dh_path.split('/') %}
+{% set default_registry = ('https://hub.docker.com/_/' ~ dh_parts[0]) if dh_parts | length == 1 else ('https://hub.docker.com/r/' ~ dh_parts[0] ~ '/' ~ dh_parts[1] ~ '/') %}
+{% endif %}
+  <Registry>{{ default_registry }}</Registry>
+  <Network>{{ meta.network | default('bridge') }}</Network>
+  <MyIP/>
+  <Privileged>false</Privileged>
+  <Support>{{ meta.support_url | default('') }}</Support>
+  <Project>{{ meta.project_url | default('') }}</Project>
+  <Overview>{{ meta.overview | default(service_name ~ ' — managed by Ansible, do not edit via GUI.') }}</Overview>
+  <Category>{{ meta.category | default('Tools:') }}</Category>
+  <WebUI>{{ meta.webui | default('') }}</WebUI>
+  <Icon>{{ meta.icon | default('') }}</Icon>
+  <License>{{ meta.license | default('') }}</License>
+  <TemplateURL/>
+  <Requires/>
+{% for p in service.ports | default([]) %}
+{% set proto = 'udp' if '/udp' in p else 'tcp' %}
+{% set clean = p | replace('/tcp', '') | replace('/udp', '') %}
+{% set port_parts = clean.split(':') %}
+{% set host_port = port_parts[0] %}
+{% set container_port = port_parts[1] | default(host_port) %}
+  <Config Name="{{ (meta.port_names | default({}))[container_port] | default(container_port ~ ' Port') }}" Target="{{ container_port }}" Default="{{ host_port }}" Mode="{{ proto }}" Description="{{ (meta.port_descriptions | default({}))[container_port] | default('') }}" Type="Port" Display="always" Required="true" Mask="false">{{ host_port }}</Config>
+{% endfor %}
+{% for v in service.volumes | default([]) %}
+{% set vol_parts = v.split(':') %}
+  <Config Name="{{ (meta.volume_names | default({}))[vol_parts[1]] | default(vol_parts[1]) }}" Target="{{ vol_parts[1] }}" Default="{{ vol_parts[0] }}" Mode="{{ vol_parts[2] | default('rw') }}" Description="{{ (meta.volume_descriptions | default({}))[vol_parts[1]] | default('') }}" Type="Path" Display="always" Required="true" Mask="false">{{ vol_parts[0] }}</Config>
+{% endfor %}
+{% if service.environment is mapping %}
+{% set env_pairs = service.environment.items() | list %}
+{% else %}
+{% set env_pairs = [] %}
+{% for env in service.environment | default([]) %}
+{% set _ = env_pairs.append((env.split('=')[0], env.split('=', 1)[1] if '=' in env else '')) %}
+{% endfor %}
+{% endif %}
+{% for env_key, env_val in env_pairs %}
+{% set is_secret = env_key in (meta.secret_env | default([])) %}
+{% set default_val = (meta.env_defaults | default({}))[env_key] | default(env_val) %}
+  <Config Name="{{ (meta.env_names | default({}))[env_key] | default(env_key) }}" Target="{{ env_key }}" Default="{{ default_val if not is_secret else '' }}" Mode="" Description="{{ (meta.env_descriptions | default({}))[env_key] | default('') }}" Type="Variable" Display="{{ (meta.env_display | default({}))[env_key] | default('always') }}" Required="false" Mask="{{ 'true' if is_secret else 'false' }}">{{ default_val if not is_secret else '' }}</Config>
+{% endfor %}
+</Container>

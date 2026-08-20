@@ -82,6 +82,14 @@ uv run ansible-playbook ansible/playbooks/docker.yml
 
 ---
 
+## `unraid.yml` — Unraid Docker Host
+
+Deploys Docker Compose stacks and DockerMan XML templates to `hoarder` (targets the host directly, no `--limit` needed). See [`docker_compose` role](overview.md#docker_compose-role) for the stack layout and Unraid template metadata format.
+
+```bash
+uv run ansible-playbook ansible/playbooks/unraid.yml
+```
+
 ## `hyperion.yml` — LED Controller
 
 Manages the Hyperion LED controller on `rpi-z2w-hyperion`.

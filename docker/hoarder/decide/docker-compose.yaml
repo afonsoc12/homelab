@@ -1,0 +1,28 @@
+---
+# --------------------
+# decide
+#   - Repo: https://github.com/hk21x/decide
+#   - Docs: https://github.com/hk21x/decide#readme
+#
+#   Self-hosted swipe-to-match film picker for Plex. Single container, single
+#   port, single SQLite file under /data. Plex is linked in-app via the setup
+#   wizard (plex.tv/link) on first boot.
+#
+#   Migrated from k8s (sandbox namespace) - data copied over from the old PVC.
+# --------------------
+services:
+  decide:
+    image: ghcr.io/hk21x/decide:0.1.2
+    container_name: decide
+    restart: unless-stopped
+    ports:
+      - "8090:8080/tcp"
+    environment:
+      # Join-QR addresses shown in Settings
+      LOCAL_URL: "${LOCAL_URL}"
+      REMOTE_URL: "https://decide.local.${DOMAIN}"
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - /mnt/user/appdata/decide:/data

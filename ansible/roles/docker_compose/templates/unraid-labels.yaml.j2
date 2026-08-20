@@ -1,0 +1,27 @@
+{#
+  Re-emits the stack's docker-compose.yaml with Unraid-recognized labels added
+  to every service, so containers show up correctly in the Docker GUI:
+    - net.unraid.docker.managed=dockerman: editable/managed, not "unmanaged"
+    - net.unraid.docker.webui=<url>: powers the clickable WebUI icon in the
+      container list. This is read from the container's OWN labels, not the
+      DockerMan XML template - having <WebUI> in the XML only affects the
+      Edit form, the list-view icon needs this label too.
+    - net.unraid.docker.icon=<url>: container list icon, same story.
+  Overwrites the synced copy on unraid hosts only - the source file in the
+  repo stays label-free since it's irrelevant elsewhere.
+#}
+{% set patched = namespace(services={}) %}
+{% for name, svc in stack_compose.services.items() %}
+{% set svc_meta = stack_meta[name] | default({}) %}
+{% set extra_labels = ['net.unraid.docker.managed=dockerman'] %}
+{% if svc_meta.webui is defined %}
+{% set extra_labels = extra_labels + ['net.unraid.docker.webui=' ~ svc_meta.webui] %}
+{% endif %}
+{% if svc_meta.icon is defined %}
+{% set extra_labels = extra_labels + ['net.unraid.docker.icon=' ~ svc_meta.icon] %}
+{% endif %}
+{% set _ = patched.services.update({
+  name: svc | combine({'labels': (svc.labels | default([])) + extra_labels})
+}) %}
+{% endfor %}
+{{ stack_compose | combine({'services': patched.services}) | to_nice_yaml }}

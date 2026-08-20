@@ -3,3 +3,9 @@
 # Generic ansible configs
 # ==================================================
 ansible_python_interpreter: /usr/bin/python3
+
+# ==================================================
+# Role: docker_compose
+# ==================================================
+docker_compose_base_dir: /mnt/user/appdata/.ansible-stacks
+docker_compose_volumes_dir: /mnt/user/appdata
