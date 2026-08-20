@@ -62,7 +62,16 @@ group (e.g. `docker/rpi-4b/adguard/`). A second Unraid box would get its own
      icon: <url>              # prefer https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/<name>.png
                                # or https://cdn.jsdelivr.net/gh/selfhst/icons/png/<name>.png (same convention
                                # docs/ uses). Falls back to the app's own hosted icon if neither has it.
-     webui: "http://[IP]:[PORT:8080]/"   # literal placeholder syntax, Unraid resolves it
+     webui: "http://[IP]:[PORT:8080]/"   # literal placeholder syntax, Unraid resolves it - fallback
+                                          # when there's no cluster ingress (see step 8) or no `domain`
+                                          # secret available for this stack
+     ingress_host: myapp.local           # preferred over webui when a k8s ingress exists (step 8) -
+                                          # subdomain prefix only, e.g. "bazarr.local", "plex" (no prefix
+                                          # for apps whose ingress host has none). Rendered as
+                                          # https://<ingress_host>.<DOMAIN>/ - DOMAIN comes from this
+                                          # stack's own secrets.sops.yaml (see below), never committed
+                                          # in plaintext. Takes priority over `webui` when both are set
+                                          # and the DOMAIN secret is present.
      category: "MediaApp:Video"          # see Unraid CA category list
      overview: "..."
      registry: <url>           # optional -> <Registry>, see below
@@ -150,12 +159,33 @@ group (e.g. `docker/rpi-4b/adguard/`). A second Unraid box would get its own
    through Ansible to pick them up. **Labels are immutable** — `docker update`
    cannot add them after the fact, the container must be recreated.
 
-8. **Register cluster-side ingress** if this app needs a hostname reachable
-   from inside the cluster (Authelia, TLS, etc.) — see the `k8s-app` skill's
-   "External service" section. Same pattern as `radarr`/`sonarr`/etc.:
+8. **Register cluster-side ingress** for every new app that has a web UI —
+   don't skip this, `ingress_host` (step 3) depends on it existing. See the
+   `k8s-app` skill's "External service" section. Same pattern as
+   `radarr`/`sonarr`/etc.:
    `kubernetes/apps/homelab/external-ingress/<app>/values.yaml` pointing at
    `{{ .Values.ips_tailscale.hoarder }}:<port>`, registered in the
-   `external-ingress` ApplicationSet.
+   `external-ingress` ApplicationSet. Note the exact `host:` value you give
+   it (e.g. `bazarr.local.{{ .Values.domain }}`) — the part before
+   `.{{ .Values.domain }}` is what goes in `ingress_host`.
+
+   Once the ingress exists, wire the DockerMan WebUI link to it instead of
+   the raw `[IP]:[PORT]` placeholder:
+   - Add `ingress_host: <prefix>` to that service's entry in `unraid.yml`
+     (the subdomain prefix you just registered, e.g. `bazarr.local`).
+   - Make sure that stack's `secrets.sops.yaml` has a `DOMAIN` key (copy the
+     encrypted value from any other stack's `secrets.sops.yaml` via
+     `sops -d`/`sops -e` — never type the domain in plaintext anywhere,
+     including chat/commit messages). If the stack has no `secrets.sops.yaml`
+     yet, create one with just `DOMAIN: <value>` and encrypt it.
+   - The role resolves `https://<ingress_host>.<DOMAIN>/` at render time from
+     that stack's own decrypted secrets (`unraid_templates.yml` extracts
+     `DOMAIN` from the same decrypted dotenv already used for `.env`, `no_log:
+     true` throughout) — nothing plaintext-domain ever lands in the repo.
+   - Apps with no k8s ingress at all (internal-only tools, or ones without a
+     web UI worth exposing, e.g. `privoxyvpn`, `kometa`) just keep `webui:`
+     with the `[IP]:[PORT]` placeholder — `ingress_host` is skipped and the
+     template falls back automatically.
 
 ## Verifying
 

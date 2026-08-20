@@ -2,7 +2,7 @@
 
 Media server, download automation, request management, and music streaming.
 
-All services run on **hoarder** (Docker), managed via the Unraid UI. Download apps share a VPN network stack via PrivoxyVPN.
+All services run on **hoarder** as Docker Compose stacks deployed via Ansible (`docker/hoarder/`, see the `docker_compose` role and `unraid-docker` skill) — still editable in the Unraid UI, but Git is the source of truth. Download apps and Seerr/Plex/decide/Kometa/Tautulli/Tdarr all live in one `media-stack` compose project so Seerr can reach the \*arr apps through PrivoxyVPN's shared network stack without a separate Docker network.
 
 ---
 

@@ -130,6 +130,16 @@ Web interface for a Calibre e-book library. Browse, read, and download books fro
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/calibre.png" class="svc-icon"> Calibre
+
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
+
+Desktop e-book management server (library editing, format conversion). Manual/on-demand only — not set to auto-start, use alongside Calibre Web for browsing.
+
+[:octicons-book-16: Documentation](https://calibre-ebook.com/)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/bookstack.png" class="svc-icon"> BookLore
 
 <em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
@@ -154,11 +164,21 @@ Operating system and management UI for the `hoarder` NAS. Manages storage arrays
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/portainer.png" class="svc-icon"> Portainer
+
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
+
+Docker management UI — container/image/volume inspection alongside the Unraid GUI's own Docker tab.
+
+[:octicons-book-16: Documentation](https://docs.portainer.io/)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kopia.png" class="svc-icon"> Kopia
 
 <em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
-Backup and snapshot tool. Creates encrypted, deduplicated backups to Backblaze B2 and local repositories.
+Backup and snapshot tool. Creates encrypted, deduplicated backups to Backblaze B2 and local repositories. Manual/on-demand only — not set to auto-start.
 
 [:octicons-book-16: Documentation](https://kopia.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/kopia/values.yaml)
 

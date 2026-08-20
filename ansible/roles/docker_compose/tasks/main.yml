@@ -16,8 +16,6 @@
   ansible.builtin.file:
     path: "{{ docker_compose_volumes_dir }}/{{ item.path | basename }}"
     state: directory
-    owner: "{{ ansible_facts['user_id'] }}"
-    group: "{{ ansible_facts['user_id'] }}"
     mode: "0750"
   become: true
   loop: "{{ docker_compose_stacks.files }}"
@@ -89,15 +87,13 @@
     attachable: "{{ item.value.attachable | default(omit) }}"
   with_dict: "{{ docker_compose_networks if docker_compose_networks is iterable else {} }}"
 
-- name: Deploy stacks
-  community.docker.docker_compose_v2:
-    project_src: "{{ docker_compose_base_dir }}/{{ item.path | basename }}"
-    pull: always
-    build: never
-    recreate: "{{ docker_compose_recreate_policy }}"
-    remove_orphans: true
+- name: Deploy stacks (and prune after each)
+  ansible.builtin.include_tasks: deploy_stack.yml
+  vars:
+    stack: "{{ item }}"
   loop: "{{ docker_compose_stacks.files }}"
   loop_control:
+    label: "{{ item.path | basename }}"
     pause: 5
 
 - name: Render DockerMan templates (Unraid hosts)
@@ -108,12 +104,3 @@
   loop_control:
     label: "{{ item.path | basename }}"
   when: "'unraid' in group_names"
-
-- name: Prune unused resources
-  community.docker.docker_prune:
-    timeout: 180
-    containers: true
-    images: true
-    images_filters:
-      dangling: false
-    networks: true

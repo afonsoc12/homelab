@@ -1,0 +1,22 @@
+---
+# --------------------
+# calibre-web
+#   - Project: https://github.com/janeczku/calibre-web
+# --------------------
+services:
+  calibre-web:
+    image: linuxserver/calibre-web:0.6.27-ls396
+    container_name: calibre-web
+    restart: unless-stopped
+    ports:
+      - "8083:80/tcp"
+    environment:
+      DOCKER_MODS: "linuxserver/mods:universal-calibre"
+      OAUTHLIB_RELAX_TOKEN_SCOPE: "${OAUTHLIB_RELAX_TOKEN_SCOPE}"
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/media/ebooks/calibre/:/calibre"
+      - "/mnt/user/media/ebooks/calibre/:/books"
+      - "/mnt/user/appdata/calibre-web:/config"

@@ -1,0 +1,21 @@
+---
+# --------------------
+# krusader
+#   - Project: https://krusader.org/
+# --------------------
+services:
+  krusader:
+    image: ich777/krusader:latest@sha256:3d9596d5151819ff09f31118e6af89d181dd4eab19e1c65f201e96820f2e2858
+    container_name: krusader
+    restart: unless-stopped
+    ports:
+      - "8088:8080/tcp"
+    environment:
+      USER_LOCALES: "en_US.UTF-8 UTF-8"
+      RUNASROOT: "true"
+      NOVNC_RESIZE: "remote"
+      CUSTOM_RES_W: "1280"
+      CUSTOM_RES_H: "768"
+    volumes:
+      - "/mnt/cache/appdata/krusader:/krusader"
+      - "/mnt:/mnt"

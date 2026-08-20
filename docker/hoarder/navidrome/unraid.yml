@@ -1,0 +1,16 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-navidrome.xml).
+navidrome:
+  icon: https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/navidrome.png
+  webui: "http://[IP]:[PORT:4533]/"
+  ingress_host: navidrome.local
+  category: "MediaServer:Music"
+  overview: |
+    Modern Music Server and Streamer compatible with Subsonic/Airsonic
+  registry: "https://hub.docker.com/r/deluan/navidrome/"
+  project_url: "https://github.com/navidrome/navidrome"
+  support_url: "https://forums.unraid.net/topic/87798-support-selfhostersnets-template-repository/"
