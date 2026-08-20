@@ -7,10 +7,10 @@ description: Add a new application or service to the homelab cluster. Trigger wh
 
 ## k3s app (runs in cluster)
 
-1. Create values file:
+1. Create exactly one values file — never both:
    ```
-   kubernetes/apps/<namespace>/<app>/values.yaml
-   kubernetes/apps/<namespace>/<app>/values.sops.yaml  # if secrets needed
+   kubernetes/apps/<namespace>/<app>/values.yaml       # no secrets needed
+   kubernetes/apps/<namespace>/<app>/values.sops.yaml  # secrets needed — holds ALL values (config + secrets), not just the secret keys
    ```
 
 2. Create ArgoCD Application:
@@ -18,6 +18,7 @@ description: Add a new application or service to the homelab cluster. Trigger wh
    kubernetes/apps/addons/argocd-apps/templates/<namespace>/<app>.yaml
    ```
    Follow the multi-source pattern in existing templates — upstream chart as source 1, this repo as `ref: values` source 2.
+   `valueFiles` always includes the global `secrets://../../apps/values.sops.yaml`, plus exactly one per-app file (`../../apps/<namespace>/<app>/values.yaml` or `secrets://../../apps/<namespace>/<app>/values.sops.yaml`) — never both for the same app.
 
 3. Push — ArgoCD auto-syncs within ~3 min.
 
