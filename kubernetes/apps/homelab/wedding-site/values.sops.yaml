@@ -10,7 +10,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/wordpress
-    tag: 7.0.4-apache
+    tag: 7.1.0-apache
     pullPolicy: Always
 ports:
     - containerPort: 80
