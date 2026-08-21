@@ -86,7 +86,7 @@ resources:
     memory: 256Mi
   limits:
     cpu: 500m
-    memory: 600Mi
+    memory: 750Mi
 
 podSecurityContext:
   fsGroup: 1000

@@ -71,10 +71,10 @@ ingress:
 resources:
     requests:
         cpu: 500m
-        memory: 512Mi
+        memory: 1Gi
     limits:
         cpu: "2"
-        memory: 2500Mi
+        memory: 3Gi
 livenessProbe:
     httpGet:
         path: /api/v2/monitor/health
@@ -99,8 +99,8 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData)$
-    lastmodified: "2026-08-17T23:19:11Z"
-    mac: ENC[AES256_GCM,data:d2WXX1onyCoiOWfa+4+bRrw6HSsYc7ILFM6myZmRq5codhl8t7pTBu9X3Pug4pqcIweqPjClbvMMx1Ep15Z1xvyLhzkpTt+ry7GOa5mNzlAglFfJFhl54p7TtMzUf/Ar8C4+sB7jCj8JQRPv5yuaos+1jp8wrsCUYs7wlArSC2c=,iv:Xj1dJz+3D62tk3GHMUes/gPY7iR5fZVKLc3j2PykcPw=,tag:VXJdKXzM8mLyPk5VzERrkw==,type:str]
+    lastmodified: "2026-08-21T13:56:34Z"
+    mac: ENC[AES256_GCM,data:mERkFng5uWaZTZpenWSXEQn1FpFuj99hSENus1owvZDaYQpPHJEXJkjis/QGawTYQyg9IXSpiTg8aB5mR3ztl2aIZZ8brw6q2n3GBKFyAflSvuKYoFMZ5PxJO5/S9WSiS/MlKYlK/xFWID4JCJNgfKBHZc6X6GcdphVy+pe+IpU=,iv:EIZndAOj3WHndh9eCbsBpHGQ+F3l6ONWbbBkwA39TGk=,tag:DgcPnPiuKwAyoFzmBgnWyA==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-05-09T12:13:28Z"
@@ -124,4 +124,4 @@ sops:
             =KJIv
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.12.2
+    version: 3.13.2
