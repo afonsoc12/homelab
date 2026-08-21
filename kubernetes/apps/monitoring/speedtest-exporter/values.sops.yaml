@@ -59,11 +59,10 @@ volumes:
 resources:
     limits:
         cpu: 25m
-        memory: 100Mi
+        memory: 256Mi
     requests:
         cpu: 10m
         memory: 50Mi
-
 livenessProbe:
     httpGet:
         path: /metrics
@@ -71,7 +70,6 @@ livenessProbe:
     periodSeconds: 10
     failureThreshold: 3
     timeoutSeconds: 5
-
 readinessProbe:
     httpGet:
         path: /metrics
@@ -79,7 +77,6 @@ readinessProbe:
     periodSeconds: 10
     failureThreshold: 3
     timeoutSeconds: 5
-
 startupProbe:
     httpGet:
         path: /metrics
@@ -103,7 +100,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest download critical on `{{ $labels.hostname }}`
                 description: 'Download bandwidth has been below 50 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
-                dashboard: ENC[AES256_GCM,data:LG1wAlgrRv6M0jwC5ExRVWVXNYijA/Lrqjpy+bDsy01bGGBw1NKL6adlMGooxp0mck62pd8/XlvWMSiFrbDkBd4hDudysPE9QpJdi0Rt3jR37DtSDg==,iv:5LnMhavoyMlEBsFbtOedkCbZyzP7UKnpPdmDv9IRp+8=,tag:foBFipsfgQRrIn1pjIARmw==,type:str]
+                dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
             - alert: SpeedtestDownloadLow
               expr: max by (hostname) (max_over_time(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 400
               for: 0m
@@ -112,7 +109,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest download low on `{{ $labels.hostname }}`
                 description: 'Download bandwidth has been below 400 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
-                dashboard: ENC[AES256_GCM,data:C9aacEpdLoAVU2zsudftpwMWq6uBv7cx9CFgiumSU6vuapiBZPCXowuekuXdMOQvUeoIFvbhoaBX54+4EKbqr51A9P+TBFq/ynbKbOIvtMR750eMBg==,iv:zPN5njbXNpzEYeLqjolO44yUfH47C2ePslgfuLtvj/0=,tag:Ncurz8Mq2CQrgbc4+ekGjw==,type:str]
+                dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
             - alert: SpeedtestUploadCritical
               expr: max by (hostname) (max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 50
               for: 0m
@@ -121,7 +118,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest upload critical on `{{ $labels.hostname }}`
                 description: 'Upload bandwidth has been below 50 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
-                dashboard: ENC[AES256_GCM,data:+KUB7nxGhK4J1JoJqQKtLghCKrHcASfVPeg50q/AKILePbXQpUxkD/EA31EdTIZi450pwBjTMqqBi9zOPYCVAsQBug8HPk5xIcOp4pVmzEsokvxmeg==,iv:7Ke6LXGVZK7FgXZtwGBiDSn/ArKEcOOT2lTz/CP3CoU=,tag:R4hILFA3YHr1oxJfct3gQg==,type:str]
+                dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
             - alert: SpeedtestUploadLow
               expr: max by (hostname) (max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 400
               for: 0m
@@ -130,7 +127,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest upload low on `{{ $labels.hostname }}`
                 description: 'Upload bandwidth has been below 100 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
-                dashboard: ENC[AES256_GCM,data:kl7sXAFPYADxw4p44pX6UytJ+JuT4eOMQfyPUaH6x8+8HnBaMS87FnO3mw5extI1GDZAAqBvcS2Ss0UVP5D0kdRpHChpU1mtxNZYySSkHRaRd2oDDQ==,iv:pgwoQgWCEfGn7ipZbhcDHsSrFE0y96J9WbdTYRBzK/4=,tag:n5sltj91BgExHFI7kMGJjg==,type:str]
+                dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
             - alert: SpeedtestLatencyHigh
               expr: max by (hostname) (max_over_time(speedtest_exec_ping_latency{hostname="k3s-m1"}[30m])) > 50
               for: 0m
@@ -139,7 +136,7 @@ prometheusRule:
               annotations:
                 summary: Speedtest latency high on `{{ $labels.hostname }}`
                 description: 'Latency has exceeded 50 ms for the last 30 minutes. Current value: {{ $value }} ms.'
-                dashboard: ENC[AES256_GCM,data:FU6Fk8hVBW0+D/l/TdsO0oHQ2nl8v4JyTQqwBCX71FSNGY6g4Val7jG/JqBFXm1CjU4RrmpEAQOIJ/dKovcFcJqL1d+MfOTsJM9dt7jfDqUBYfAUhw==,iv:H2Idk/EGTydhZOqz4CSIZyhm7nXziw/GFe+wJ/Upn9Q=,tag:fQdCAHshZ2XWLQzhydufnw==,type:str]
+                dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
             - alert: SpeedtestNoRecentData
               expr: sum by (hostname) (changes(speedtest_exec_download_bandwidth{hostname="k3s-m1"}[30m])) == 0
               for: 0m
@@ -150,8 +147,10 @@ prometheusRule:
                 description: No new speedtest download result has been recorded in the last 30 minutes.
                 dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
 sops:
-    lastmodified: "2026-04-13T20:28:45Z"
-    mac: ENC[AES256_GCM,data:laG3YYYSbhOh8RzUEGzg+vko05MgdMvQCKS+MZhBlfCA2TXSFro1RSJxXM5V7nLg7yK6Hut7r88b+MlM6iFOrFqLZuwVeXMvQZm+bmj+Y5y+6gCGUHitxHQDog3wQ1fvop6Ckxlk1NWC0Ef8uSugTP7AsoCfKlaVqNZqPJ5nKqw=,iv:fcEiEMXpSqRkFUbF1Hl06//qWJYgXDhn61OATskK1nw=,tag:jApnpw7KkXLJhfIOuSlXbg==,type:str]
+    encrypted_regex: ^(dashboard)$
+    lastmodified: "2026-08-21T13:56:35Z"
+    mac: ENC[AES256_GCM,data:45peAEed2+1bipJSM3YcyjV658vX9xigKtv66/5qzriXo+jJzbFPIh2LUpxh3x9lTAoLbHcKRc/UShWRoMBfoaMos3ewO2PtSptg4lrOeIsvL5U+GRK87RcrI1lBXHjA0tFo/xqVfXmzxjdAN/8iteGaIUKfq5ELbhfZQV+KhZ0=,iv:84llGBd7Tir5euQ+xfff8Z6NVXnpok20d/dO+efr2ec=,tag:dmC+4q2V+QekZ+QL0G0QRw==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:45Z"
           enc: |-
@@ -174,6 +173,4 @@ sops:
             =GvhM
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(dashboard)$
-    mac_only_encrypted: true
-    version: 3.12.2
+    version: 3.13.2
