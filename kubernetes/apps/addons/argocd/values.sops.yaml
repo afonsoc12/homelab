@@ -344,7 +344,7 @@ repoServer:
             - name: HELM3_VERSION
               value: 3.21.4
             - name: KUBECTL_VERSION
-              value: 1.36.3
+              value: 1.36.4
             - name: VALS_VERSION
               value: 0.46.0
             - name: SOPS_VERSION

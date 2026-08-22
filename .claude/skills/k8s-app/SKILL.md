@@ -7,10 +7,10 @@ description: Add a new application or service to the homelab cluster. Trigger wh
 
 ## k3s app (runs in cluster)
 
-1. Create values file:
+1. Create exactly one values file — never both:
    ```
-   kubernetes/apps/<namespace>/<app>/values.yaml
-   kubernetes/apps/<namespace>/<app>/values.sops.yaml  # if secrets needed
+   kubernetes/apps/<namespace>/<app>/values.yaml       # no secrets needed
+   kubernetes/apps/<namespace>/<app>/values.sops.yaml  # secrets needed — holds ALL values (config + secrets), not just the secret keys
    ```
 
 2. Create ArgoCD Application:
@@ -18,8 +18,11 @@ description: Add a new application or service to the homelab cluster. Trigger wh
    kubernetes/apps/addons/argocd-apps/templates/<namespace>/<app>.yaml
    ```
    Follow the multi-source pattern in existing templates — upstream chart as source 1, this repo as `ref: values` source 2.
+   `valueFiles` always includes the global `secrets://../../apps/values.sops.yaml`, plus exactly one per-app file (`../../apps/<namespace>/<app>/values.yaml` or `secrets://../../apps/<namespace>/<app>/values.sops.yaml`) — never both for the same app.
 
-3. Push — ArgoCD auto-syncs within ~3 min.
+3. Add a bookmark link to `kubernetes/apps/homelab/glance/values.yaml` (`configmap.data."home.yml"` → Homelab page → the relevant bookmarks group). Use `icon: di:<slug>` (dashboard-icons, matches the slug used in `docs/services/*.md`) and the app's actual ingress host as `url`.
+
+4. Push — ArgoCD auto-syncs within ~3 min.
 
 ## External service (bare metal, Docker, Unraid)
 
@@ -36,6 +39,8 @@ description: Add a new application or service to the homelab cluster. Trigger wh
    Reference existing files (e.g. `@kubernetes/apps/homelab/external-ingress/adguard/values.yaml`) for the shape. Labels use dashes.
 
 3. Add to ApplicationSet generators list in `@kubernetes/apps/addons/argocd-apps/templates/homelab/external-ingress.yaml` — append `- app: <app-name>` to `elements`.
+
+4. Add a bookmark link to `kubernetes/apps/homelab/glance/values.yaml` (same as step 3 for k3s apps above).
 
 ## Runbook
 

@@ -16,6 +16,16 @@ Bambu Lab 3D printer management. Monitors print jobs, camera feed, and printer s
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/paperless-ngx.png" class="svc-icon"> Paperless-ngx
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Document management system. OCRs, tags, and indexes scanned documents; uses Gotenberg and Tika sidecars for office-file and email conversion.
+
+[:octicons-book-16: Documentation](https://docs.paperless-ngx.com/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/paperless/values.sops.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/mealie.png" class="svc-icon"> Mealie
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>

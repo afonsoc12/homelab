@@ -9,6 +9,7 @@ locals {
     "ghostfolio",
     "mealie",
     "octo_track",
+    "paperless",
   ])
 }
 

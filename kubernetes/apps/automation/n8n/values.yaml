@@ -7,7 +7,7 @@
 ---
 image:
   repository: docker.io/n8nio/n8n
-  tag: 2.36.2
+  tag: 2.36.5
   pullPolicy: Always
 
 # hostNetwork: true
@@ -86,7 +86,7 @@ resources:
     memory: 256Mi
   limits:
     cpu: 500m
-    memory: 600Mi
+    memory: 750Mi
 
 podSecurityContext:
   fsGroup: 1000
