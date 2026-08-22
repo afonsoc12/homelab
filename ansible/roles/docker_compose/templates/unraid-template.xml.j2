@@ -38,12 +38,12 @@
   <Project>{{ meta.project_url | default('') }}</Project>
   <Overview>{{ meta.overview | default(service_name ~ ' — managed by Ansible, do not edit via GUI.') }}</Overview>
   <Category>{{ meta.category | default('Tools:') }}</Category>
-  <WebUI>{{ meta.webui | default('') }}</WebUI>
+  <WebUI>{{ 'https://' ~ meta.ingress_host ~ '.' ~ domain ~ '/' if (meta.ingress_host is defined and domain | default('')) else meta.webui | default('') }}</WebUI>
   <Icon>{{ meta.icon | default('') }}</Icon>
   <License>{{ meta.license | default('') }}</License>
   <TemplateURL/>
   <Requires/>
-{% for p in service.ports | default([]) %}
+{% for p in service.get('ports', []) %}
 {% set proto = 'udp' if '/udp' in p else 'tcp' %}
 {% set clean = p | replace('/tcp', '') | replace('/udp', '') %}
 {% set port_parts = clean.split(':') %}
@@ -51,15 +51,16 @@
 {% set container_port = port_parts[1] | default(host_port) %}
   <Config Name="{{ (meta.port_names | default({}))[container_port] | default(container_port ~ ' Port') }}" Target="{{ container_port }}" Default="{{ host_port }}" Mode="{{ proto }}" Description="{{ (meta.port_descriptions | default({}))[container_port] | default('') }}" Type="Port" Display="always" Required="true" Mask="false">{{ host_port }}</Config>
 {% endfor %}
-{% for v in service.volumes | default([]) %}
+{% for v in service.get('volumes', []) %}
 {% set vol_parts = v.split(':') %}
   <Config Name="{{ (meta.volume_names | default({}))[vol_parts[1]] | default(vol_parts[1]) }}" Target="{{ vol_parts[1] }}" Default="{{ vol_parts[0] }}" Mode="{{ vol_parts[2] | default('rw') }}" Description="{{ (meta.volume_descriptions | default({}))[vol_parts[1]] | default('') }}" Type="Path" Display="always" Required="true" Mask="false">{{ vol_parts[0] }}</Config>
 {% endfor %}
-{% if service.environment is mapping %}
-{% set env_pairs = service.environment.items() | list %}
+{% set service_environment = service.get('environment', {}) %}
+{% if service_environment is mapping %}
+{% set env_pairs = service_environment.items() | list %}
 {% else %}
 {% set env_pairs = [] %}
-{% for env in service.environment | default([]) %}
+{% for env in service_environment %}
 {% set _ = env_pairs.append((env.split('=')[0], env.split('=', 1)[1] if '=' in env else '')) %}
 {% endfor %}
 {% endif %}

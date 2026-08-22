@@ -1,0 +1,16 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-scrutiny.xml).
+scrutiny:
+  icon: https://raw.githubusercontent.com/selfhosters/unRAID-CA-templates/master/templates/img/scrutiny.png
+  webui: "http://[IP]:[PORT:8084]"
+  ingress_host: scrutiny.local
+  category: "HomeAutomation: Tools:Utilities"
+  overview: |
+    Hard Drive S.M.A.R.T Monitoring, Historical Trends and Real World Failure Thresholds
+  registry: "https://github.com/AnalogJ/scrutiny/pkgs/container/scrutiny"
+  project_url: "https://github.com/AnalogJ/scrutiny"
+  support_url: "https://forums.unraid.net/topic/87798-support-selfhostersnets-template-repository/"

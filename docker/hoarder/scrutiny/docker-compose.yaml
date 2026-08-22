@@ -1,0 +1,19 @@
+---
+# --------------------
+# scrutiny
+#   - Project: https://github.com/AnalogJ/scrutiny
+# --------------------
+services:
+  scrutiny:
+    image: ghcr.io/analogj/scrutiny:v0.8.3-omnibus
+    container_name: scrutiny
+    restart: unless-stopped
+    network_mode: bridge
+    privileged: true
+    ports:
+      - "8084:8080/tcp"
+    volumes:
+      - "/run/udev:/run/udev:ro"
+      - "/dev/disk:/dev/disk:ro"
+      - "/mnt/user/appdata/scrutiny/config:/opt/scrutiny/config"
+      - "/mnt/user/appdata/scrutiny/influxdb:/opt/scrutiny/influxdb"

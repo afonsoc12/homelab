@@ -1,0 +1,300 @@
+---
+# --------------------
+# media-stack
+#   privoxyvpn + *arr apps + seerr/plex/decide/kometa/tautulli/tdarr, one
+#   project so seerr can reach the *arr apps via the shared "media" network.
+#   *arr containers use network_mode: service:privoxyvpn, which Docker does
+#   not allow combining with a networks: entry - they're not directly on
+#   "media", they share privoxyvpn's network namespace instead.
+# --------------------
+services:
+  privoxyvpn:
+    image: binhex/arch-privoxyvpn:4.1.0-1-02
+    container_name: privoxyvpn
+    restart: unless-stopped
+    privileged: true
+    sysctls:
+      - "net.ipv4.conf.all.src_valid_mark=1"
+    ports:
+      - "8118:8118/tcp"
+      - "9118:9118/tcp"
+      - "8112:8112/tcp"
+      - "58846:58846/tcp"
+      - "58946:58946/tcp"
+      - "8989:8989/tcp"
+      - "7878:7878/tcp"
+      - "7879:7879/tcp"
+      - "6767:6767/tcp"
+      - "9696:9696/tcp"
+      - "8686:8686/tcp"
+      - "8221:8221/tcp"
+      - "6880:6880/tcp"
+      - "9191:9191/tcp"
+    environment:
+      VPN_ENABLED: "yes"
+      VPN_USER: "${VPN_USER}"
+      VPN_PASS: "${VPN_PASS}"
+      VPN_PROV: "custom"
+      VPN_CLIENT: "openvpn"
+      VPN_OPTIONS: ""
+      LAN_NETWORK: "${LAN_NETWORK}"
+      NAME_SERVERS: "1.1.1.1,1.0.0.1,8.8.8.8"
+      SOCKS_USER: "${SOCKS_USER}"
+      SOCKS_PASS: "${SOCKS_PASS}"
+      ENABLE_SOCKS: "no"
+      ENABLE_PRIVOXY: "no"
+      VPN_INPUT_PORTS: "6880,6881,8112,8989,7878,7879,9696,6767,8686,8221,58946,9191"
+      VPN_OUTPUT_PORTS: ""
+      DEBUG: "false"
+      UMASK: "000"
+      PUID: "99"
+      PGID: "100"
+    volumes:
+      - "/mnt/user/appdata/privoxyvpn:/config"
+
+  bazarr:
+    image: ghcr.io/linuxserver/bazarr:1.6.0
+    container_name: bazarr
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/media/:/media"
+      - "/mnt/user/appdata/bazarr:/config"
+
+  lidarr:
+    image: ghcr.io/linuxserver/lidarr:3.1.0
+    container_name: lidarr
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/media/:/media"
+      - "/mnt/user/appdata/lidarr:/config"
+
+  byparr:
+    # Cloudflare-challenge solver for Prowlarr indexers - shares privoxyvpn's
+    # network namespace so prowlarr can reach it at localhost:8191.
+    image: ghcr.io/thephaseless/byparr:3.0.4
+    container_name: byparr
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+
+  prowlarr:
+    image: ghcr.io/linuxserver/prowlarr:2.5.2
+    container_name: prowlarr
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+      - byparr
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "002"
+    volumes:
+      - "/mnt/user/appdata/prowlarr:/config"
+
+  qbittorrent:
+    image: ghcr.io/linuxserver/qbittorrent:5.2.3
+    container_name: qbittorrent
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+    environment:
+      WEBUI_PORT: "6880"
+      TORRENTING_PORT: "6881"
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/media/downloads/qbittorrent:/media/downloads/qbittorrent"
+      - "/mnt/user/appdata/qbittorrent:/config"
+
+  radarr:
+    image: ghcr.io/linuxserver/radarr:6.3.0
+    container_name: radarr
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/media/:/media"
+      - "/mnt/user/appdata/radarr:/config"
+
+  radarr-4k:
+    image: ghcr.io/linuxserver/radarr:6.3.0
+    container_name: radarr-4k
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/media/:/media"
+      - "/mnt/user/appdata/radarr-4k:/config"
+
+  sonarr:
+    image: ghcr.io/linuxserver/sonarr:4.0.19
+    container_name: sonarr
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/media/:/media"
+      - "/mnt/user/appdata/sonarr:/config"
+
+  seerr:
+    image: ghcr.io/seerr-team/seerr:v3.4.1
+    container_name: seerr
+    restart: unless-stopped
+    depends_on:
+      - privoxyvpn
+    ports:
+      - "5055:5055/tcp"
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "002"
+    volumes:
+      - "/mnt/user/appdata/seerr:/app/config"
+
+  plex:
+    image: ghcr.io/linuxserver/plex:1.43.3
+    container_name: plex
+    restart: unless-stopped
+    network_mode: host
+    tmpfs:
+      - /transcode
+    environment:
+      VERSION: "docker"
+      PLEX_CLAIM: "${PLEX_CLAIM}"
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/nextcloud/acosta/files/Albums/:/albums"
+      - "/mnt/user/media/:/media"
+      - "/mnt/user/appdata/plex:/config"
+
+  decide:
+    image: ghcr.io/hk21x/decide:0.1.2
+    container_name: decide
+    restart: unless-stopped
+    ports:
+      - "8090:8080/tcp"
+    environment:
+      # Join-QR addresses shown in Settings
+      LOCAL_URL: "${LOCAL_URL}"
+      REMOTE_URL: "https://decide.local.${DOMAIN}"
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - /mnt/user/appdata/decide:/data
+
+  kometa:
+    image: kometateam/kometa:v2.4.7
+    container_name: kometa
+    restart: unless-stopped
+    environment:
+      KOMETA_CONFIG: ""
+      KOMETA_TIME: ""
+      KOMETA_RUN: ""
+      KOMETA_TEST: ""
+      KOMETA_DEBUG: ""
+      KOMETA_TRACE: ""
+      KOMETA_LOG_REQUESTS: ""
+      KOMETA_TIMEOUT: ""
+      KOMETA_COLLECTIONS_ONLY: ""
+      KOMETA_METADATA_ONLY: ""
+      KOMETA_PLAYLISTS_ONLY: ""
+      KOMETA_OPERATIONS_ONLY: ""
+      KOMETA_OVERLAYS_ONLY: ""
+      KOMETA_RUN_COLLECTIONS: ""
+      KOMETA_RUN_LIBRARIES: ""
+      KOMETA_RUN_FILES: ""
+      KOMETA_IGNORE_SCHEDULES: ""
+      KOMETA_IGNORE_GHOST: ""
+      KOMETA_DELETE_COLLECTIONS: ""
+      KOMETA_DELETE_LABELS: ""
+      KOMETA_RESUME: ""
+      KOMETA_NO_COUNTDOWN: ""
+      KOMETA_NO_MISSING: ""
+      KOMETA_NO_REPORT: ""
+      KOMETA_READ_ONLY_CONFIG: ""
+      KOMETA_DIVIDER: ""
+      KOMETA_WIDTH: ""
+      KOMETA_PLEX_URL: ""
+      KOMETA_PLEX_TOKEN: "${KOMETA_PLEX_TOKEN}"
+    volumes:
+      - "/mnt/user/appdata/kometa:/config"
+
+  tautulli:
+    image: ghcr.io/linuxserver/tautulli:2.17.2
+    container_name: tautulli
+    restart: unless-stopped
+    ports:
+      - "8181:8181/tcp"
+    environment:
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/user/appdata/plex/Library/Application Support/Plex Media Server/Logs/:/logs:ro"
+      - "/mnt/user/appdata/tautulli:/config"
+
+  tdarr:
+    image: ghcr.io/haveagitgat/tdarr:2.50.01
+    container_name: tdarr
+    restart: unless-stopped
+    ports:
+      - "8266:8266/tcp"
+      - "8265:8265/tcp"
+      - "8264:8264/tcp"
+    environment:
+      serverIP: "0.0.0.0"
+      nodeIP: "0.0.0.0"
+      nodeID: "hoarder"
+      PUID: "99"
+      PGID: "100"
+      internalNode: "true"
+      CA_TS_FALLBACK_DIR: "/app/server"
+    volumes:
+      - "/mnt/user/appdata/tdarr/server:/app/server"
+      - "/mnt/user/appdata/tdarr/configs:/app/configs"
+      - "/mnt/user/appdata/tdarr/logs:/app/logs"
+      - "/mnt/user/media/:/mnt/media"
+      - "/mnt/user/appdata/tdarr/cache:/temp"
+      - "/mnt/disk1/media:/mnt/disk1/media"
+      - "/mnt/disk2/media:/mnt/disk2/media"
+      - "/mnt/disk3/media:/mnt/disk3/media"
+
+networks:
+  default:
+    name: media

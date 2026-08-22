@@ -1,0 +1,8 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-ghorg.xml).
+ghorg:
+  icon: https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png
