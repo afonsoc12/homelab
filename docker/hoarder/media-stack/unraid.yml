@@ -78,17 +78,40 @@ lidarr:
     UMASK: advanced
 
 #
+# ThePhaseless/Byparr - Cloudflare-challenge solver used by Prowlarr.
+byparr:
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/byparr.png
+  category: "Downloaders: MediaApp:Other"
+  overview: |
+    Byparr is a drop-in FlareSolverr-compatible Cloudflare challenge solver,
+    used by Prowlarr to fetch indexers protected by Cloudflare's anti-bot
+    checks. No web UI - runs headless, reachable internally at
+    localhost:8191 by anything sharing privoxyvpn's network namespace
+    (prowlarr).
+  registry: "https://github.com/ThePhaseless/Byparr/pkgs/container/byparr"
+  project_url: "https://github.com/ThePhaseless/Byparr"
+  support_url: "https://github.com/ThePhaseless/Byparr/issues"
+
+#
 # Migrated from the pre-existing DockerMan template (my-prowlarr.xml).
 prowlarr:
-  icon: https://hotio.dev/webhook-avatars/prowlarr.png
+  icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-logo.png
   webui: "http://[IP]:[PORT:9696]"
   ingress_host: prowlarr.local
   category: "Downloaders: MediaApp:Other"
   overview: |
     Prowlarr is a indexer manager/proxy built on the popular arr .net/reactjs base stack to integrate with your various PVR apps.
-  registry: "https://hub.docker.com/r/hotio/prowlarr"
-  project_url: "https://hotio.dev/containers/prowlarr"
-  support_url: "https://hotio.dev/discord"
+  registry: "https://github.com/orgs/linuxserver/packages/container/package/prowlarr"
+  project_url: "https://prowlarr.com/"
+  support_url: "https://github.com/linuxserver/docker-prowlarr/issues/new/choose"
+  port_descriptions:
+    "9696": "The port for the Prowlarr webinterface"
+  volume_descriptions:
+    "/config": "Database and Prowlarr configs"
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
 
 #
 # Migrated from the pre-existing DockerMan template (my-qbittorrent.xml).

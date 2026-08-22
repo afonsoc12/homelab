@@ -5,17 +5,17 @@
 # --------------------
 services:
   krusader:
-    image: ich777/krusader:latest@sha256:3d9596d5151819ff09f31118e6af89d181dd4eab19e1c65f201e96820f2e2858
+    image: ghcr.io/binhex/arch-krusader:2.9
     container_name: krusader
     restart: unless-stopped
+    network_mode: bridge
     ports:
-      - "8088:8080/tcp"
+      - "8088:6080/tcp"
     environment:
-      USER_LOCALES: "en_US.UTF-8 UTF-8"
-      RUNASROOT: "true"
-      NOVNC_RESIZE: "remote"
-      CUSTOM_RES_W: "1280"
-      CUSTOM_RES_H: "768"
+      VNC_PASSWORD: "${VNC_PASSWORD}"
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
     volumes:
-      - "/mnt/cache/appdata/krusader:/krusader"
+      - "/mnt/cache/appdata/krusader:/config"
       - "/mnt:/mnt"
