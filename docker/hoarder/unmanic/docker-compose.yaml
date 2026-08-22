@@ -1,0 +1,34 @@
+# --------------------
+# Unmanic
+#   - Docs: https://docs.unmanic.app/
+#   - Repo: https://github.com/Unmanic/unmanic
+#
+#   Library optimiser - transcodes/normalises the shared media library in the
+#   background (used by sonarr/radarr/etc). Hardware transcoding via the
+#   host's /dev/dri (Intel QuickSync).
+#
+#   Host paths are bind-mounted 1:1 (same path in container as on host),
+#   including the individual array disks alongside the /mnt/user share -
+#   Unmanic needs matching paths to hardlink/move files across the union
+#   filesystem without falling back to slow cross-device copies.
+# --------------------
+services:
+  unmanic:
+    image: josh5/unmanic:0.4.1
+    container_name: unmanic
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - "8888:8888/tcp"
+    environment:
+      PUID: "99"
+      PGID: "100"
+    volumes:
+      - /mnt/user/appdata/unmanic:/config
+      - /mnt/user/media:/mnt/user/media
+      - /mnt/user/appdata/unmanic/cache:/tmp/unmanic
+      - /mnt/disk1/media:/mnt/disk1/media
+      - /mnt/disk2/media:/mnt/disk2/media
+      - /mnt/disk3/media:/mnt/disk3/media
+    devices:
+      - /dev/dri:/dev/dri

@@ -1,0 +1,31 @@
+---
+# Icon/category pulled from dashboard-icons (has an "unmanic" entry).
+unmanic:
+  icon: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unmanic.png
+  webui: "http://[IP]:[PORT:8888]/"
+  category: "MediaApp:Video Tools:Utilities"
+  project_url: https://github.com/Unmanic/unmanic
+  support_url: https://github.com/Unmanic/unmanic/issues
+  registry: https://hub.docker.com/r/josh5/unmanic
+  license: GPL-3.0
+  overview: |
+    Unmanic — library optimiser.
+
+    Scans a media library and transcodes/normalises files in the background
+    (container formats, codecs, subtitles) to keep the library consistent
+    and reduce storage. Runs with access to the shared /mnt/user/media
+    library alongside sonarr/radarr/etc, and uses the host's Intel
+    QuickSync GPU (/dev/dri) for hardware-accelerated transcoding.
+  volume_descriptions:
+    /config: "Unmanic settings, plugins, and task history."
+    /mnt/user/media: "Shared media library to scan and process."
+    /tmp/unmanic: "Scratch space for in-progress encodes."
+    /mnt/disk1/media: "Array disk 1's media share, mounted at the same path as the host so Unmanic can hardlink/move files across the union filesystem."
+    /mnt/disk2/media: "Array disk 2's media share, mounted at the same path as the host so Unmanic can hardlink/move files across the union filesystem."
+    /mnt/disk3/media: "Array disk 3's media share, mounted at the same path as the host so Unmanic can hardlink/move files across the union filesystem."
+  env_descriptions:
+    PUID: "User ID to run as (99 = nobody on Unraid)."
+    PGID: "Group ID to run as (100 = users on Unraid)."
+  env_display:
+    PUID: advanced
+    PGID: advanced
