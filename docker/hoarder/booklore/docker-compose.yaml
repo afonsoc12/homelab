@@ -5,7 +5,7 @@
 # --------------------
 services:
   booklore:
-    image: ghcr.io/booklore-app/booklore:v2.3.0
+    image: ghcr.io/booklore-app/booklore:v2.3.1
     container_name: booklore
     restart: unless-stopped
     network_mode: bridge
