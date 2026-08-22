@@ -74,7 +74,7 @@ resources:
         memory: 1Gi
     limits:
         cpu: "2"
-        memory: 3Gi
+        memory: 4Gi
 livenessProbe:
     httpGet:
         path: /api/v2/monitor/health
@@ -99,8 +99,8 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData)$
-    lastmodified: "2026-08-21T13:56:34Z"
-    mac: ENC[AES256_GCM,data:mERkFng5uWaZTZpenWSXEQn1FpFuj99hSENus1owvZDaYQpPHJEXJkjis/QGawTYQyg9IXSpiTg8aB5mR3ztl2aIZZ8brw6q2n3GBKFyAflSvuKYoFMZ5PxJO5/S9WSiS/MlKYlK/xFWID4JCJNgfKBHZc6X6GcdphVy+pe+IpU=,iv:EIZndAOj3WHndh9eCbsBpHGQ+F3l6ONWbbBkwA39TGk=,tag:DgcPnPiuKwAyoFzmBgnWyA==,type:str]
+    lastmodified: "2026-08-22T18:20:56Z"
+    mac: ENC[AES256_GCM,data:3QoqL2em79D9HEmS1ofe4kdKK3Fb6XD5Hg2Tp/Q/a4Wsm6d0yHVTcriJmHvBwlHEiWKgHsAE3O5VZmibFBeu0PaRUGYD3iSRtVPlp76w1Hw0MPBZ4wEGqq8r4Se1U+r9ZXAzCLqAU8/Pybqe5Pts06bIls/vUqyHl1WMh9veKNU=,iv:KRneM8tm+YMuU7SlDr9tvRmp5itcn4pIgLncyNN0QFI=,tag:p3CZVsf1fGHsdLPIYkfq9A==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-05-09T12:13:28Z"
