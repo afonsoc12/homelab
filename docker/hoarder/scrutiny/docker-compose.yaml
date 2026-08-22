@@ -8,6 +8,7 @@ services:
     image: ghcr.io/analogj/scrutiny:v0.8.3-omnibus
     container_name: scrutiny
     restart: unless-stopped
+    network_mode: bridge
     privileged: true
     ports:
       - "8084:8080/tcp"

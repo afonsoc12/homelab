@@ -7,6 +7,7 @@ services:
     image: ghcr.io/gabrie30/ghorg:v1.9.12
     container_name: ghorg
     restart: unless-stopped
+    network_mode: bridge
     entrypoint: "sh"
     tty: true
     stdin_open: true

@@ -2,7 +2,10 @@
 # --------------------
 # media-stack
 #   privoxyvpn + *arr apps + seerr/plex/decide/kometa/tautulli/tdarr, one
-#   project so seerr can reach the *arr apps via the shared default network.
+#   project so seerr can reach the *arr apps via the shared "media" network.
+#   *arr containers use network_mode: service:privoxyvpn, which Docker does
+#   not allow combining with a networks: entry - they're not directly on
+#   "media", they share privoxyvpn's network namespace instead.
 # --------------------
 services:
   privoxyvpn:
@@ -79,14 +82,24 @@ services:
       - "/mnt/user/media/:/media"
       - "/mnt/user/appdata/lidarr:/config"
 
+  byparr:
+    # Cloudflare-challenge solver for Prowlarr indexers - shares privoxyvpn's
+    # network namespace so prowlarr can reach it at localhost:8191.
+    image: ghcr.io/thephaseless/byparr:3.0.4
+    container_name: byparr
+    restart: unless-stopped
+    network_mode: "service:privoxyvpn"
+    depends_on:
+      - privoxyvpn
+
   prowlarr:
-    # develop channel has no stable version tags - pinned by digest, see renovate.json packageRules
-    image: ghcr.io/linuxserver/prowlarr:develop@sha256:dcb53158072c700ab578e6f89d5b4d6efd784e74496e567f98bfa96cd1db3a31
+    image: ghcr.io/linuxserver/prowlarr:2.5.2
     container_name: prowlarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
     depends_on:
       - privoxyvpn
+      - byparr
     environment:
       PUID: "99"
       PGID: "100"
@@ -281,3 +294,7 @@ services:
       - "/mnt/disk1/media:/mnt/disk1/media"
       - "/mnt/disk2/media:/mnt/disk2/media"
       - "/mnt/disk3/media:/mnt/disk3/media"
+
+networks:
+  default:
+    name: media

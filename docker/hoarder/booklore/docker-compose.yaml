@@ -8,6 +8,7 @@ services:
     image: ghcr.io/booklore-app/booklore:v2.3.0
     container_name: booklore
     restart: unless-stopped
+    network_mode: bridge
     ports:
       - "6060:6060/tcp"
     environment:

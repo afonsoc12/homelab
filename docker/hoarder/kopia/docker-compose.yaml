@@ -8,6 +8,7 @@ services:
     image: ghcr.io/afonsoc12/kopia-temp:latest@sha256:c458d695ab35546308aaea93df2c5f4090796991ead5b89549988b0e318565f5
     container_name: kopia
     restart: "no"
+    network_mode: bridge
     user: "0"
     hostname: hoarder
     ports:
