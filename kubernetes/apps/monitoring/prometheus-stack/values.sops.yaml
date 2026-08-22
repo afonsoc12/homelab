@@ -164,6 +164,18 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Prometheus timeseries cardinality explosion
                     description: 'The "{{ $labels.name }}" timeseries cardinality is getting very high: {{ $value }} (>10000)'
+    kube-state-metrics:
+        groups:
+            - name: KubeStateMetrics
+              rules:
+                - alert: KubeContainerOOMKilled
+                  expr: (kube_pod_container_status_restarts_total - kube_pod_container_status_restarts_total offset 10m >= 1) and on (namespace, pod, container) kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Container `{{ $labels.container }}` in `{{ $labels.namespace }}/{{ $labels.pod }}` was OOMKilled
+                    description: Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} was OOMKilled and restarted.
     node-exporter:
         groups:
             - name: NodeExporter
@@ -347,18 +359,32 @@ alertmanager:
     config:
         global:
             resolve_timeout: 2m
+        time_intervals:
+            - name: daily-9am
+              time_intervals:
+                - times:
+                    - start_time: "09:00"
+                      end_time: "09:10"
         route:
             group_by:
                 - alertname
                 - hostname
             receiver: discord
             group_wait: 30s
-            group_interval: 30m
-            repeat_interval: 30m
+            group_interval: 5m
+            repeat_interval: 4h
             routes:
                 - matchers:
-                    - severity =~ "major|critical"
-                  receiver: discord-critical
+                    - alertname = "PrometheusAlertmanagerE2eDeadManSwitch"
+                  receiver: discord
+                  active_time_intervals:
+                    - daily-9am
+                  group_wait: 0s
+                  repeat_interval: 24h
+                - matchers:
+                    - alertname = "PrometheusTargetMissing"
+                    - hostname = "hoarder"
+                  repeat_interval: 48h
         inhibit_rules:
             - source_matchers:
                 - severity = critical
@@ -389,16 +415,8 @@ alertmanager:
                   send_resolved: true
                   username: Alertmanager
                   avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
-                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} ({{ .GroupLabels.hostname }}){{ end }}"
-                  message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n{{ if .Labels.hostname }}**Hostname:** `{{ .Labels.hostname }}`\n{{ endif }}**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
-            - name: discord-critical
-              discord_configs:
-                - webhook_url: ENC[AES256_GCM,data:kWqnwCHIOYP++PMhIQbrZ+00JJ8BzYhNjlADhQ0JcxufTs6UpeuM71vNs3UIXiLHgtnaz5DQIPYaQXtObgVReHbHA8qrJ4F+jo/cMdk2w0IWX8KATBkkZ9fFIwla2xR/Abtnu3FrkEV8A11QUJuxqtnWcD0bvOP6jw==,iv:POMiKpQLZWgQdovutLjVQGWPn1xDF38TDaxLhqUX4Hg=,tag:h8wMTyPg2LKf8Rj0xNOiHw==,type:str]
-                  send_resolved: true
-                  username: Alertmanager
-                  avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
-                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} ({{ .GroupLabels.hostname }}){{ end }}"
-                  message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
+                  title: "{{ if eq .Status \"firing\" }}\U0001F534{{ else }}\U0001F7E2{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} · `{{ .GroupLabels.hostname }}`{{ end }}{{ if gt (len .Alerts) 1 }} ({{ .Alerts | len }}){{ end }}"
+                  message: "{{ $root := . }}{{ range .Alerts }}> **{{ .Annotations.summary }}**\n> {{ .Annotations.description }}\n> {{ if .Labels.hostname }}\U0001F5A5️ `{{ .Labels.hostname }}` · {{ end }}\U0001F552 {{ .StartsAt.Format \"2006-01-02 15:04 UTC\" }}\n> [\U0001F50D Query]({{ .GeneratorURL }}) · [\U0001F515 Silence]({{ $root.ExternalURL }}/#/silences/new?filter=%7Balertname%3D%22{{ .Labels.alertname }}%22{{ if .Labels.container }}%2Ccontainer%3D%22{{ .Labels.container }}%22%2Cpod%3D%22{{ .Labels.pod }}%22%2Cnamespace%3D%22{{ .Labels.namespace }}%22{{ else if .Labels.hostname }}%2Chostname%3D%22{{ .Labels.hostname }}%22{{ end }}%7D)\n\n{{ end }}{{ with (index .Alerts 0).Annotations.dashboard }}[\U0001F4CA Dashboard]({{ . }}){{ end }}"
     ingress:
         enabled: true
         ingressClassName: nginx
@@ -449,6 +467,12 @@ kubernetesServiceMonitors:
 ##
 kubeApiServer:
     enabled: true
+    serviceMonitor:
+        metricRelabelings:
+            - action: drop
+              sourceLabels:
+                - __name__
+              regex: (apiserver_request_body_size_bytes_bucket|apiserver_request_duration_seconds_bucket|apiserver_request_sli_duration_seconds_bucket|apiserver_response_sizes_bucket|etcd_request_duration_seconds_bucket)
 ## Component scraping the kubelet and kubelet-hosted cAdvisor
 ##
 kubelet:
@@ -595,8 +619,8 @@ prometheus:
                   targetLabel: hostname
 sops:
     encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|webhook_url|hosts|externalUrl|dashboard)$
-    lastmodified: "2026-08-17T23:00:03Z"
-    mac: ENC[AES256_GCM,data:Vuivh9n/EcotCF/viXl8XcrGwrgHojKpOtM/xvpaexkhMPq0MDC6O/+ZbmUQGdt9m8g4RlQT8W9FihID8BKg+EzHa1XcjqiifdFgEQ/wW/v9pIo6/O3WS6T3YUOh0eDixXcxedNIUlBvQNkgu192pld7DH+LcrTu4O1W/Z53j5w=,iv:B7/y6B0hwKaigmOv/m/PzRU/zfnuDj6E/GWsDO6ieRg=,tag:iVIdHhUqefUEz6w2tV2c5w==,type:str]
+    lastmodified: "2026-08-22T13:40:52Z"
+    mac: ENC[AES256_GCM,data:Iu5M4G4Li45qHZznGFIqqmzljBZ2R9tvSyR1EDUCSu1owzk6dn4IyNfbYrg5uWo+ETIa5FVdw5JvSaJijXZnzTA4ZgcchEWSnnvKfkxu16LwF7KViSkd3OCBKbSc4jZZBIUO0mXMbh7IZkf6+MibNAiuqFeRvvn9frvVIVakCXs=,iv:o7k+wA+AiPLXtKlfB7G02FdHdcwKDASICLaUzvdLuYQ=,tag:BeX2X5/3D76zpptOSURFcw==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:45Z"
@@ -620,4 +644,4 @@ sops:
             =pSfn
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.12.2
+    version: 3.13.2
