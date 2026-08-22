@@ -4,6 +4,7 @@ import json
 import logging
 from contextlib import contextmanager
 
+import psycopg2
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 from psycopg2.extras import execute_values
 
@@ -161,7 +162,17 @@ def _hook() -> PostgresHook:
 
 @contextmanager
 def _conn():
-    conn = _hook().get_conn()
+    # Connect via psycopg2 directly rather than PostgresHook.get_conn(), which
+    # silently returns a psycopg (v3) connection when that package is
+    # installed — incompatible with psycopg2.extras.execute_values below.
+    airflow_conn = _hook().get_connection(_PG)
+    conn = psycopg2.connect(
+        host=airflow_conn.host,
+        port=airflow_conn.port,
+        user=airflow_conn.login,
+        password=airflow_conn.password,
+        dbname=airflow_conn.schema,
+    )
     try:
         yield conn
         conn.commit()

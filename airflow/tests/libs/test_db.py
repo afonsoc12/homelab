@@ -22,6 +22,8 @@ def _mock_hook_with_conn(mock_cls):
     mock_conn.cursor.return_value.__enter__ = MagicMock(return_value=mock_cur)
     mock_conn.cursor.return_value.__exit__ = MagicMock(return_value=False)
     mock_cls.return_value.get_conn.return_value = mock_conn
+    psycopg2_connect_patch = patch("libs.t212.db.psycopg2.connect", return_value=mock_conn)
+    psycopg2_connect_patch.start()
     return mock_conn, mock_cur
 
 
