@@ -120,7 +120,7 @@ prometheusRule:
                 description: 'Upload bandwidth has been below 50 Mbps for the last 30 minutes. Current value: {{ $value }} Mbps.'
                 dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
             - alert: SpeedtestUploadLow
-              expr: max by (hostname) (max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 400
+              expr: max by (hostname) (max_over_time(speedtest_exec_upload_bandwidth{hostname="k3s-m1"}[30m])) * 8 * 1e-6 < 100
               for: 0m
               labels:
                 severity: warning
@@ -148,8 +148,8 @@ prometheusRule:
                 dashboard: ENC[AES256_GCM,data:8MWMChW53SV8nNdlS+tO7GijaJT7PlBTsk+PzO9fFdhI2PaqeX5JyZfsSCBmJkEuTvbfm/doxbmDbrO4cW8mmq/ef5JCi9swbeX+CYX4ciDqLsr7Fw==,iv:eyA96X/Q1K8L9bXpHlsshJZaJFCFMH45NDqrK2tVA3E=,tag:6jkMV/YnSiA84yqN2MmGsg==,type:str]
 sops:
     encrypted_regex: ^(dashboard)$
-    lastmodified: "2026-08-21T13:56:35Z"
-    mac: ENC[AES256_GCM,data:45peAEed2+1bipJSM3YcyjV658vX9xigKtv66/5qzriXo+jJzbFPIh2LUpxh3x9lTAoLbHcKRc/UShWRoMBfoaMos3ewO2PtSptg4lrOeIsvL5U+GRK87RcrI1lBXHjA0tFo/xqVfXmzxjdAN/8iteGaIUKfq5ELbhfZQV+KhZ0=,iv:84llGBd7Tir5euQ+xfff8Z6NVXnpok20d/dO+efr2ec=,tag:dmC+4q2V+QekZ+QL0G0QRw==,type:str]
+    lastmodified: "2026-08-21T23:50:57Z"
+    mac: ENC[AES256_GCM,data:WcSc/4cCMfl8GkYrJKEeEmSOHObfJTbOYmMXSLKWshYX4I0GWq4sXdQS3MOfj3DHldFbad927WWW3biGPtVTbssyUrtc4w6XBKqhkDGmqbhedNUG8Xc6ND9TE6P0F3lkahn1I0gogacf4umPMfM+pn56EjccDhWBR3BJt5bcuAI=,iv:0mWxODeqJ5bt0KTszoVqaxi5DojQiL5FDuSoujkBZmE=,tag:ZXZupvgWH0OwPawEoH6tsg==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:45Z"
