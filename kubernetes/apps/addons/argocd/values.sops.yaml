@@ -433,6 +433,10 @@ notifications:
               - name: Content-Type
                 value: application/json
     templates:
+        # Message layout mirrors the Prometheus Alertmanager Discord notifier
+        # (kubernetes/apps/monitoring/prometheus-stack): status emoji + event
+        # name title, quote-block body with a bold summary line, cluster/
+        # namespace/timestamp context line, then markdown links.
         template.app-deployed: |
             webhook:
               discord:
@@ -440,21 +444,23 @@ notifications:
                 body: |
                   {
                     "embeds": [{
-                      "title": "✅ {{.app.metadata.name}} deployed",
-                      "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                      "title": "🟢 AppDeployed · `{{.app.spec.destination.name}}`",
                       "color": 3066993,
-                      "fields": [
-                        {"name": "Application", "value": "[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})", "inline": false},
-                        {"name": "Cluster", "value": "{{.app.spec.destination.name}}", "inline": false},
-                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": false},
-                        {"name": "Author", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}", "inline": false},
-                        {"name": "Revision", "value": "[{{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}})", "inline": false},
-                        {"name": "Last Updated", "value": "{{.app.status.operationState.finishedAt}}", "inline": false},
-                        {"name": "Commit", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}", "inline": false}
-                      ]
+                      "description": "> **{{.app.metadata.name}} synced successfully**\n> {{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.operationState.finishedAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [📝 {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
                     }]
                   }
-        template.app-health-degraded: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 {{.app.metadata.name}} health degraded\",\n          \"url\": \"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n          \"color\": 15158332,\n          \"fields\": [\n            {\"name\": \"Application\", \"value\": \"[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})\", \"inline\": false},\n            {\"name\": \"Cluster\", \"value\": \"{{.app.spec.destination.name}}\", \"inline\": false},\n            {\"name\": \"Namespace\", \"value\": \"{{.app.spec.destination.namespace}}\", \"inline\": false},\n            {\"name\": \"Health\", \"value\": \"{{.app.status.health.status}}\", \"inline\": false},\n            {\"name\": \"Last Updated\", \"value\": \"{{.app.status.reconciledAt}}\", \"inline\": false}\n          ]\n        }]\n      }\n"
+        template.app-health-degraded: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "🔴 AppHealthDegraded · `{{.app.spec.destination.name}}`",
+                      "color": 15158332,
+                      "description": "> **{{.app.metadata.name}} health degraded**\n> Health status: `{{.app.status.health.status}}`\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.reconciledAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})"
+                    }]
+                  }
         template.app-sync-failed: |
             webhook:
               discord:
@@ -462,18 +468,21 @@ notifications:
                 body: |
                   {
                     "embeds": [{
-                      "title": "❌ {{.app.metadata.name}} sync failed",
-                      "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                      "title": "🔴 AppSyncFailed · `{{.app.spec.destination.name}}`",
                       "color": 15158332,
-                      "fields": [
-                        {"name": "Application", "value": "[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})", "inline": false},
-                        {"name": "Cluster", "value": "{{.app.spec.destination.name}}", "inline": false},
-                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": false},
-                        {"name": "Author", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}", "inline": false},
-                        {"name": "Revision", "value": "[{{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}})", "inline": false},
-                        {"name": "Last Updated", "value": "{{.app.status.operationState.finishedAt}}", "inline": false},
-                        {"name": "Error", "value": "{{.app.status.operationState.message | default "N/A"}}", "inline": false}
-                      ]
+                      "description": "> **{{.app.metadata.name}} sync failed**\n> {{.app.status.operationState.message | default \"No error message\"}}\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.operationState.finishedAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [📝 {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
+                    }]
+                  }
+        template.app-sync-status-unknown: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "🟡 AppSyncStatusUnknown · `{{.app.spec.destination.name}}`",
+                      "color": 15105570,
+                      "description": "> **{{.app.metadata.name}} sync status unknown**\n> ArgoCD could not determine whether the live state matches Git — check for CRD issues or repo access errors.\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.reconciledAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})"
                     }]
                   }
     triggers:
@@ -489,6 +498,10 @@ notifications:
             - when: app.status.operationState.phase in ['Error', 'Failed']
               oncePer: app.status.sync.revision
               send: [app-sync-failed]
+        trigger.on-sync-status-unknown: |
+            - when: app.status.sync.status == 'Unknown'
+              oncePer: app.status.reconciledAt
+              send: [app-sync-status-unknown]
     subscriptions:
         - recipients:
             - discord
@@ -496,6 +509,7 @@ notifications:
             - on-deployed
             - on-health-degraded
             - on-sync-failed
+            - on-sync-status-unknown
     readinessProbe:
         enabled: true
     livenessProbe:
