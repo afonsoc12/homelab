@@ -148,6 +148,32 @@
       "matchManagers": ["ansible-galaxy"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "ansible"
+    },
+    {
+      "description": "linuxserver.io images carry stale orphaned tags from ~2021 (dev/nightly builds, or unrelated numeric fragments like an embedded Ubuntu base version) that outrank the real current version under naive numeric sort — confirmed for calibre-web (5.33.2), lidarr (8.1.2135) and qbittorrent (20.04.1/14.3.9), all created 2021-11 to 2021-12 per the image's own creation date, none matching these apps' actual versioning scheme. Bound each to just above its real current major line — all of these are slow-moving apps that have never actually jumped that far in one release.",
+      "matchPackageNames": ["ghcr.io/linuxserver/bazarr"],
+      "allowedVersions": "<2.0.0"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/linuxserver/calibre-web"],
+      "allowedVersions": "<1.0.0"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/linuxserver/lidarr"],
+      "allowedVersions": "<5.0.0"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/linuxserver/qbittorrent"],
+      "allowedVersions": "<10.0.0"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/linuxserver/tautulli"],
+      "allowedVersions": "<3.0.0"
+    },
+    {
+      "description": "sonarr's stale tag (5.14, created 2021-03-09, no version label) has no dedicated numeric bound above it since Sonarr has genuinely shipped a real v5 — require the real three-segment X.Y.Z shape instead, which the stale tag doesn't match",
+      "matchPackageNames": ["ghcr.io/linuxserver/sonarr"],
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     }
   ],
   "customManagers": [
