@@ -4,7 +4,7 @@
 # --------------------
 services:
   ghorg:
-    image: ghcr.io/gabrie30/ghorg:v1.9.12
+    image: ghcr.io/gabrie30/ghorg:v1.11.14
     container_name: ghorg
     restart: unless-stopped
     network_mode: bridge

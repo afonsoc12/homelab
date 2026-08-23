@@ -20,7 +20,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - ../../apps/automation/home-assistant/values.yaml
+        - secrets://../../apps/automation/home-assistant/values.sops.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: automation

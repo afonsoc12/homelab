@@ -1,0 +1,152 @@
+# --------------------
+# Home Assistant
+#   - Repo:           https://github.com/home-assistant/core
+#   - Docs:           https://www.home-assistant.io/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: docker.io/homeassistant/home-assistant
+    tag: 2026.8.3
+    pullPolicy: Always
+hostNetwork: true
+ports:
+    - containerPort: 8123
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+volumeMounts:
+    - name: config
+      mountPath: /config
+volumes:
+    - name: config
+      mountPvc: true
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 10Gi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: home-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: home.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+nodeSelector:
+    kubernetes.io/hostname: k3s-m1
+tolerations: []
+affinity: {}
+resources:
+    limits:
+        cpu: 200m
+        memory: 1600Mi
+    requests:
+        cpu: 100m
+        memory: 800Mi
+livenessProbe:
+    tcpSocket:
+        port: 8123
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    tcpSocket:
+        port: 8123
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    tcpSocket:
+        port: 8123
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
+# Prometheus scrape secret + alerting
+#   - Docs: https://www.home-assistant.io/integrations/prometheus/
+secret:
+    stringData:
+        prometheus-token: ENC[AES256_GCM,data:fYESSX4gg115aNAJdCsPjqouKcff6mRarehXwEr2HVYJfocAu4435nnxo2vxWRKXH3/9xjrOgAEI6WDvKtRclV4NyM1Qk+BLqcdt52kjkwk5s5jzX5156WelETiiuhqLUOtP/Yp9EnRArIWVP/UJen2efB9x7Sfns5WJZy7+Zeu+AsXNbnNNqDWCww5JQU1ln8CZQqahfnos7OJLekAwDPPqi3kwlI+Nk53S/k3PHwe4cQuz1W+p,iv:8g2AzzMWU6FKhMRnvZR3c2mk/80Q8beO4LGsKd9Tkek=,tag:2tLzqOH11XA5avubsotAow==,type:str]
+serviceMonitor:
+    enabled: true
+    endpoints:
+        - port: http
+          path: /api/prometheus
+          interval: 60s
+          bearerTokenSecret:
+            name: home-assistant
+            key: prometheus-token
+prometheusRule:
+    enabled: true
+    groups:
+        - name: HomeAssistant
+          rules:
+            - alert: HomeAssistantDown
+              expr: up{job="home-assistant"} == 0
+              for: 5m
+              labels:
+                severity: critical
+                hostname: home-assistant
+              annotations:
+                summary: Home Assistant is unreachable
+                description: Prometheus has not been able to scrape Home Assistant for 5 minutes. Automations and integrations may be down.
+            - alert: HomeAssistantBatteryLow
+              expr: homeassistant_sensor_battery_percent < 20
+              for: 6h
+              labels:
+                severity: warning
+                hostname: home-assistant
+              annotations:
+                summary: 'Battery low: {{ $labels.friendly_name }}'
+                description: '{{ $labels.friendly_name }} battery is at {{ $value }}% for over 6 hours.'
+            - alert: HomeAssistantBatteryStale
+              expr: (time() - timestamp(homeassistant_sensor_battery_percent)) > 172800
+              for: 0m
+              labels:
+                severity: warning
+                hostname: home-assistant
+              annotations:
+                summary: 'Battery sensor stopped reporting: {{ $labels.friendly_name }}'
+                description: '{{ $labels.friendly_name }} has not reported a battery reading in over 48 hours — device may be offline or dead.'
+sops:
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-08-23T17:13:43Z"
+    mac: ENC[AES256_GCM,data:Ed7IhEJAZVpMhVsymBSuq5h12EpAUSRv681xtCPqtfJ6Yt5wzYDJMbfbSYasGzUpYp9UmhAACM78Nasw5ug2a1hjXSTrWkY7BvP1bzQtmO3nqUOECP+OD4mfxDnTiHuYCzShkhXjFwb0pTyJEHy7RwkUf0Pp6LPgzIiaCVuG7WM=,iv:igHOs9T+TXGucJV3b5r+44P+VwdPjs4sjvljCOICTFg=,tag:3Yj78uo6mI8mmVBBscBm4Q==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-08-23T17:13:43Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/7Bfzhq7JeCpLFeXHcv0248Ky8KihL6Vz0GCZcx4Kz0ATF
+            7eWsWdi8uvFLpbFtOCmozSc8yoZ9sdFki0iWk32buV6TTaK5eFztpH1L8wI3XIWw
+            INobY9c30OXGbGFn++P+Jj++dLrbUh2P32AV200g2iU2blD9G/0mswQV8IQv9BT5
+            iDlND+brldVB+CQt1XGQaw+8zw4qgfqwdNEHcNo1DZU09FIjq8E1C6oatjk+xVBY
+            e7gOsvORbq8AYsJYZK8nE0+3CWkTWC44xz+xyGaPamj+iLmC4+fqzWH+C4euh8df
+            eceeakpW7/vub5AoDA7bYCyhS0xS4B/ZyKDmHc+IRzny6Ylb06h+yL3bHstPoK3s
+            QFmuA91q2Pd71MtM6xKQgRUDMTvEBzwiIqaw2Zrn0uCajLISibS0n6Tp6pA6td9Y
+            wHzBLD/SUfpYTTAkfS8mPSWJS3betZEsmTBF62KrhX6K+hP0QSuJQKsg9xgigFZu
+            gFqk3mMVD6M5mt6l7pVwl+mVQEqkXKqnzZF4m8BIJBK3jGe9xlsGZZd0XKFebl3i
+            LDDjmgFUoZLgrjT21wQoc1RCPSMNxER9qzFjL01zN5DoDReWy7DisKYHoGdq06FM
+            ubxKzA+vfKuEwrveSEx1wfBz4bNBkQvzbFvYvdtpOFRuRasLf81SmJ56sRMqYFbU
+            ZgEJAhA3gq1QT6rsMaCGjvpFu2yjDVpnZqF+DTzTBn1Dm+xtVdmIjXyiNVjadEDa
+            wdRB4OeQmVxHEn5+atl+ueBibInah9JbnSSLPMEQa1chZLg6Jryup+gazHzz57zh
+            BCd3fiI9DA==
+            =Jtdz
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

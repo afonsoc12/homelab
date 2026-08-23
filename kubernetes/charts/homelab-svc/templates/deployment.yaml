@@ -29,6 +29,9 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       {{- end }}
       enableServiceLinks: {{ .Values.enableServiceLinks }}
+      {{- if or (.Values.serviceAccount).create (.Values.serviceAccount).name }}
+      serviceAccountName: {{ include "homelab-svc.serviceAccountName" . }}
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       restartPolicy:  {{ .Values.restartPolicy }}

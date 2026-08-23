@@ -60,6 +60,17 @@ prometheusRule:
   #       summary: "App alert triggered"
   #       description: "This is an alert from the app"
 
+serviceAccount: {}
+  # create: true
+  # name: ""
+  # annotations: {}
+
+rbac: {}
+  # rules:
+  #   - apiGroups: [""]
+  #     resources: ["pods", "pods/log"]
+  #     verbs: ["get", "list", "watch", "create", "delete"]
+
 secret: {}
   # stringData:
   #   secret_string_1: abc

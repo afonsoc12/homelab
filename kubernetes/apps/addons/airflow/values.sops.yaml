@@ -6,8 +6,30 @@
 # --------------------
 image:
   repository: ghcr.io/afonsoc12/airflow
-  tag: 3.2.1-b38
+  tag: 3.2.1-b40
   pullPolicy: Always
+serviceAccount:
+  create: true
+rbac:
+  rules:
+    - apiGroups:
+        - ""
+      resources:
+        - pods
+        - pods/log
+        - pods/status
+      verbs:
+        - get
+        - list
+        - watch
+        - create
+        - delete
+    - apiGroups:
+        - ""
+      resources:
+        - events
+      verbs:
+        - list
 podSecurityContext:
   fsGroup: 50000
   fsGroupChangePolicy: OnRootMismatch
@@ -26,18 +48,19 @@ service:
 secret:
   mountEnv: true
   stringData:
-    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:gemZMY/A4v4YGTFd1lGMmo2ex27mBKCMXrlM2B/4Xp1BjF1L/O+o3WDdzY+Boc/GwpsSEyXK8fspgI4sxDoxyCsrVrY9Jb0eAd2S6szTdUvk+V/+rNE=,iv:eoO32HtD+r3HYv42zxLJtkV4QA1xu/laWpIU+ASdWxM=,tag:FI+YBX/4BH7Pfxteeu2FNA==,type:str]
-    AIRFLOW__CORE__SECRET_KEY: ENC[AES256_GCM,data:tdC4AiI0oT1Ox5/7NE/a2dFF0+mRoDXe1wxsG67URGYR/0+kRPIElIKRJYXN+wK1KOvOI6Fi1SNsBzVtUrzvBA==,iv:dF0aIaL1Q6I8ITClGLiGF0Dyx1JCmfWsO9UFC3az0vI=,tag:YolkGG5hDLGWwdykwH5CgQ==,type:str]
-    AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:A6ILniBw9ZflfnNvrl7I1vtABVD4U38Ytl8XsOufeV/WT3FP22TDiJm88nG6nlVZ/8UQWDNyk2ml6A4q1Yp1YQ==,iv:LePJ4nOVC/GvQGOodaYJL72AClXS5DEigrom59nMKYQ=,tag:iKE6+MOTjpfQAquq8khSZg==,type:str]
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:mCLBii93tflqUTCV17F63JYE6SXJn4XVtq9MNaQeKn0qiP4gchvuOOTCBZWz3L1dW1VOh4ermTqiP/jTtkG6sBovewJfM0GNlKZ2IXbQ5tc92M/KSNc=,iv:yiFD3sTYNaQRdtfmaUdzvL6fBadfSJPY9UUTpM4jYCs=,tag:hTxCmrcz3DUDRx21h+Uy/w==,type:str]
+    AIRFLOW__CORE__SECRET_KEY: ENC[AES256_GCM,data:CvKHWVWNi+DcLNHC+FeI5siXmrevc91wC2p6ETunEnjNIjXVD6Bu8eWlYL5QffhiZr9qAqi5ClX837/Y55pJBg==,iv:PGI9GzKvbFHVWz3HQ5Qq+hqVcrz/+xS/XAfUi3T/aT8=,tag:XiHets+Xd+1odlhRCBRMzQ==,type:str]
+    AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:LzIVY53J2lWfSojwAGS4ScOQEfHTJ1/dKB2xyOf1W1PZAKR6zfiGSSm/qCiWHS3FkyT5WN0U10+gG7gSBrZarg==,iv:adP96CO3Fr7gtvQ5qfUTBkHyWpVGGfv0aMVxEntYZqk=,tag:fxXE+L0/K/smobswfpVIBg==,type:str]
 extraSecrets:
   - name: airflow-secrets-backend
     stringData:
-      variables.yaml: ENC[AES256_GCM,data:hFfZblE5iBoXdvx9nzXdhMogGxqqfsq5GUlptrd4pIFL+C16pjoXc/urPm8INXk3oFHrrVMweNOjqeJd0k0yVZWO8sZ+TTNvJRWbuP4UxyyybpeenfQMbnhSJ2FRZFWiBHEOfMriieP4srjpi8jXmMKWV2XtALaB9/3TtYdq+2CYmtlVeat71oPmt9sVCi/ZlmU/TzXc/24fyYK+2LRF6cZ/nx5rRUq6Ox8VN38Ad+h9oDTuy9SNJRiHXpGOkc/jZHkBIrG8nX7DjyWAg+LMZ6EsFbzsNkqRJp9XPQrQ/Xep4clgbSnnmTXFL+YY3e1t,iv:/6CTKYidzSYItbubEWcwROmmauulDwt1anoHwHOQ3DE=,tag:i2tZXULB8Ecpiy3YxwjDMA==,type:str]
-      connections.yaml: ENC[AES256_GCM,data:UVS2mPiDo/DvmlqrILtuZHXQ2zKr8CKmpWWAc+WEQ5xEr5AAnYuJS/KVscGMRpjZ69pGqak6+3KplqxMTMgssKjT7JgafcjwNSnv3Og9GcvHrPYjHVQfyw3T3pDDQE6VKkjdiIt3JHzSjXHwsA4aBSxspR5fqGyTvYg/yOJ8foLqdPmk71CrbZRM2yYyDrrYJiS3q/0r/id5QHl0,iv:SIRLwc1207Rt46Ex+w43SP6HLAx9Mjy0+mqzKePcdFE=,tag:lUByemAbmiSNM4YI/Tpvxg==,type:str]
+      variables.yaml: ENC[AES256_GCM,data:GeVlPTE6L9o7fW/SfOurRQgDK8xD8/YZ3ZvmXSi9GpEfZHTE0VhIXQIaPqZ5d1MiChJuqrxCC/lw1gkt+77u5vNvpSB2SkCAUUDQOggv481SJod4g1/S4bIQ2BoJPd81HjUqtjOQwcVs5/VArZMrbOCP8M74hhNl8r27oHG7aCtJTo+2aNNTzAHkYspnayodWBbUh+8cEq7fSyr3P5XazL36SIrxHT/zCPf4v/87diBN9E/hrGpEJerp8At4sJhw5nzf5dCL7kiQTTHAlUh55xufba5WsK4CXR1Qjq5ZS8Y1pokcCREr9tlyRK6lP37j,iv:Mb9Bp/gZvUAicSmFuTSFGmfcSRSikZANfxKCq6EpAUU=,tag:CKR+BVJa5ONYR/0ogwSY5A==,type:str]
+      connections.yaml: ENC[AES256_GCM,data:FC0ey/ij/dKaj7cuideF53jsd0E/7QLeI5NXG1SPYQUlL69yybTqV+X4tSwogHiynQVKuWHUgGv7ae8TzbwZfFz5ME7OvZXei7TBxJSh2aC9rcCVqVw2fAIiUlC4T9IeJv3f3hcGYBPDuexwfsdFo/rb0/MHbB+kErJbDA9sm7TEYCg15QK7kE0I4vN3i8IFLaHvxFKQ8BPZtJ+0,iv:icyrk0UiG/sGhfrV98MOfwhv3MJiQvP4/LypvVGq3zQ=,tag:O7t2OatG4XP55SUh6no97Q==,type:str]
 configmap:
   mountEnv: true
   data:
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW_VAR_KPO_IMAGE: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
 pvc:
   storageClassName: longhorn
   accessModes:
@@ -74,7 +97,7 @@ resources:
     memory: 1Gi
   limits:
     cpu: "2"
-    memory: 8Gi
+    memory: 4Gi
 livenessProbe:
   httpGet:
     path: /api/v2/monitor/health
@@ -98,30 +121,30 @@ startupProbe:
   failureThreshold: 30
   timeoutSeconds: 5
 sops:
-  encrypted_regex: ^(stringData)$
-  lastmodified: "2026-08-22T18:20:56Z"
-  mac: ENC[AES256_GCM,data:3QoqL2em79D9HEmS1ofe4kdKK3Fb6XD5Hg2Tp/Q/a4Wsm6d0yHVTcriJmHvBwlHEiWKgHsAE3O5VZmibFBeu0PaRUGYD3iSRtVPlp76w1Hw0MPBZ4wEGqq8r4Se1U+r9ZXAzCLqAU8/Pybqe5Pts06bIls/vUqyHl1WMh9veKNU=,iv:KRneM8tm+YMuU7SlDr9tvRmp5itcn4pIgLncyNN0QFI=,tag:p3CZVsf1fGHsdLPIYkfq9A==,type:str]
+  encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+  lastmodified: "2026-08-23T14:15:52Z"
+  mac: ENC[AES256_GCM,data:O/gr9Pj+TP5GtGyPZ9W4V2q5ecCO4DFL7CRwVrk73qbiqGoYhSQd3EiTPUwSag95ehoN26tgxk6amZfrIkKyabjn1jqD8seyrTx5qWtKLScYkNOQrQwXXLmhHjQkWtLSlVUGlMHS50Ld0xsJKaISR7OAejaFs0WIhz4tXRYkHSI=,iv:gxsd6uT5g5y0qNse5wdtAxnBEBiXHpU5SmkP1/HbTQ4=,tag:4ggcX0CbH0q/XPIzIWsqgg==,type:str]
   mac_only_encrypted: true
   pgp:
-    - created_at: "2026-05-09T12:13:28Z"
+    - created_at: "2026-08-23T14:15:52Z"
       enc: |-
         -----BEGIN PGP MESSAGE-----
 
-        hQIMA5NT/LvuRqeGAQ//R63u5gJBsqOmuXsRRzrssGWfEnplh2xFxdswrVUbU2JD
-        zqs10doc1XRRCTB6GWSrej96zQBxU7pBTLVnQ3q8ACf3mX5pxE9HEzp1zm6aI0wP
-        cqL3RbnvaOogNHOTEDluYMdYkeUWj2eK3cRq66PXznGEu7tvRQQPdxcXvmdVq891
-        537aqgdtmD2eGJYwfY7ua1G96fFG8cXOSuuJ2KpQZ6NLj0Ex30ik6RGvr55TuJBE
-        AYlNPjFqTsX32U6WraDJYSRCVCoylK5Iap++ySuF4j+YE/CTZtZyhRES6XIH6sUL
-        oSyfxbVvMDa2lnv06dagNwGNzzy6bZ6VbOj/J21kk1DkIgusCc7Pl2yaipoUyLDP
-        W4cnQGTqlC7DK8tiIDv3K3NjOYnQLveUVDZa6Ksu7kgkNVzizIXW2cZowLUGlT/c
-        mVI3B+TnkcS4+ZjWtNK+ozTpJ+C7CFc/6OnFHKwJNosNS/nRqHVXyguLOT6YOyvz
-        f8f848toHPiSWvqYHWt97mf9l6GJZvll3bB0RIw2FFNUFXkKP4DUEmG1tnoL81b4
-        a4ZnjQyyexbae9tYvPjCs91vUGi5g9ReDPeZtRz5rCK+IjcnXH0GOjjofJtuXsEs
-        CViSNU40IPs60ApiTwKOOBrMSqcwJnMIf16Qy94RQa0ODtEousB9DJLGTAD0Bx3U
-        ZgEJAhBMK8Y+wVx5Aj7RbhlyaYmb0eAo4pLjokcQNJ9XbPURFwIm20ssGlLeAPIM
-        tjxrM8Af7JB2VrEmfuZGbnaFduE/XbIRL1F+ALu7+KSxQalTShdACz2nwCcyurHr
-        cZxIBEi1NA==
-        =KJIv
+        hQIMA5NT/LvuRqeGARAArxftafFUBXKYSPjs6XKGHKtXDZGhQbWSbF3+Gq06QGWx
+        fEUt94UUZCqEb4146mWFGUEAbJodcrPgMBoP78NQQsnlcGOrs0Ty7hnjL5MEylPX
+        KIhSRpxdmhR8EXflw/SPdACruuoNtmV0vvQ+gcmTT9HRslndJMNiFMiV808BTNzu
+        XAkVnLDTDucJlrWwItpwM8n6M5ch1B9o2wOUp9t6FaCTTMD6Sht3gIFtWFeFsXnw
+        iG2coH7KDHw2x4DrJ3nU3/DPUBK+IFPT39953bJD0G9yg3rLl8LzB7vGUoRnCD57
+        h+qQMoh7gdmt1if/twyVLo920YInayzvW0MlAawx6c7YwUYzTwbfid6No2z90Ubi
+        FxFpWhUCZUflAapWoUHfCvCxdRUc+p1Pp2qgPgkBWkd6/I+w8lzWJlUCq7wBzWQv
+        a2W5+jLzJWIjTRZiX0Z0AiyTg1xtHJSrMryseBRsLMvAy6/sPvpq2oNmDznY6/os
+        JSychSMpeI2MYVW8kGe22u9WlcMZBnP68/3Hd6uPGPChdm0CIfgVMj6iBQF5dDNc
+        lU8mct6vftEcoqs+Tl5DfZ6S7A+RA72cAZPlnmB4nwIHgAbSpY2iir3cNX00oRaO
+        t8Hv172iFN0B77rM2tN8e4UKEDqMwpR0n2YRVcPT9d51+0cZX7pIovq3z3ryzgfU
+        aAEJAhDH7oQbIyCcz7vKDO2p/icxe0VKjYVKQK6CeZcW72CdKuFCf9U0ynuhR52I
+        2H3BMw80W/d1KPSH8OdeDvireylLi60xHFA6kci1MEY1GkwmcwJ3OCLEnH1o5TnO
+        LGU6vfohwn5H
+        =EO9H
         -----END PGP MESSAGE-----
       fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
   version: 3.13.2
