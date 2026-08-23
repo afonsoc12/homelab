@@ -126,12 +126,23 @@
 # Unraid starts /var/lib/docker/unraid-autostart strictly in file order, waiting for
 # each `docker start` to return before the next. A plain alphabetical sort ignores
 # network_mode: service:<name>/container:<name> dependencies between stacks (e.g. an
-# *arr container sharing a VPN container's netns), so a dependent can sort before the
-# container it needs — Docker then fails to attach it (exit 128) since that container
-# isn't running yet. topo_sort_autostart orders dependencies first instead.
+# *arr container sharing a VPN container's netns) — a dependent can sort before the
+# container it needs, and Docker fails to attach it (exit 128) since that container
+# isn't running yet. Start anything with no such dependency first, then anything that
+# has one, alphabetical within each group — sufficient for every stack in this repo
+# today (a single one-level dependency: media-stack on privoxyvpn).
 - name: "Unraid | Write autostart list (derived from each service's restart policy)"
   ansible.builtin.copy:
-    content: "{{ docker_compose_unraid_autostart_containers | topo_sort_autostart | join('\n') }}\n"
+    content: |
+      {%- set dependents = docker_compose_unraid_autostart_containers
+          | selectattr('network_mode', 'defined')
+          | selectattr('network_mode', 'match', '^(service|container):')
+          | map(attribute='container_name') | list -%}
+      {%- set independents = docker_compose_unraid_autostart_containers
+          | map(attribute='container_name') | reject('in', dependents) | list -%}
+      {% for name in (independents | sort + dependents | sort) %}
+      {{ name }}
+      {% endfor %}
     dest: /var/lib/docker/unraid-autostart
     mode: "0644"
   when: "'unraid' in group_names"
