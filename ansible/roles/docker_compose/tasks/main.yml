@@ -115,7 +115,6 @@
         + ((lookup('ansible.builtin.file', item.path + '/docker-compose.yaml') | from_yaml).services.values()
             | selectattr('restart', 'defined')
             | rejectattr('restart', 'equalto', 'no')
-            | map(attribute='container_name')
             | list)
       }}
   delegate_to: localhost
@@ -124,9 +123,15 @@
     label: "{{ item.path | basename }}"
   when: "'unraid' in group_names"
 
+# Unraid starts /var/lib/docker/unraid-autostart strictly in file order, waiting for
+# each `docker start` to return before the next. A plain alphabetical sort ignores
+# network_mode: service:<name>/container:<name> dependencies between stacks (e.g. an
+# *arr container sharing a VPN container's netns), so a dependent can sort before the
+# container it needs — Docker then fails to attach it (exit 128) since that container
+# isn't running yet. topo_sort_autostart orders dependencies first instead.
 - name: "Unraid | Write autostart list (derived from each service's restart policy)"
   ansible.builtin.copy:
-    content: "{{ docker_compose_unraid_autostart_containers | sort | join('\n') }}\n"
+    content: "{{ docker_compose_unraid_autostart_containers | topo_sort_autostart | join('\n') }}\n"
     dest: /var/lib/docker/unraid-autostart
     mode: "0644"
   when: "'unraid' in group_names"
