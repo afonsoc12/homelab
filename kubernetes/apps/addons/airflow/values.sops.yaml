@@ -6,7 +6,7 @@
 # --------------------
 image:
   repository: ghcr.io/afonsoc12/airflow
-  tag: 3.2.1-b39
+  tag: 3.2.1-b40
   pullPolicy: Always
 serviceAccount:
   create: true
