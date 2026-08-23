@@ -115,7 +115,6 @@
         + ((lookup('ansible.builtin.file', item.path + '/docker-compose.yaml') | from_yaml).services.values()
             | selectattr('restart', 'defined')
             | rejectattr('restart', 'equalto', 'no')
-            | map(attribute='container_name')
             | list)
       }}
   delegate_to: localhost
@@ -126,7 +125,16 @@
 
 - name: "Unraid | Write autostart list (derived from each service's restart policy)"
   ansible.builtin.copy:
-    content: "{{ docker_compose_unraid_autostart_containers | sort | join('\n') }}\n"
+    content: |
+      {%- set dependents = docker_compose_unraid_autostart_containers
+          | selectattr('network_mode', 'defined')
+          | selectattr('network_mode', 'match', '^(service|container):')
+          | map(attribute='container_name') | list -%}
+      {%- set independents = docker_compose_unraid_autostart_containers
+          | map(attribute='container_name') | reject('in', dependents) | list -%}
+      {% for name in (independents | sort + dependents | sort) %}
+      {{ name }}
+      {% endfor %}
     dest: /var/lib/docker/unraid-autostart
     mode: "0644"
   when: "'unraid' in group_names"
