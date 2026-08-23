@@ -5,13 +5,13 @@ description: Troubleshoot Kubernetes networking — DNS resolution failures, ser
 
 # Kubernetes network troubleshooting
 
-Uses `registry.k8s.io/e2e-test-images/agnhost` as the debug image — it's a small
-Alpine-based image built specifically for this: it bundles `dig`/`nslookup`
-(`bind-tools`), `curl`, `nc` (`netcat-openbsd`), `ss`/`ip` (`iproute2`), `socat`,
-`iperf`, and `bash`, plus the `agnhost` CLI itself (`connect`, `netexec`,
-`dns-suffix`, `dns-server-list`, ...). There's no permanent agnhost deployment
-in the cluster — this skill deploys a disposable one in the `sandbox`
-namespace, pinned to `:latest` since it's throwaway and short-lived by
+Uses `registry.k8s.io/e2e-test-images/agnhost:latest` as the debug image — it's
+a small Alpine-based image built specifically for this: it bundles
+`dig`/`nslookup` (`bind-tools`), `curl`, `nc` (`netcat-openbsd`), `ss`/`ip`
+(`iproute2`), `socat`, `iperf`, and `bash`, plus the `agnhost` CLI itself
+(`connect`, `netexec`, `dns-suffix`, `dns-server-list`, ...). There's no
+permanent agnhost deployment in the cluster — this skill deploys a
+disposable one, pinned to `latest` since it's throwaway and short-lived by
 design, and removes it when done.
 
 ## 1. Deploy the debug DaemonSet
@@ -32,8 +32,6 @@ spec:
       labels:
         app: net-debug
     spec:
-      tolerations:
-        - operator: Exists
       containers:
         - name: net-debug
           image: registry.k8s.io/e2e-test-images/agnhost:latest
@@ -41,10 +39,6 @@ spec:
 EOF
 kubectl -n sandbox rollout status daemonset/net-debug
 ```
-
-The `tolerations: [{operator: Exists}]` makes it schedule on every node, including
-tainted ones (masters) — you want a debug pod reachable from every node when
-diagnosing a node-specific networking issue.
 
 Get a shell on the pod running on the node (or in the namespace) you care about:
 
