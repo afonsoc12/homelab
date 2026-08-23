@@ -150,22 +150,22 @@
       "groupName": "ansible"
     },
     {
-      "description": "linuxserver.io images carry stale orphaned tags from ~2021 (dev/nightly builds, or unrelated numeric fragments like an embedded Ubuntu base version) that outrank the real current version under naive numeric sort. Bound each as loosely as the known junk allows: bazarr/tautulli junk is huge random numbers or a year-stamp, nowhere near a plausible real version, so a generous <1000.0.0 bound leaves headroom for real future majors. lidarr (junk major 8) and qbittorrent (junk majors 14/20) had to be bounded tighter, just below the known-bad value, since a loose bound wouldn't touch numbers that low.",
+      "description": "linuxserver.io images carry stale orphaned tags from ~2021 (dev/nightly builds, or unrelated numeric fragments like an embedded Ubuntu base version) that outrank the real current version under naive numeric sort. bazarr/tautulli junk is huge random numbers or a year-stamp, nowhere near a plausible real version, so a generous <1000.0.0 bound leaves headroom for real future majors with no meaningful cap.",
       "matchPackageNames": ["ghcr.io/linuxserver/bazarr", "ghcr.io/linuxserver/tautulli"],
       "allowedVersions": "<1000.0.0"
     },
     {
-      "description": "calibre-web's junk tag (5.33.2) collides right where a real future major could plausibly land too — current is 0.x, so there's very little safe headroom either way. If calibre-web ever legitimately ships a real v5+, this bound needs to move (or be replaced with an exact-tag exclusion) — no numeric bound can tell a real v5 apart from this specific junk v5.33.2.",
+      "description": "calibre-web/lidarr/qbittorrent junk tags (5.33.2, 8.1.2135, 20.04.1, 14.3.9) sit too close to a plausible real future major for a range bound — that would cap legitimate future majors instead of just the known junk. Exclude the exact confirmed-bad tags instead, so real future releases at any major aren't blocked.",
       "matchPackageNames": ["ghcr.io/linuxserver/calibre-web"],
-      "allowedVersions": "<5.0.0"
+      "allowedVersions": "!/^(5\\.33\\.2|2021\\.\\d{2}\\.\\d{2})$/"
     },
     {
       "matchPackageNames": ["ghcr.io/linuxserver/lidarr"],
-      "allowedVersions": "<8.0.0"
+      "allowedVersions": "!/^8\\.1\\.2135$/"
     },
     {
       "matchPackageNames": ["ghcr.io/linuxserver/qbittorrent"],
-      "allowedVersions": "<14.0.0"
+      "allowedVersions": "!/^(20\\.04\\.1|14\\.3\\.9)$/"
     },
     {
       "description": "sonarr's stale tag (5.14, created 2021-03-09, no version label) has no dedicated numeric bound above it since Sonarr has genuinely shipped a real v5 — require the real three-segment X.Y.Z shape instead, which the stale tag doesn't match",
