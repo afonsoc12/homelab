@@ -5,146 +5,146 @@
 #   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
 # --------------------
 image:
-    repository: ghcr.io/afonsoc12/airflow
-    tag: 3.2.1-b38
-    pullPolicy: Always
+  repository: ghcr.io/afonsoc12/airflow
+  tag: 3.2.1-b39
+  pullPolicy: Always
 serviceAccount:
-    create: true
+  create: true
 rbac:
-    rules:
-        - apiGroups:
-            - ""
-          resources:
-            - pods
-            - pods/log
-            - pods/status
-          verbs:
-            - get
-            - list
-            - watch
-            - create
-            - delete
-        - apiGroups:
-            - ""
-          resources:
-            - events
-          verbs:
-            - list
+  rules:
+    - apiGroups:
+        - ""
+      resources:
+        - pods
+        - pods/log
+        - pods/status
+      verbs:
+        - get
+        - list
+        - watch
+        - create
+        - delete
+    - apiGroups:
+        - ""
+      resources:
+        - events
+      verbs:
+        - list
 podSecurityContext:
-    fsGroup: 50000
-    fsGroupChangePolicy: OnRootMismatch
+  fsGroup: 50000
+  fsGroupChangePolicy: OnRootMismatch
 securityContext:
-    runAsUser: 50000
-    runAsGroup: 0
+  runAsUser: 50000
+  runAsGroup: 0
 ports:
-    - containerPort: 8080
-      name: http
-      protocol: TCP
-      service: true
+  - containerPort: 8080
+    name: http
+    protocol: TCP
+    service: true
 service:
-    enabled: true
-    type: ClusterIP
-    port: 8080
+  enabled: true
+  type: ClusterIP
+  port: 8080
 secret:
-    mountEnv: true
-    stringData:
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:mCLBii93tflqUTCV17F63JYE6SXJn4XVtq9MNaQeKn0qiP4gchvuOOTCBZWz3L1dW1VOh4ermTqiP/jTtkG6sBovewJfM0GNlKZ2IXbQ5tc92M/KSNc=,iv:yiFD3sTYNaQRdtfmaUdzvL6fBadfSJPY9UUTpM4jYCs=,tag:hTxCmrcz3DUDRx21h+Uy/w==,type:str]
-        AIRFLOW__CORE__SECRET_KEY: ENC[AES256_GCM,data:CvKHWVWNi+DcLNHC+FeI5siXmrevc91wC2p6ETunEnjNIjXVD6Bu8eWlYL5QffhiZr9qAqi5ClX837/Y55pJBg==,iv:PGI9GzKvbFHVWz3HQ5Qq+hqVcrz/+xS/XAfUi3T/aT8=,tag:XiHets+Xd+1odlhRCBRMzQ==,type:str]
-        AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:LzIVY53J2lWfSojwAGS4ScOQEfHTJ1/dKB2xyOf1W1PZAKR6zfiGSSm/qCiWHS3FkyT5WN0U10+gG7gSBrZarg==,iv:adP96CO3Fr7gtvQ5qfUTBkHyWpVGGfv0aMVxEntYZqk=,tag:fxXE+L0/K/smobswfpVIBg==,type:str]
+  mountEnv: true
+  stringData:
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:mCLBii93tflqUTCV17F63JYE6SXJn4XVtq9MNaQeKn0qiP4gchvuOOTCBZWz3L1dW1VOh4ermTqiP/jTtkG6sBovewJfM0GNlKZ2IXbQ5tc92M/KSNc=,iv:yiFD3sTYNaQRdtfmaUdzvL6fBadfSJPY9UUTpM4jYCs=,tag:hTxCmrcz3DUDRx21h+Uy/w==,type:str]
+    AIRFLOW__CORE__SECRET_KEY: ENC[AES256_GCM,data:CvKHWVWNi+DcLNHC+FeI5siXmrevc91wC2p6ETunEnjNIjXVD6Bu8eWlYL5QffhiZr9qAqi5ClX837/Y55pJBg==,iv:PGI9GzKvbFHVWz3HQ5Qq+hqVcrz/+xS/XAfUi3T/aT8=,tag:XiHets+Xd+1odlhRCBRMzQ==,type:str]
+    AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:LzIVY53J2lWfSojwAGS4ScOQEfHTJ1/dKB2xyOf1W1PZAKR6zfiGSSm/qCiWHS3FkyT5WN0U10+gG7gSBrZarg==,iv:adP96CO3Fr7gtvQ5qfUTBkHyWpVGGfv0aMVxEntYZqk=,tag:fxXE+L0/K/smobswfpVIBg==,type:str]
 extraSecrets:
-    - name: airflow-secrets-backend
-      stringData:
-        variables.yaml: ENC[AES256_GCM,data:GeVlPTE6L9o7fW/SfOurRQgDK8xD8/YZ3ZvmXSi9GpEfZHTE0VhIXQIaPqZ5d1MiChJuqrxCC/lw1gkt+77u5vNvpSB2SkCAUUDQOggv481SJod4g1/S4bIQ2BoJPd81HjUqtjOQwcVs5/VArZMrbOCP8M74hhNl8r27oHG7aCtJTo+2aNNTzAHkYspnayodWBbUh+8cEq7fSyr3P5XazL36SIrxHT/zCPf4v/87diBN9E/hrGpEJerp8At4sJhw5nzf5dCL7kiQTTHAlUh55xufba5WsK4CXR1Qjq5ZS8Y1pokcCREr9tlyRK6lP37j,iv:Mb9Bp/gZvUAicSmFuTSFGmfcSRSikZANfxKCq6EpAUU=,tag:CKR+BVJa5ONYR/0ogwSY5A==,type:str]
-        connections.yaml: ENC[AES256_GCM,data:FC0ey/ij/dKaj7cuideF53jsd0E/7QLeI5NXG1SPYQUlL69yybTqV+X4tSwogHiynQVKuWHUgGv7ae8TzbwZfFz5ME7OvZXei7TBxJSh2aC9rcCVqVw2fAIiUlC4T9IeJv3f3hcGYBPDuexwfsdFo/rb0/MHbB+kErJbDA9sm7TEYCg15QK7kE0I4vN3i8IFLaHvxFKQ8BPZtJ+0,iv:icyrk0UiG/sGhfrV98MOfwhv3MJiQvP4/LypvVGq3zQ=,tag:O7t2OatG4XP55SUh6no97Q==,type:str]
+  - name: airflow-secrets-backend
+    stringData:
+      variables.yaml: ENC[AES256_GCM,data:GeVlPTE6L9o7fW/SfOurRQgDK8xD8/YZ3ZvmXSi9GpEfZHTE0VhIXQIaPqZ5d1MiChJuqrxCC/lw1gkt+77u5vNvpSB2SkCAUUDQOggv481SJod4g1/S4bIQ2BoJPd81HjUqtjOQwcVs5/VArZMrbOCP8M74hhNl8r27oHG7aCtJTo+2aNNTzAHkYspnayodWBbUh+8cEq7fSyr3P5XazL36SIrxHT/zCPf4v/87diBN9E/hrGpEJerp8At4sJhw5nzf5dCL7kiQTTHAlUh55xufba5WsK4CXR1Qjq5ZS8Y1pokcCREr9tlyRK6lP37j,iv:Mb9Bp/gZvUAicSmFuTSFGmfcSRSikZANfxKCq6EpAUU=,tag:CKR+BVJa5ONYR/0ogwSY5A==,type:str]
+      connections.yaml: ENC[AES256_GCM,data:FC0ey/ij/dKaj7cuideF53jsd0E/7QLeI5NXG1SPYQUlL69yybTqV+X4tSwogHiynQVKuWHUgGv7ae8TzbwZfFz5ME7OvZXei7TBxJSh2aC9rcCVqVw2fAIiUlC4T9IeJv3f3hcGYBPDuexwfsdFo/rb0/MHbB+kErJbDA9sm7TEYCg15QK7kE0I4vN3i8IFLaHvxFKQ8BPZtJ+0,iv:icyrk0UiG/sGhfrV98MOfwhv3MJiQvP4/LypvVGq3zQ=,tag:O7t2OatG4XP55SUh6no97Q==,type:str]
 configmap:
-    mountEnv: true
-    data:
-        AIRFLOW__CORE__EXECUTOR: LocalExecutor
-        AIRFLOW_VAR_KPO_IMAGE: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+  mountEnv: true
+  data:
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW_VAR_KPO_IMAGE: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
 pvc:
-    storageClassName: longhorn
-    accessModes:
-        - ReadWriteOnce
-    resources:
-        requests:
-            storage: 5Gi
-volumeMounts:
-    - name: data
-      mountPath: /data
-    - name: secrets
-      mountPath: /var/run/secrets/airflow
-      readOnly: true
-volumes:
-    - name: data
-      mountPvc: true
-    - name: secrets
-      secret:
-        secretName: airflow-secrets-backend
-ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    tls:
-        - secretName: local-wildcard-cert
-    hosts:
-        - host: airflow.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: ImplementationSpecific
-resources:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
     requests:
-        cpu: 500m
-        memory: 1Gi
-    limits:
-        cpu: "2"
-        memory: 4Gi
+      storage: 5Gi
+volumeMounts:
+  - name: data
+    mountPath: /data
+  - name: secrets
+    mountPath: /var/run/secrets/airflow
+    readOnly: true
+volumes:
+  - name: data
+    mountPvc: true
+  - name: secrets
+    secret:
+      secretName: airflow-secrets-backend
+ingress:
+  enabled: true
+  authelia: true
+  className: nginx
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: airflow.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: "2"
+    memory: 4Gi
 livenessProbe:
-    httpGet:
-        path: /api/v2/monitor/health
-        port: 8080
-    periodSeconds: 15
-    failureThreshold: 3
-    timeoutSeconds: 5
+  httpGet:
+    path: /api/v2/monitor/health
+    port: 8080
+  periodSeconds: 15
+  failureThreshold: 3
+  timeoutSeconds: 5
 readinessProbe:
-    httpGet:
-        path: /api/v2/monitor/health
-        port: 8080
-    periodSeconds: 15
-    failureThreshold: 3
-    timeoutSeconds: 5
+  httpGet:
+    path: /api/v2/monitor/health
+    port: 8080
+  periodSeconds: 15
+  failureThreshold: 3
+  timeoutSeconds: 5
 startupProbe:
-    httpGet:
-        path: /api/v2/monitor/health
-        port: 8080
-    initialDelaySeconds: 60
-    periodSeconds: 10
-    failureThreshold: 30
-    timeoutSeconds: 5
+  httpGet:
+    path: /api/v2/monitor/health
+    port: 8080
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  failureThreshold: 30
+  timeoutSeconds: 5
 sops:
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-08-23T14:15:52Z"
-    mac: ENC[AES256_GCM,data:O/gr9Pj+TP5GtGyPZ9W4V2q5ecCO4DFL7CRwVrk73qbiqGoYhSQd3EiTPUwSag95ehoN26tgxk6amZfrIkKyabjn1jqD8seyrTx5qWtKLScYkNOQrQwXXLmhHjQkWtLSlVUGlMHS50Ld0xsJKaISR7OAejaFs0WIhz4tXRYkHSI=,iv:gxsd6uT5g5y0qNse5wdtAxnBEBiXHpU5SmkP1/HbTQ4=,tag:4ggcX0CbH0q/XPIzIWsqgg==,type:str]
-    mac_only_encrypted: true
-    pgp:
-        - created_at: "2026-08-23T14:15:52Z"
-          enc: |-
-            -----BEGIN PGP MESSAGE-----
+  encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+  lastmodified: "2026-08-23T14:15:52Z"
+  mac: ENC[AES256_GCM,data:O/gr9Pj+TP5GtGyPZ9W4V2q5ecCO4DFL7CRwVrk73qbiqGoYhSQd3EiTPUwSag95ehoN26tgxk6amZfrIkKyabjn1jqD8seyrTx5qWtKLScYkNOQrQwXXLmhHjQkWtLSlVUGlMHS50Ld0xsJKaISR7OAejaFs0WIhz4tXRYkHSI=,iv:gxsd6uT5g5y0qNse5wdtAxnBEBiXHpU5SmkP1/HbTQ4=,tag:4ggcX0CbH0q/XPIzIWsqgg==,type:str]
+  mac_only_encrypted: true
+  pgp:
+    - created_at: "2026-08-23T14:15:52Z"
+      enc: |-
+        -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAArxftafFUBXKYSPjs6XKGHKtXDZGhQbWSbF3+Gq06QGWx
-            fEUt94UUZCqEb4146mWFGUEAbJodcrPgMBoP78NQQsnlcGOrs0Ty7hnjL5MEylPX
-            KIhSRpxdmhR8EXflw/SPdACruuoNtmV0vvQ+gcmTT9HRslndJMNiFMiV808BTNzu
-            XAkVnLDTDucJlrWwItpwM8n6M5ch1B9o2wOUp9t6FaCTTMD6Sht3gIFtWFeFsXnw
-            iG2coH7KDHw2x4DrJ3nU3/DPUBK+IFPT39953bJD0G9yg3rLl8LzB7vGUoRnCD57
-            h+qQMoh7gdmt1if/twyVLo920YInayzvW0MlAawx6c7YwUYzTwbfid6No2z90Ubi
-            FxFpWhUCZUflAapWoUHfCvCxdRUc+p1Pp2qgPgkBWkd6/I+w8lzWJlUCq7wBzWQv
-            a2W5+jLzJWIjTRZiX0Z0AiyTg1xtHJSrMryseBRsLMvAy6/sPvpq2oNmDznY6/os
-            JSychSMpeI2MYVW8kGe22u9WlcMZBnP68/3Hd6uPGPChdm0CIfgVMj6iBQF5dDNc
-            lU8mct6vftEcoqs+Tl5DfZ6S7A+RA72cAZPlnmB4nwIHgAbSpY2iir3cNX00oRaO
-            t8Hv172iFN0B77rM2tN8e4UKEDqMwpR0n2YRVcPT9d51+0cZX7pIovq3z3ryzgfU
-            aAEJAhDH7oQbIyCcz7vKDO2p/icxe0VKjYVKQK6CeZcW72CdKuFCf9U0ynuhR52I
-            2H3BMw80W/d1KPSH8OdeDvireylLi60xHFA6kci1MEY1GkwmcwJ3OCLEnH1o5TnO
-            LGU6vfohwn5H
-            =EO9H
-            -----END PGP MESSAGE-----
-          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.13.2
+        hQIMA5NT/LvuRqeGARAArxftafFUBXKYSPjs6XKGHKtXDZGhQbWSbF3+Gq06QGWx
+        fEUt94UUZCqEb4146mWFGUEAbJodcrPgMBoP78NQQsnlcGOrs0Ty7hnjL5MEylPX
+        KIhSRpxdmhR8EXflw/SPdACruuoNtmV0vvQ+gcmTT9HRslndJMNiFMiV808BTNzu
+        XAkVnLDTDucJlrWwItpwM8n6M5ch1B9o2wOUp9t6FaCTTMD6Sht3gIFtWFeFsXnw
+        iG2coH7KDHw2x4DrJ3nU3/DPUBK+IFPT39953bJD0G9yg3rLl8LzB7vGUoRnCD57
+        h+qQMoh7gdmt1if/twyVLo920YInayzvW0MlAawx6c7YwUYzTwbfid6No2z90Ubi
+        FxFpWhUCZUflAapWoUHfCvCxdRUc+p1Pp2qgPgkBWkd6/I+w8lzWJlUCq7wBzWQv
+        a2W5+jLzJWIjTRZiX0Z0AiyTg1xtHJSrMryseBRsLMvAy6/sPvpq2oNmDznY6/os
+        JSychSMpeI2MYVW8kGe22u9WlcMZBnP68/3Hd6uPGPChdm0CIfgVMj6iBQF5dDNc
+        lU8mct6vftEcoqs+Tl5DfZ6S7A+RA72cAZPlnmB4nwIHgAbSpY2iir3cNX00oRaO
+        t8Hv172iFN0B77rM2tN8e4UKEDqMwpR0n2YRVcPT9d51+0cZX7pIovq3z3ryzgfU
+        aAEJAhDH7oQbIyCcz7vKDO2p/icxe0VKjYVKQK6CeZcW72CdKuFCf9U0ynuhR52I
+        2H3BMw80W/d1KPSH8OdeDvireylLi60xHFA6kci1MEY1GkwmcwJ3OCLEnH1o5TnO
+        LGU6vfohwn5H
+        =EO9H
+        -----END PGP MESSAGE-----
+      fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+  version: 3.13.2
