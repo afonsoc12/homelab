@@ -148,6 +148,29 @@
       "matchManagers": ["ansible-galaxy"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "ansible"
+    },
+    {
+      "description": "linuxserver.io images carry stale orphaned tags from ~2021 (dev/nightly builds, or unrelated numeric fragments like an embedded Ubuntu base version) that outrank the real current version under naive numeric sort. bazarr/tautulli junk is huge random numbers or a year-stamp, nowhere near a plausible real version, so a generous <1000.0.0 bound leaves headroom for real future majors with no meaningful cap.",
+      "matchPackageNames": ["ghcr.io/linuxserver/bazarr", "ghcr.io/linuxserver/tautulli"],
+      "allowedVersions": "<1000.0.0"
+    },
+    {
+      "description": "calibre-web/lidarr/qbittorrent junk tags (5.33.2, 8.1.2135, 20.04.1, 14.3.9) sit too close to a plausible real future major for a range bound — that would cap legitimate future majors instead of just the known junk. Exclude the exact confirmed-bad tags instead, so real future releases at any major aren't blocked.",
+      "matchPackageNames": ["ghcr.io/linuxserver/calibre-web"],
+      "allowedVersions": "!/^(5\\.33\\.2|2021\\.\\d{2}\\.\\d{2})$/"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/linuxserver/lidarr"],
+      "allowedVersions": "!/^8\\.1\\.2135$/"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/linuxserver/qbittorrent"],
+      "allowedVersions": "!/^(20\\.04\\.1|14\\.3\\.9)$/"
+    },
+    {
+      "description": "sonarr's stale tag (5.14, created 2021-03-09, no version label) has no dedicated numeric bound above it since Sonarr has genuinely shipped a real v5 — require the real three-segment X.Y.Z shape instead, which the stale tag doesn't match",
+      "matchPackageNames": ["ghcr.io/linuxserver/sonarr"],
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     }
   ],
   "customManagers": [
