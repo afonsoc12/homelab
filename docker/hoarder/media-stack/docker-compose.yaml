@@ -51,11 +51,6 @@ services:
       PGID: "100"
     volumes:
       - "/mnt/user/appdata/privoxyvpn:/config"
-    # binhex/arch-privoxyvpn ships no HEALTHCHECK of its own — the HEALTHCHECK_*
-    # env vars documented in its README aren't actually implemented anywhere in
-    # its scripts (checked upstream). Define a real one: containers sharing this
-    # netns (network_mode: service:privoxyvpn) need the tunnel interface up
-    # before Docker can attach them, or it fails with exit 128.
     healthcheck:
       test: ["CMD-SHELL", "ip addr show tun0 2>/dev/null | grep -q 'inet '"]
       interval: 15s
