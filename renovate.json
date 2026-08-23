@@ -58,6 +58,11 @@
       "enabled": false
     },
     {
+      "description": "registry.k8s.io isn't a real registry — it 307-redirects every manifest/tag request to a geo-routed Google Artifact Registry mirror, which Renovate's docker datasource can't reliably follow (reports no-result even though the image pulls fine at runtime). Bump manually.",
+      "matchPackageNames": ["registry.k8s.io/e2e-test-images/agnhost"],
+      "enabled": false
+    },
+    {
       "description": "Do not update image tags pinned to latest",
       "matchDatasources": ["docker"],
       "matchCurrentValue": "/^latest$/",
