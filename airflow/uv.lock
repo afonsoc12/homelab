@@ -252,7 +252,7 @@ wheels = [
 
 [[package]]
 name = "apache-airflow-providers-cncf-kubernetes"
-version = "10.21.0"
+version = "10.21.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -264,9 +264,9 @@ dependencies = [
     { name = "kubernetes-asyncio" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/52/b9/c41bbbffeddd69d29e3e89f630d2947b7c0bdcd79a70743f58ca75ca9eda/apache_airflow_providers_cncf_kubernetes-10.21.0.tar.gz", hash = "sha256:7b18f248b5d6c1a60b7c38949aeca39bf532d8415e0674041cf559ba341b6416", size = 516483, upload-time = "2026-08-10T15:39:44.061Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/35/63/a380773507e7765472bb3e62652e8921daf9306485c90be835059f7862a2/apache_airflow_providers_cncf_kubernetes-10.21.1.tar.gz", hash = "sha256:801de91c0f4839c795c25155ab50c8b76b7cbd9042835da3aac125f449fd0b11", size = 517931, upload-time = "2026-08-23T20:08:28.554Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/42/0e/14576c92f7cb2e59a2e1b8a897294c87e3de59a6ca40ba78eab348d5df58/apache_airflow_providers_cncf_kubernetes-10.21.0-py3-none-any.whl", hash = "sha256:1253fc4c8c8d12a1eefa61a45bc11c9c70ce600ccd3506b14818d7dc531e78de", size = 189673, upload-time = "2026-08-10T15:39:28.915Z" },
+    { url = "https://files.pythonhosted.org/packages/e8/f5/f15bcafb401f8eacc30e919dae1eec27eb7193b688f3494ee717e202ef5b/apache_airflow_providers_cncf_kubernetes-10.21.1-py3-none-any.whl", hash = "sha256:302558d9fc7479052e3f97c241a3d0681eb9504338858f2ae20a5ae454f46093", size = 190232, upload-time = "2026-08-23T20:07:59.026Z" },
 ]
 
 [[package]]
@@ -313,7 +313,7 @@ wheels = [
 
 [[package]]
 name = "apache-airflow-providers-postgres"
-version = "7.0.1"
+version = "7.0.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "apache-airflow" },
@@ -323,9 +323,9 @@ dependencies = [
     { name = "psycopg", extra = ["binary"] },
     { name = "psycopg2-binary" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/cf/84/20aed0a10b726355c3453f8552acdf36f9214ed3796aaedb8de27db250af/apache_airflow_providers_postgres-7.0.1.tar.gz", hash = "sha256:41176eb06fdc39aa8d3623aa95e12e49349ed243eca39043e5944c35bc7659ae", size = 67605, upload-time = "2026-08-08T03:17:28.815Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/38/c8/c2309576d3c4508725d2fc09625976583b554862c34cf1c5cd882574780a/apache_airflow_providers_postgres-7.0.2.tar.gz", hash = "sha256:883c5893cb5f5b6fb4eca59dca5f57027d0dfdbee25bc1a98da39b9b0eb693a7", size = 67736, upload-time = "2026-08-23T20:08:43.709Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/08/38/25bb4c745e04e2de6a00453439893e307b80b442b811445935bcbb455df7/apache_airflow_providers_postgres-7.0.1-py3-none-any.whl", hash = "sha256:4a5881bd6ae9aa1ebcc30bac3a2086a76dca5a222edacec4820dfadfea9895bd", size = 25134, upload-time = "2026-08-08T03:16:26.042Z" },
+    { url = "https://files.pythonhosted.org/packages/67/91/985ab9d9a5bc193811e424ef26654c524b37d01f156980c5c2b08845b671/apache_airflow_providers_postgres-7.0.2-py3-none-any.whl", hash = "sha256:aee87aff618555480c969f0e7377f10e203b6f913191a26df90d3c6d46b06479", size = 25165, upload-time = "2026-08-23T20:08:17.293Z" },
 ]
 
 [[package]]
@@ -954,8 +954,8 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "apache-airflow", specifier = "==3.3.1" },
-    { name = "apache-airflow-providers-cncf-kubernetes", specifier = "==10.21.0" },
-    { name = "apache-airflow-providers-postgres", specifier = "==7.0.1" },
+    { name = "apache-airflow-providers-cncf-kubernetes", specifier = "==10.21.1" },
+    { name = "apache-airflow-providers-postgres", specifier = "==7.0.2" },
 ]
 
 [package.metadata.requires-dev]
