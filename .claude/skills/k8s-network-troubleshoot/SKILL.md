@@ -9,11 +9,10 @@ Uses `registry.k8s.io/e2e-test-images/agnhost` as the debug image — it's a sma
 Alpine-based image built specifically for this: it bundles `dig`/`nslookup`
 (`bind-tools`), `curl`, `nc` (`netcat-openbsd`), `ss`/`ip` (`iproute2`), `socat`,
 `iperf`, and `bash`, plus the `agnhost` CLI itself (`connect`, `netexec`,
-`dns-suffix`, `dns-server-list`, ...). Don't reuse the permanent
-`addons/agnhost` DaemonSet already in the cluster (`kubernetes/apps/addons/agnhost/`)
-— that one is a fixed, version-pinned resource managed by ArgoCD/Renovate. This
-skill deploys its own disposable one in the `sandbox` namespace, pinned to
-`:latest` since it's throwaway and short-lived by design, and removes it when done.
+`dns-suffix`, `dns-server-list`, ...). There's no permanent agnhost deployment
+in the cluster — this skill deploys a disposable one in the `sandbox`
+namespace, pinned to `:latest` since it's throwaway and short-lived by
+design, and removes it when done.
 
 ## 1. Deploy the debug DaemonSet
 
