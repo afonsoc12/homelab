@@ -155,11 +155,12 @@
       "allowedVersions": "<1000.0.0"
     },
     {
-      "description": "calibre-web/lidarr/qbittorrent junk tags (5.33.2, 8.1.2135, 20.04.1, 14.3.9) sit too close to a plausible real future major for a range bound — that would cap legitimate future majors instead of just the known junk. Exclude the exact confirmed-bad tags instead, so real future releases at any major aren't blocked.",
+      "description": "calibre-web's junk isn't 1-2 stray tags like lidarr/qbittorrent — it's a whole dead family of 14 tags (5.29.0 through 5.33.2, plus v5.4.2-ls1 through v5.7.2-ls1), all created 2021-12-04, and Renovate has already been observed silently retargeting this package's PR between different tags in that family (5.33.2, then 5.33.1) as it rechecks. Exact-tag exclusion can't keep up with that — back to a numeric bound. Current is 0.x, so if calibre-web ever ships a real v5+, this needs a human to revisit (no numeric bound can tell a real v5 apart from this dead family).",
       "matchPackageNames": ["ghcr.io/linuxserver/calibre-web"],
-      "allowedVersions": "!/^(5\\.33\\.2|2021\\.\\d{2}\\.\\d{2})$/"
+      "allowedVersions": "<5.0.0"
     },
     {
+      "description": "lidarr/qbittorrent junk tags (8.1.2135, 20.04.1, 14.3.9) sit too close to a plausible real future major for a range bound — that would cap legitimate future majors instead of just the known junk. Confirmed only these exact one-off tags exist in their respective bad majors (unlike calibre-web), so exact-tag exclusion is safe here.",
       "matchPackageNames": ["ghcr.io/linuxserver/lidarr"],
       "allowedVersions": "!/^8\\.1\\.2135$/"
     },
