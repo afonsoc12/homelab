@@ -32,7 +32,7 @@ Metrics, logs, dashboards, alerting, and uptime monitoring.
 
 Shared stateful services.
 
-→ [Databases](databases.md) — PostgreSQL, MariaDB, Redis, InfluxDB
+→ [Databases](databases.md) — PostgreSQL, MariaDB, Redis
 
 ---
 
