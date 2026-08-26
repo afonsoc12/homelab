@@ -33,13 +33,3 @@ MySQL-compatible relational database. Used by apps that require MySQL-specific f
 In-memory key-value store. Used as a cache and session store by multiple apps.
 
 [:octicons-book-16: Documentation](https://redis.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/databases/redis/values.sops.yaml)
-
----
-
-## <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/influxdb.png" class="svc-icon"> InfluxDB
-
-<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>databases</code></em>
-
-Time-series database for Home Assistant and IoT sensor data. Runs **InfluxDB 3 Explorer** as a sidecar in the same pod for browsing — InfluxDB 3 is API-only.
-
-[:octicons-book-16: Documentation](https://docs.influxdata.com/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/databases/influxdb/values.sops.yaml)

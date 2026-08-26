@@ -383,10 +383,6 @@ configmap:
                         description: Alerts manager
                         icon: di:alertmanager
                         url: https://alertmanager.local.{{ .Values.domain }}
-                      - title: InfluxDB
-                        description: TSDB with nice UI
-                        icon: di:influxdb
-                        url: https://influxdb.local.{{ .Values.domain }}
                       - title: ntfy
                         description: Notifications manager
                         icon: di:ntfy
