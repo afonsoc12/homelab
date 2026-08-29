@@ -20,3 +20,9 @@ variable "k3s_cluster_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "spliit_access_emails" {
+  description = "Email addresses allowed through Cloudflare Access on split.<domain>"
+  type        = list(string)
+  sensitive   = true
+}

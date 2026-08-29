@@ -178,6 +178,22 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         }
       },
       {
+        hostname = "split.${var.domain}"
+        service  = "https://ingress-nginx-controller"
+        origin_request = {
+          connect_timeout          = 30
+          disable_chunked_encoding = false
+          http2_origin             = false
+          keep_alive_connections   = 100
+          keep_alive_timeout       = 90
+          no_happy_eyeballs        = false
+          no_tls_verify            = false
+          origin_server_name       = "split.${var.domain}"
+          tcp_keep_alive           = 30
+          tls_timeout              = 10
+        }
+      },
+      {
         service = "http_status:404"
       },
     ]
@@ -185,7 +201,37 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
 }
 
 locals {
-  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git-hook", "home", "rss", "seerr", "sso", "status", "wallabag"])
+  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git-hook", "home", "rss", "seerr", "split", "sso", "status", "wallabag"])
+}
+
+# Spliit isn't behind Authelia (friends without homelab SSO accounts need
+# access), so gate it with its own Cloudflare Access application instead —
+# email + one-time PIN, restricted to this hostname only.
+resource "cloudflare_zero_trust_access_policy" "spliit" {
+  account_id = var.account_id
+  name       = "Allow Spliit friends"
+  decision   = "allow"
+  include = [
+    for e in var.spliit_access_emails : {
+      email = {
+        email = e
+      }
+    }
+  ]
+}
+
+resource "cloudflare_zero_trust_access_application" "spliit" {
+  account_id       = var.account_id
+  name             = "Spliit"
+  domain           = "split.${var.domain}"
+  type             = "self_hosted"
+  session_duration = "360h" # 15 days
+  policies = [
+    {
+      id         = cloudflare_zero_trust_access_policy.spliit.id
+      precedence = 1
+    }
+  ]
 }
 
 # Keys use "subdomain|CNAME" format to match import addresses

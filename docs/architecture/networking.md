@@ -24,15 +24,6 @@ All public-facing services are routed through Cloudflare. The Terraform `cloudfl
 | Tunnel | Cloudflared tunnel from k3s-cluster → Cloudflare edge |
 | WAF / Zone settings | SSL strict mode, TLS 1.2+, bot blocking, geo-allowlist |
 
-### Geo Allowlist
-
-The homelab zone restricts traffic to Portugal and UK only:
-
-```hcl
-geo_block_enabled = true
-geo_allowlist     = ["PT", "GB"]
-```
-
 ### Zones
 
 Two Cloudflare zones are managed:

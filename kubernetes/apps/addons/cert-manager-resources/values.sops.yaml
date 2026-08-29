@@ -113,6 +113,12 @@ certificates:
       reflectNamespaces:
         - sandbox
         - ingress
+    - name: spliit
+      dnsNames:
+        - split.{{ .Values.domain }}
+      reflectNamespaces:
+        - homelab
+        - sandbox
 sops:
     encrypted_regex: ^(data|stringData)$
     lastmodified: "2026-08-15T12:02:56Z"
