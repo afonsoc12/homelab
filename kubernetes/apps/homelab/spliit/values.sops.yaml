@@ -1,0 +1,124 @@
+# --------------------
+# Spliit
+#   - Repo:           https://github.com/spliit-app/spliit
+#   - Docs:           https://spliit.app/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+podAnnotations: {}
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/spliit-app/spliit
+    tag: "1.23.1"
+    pullPolicy: Always
+command: {}
+args: {}
+ports:
+    - containerPort: 3000
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        POSTGRES_PRISMA_URL: ENC[AES256_GCM,data:KWkdkYSArYpAFLkDkP3Rm3p773cGxwzfsw2gSwuMrtWyyyJkYJj1vrpTj/aHf5kgDlFQfeZgyhtwfksngdXwcij6WWjiE+mVDuHgXCgefKXMmePfXajzIX2+3/V+BA==,iv:zoU5bQFUjf7Vmf2poQ/S7qhF9L+TxQiJdHqnmlzGOtc=,tag:E033PA07c1FpZ+k5cUPEnA==,type:str]
+        POSTGRES_URL_NON_POOLING: ENC[AES256_GCM,data:XfUxue7X0x31jt18BFtyKhbyho/Yx0CPaiez3vKcMh0C4t/Mz/U2fn85KFbIz6PJAGm3U8fO7smn73BDZtm74Un39iJdbKbUltap8em0lQ==,iv:swti8/Amo8ZmNHkg0IukzgXRrd6PT27CqcDNfF+skfU=,tag:cFgJhOVXeY+GMnAcnw9CvQ==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        BASE_URL: https://split.{{ .Values.domain }}
+        DEFAULT_CURRENCY_CODE: GBP
+volumeMounts: []
+volumes: []
+ingress:
+    enabled: true
+    authelia: false
+    className: nginx
+    tls:
+        - secretName: spliit-cert
+    hosts:
+        - host: split.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+podSecurityContext: {}
+securityContext: {}
+nodeSelector: {}
+tolerations: []
+affinity:
+    podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                namespaceSelector: {}
+                labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - postgres
+                topologyKey: kubernetes.io/hostname
+resources:
+    limits:
+        cpu: 250m
+        memory: 512Mi
+    requests:
+        cpu: 25m
+        memory: 192Mi
+livenessProbe:
+    httpGet:
+        path: /api/health/liveness
+        port: 3000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /api/health/readiness
+        port: 3000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    httpGet:
+        path: /api/health/readiness
+        port: 3000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
+sops:
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-08-29T20:48:40Z"
+    mac: ENC[AES256_GCM,data:4lS722tfuo9GhYvjh7urqRsQazYvrPguCzQnejjYoObersmnqtuMhCwpnqsPTl2sENIK507GEu6BRNJZ92RGx515Zx9x9BBIL9bVkQqtwqcZJuV3uDs0qtxjmDI3EzqqSuctheddgd1PsCKwZ+qpsMUPAit+VXhc5TJoq5EUuXg=,iv:syfmElIRfitLS6s82R8AjEruc/ZB7ezIcX/p4c5MaHs=,tag:D8IE+ymYv5bqDAaD2D10Fw==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-08-29T20:48:30Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/8CtFBm0GHRu1/S0btZIi0lf8HFwWl/HigP3Lj2kkR9n5R
+            YzCyTAZbwWtF/x6SzlDGTIoHtk/WtNSa+pAGrcKSSz+3GsOHoaVrb51qy2Akqy/O
+            P93gU/JJ9vDRZJkviHXpzuAG97HhmsICPyL/HoC8TOWOj5fIhAluwOC3dPRlsGH4
+            K/2G1SCh0cQWMU0Za/suEx5D5nHc/3dUpStNLhemd1lZJgrFNpqjtjdj8bmG8MOH
+            UlpJzOkLDQwO70crlOUj9101J8dQBjqE26k+Gp8Ku4jT043D9Ys/qydOma4N51iU
+            jDrg6OrylyX96zicsx55cvRRoXKIQZBK10VAnKPXlafULU7o1EcxdPOvgS9hdowg
+            kJSJkJP/H6FERqMiA1Gl3f+U1u4II9WkIe4j54ZTiG9GP0QJ1eK4Lr0YffDsXLIV
+            XYeaieh020dG97FvFtlUSEb8Si3qUXPKLRyyvFtepQRRIOlKR7deV28URlyPNPvv
+            sgQ2sw+NX24x0Od+Qfpxv4abslWl5m4Is4uTveQIrJVsBfwkraGG7xwCA/oKerfg
+            accn9ELBeuWwn4eHRollNe2z76tE2DdgIWNL30bqxE6lgMKuWHxp5mJ/u2NArdyA
+            szN/iTwoqbnhAu9uAqfw6CnKbDyltKZf943VmJKwgdYhFon+jASuT/XOisvo/b7U
+            aAEJAhCoOp+eXcWaEOIo0ccTK1nNbnqrNQQrx3ZFCU67LXmA82pCsV7Hj8ngpwuo
+            Q8P0MWlhq9rGCTaXVwUl2KAVw37lY20SzBu8+OT1QRnNQgbAn4waktd4V/b0cza6
+            TFis2khG7N4i
+            =mwsV
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

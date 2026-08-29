@@ -10,6 +10,7 @@ locals {
     "mealie",
     "octo_track",
     "paperless",
+    "spliit",
   ])
 }
 

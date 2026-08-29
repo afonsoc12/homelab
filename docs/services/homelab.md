@@ -118,6 +118,16 @@ Personal finance manager. Tracks income, expenses, and budgets with full double-
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/png/spliit.png" class="svc-icon"> Spliit
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Bill-splitting app for shared expenses among friends and groups. No login required to use a group.
+
+[:octicons-book-16: Documentation](https://spliit.app/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/spliit/values.sops.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/wordpress.png" class="svc-icon"> Wedding Site
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>

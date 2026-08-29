@@ -235,6 +235,10 @@ configmap:
                         description: Expense management
                         icon: di:firefly
                         url: https://firefly.{{ .Values.domain }}
+                      - title: Spliit
+                        description: Bill splitting
+                        icon: sh:spliit
+                        url: https://split.{{ .Values.domain }}
                       - title: Mealie
                         description: Recipes management
                         icon: di:mealie
