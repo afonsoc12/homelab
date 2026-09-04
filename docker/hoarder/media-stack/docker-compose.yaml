@@ -271,7 +271,7 @@ services:
       - "/mnt/user/appdata/kometa:/config"
 
   tautulli:
-    image: ghcr.io/linuxserver/tautulli:2.18.0
+    image: ghcr.io/linuxserver/tautulli:2.18.1
     container_name: tautulli
     restart: unless-stopped
     ports:
