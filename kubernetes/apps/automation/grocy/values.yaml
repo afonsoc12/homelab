@@ -8,7 +8,7 @@
 replicas: 1
 image:
   repository: ghcr.io/linuxserver/grocy
-  tag: 4.6.0
+  tag: 4.7.1
 ports:
   - containerPort: 80
     service: true
