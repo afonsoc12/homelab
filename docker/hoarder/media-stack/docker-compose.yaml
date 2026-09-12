@@ -200,7 +200,7 @@ services:
       - "/mnt/user/appdata/seerr:/app/config"
 
   plex:
-    image: ghcr.io/linuxserver/plex:1.43.3
+    image: ghcr.io/linuxserver/plex:1.43.4
     container_name: plex
     restart: unless-stopped
     network_mode: host
@@ -271,7 +271,7 @@ services:
       - "/mnt/user/appdata/kometa:/config"
 
   tautulli:
-    image: ghcr.io/linuxserver/tautulli:2.18.0
+    image: ghcr.io/linuxserver/tautulli:2.18.1
     container_name: tautulli
     restart: unless-stopped
     ports:
@@ -285,7 +285,7 @@ services:
       - "/mnt/user/appdata/tautulli:/config"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:2.86.01
+    image: ghcr.io/haveagitgat/tdarr:2.87.01
     container_name: tdarr
     restart: unless-stopped
     ports:
