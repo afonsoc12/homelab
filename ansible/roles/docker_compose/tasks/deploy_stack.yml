@@ -9,6 +9,33 @@
     recreate: "{{ docker_compose_recreate_policy }}"
     remove_orphans: true
 
+# Services with network_mode: service:<x>/container:<x> pin to that target's
+# network namespace at container-create time. If the target is later recreated
+# (image update, config change, another ansible run), the dependents keep
+# pointing at the now-gone namespace and just sit "Created" forever, failing
+# with exit 128 on every start attempt. docker compose won't recreate them on
+# its own since their own config didn't change, so force it every run.
+- name: "Compute network_mode dependents for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_stack_dependents: >-
+      {{
+        (lookup('ansible.builtin.file', stack.path + '/docker-compose.yaml') | from_yaml).services
+        | dict2items
+        | selectattr('value.network_mode', 'defined')
+        | selectattr('value.network_mode', 'match', '^(service|container):')
+        | map(attribute='key')
+        | list
+      }}
+
+- name: "Force-recreate network_mode dependents to avoid stale netns after target recreate: {{ stack.path | basename }}"
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_compose_base_dir }}/{{ stack.path | basename }}"
+    services: "{{ docker_compose_stack_dependents }}"
+    pull: never
+    build: never
+    recreate: always
+  when: docker_compose_stack_dependents | length > 0
+
 - name: "Prune unused resources after {{ stack.path | basename }}"
   community.docker.docker_prune:
     timeout: 180
