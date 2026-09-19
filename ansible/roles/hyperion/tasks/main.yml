@@ -47,3 +47,55 @@
     port: 8090
     timeout: 30
     active_connection_states: ESTABLISHED
+
+# Hyperion blocks/warns on requests from a "non-local" network (e.g. cross-VLAN,
+# through ingress) while the API still uses the factory-default password. Since
+# this instance is only reachable behind Authelia already, drop Hyperion's own
+# auth requirement and allow non-local access so the app-level warning stops
+# gating legitimate traffic from other VLANs.
+- name: Disable hyperion API auth and allow non-local network access
+  block:
+    - name: Update hyperion network settings (unauthenticated)
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:8090/json-rpc"
+        method: POST
+        body_format: json
+        body:
+          command: settings
+          subcommand: update
+          settings:
+            network:
+              apiAuth: false
+              localApiAuth: false
+              internetAccessAPI: true
+        status_code: 200
+      register: hyperion_network_settings
+  rescue:
+    - name: Login with default hyperion credentials
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:8090/json-rpc"
+        method: POST
+        body_format: json
+        body:
+          command: authorize
+          subcommand: login
+          password: "{{ hyperion_default_password }}"
+        status_code: 200
+      register: hyperion_login
+
+    - name: Update hyperion network settings (authenticated)
+      ansible.builtin.uri:
+        url: "http://{{ ansible_host }}:8090/json-rpc"
+        method: POST
+        headers:
+          Authorization: "Bearer {{ hyperion_login.json.info.token }}"
+        body_format: json
+        body:
+          command: settings
+          subcommand: update
+          settings:
+            network:
+              apiAuth: false
+              localApiAuth: false
+              internetAccessAPI: true
+        status_code: 200

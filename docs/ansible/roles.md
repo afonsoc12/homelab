@@ -42,6 +42,11 @@ Docker itself is installed separately by the `geerlingguy.docker` external role 
 
 Installs and configures [Hyperion](https://hyperion-project.org/) (ambient LED controller) on `rpi-z2w-hyperion`.
 
+Also disables Hyperion's own API auth and allows non-local network access, since the app
+otherwise blocks/warns on requests crossing VLANs while still using its factory-default
+password. It's fine to leave auth off here because the instance already sits behind
+Authelia at the ingress.
+
 ### `k3s`
 
 Thin wrapper around the external `k3s-io/k3s-ansible` collection for cluster-specific overrides.
