@@ -1,0 +1,114 @@
+# --------------------
+# Tracktor
+#   - Repo:           https://github.com/javedh-dev/tracktor
+#   - Docs:           https://tracktor.bytedge.in
+#   - Image:          ghcr.io/javedh-dev/tracktor
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/javedh-dev/tracktor
+    tag: 2.1.0
+    pullPolicy: IfNotPresent
+ports:
+    - containerPort: 3000
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+configmap:
+    mountEnv: true
+    data:
+        TRACKTOR_DISABLE_AUTH: true
+        CORS_ORIGINS: https://tracktor.local.{{ .Values.domain }}
+        HTTP_MODE: https
+secret:
+    mountEnv: true
+    stringData:
+        APP_SECRET: ENC[AES256_GCM,data:v1U+qMfE4me6gGV3ZhE0htl1NfHDzkkmO1cc2QcQa4oKndmgN98ilH4AzBbBlqv9EmgTiFOrqIelcWqJ+8+0qQ==,iv:DKpJ6LMLZ72bWtYmtIC37coKQRvVbPCdhN+8NGk+ooU=,tag:ja+lwKWeBCXcPypUebDO5w==,type:str]
+volumeMounts:
+    - mountPath: /data
+      name: data
+volumes:
+    - name: data
+      mountPvc: true
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 50Mi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: tracktor.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+livenessProbe:
+    tcpSocket:
+        port: 3000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /
+        port: 3000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 30
+startupProbe:
+    httpGet:
+        path: /
+        port: 3000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
+resources:
+    limits:
+        cpu: 250m
+        memory: 256Mi
+    requests:
+        cpu: 25m
+        memory: 128Mi
+podSecurityContext: {}
+securityContext: {}
+sops:
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-09-20T17:48:54Z"
+    mac: ENC[AES256_GCM,data:WVZZCdua/QDyMY6lIXY/QmbzINU6+3uuGxf1rTDRtW4vtpLA4FppOvVKx/LEgJ99YyU1EhZhLhpa0sfoTGqJWFCVZpGngMBA1FnEXykuBpxiLaKJpJL8WU4zM0YkhO/DFpDCu9iWOV4hcsP85h6r9KELFIqwfdU8I98GAYvV7N0=,iv:Z30+H7VM+B/UgXmWhy/2bZ3r5mN31j7swneATPFPWnw=,tag:FCNHMC19cZkGOo/lYA+iLw==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-09-20T17:48:54Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAAmNNR5yl6/t3EqsdyYauqIcZGAxjPioT8jdhPh2Rf5GkX
+            EV5qkkPhqEdRzhYu5t97s1xFYUNl2MEfJnF6NPEKOCw9YHLVr8Qt/m5kB85Fg0T7
+            eOBT4pwYbf5BdtVfuaMZWlRObXAZWQlJJP5ih2N9fP3dNXTw07Vu8LnwD3jxJYDm
+            euw+Zb+4X9WT+BB2ZuFPUkAmCM+Qd6T1tdc3Ff+YiBJ9TybGIe2jclBMk/8BkwoN
+            ti/MuVIQv31RYBVFmM9uOHbtmNuZMNEc0bbLDYppzCDKCLeMcLbq+jpsuMR2TftM
+            OPdn2xqNNU2ZsjWJRGgUZhXycbv8F5bbY41PN25fKXYkprPNyXrrQ/evq76D+Z/F
+            dIkrFlHeloejd8NHbSK9fTe4J/TxPi1UuyDyKBYLcedMNmkwx2MpP0iEqmQPqwG/
+            PCl4Cm/9MFXgL0VqM/oCJtqM85D4XIvbrPgcFiY4lLbSXgU7xtJaU38kmK6oqt19
+            i7g6xJfNPA2siNDMYZGz6mfGIV9vtpHA2dIwPDsZmuWyPmAzlHg2QWvG/LOGgBJw
+            GYNlWEN27UbELfjGmAxV2hux1YfrBhyTA/0wheOuchNzc5PTglM9msCh8ptjrBgf
+            XUCIX+N8GgxXolqIQRwM8wL5PCe9uUE5nteqmua1rUkwQunsMLGAMU8mLqZIeILU
+            aAEJAhBDm9Il1cPtoKiuMKnvhfPi4vN6rU0Kr2AoLSLJrspd8Z9svpka8XwNvNVF
+            vhBJ/cwe50rIZqa+tuxAeDVLecwBb64gEfjBoFVebaPE8NOoWNqH/hbKRryPFBp0
+            1Fpfl0pTNdSq
+            =gsrP
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

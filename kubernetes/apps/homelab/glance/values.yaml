@@ -263,6 +263,10 @@ configmap:
                         description: Site stock monitor
                         icon: di:changedetection
                         url: https://changedetection.local.{{ .Values.domain }}
+                      - title: Tracktor
+                        description: Vehicle tracking management
+                        icon: https://raw.githubusercontent.com/javedh-dev/tracktor/main/static/logo.svg
+                        url: https://tracktor.local.{{ .Values.domain }}
                       - title: DocuSeal
                         description: Document Signing
                         icon: di:docuseal

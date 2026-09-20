@@ -7,6 +7,8 @@ description: Add a new application or service to the homelab cluster. Trigger wh
 
 ## k3s app (runs in cluster)
 
+Every app values file must configure: `livenessProbe`/`readinessProbe`/`startupProbe`, and `resources.limits`/`resources.requests` (cpu + memory). If a PVC is needed, size it to the app's actual data footprint (e.g. 50Mi for a SQLite DB + light uploads) — don't default to large sizes; Longhorn volumes can be grown later if needed.
+
 1. Create exactly one values file — never both:
    ```
    kubernetes/apps/<namespace>/<app>/values.yaml       # no secrets needed
