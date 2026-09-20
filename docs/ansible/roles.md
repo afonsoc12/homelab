@@ -42,6 +42,10 @@ Docker itself is installed separately by the `geerlingguy.docker` external role 
 
 Installs and configures [Hyperion](https://hyperion-project.org/) (ambient LED controller) on `rpi-z2w-hyperion`.
 
+Hyperion rejects non-local (cross-VLAN) connections while its password is still the
+factory default, with no config flag to disable this. Fixed by changing the password
+via Hyperion's websocket API, not by this role.
+
 ### `k3s`
 
 Thin wrapper around the external `k3s-io/k3s-ansible` collection for cluster-specific overrides.
