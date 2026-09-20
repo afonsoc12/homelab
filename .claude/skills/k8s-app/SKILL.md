@@ -24,7 +24,9 @@ Every app values file must configure: `livenessProbe`/`readinessProbe`/`startupP
 
 3. Add a bookmark link to `kubernetes/apps/homelab/glance/values.yaml` (`configmap.data."home.yml"` → Homelab page → the relevant bookmarks group). Use `icon: di:<slug>` (dashboard-icons, matches the slug used in `docs/services/*.md`) and the app's actual ingress host as `url`.
 
-4. Push — ArgoCD auto-syncs within ~3 min.
+4. Add a `### <App>` section to the matching `docs/services/<namespace>.md` (e.g. `docs/services/homelab.md`) — icon, `k3s-cluster · <code><namespace></code>` byline, one-line description, and Documentation + values file links. Match the format of existing entries.
+
+5. Push — ArgoCD auto-syncs within ~3 min.
 
 ## External service (bare metal, Docker, Unraid)
 
