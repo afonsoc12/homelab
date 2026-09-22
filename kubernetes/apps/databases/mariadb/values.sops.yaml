@@ -132,6 +132,8 @@ backup:
     # indefinitely under concurrencyPolicy: Forbid.
     activeDeadlineSeconds: 3600
     backoffLimit: 0
+    prometheusRule:
+        enabled: true
     successfulJobsHistoryLimit: 1
     failedJobsHistoryLimit: 1
     config:

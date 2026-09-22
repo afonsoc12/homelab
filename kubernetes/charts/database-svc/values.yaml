@@ -115,4 +115,6 @@ backup:
   args: ["backup-now"]
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
+  prometheusRule:
+    enabled: false
   config: {}
