@@ -97,6 +97,11 @@ backup:
     schedule: 0 3 * * *
     rootPasswordKey: POSTGRES_PASSWORD
     concurrencyPolicy: Forbid
+    # Prevents a stuck job (e.g. a Longhorn volume mount that never resolves)
+    # from blocking every future scheduled run indefinitely under
+    # concurrencyPolicy: Forbid. Job self-fails after this many seconds.
+    activeDeadlineSeconds: 3600
+    backoffLimit: 0
     successfulJobsHistoryLimit: 1
     failedJobsHistoryLimit: 1
     config:

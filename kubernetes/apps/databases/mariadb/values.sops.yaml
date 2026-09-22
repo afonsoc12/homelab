@@ -128,6 +128,10 @@ backup:
     schedule: 0 3 * * *
     rootPasswordKey: MYSQL_ROOT_PASSWORD
     concurrencyPolicy: Forbid
+    # Prevents a stuck job from blocking every future scheduled run
+    # indefinitely under concurrencyPolicy: Forbid.
+    activeDeadlineSeconds: 3600
+    backoffLimit: 0
     successfulJobsHistoryLimit: 1
     failedJobsHistoryLimit: 1
     config:
