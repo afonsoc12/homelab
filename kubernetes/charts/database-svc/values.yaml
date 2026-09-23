@@ -117,4 +117,5 @@ backup:
   failedJobsHistoryLimit: 1
   prometheusRule:
     enabled: false
-  configFile: ""
+  configmap:
+    data: {}

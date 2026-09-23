@@ -65,7 +65,7 @@ spec:
               claimName: {{ include "database-svc.fullname" $ }}-backup-pvc
           - name: config
             configMap:
-              name: {{ include "database-svc.fullname" $ }}-backup
+              name: {{ include "database-svc.fullname" $ }}-cron
           affinity:
             podAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
