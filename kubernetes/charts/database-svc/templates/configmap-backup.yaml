@@ -7,5 +7,5 @@ metadata:
     {{- include "database-svc.labels" . | nindent 4 }}
 data:
   db-backup.yml: |
-    {{- tpl (toYaml .Values.backup.dbBackupConfig | nindent 4) $ }}
+    {{- .Values.backup.configFile | nindent 4 }}
 {{- end }}

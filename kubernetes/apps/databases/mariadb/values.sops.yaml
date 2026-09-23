@@ -134,45 +134,45 @@ backup:
         enabled: true
     successfulJobsHistoryLimit: 1
     failedJobsHistoryLimit: 1
-    dbBackupConfig:
+    # community edition: retention.within only supports minutes (129600m = 90d)
+    configFile: |
         log:
-            level: info
-            type: console
+          level: info
+          type: console
         defaults:
-            storage:
-                backend: filesystem
-                path: /backup
+          storage:
+            backend: filesystem
+            path: /backup
         profiles:
-            connections:
-                mariadb:
-                    type: mysql
-                    host: mariadb
-                    user: root
-                    pass: "env://DB_PASS"
-            databases:
-                mariadb-all:
-                    connection: mariadb
-                    include:
-                        - ALL
-                    exclude:
-                        - "#mysql50#lost+found"
-                        - information_schema
-                        - mysql
-                        - performance_schema
-                        - sys
+          connections:
+            mariadb:
+              type: mysql
+              host: mariadb
+              user: root
+              pass: "env://DB_PASS"
+          databases:
+            mariadb-all:
+              connection: mariadb
+              include:
+                - ALL
+              exclude:
+                - "#mysql50#lost+found"
+                - information_schema
+                - mysql
+                - performance_schema
+                - sys
         jobs:
-            - name: mariadb-backup
-              database: mariadb-all
-              backup:
-                  compression:
-                      type: gz
-                      rsyncable: true
-                  checksum: sha1
-              # community edition: within only supports minutes (129600m = 90d)
-              retention:
-                  within: "129600m"
-              schedule:
-                  cron: "0 3 * * *"
+          - name: mariadb-backup
+            database: mariadb-all
+            backup:
+              compression:
+                type: gz
+                rsyncable: true
+              checksum: sha1
+            retention:
+              within: "129600m"
+            schedule:
+              cron: "0 3 * * *"
     affinity:
         podAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
