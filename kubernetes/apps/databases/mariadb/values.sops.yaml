@@ -134,22 +134,45 @@ backup:
         enabled: true
     successfulJobsHistoryLimit: 1
     failedJobsHistoryLimit: 1
-    config:
-        MODE: MANUAL
-        MANUAL_RUN_FOREVER: "FALSE"
-        CONTAINER_ENABLE_SCHEDULING: "FALSE"
-        CONTAINER_ENABLE_MONITORING: "FALSE"
-        DB_TYPE: mariadb
-        DB_HOST: mariadb
-        DB_NAME: ALL
-        DB_NAME_EXCLUDE: '#mysql50#lost+found,information_schema,mysql,performance_schema,sys'
-        DB_USER: root
-        DB_DUMP_FREQ: "1440"
-        # 3 months
-        DB_CLEANUP_TIME: "129600"
-        CHECKSUM: SHA1
-        COMPRESSION: GZ
-        GZ_RSYNCABLE: "TRUE"
+    dbBackupConfig:
+        log:
+            level: info
+            type: console
+        defaults:
+            storage:
+                backend: filesystem
+                path: /backup
+        profiles:
+            connections:
+                mariadb:
+                    type: mysql
+                    host: mariadb
+                    user: root
+                    pass: "env://DB_PASS"
+            databases:
+                mariadb-all:
+                    connection: mariadb
+                    include:
+                        - ALL
+                    exclude:
+                        - "#mysql50#lost+found"
+                        - information_schema
+                        - mysql
+                        - performance_schema
+                        - sys
+        jobs:
+            - name: mariadb-backup
+              database: mariadb-all
+              backup:
+                  compression:
+                      type: gz
+                      rsyncable: true
+                  checksum: sha1
+              # community edition: within only supports minutes (129600m = 90d)
+              retention:
+                  within: "129600m"
+              schedule:
+                  cron: "0 3 * * *"
     affinity:
         podAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:

@@ -5,5 +5,7 @@ metadata:
   name: {{ include "database-svc.fullname" . }}-backup
   labels:
     {{- include "database-svc.labels" . | nindent 4 }}
-data: {{- tpl (toYaml .Values.backup.config | nindent 2) $ }}
+data:
+  db-backup.yml: |
+    {{- tpl (toYaml .Values.backup.dbBackupConfig | nindent 4) $ }}
 {{- end }}

@@ -110,13 +110,11 @@ affinity: {}
 backup:
   enabled: false
   image:
-    # 5.x is a config-breaking rewrite (DB01_* schema); 4.9.2 keeps the
-    # existing DB_*/MODE/CONTAINER_ENABLE_* vars working.
     repository: ghcr.io/nfrastack/db-backup
-    tag: 4.9.2
+    tag: 5.0.1
   args: ["backup-now"]
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   prometheusRule:
     enabled: false
-  config: {}
+  dbBackupConfig: {}
