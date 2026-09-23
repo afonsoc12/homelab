@@ -14,6 +14,10 @@ spec:
   suspend: {{ .suspend }}
   jobTemplate:
     spec:
+      {{- with .activeDeadlineSeconds }}
+      activeDeadlineSeconds: {{ . }}
+      {{- end }}
+      backoffLimit: {{ .backoffLimit | default 0 }}
       template:
         metadata:
           annotations:
@@ -37,17 +41,20 @@ spec:
               env:
               - name: TZ
                 value: {{ $.Values.tz }}
+              - name: SETUP_TYPE
+                value: MANUAL
+              - name: MODE
+                value: MANUAL
               - name: DB_PASS
                 valueFrom:
                   secretKeyRef:
                     name: {{ include "database-svc.fullname" $ }}
                     key: {{ .rootPasswordKey }}
-              envFrom:
-              - configMapRef:
-                  name: {{ include "database-svc.fullname" $ }}-backup
               volumeMounts:
               - name: backup
                 mountPath: backup
+              - name: config
+                mountPath: /config
               {{- with .resources }}
               resources:
                 {{- toYaml . | nindent 16 }}
@@ -56,6 +63,9 @@ spec:
           - name: backup
             persistentVolumeClaim:
               claimName: {{ include "database-svc.fullname" $ }}-backup-pvc
+          - name: config
+            configMap:
+              name: {{ include "database-svc.fullname" $ }}-cron
           affinity:
             podAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:

@@ -29,13 +29,13 @@ ports:
 service:
     enabled: true
     type: LoadBalancer
-    loadBalancerIP: ENC[AES256_GCM,data:cNGJoiBoZhASWGI=,iv:v2IA2kukdZ61k6UGXPK0IiRfwDvvW+LNbuTB6khf6xQ=,tag:ESwuR6AtbpIyR54Pie9b8A==,type:str]
+    loadBalancerIP: ENC[AES256_GCM,data:4oFnJHjub9FZb3E=,iv:xskpYfstI8HjtekM+tkNBgK3i23nMgfnUGtJlekFlk0=,tag:1A2L4UdifUbLrL+77a4DxQ==,type:str]
     annotations:
         metallb.universe.tf/allow-shared-ip: db-svc
 secret:
     stringData:
-        PGPASSWORD: ENC[AES256_GCM,data:GlJvzCREQu9eNmk4TF4x42x3KEw=,iv:/Xeew83BQfqWByRfFXoBoLT4CtAVptSHN2R1HynJG4M=,tag:pFYkZkH65iLCkRCFLi9J4A==,type:str]
-        POSTGRES_PASSWORD: ENC[AES256_GCM,data:fSJv4FXZ7rF1tLoSH/WxRDbFSRw=,iv:4PBjgwUhFwTjCevhM9W+Xy5Urm4SlmOutE1JM1s9Z10=,tag:gpvmBhQnCgcaz26M/OROXA==,type:str]
+        PGPASSWORD: ENC[AES256_GCM,data:idrcbRkmeqzNCrlS6jGW0TNLjJ4=,iv:2P/JncawA+A8TfuXYBI28hLACjlvejjJnP2monIBgu4=,tag:FbYD1jBRb75E3pxm6jHjwA==,type:str]
+        POSTGRES_PASSWORD: ENC[AES256_GCM,data:ba29bZu3fKzn35GX8Yj9BS4f5Ss=,iv:GG57bPhA/KE5nG/VX5eEtfI5rfqOgTFVTI6Qfe7tpqg=,tag:Ie/a/xjSPyK5VyM78bz19Q==,type:str]
 volumeMounts:
     - name: data
       mountPath: /var/lib/postgresql
@@ -97,24 +97,16 @@ backup:
     schedule: 0 3 * * *
     rootPasswordKey: POSTGRES_PASSWORD
     concurrencyPolicy: Forbid
+    activeDeadlineSeconds: 3600
+    backoffLimit: 0
+    prometheusRule:
+        enabled: true
     successfulJobsHistoryLimit: 1
     failedJobsHistoryLimit: 1
-    config:
-        MODE: MANUAL
-        MANUAL_RUN_FOREVER: "FALSE"
-        CONTAINER_ENABLE_SCHEDULING: "FALSE"
-        CONTAINER_ENABLE_MONITORING: "FALSE"
-        DB_TYPE: postgres
-        DB_HOST: postgres
-        DB_NAME: ALL
-        DB_NAME_EXCLUDE: postgres,template0,template1
-        DB_USER: postgres
-        DB_DUMP_FREQ: "1440"
-        # 3 months
-        DB_CLEANUP_TIME: "129600"
-        CHECKSUM: SHA1
-        COMPRESSION: GZ
-        GZ_RSYNCABLE: "TRUE"
+    # community edition: retention.within only supports minutes (129600m = 90d)
+    configmap:
+        data:
+            db-backup.yml: ENC[AES256_GCM,data:rP1fNhXKFpn/LFldpn1Mybl8Wdk4s4yTtEO8jAnNfo7SCrIwnllxJK+ECORyjAp8EJ0QOYYv6EytcF7JYe8M0If2cq6PDYBJpUferUvHwwSt1m/3KN6BnLanFoI4WD4AUY0/GbOj9JGh7kuKSZUHmqXE8Ua7KFHdqDHQATmugW3N44OWiGfsjUseCtMZuCO6PbvqwjnnaGOhqwQYKhaTgza0nKlLIYcDSXGHLIWGmntPZzQqTRqmzFKtWsvjWGERbQjUQ1GGP6hN77MuYSYOB1QRu7pSBjKmooI1vLCTEyR2xTHIRadu/QIB93fpAGz+/KOZqqE+NkL6rFd8eTcNC1kYnP01xXA7CmrczJQ5RkVFeUha2xl8mOVmR01BjLbdEGj2HO6Q2wa1904YBusEc/iToOgO/IEyaC0/4fMVajgPICbSomjrjNFLRmrvaS1S2oH7OPLu/Xj188fLgyM1GCymAEDt5rSo9elhC4OdwifQx0XoEsOwkiG2UpdmvoTKFOwus1EVPKGCWSL2bZBBCiHGb/wJyAg6Cuvg2qTzqGQ2ZgXsIFktOGNgrgZtUBUzsEIcZCV6+rDROpjk9VrkO2O1wu2BCkKr/vUe79FUXCZj6GeMpOdC3w89HtzWNRKnvDNQ4J9I5yLhW0H1R8tR/wLyVpfewrEysXAp5hScxbJYG1pFJ3oXnHpU9lCUBZ634VZVIMs5JhRU7pGHRX0jy1IAyIDlNw5e+lXvPF87n3nM4mgB3P9f9bQMBcCduqjmsGdRD4j7lydWOu2u7QT2YG5w0hS00GjBxC5jMd7/OU83fSjHIhl4cCwu,iv:800fvl8VZmGjKvrQKmpV0L/jZPMpvG/BPMrPgNVgopA=,tag:2Om1JGuYB2eAy6sZuQV21g==,type:str]
     resources:
         requests:
             cpu: 100m
@@ -124,29 +116,29 @@ backup:
             memory: 256Mi
 sops:
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    lastmodified: "2026-08-17T22:59:45Z"
-    mac: ENC[AES256_GCM,data:gyh9PXA9nYXWgT8i1dJiXv7xNVJx95VKMp/HJckA/NHbht7jXRacEP2ZQjzYsmDLs/CaeEjgF47n8FXmxARiQMvzXKVQooV4fY9XRVhTB/jeOh+fcbdZSxRvuVcOv+cfcXyy8HJ8DGK/xKgqHGZtTDi702cta0B525OkPogUgxA=,iv:87A3SF7aOdwRag9cC4FBCoXxow6Ed4Snx/BGQbFiahQ=,tag:6t+/Lq3c2UeH5gXLIo1esg==,type:str]
+    lastmodified: "2026-09-23T00:24:47Z"
+    mac: ENC[AES256_GCM,data:szbqI5cAdcgo7VP5jZ8Y/bLdXOMR5lFjKVucBwb5ARBs65uuS9dKXwr6RLwhNbhu+SaPYR972UxfdSC3PVfsckix/cbHOFQB7S+RQZuCMtQ44kILTfUA7qo4XyVluAyaNZ6uL3z/bwZdemLcJMgt/8ea39gCoFMVyY8Znq82a6M=,iv:sxgIevzjFLTPghZ0u2qxtLynfaBAHAZraMIatntHBHI=,tag:yc31XBEIya4Jc1hv7P+T3A==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-04-13T20:28:41Z"
+        - created_at: "2026-09-23T00:24:47Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//alEQ7bnZ2uMzZ47rqd+kEDwr5JZ7uneSHLu7CTLMovlE
-            EAx4tDv/Li/XzMPuUbW0LOdQWyMqAHdKOav3SNCv0wBeEoIULz0O2RZ73yX0Z+Xe
-            29F8pXQwnBMC7iPayLZ91UmsYd5idPXCjptqqoht//Ix+cBtuwu7yA67NoU+ZrvS
-            B3HQyahLNGDHRpDMywRfq0KLH3/bCl1y7wYLTLpgWxdlMsk/vBRHkhHgpbxar3NU
-            Tk44aot0z3T3EA+1Xk0AIDzF+7K1PL659JQADGMuP8BMlXnssDQwwmQdBDKmogL/
-            vesMwnfXAJ65TM9Ttew8Q/9FEJhOCUGCoSawIVBjhO+XXPoibmgUmGcqndu0a+ci
-            +9LQx6bAT3nIdG0iRxIIF8X6zFQ1hyjFQvsKfi4gsNehP0GfFrjdUZs/S97Hg3zy
-            fEodNZkMUXlc7gKQU587W/JWSLSnxgdE//m3MybaQ8h0KfD9ZQgVlIEqwEpgEKaY
-            iJ2J8TlIDm/XNcH8sDMbJtDSkT/Gn83IVCzNQDDUZYtd6xKT7t5IwuF5gISqfCIA
-            nyV92h1/piFAys9nFbcZYfYMbQHjwMBHokTJ6YSoE8ib3GoheL3P5cUXg55aWH2K
-            528G8YNV1biPB1xrovZtiD30yV5cdsDmVkzFR/wjJ/tkfzRWsru4d70hPG3BiVDU
-            aAEJAhCaY25w5E7gqCxRcxA0mOf8JPJBUFsrKPk6cFP8vYrXgR5uKKbzJAWcXGNT
-            FyHFMOtZBrUu3uQl0kpEuiWDLqts573myPKxHESlGwEHDd+wKymt1ea19MYzP7a/
-            ujQtQx9pkiBT
-            =8HEs
+            hQIMA5NT/LvuRqeGAQ/+OPFDXuW6IwthH7mk3z0Pw/Gi6TZyN+VZE8OnxBZXrhb2
+            mGpkZzU6CGhx35c0WhAsmH4ZjPjeB4HXSSeSdE/TUXgsgmx3J3x76jOz80+A4LYl
+            UTAlhwo0jkBba+kUJDvsRqS1UFNAimi+vf08fgSG4e3p7dxUTlN6vfVu3jpuAdnU
+            /3d//mSm7z3b/pbls9nadkcRt5Hh1qq0D603AhKknckk4hu4Sw1Rx9Y4ReP6kZpd
+            sTuiuFvKiagvhXjRgBuZwOPLARQes3DGPXVos9HnGt8PxbwpVjB59XTaJQyjejhd
+            syvIeksTMdGJWsQj4M+GkiBVFBmq9envPRS5RFzt4w9WVkolnawdxNilSHNdDwBO
+            cY9J7SgsXVcofEKHpUfa9PPWRtOGfy7/zh886sR91i0aVQY/RHx8Sv6eKmECugXC
+            7PydrdkLthjvmJ9sLI9+fYSl3tMmvkhJLmzxTKE/KDdFS8IlX12MCbGf3FfGTWqp
+            GbPPX4oN8wKbj1HJCkLcgnKT7EU5Xhp0ytthUJvHhl4vHagtEvw8PVHjadOebOl1
+            0Sp2BgTWQfzc0hyCUHJeUq9RVRnpty1WNx/Co5wtasq7J/2cwMB+nCzFDrLLTseo
+            pAha1OSgbDyYNjgFCE07gyYIqDRtoeq47VV6RRFYDCUwuVwFWlsPnaWP1NhJz0/U
+            ZgEJAhDsGUgD17nueqGNyG5VUtYASCkrl3TOw7lx7VzyYrY4JqqaJstFTIgWsE8b
+            yZaWvxnSm+45jGG8dDcrhxECt4IzqQx8F7YCN4/CJFj79Ed0c4Nr0cxmcauOfnpO
+            As0Gm5FvTg==
+            =bjL8
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.12.2
+    version: 3.13.2

@@ -1,0 +1,29 @@
+{{- if and .Values.backup.enabled .Values.backup.prometheusRule.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "database-svc.fullname" $ }}-backup
+  labels:
+    release: prometheus-stack
+    {{- include "database-svc.labels" $ | nindent 4 }}
+spec:
+  groups:
+    - name: {{ include "database-svc.fullname" $ }}-backup
+      rules:
+        - alert: DatabaseBackupJobFailed
+          expr: kube_job_status_failed{namespace="{{ $.Release.Namespace }}", job_name=~"^{{ include "database-svc.fullname" $ }}-backup-.*"} > 0
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "{{ include "database-svc.fullname" $ }} backup job failed"
+            description: "A {{ include "database-svc.fullname" $ }} backup Job in namespace {{ $.Release.Namespace }} has failed. Check `kubectl logs -n {{ $.Release.Namespace }} -l job-name=<job>` for details."
+        - alert: DatabaseBackupJobStuck
+          expr: (time() - kube_job_status_start_time{namespace="{{ $.Release.Namespace }}", job_name=~"^{{ include "database-svc.fullname" $ }}-backup-.*"}) > 1800 and kube_job_status_active{namespace="{{ $.Release.Namespace }}", job_name=~"^{{ include "database-svc.fullname" $ }}-backup-.*"} > 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ include "database-svc.fullname" $ }} backup job still running after 30m"
+            description: "A {{ include "database-svc.fullname" $ }} backup Job in namespace {{ $.Release.Namespace }} has been active for over 30 minutes — likely stuck (it will self-fail at the activeDeadlineSeconds limit and trigger DatabaseBackupJobFailed if so)."
+{{- end }}

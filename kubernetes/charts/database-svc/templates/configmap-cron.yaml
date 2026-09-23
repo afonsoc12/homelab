@@ -2,8 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "database-svc.fullname" . }}-backup
+  name: {{ include "database-svc.fullname" . }}-cron
   labels:
     {{- include "database-svc.labels" . | nindent 4 }}
-data: {{- tpl (toYaml .Values.backup.config | nindent 2) $ }}
+data:
+  {{- tpl (toYaml .Values.backup.configmap.data | nindent 2) $ }}
 {{- end }}

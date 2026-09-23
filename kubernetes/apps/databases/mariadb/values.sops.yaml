@@ -32,13 +32,13 @@ ports:
 service:
     enabled: true
     type: LoadBalancer
-    loadBalancerIP: ENC[AES256_GCM,data:uc5zRz/F2s3odI4=,iv:27HSXVlSoGmf694GIoxnkUxxkZNF5Xteuv54UBPDcvI=,tag:MxmFdoXzViWOSN9Q+lF+2w==,type:str]
+    loadBalancerIP: ENC[AES256_GCM,data:LRhePZf05WdTtic=,iv:/YVuCUebQTh+engYW2OSFo0ZpNyL0AgOU88mB0XgvHI=,tag:x6CecSkpDfcX7GmqF85ssg==,type:str]
     annotations:
         metallb.universe.tf/allow-shared-ip: db-svc
 secret:
     stringData:
-        MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:hTi6Z++v8JWArWHT7XVteRxyBpg=,iv:5YGhq4mda4CtxDEY7G+wZC7eohp2RAuq+ZGR7HEz+rI=,tag:viBWqFcb4UMOlg3hMid22g==,type:str]
-        MYSQLD_EXPORTER_PASSWORD: ENC[AES256_GCM,data:BJS4NGfEQnsJqqryoGhrHhdLIZk=,iv:1adj/RJ1R8xF6grtXquOpNCBbr5fPjXHMzdm3aNbbOc=,tag:BjU5Re9u3thgYG05DwNC4w==,type:str]
+        MYSQL_ROOT_PASSWORD: ENC[AES256_GCM,data:E1JB0960ta03h2n/HsUzoVfhvSw=,iv:GZgpXZp4PSuNHl3gLf130Jg502mfD/Bz43erkkQVJmI=,tag:DUq6o95iDx83LCuQkWSzGg==,type:str]
+        MYSQLD_EXPORTER_PASSWORD: ENC[AES256_GCM,data:NqgOY2dfObO56vk84e9NMmfSmEQ=,iv:BqffRKHvATymvlIfp1+fPy+dauFRCJBXZybjVDt0JKg=,tag:j6M0m3z0RyrqmHpvBznVcw==,type:str]
 configmap: {}
 # config_1: abc
 # config_2: def
@@ -128,24 +128,16 @@ backup:
     schedule: 0 3 * * *
     rootPasswordKey: MYSQL_ROOT_PASSWORD
     concurrencyPolicy: Forbid
+    activeDeadlineSeconds: 3600
+    backoffLimit: 0
+    prometheusRule:
+        enabled: true
     successfulJobsHistoryLimit: 1
     failedJobsHistoryLimit: 1
-    config:
-        MODE: MANUAL
-        MANUAL_RUN_FOREVER: "FALSE"
-        CONTAINER_ENABLE_SCHEDULING: "FALSE"
-        CONTAINER_ENABLE_MONITORING: "FALSE"
-        DB_TYPE: mariadb
-        DB_HOST: mariadb
-        DB_NAME: ALL
-        DB_NAME_EXCLUDE: '#mysql50#lost+found,information_schema,mysql,performance_schema,sys'
-        DB_USER: root
-        DB_DUMP_FREQ: "1440"
-        # 3 months
-        DB_CLEANUP_TIME: "129600"
-        CHECKSUM: SHA1
-        COMPRESSION: GZ
-        GZ_RSYNCABLE: "TRUE"
+    # community edition: retention.within only supports minutes (129600m = 90d)
+    configmap:
+        data:
+            db-backup.yml: ENC[AES256_GCM,data:DZNTchoS1pmF1ATRmw4cWVGI3bST4HTTEsH33Drdz3xD1bqiR7rJMKPpVxTUae/H9wkNXJSEfHtTHjfKQEQZoETc3crcNgy+dbDUEtwEXzVaz1rA4hXYOwVGFHKks8bAk0zr5yQm327cuQi3hjSjJeN3BhX3rAXdad3+/M/UXkYCzydRwyaYEEBJSB+8H89pI1LVO4dbUqkOIyaKr3xV/O3LACOe/lmJtH1LOt6t46YDZ3H6mx3m2KOJNxFpzT+rdA+p6bsp35/gA9QZtC0H4qXuZ2AiJ7zYYMOV1DbORZbtybq5TKyWfjwP5aVBPo0r6j/xYXYvPXL06J8d3++wxKcsa3oVXgOvzazjIX4RohlViuurOXThB0sHc78zrCFbeoaL3nu0DMMPOtNzvPCdtiUyReD+cYdJ88JHphiYAjhCV5CJGUHBiqHs6mx3zRtnnegQeHvH356cY0oCn0goK5RAqwD7DwgRu6sVlvgJJLqrqIHXmtFkKb4oa2fK4nc93Afw/ursErUM//6mzxwx8odoF1X7gvNte4snM1/e8RsAfmzyrhZ3vYhuG4UyG+561JPlr2eMEOCoSG/E3QRNdNyRiIjyoC66HXPuYYHosycrIjqtz9nCBJA2yBQhyt3x2JhmhVEd7a7B7RM/2b6cc4Xgk0/QwpVJ1SJIQmExAq5cAv3wn2BgMhrpVkemRG8K5KkbJl7Nl6FIpahIwQOyMeXUh8sa2OB2PjXLth9aTrSotMvjY9ZXPpYPLLPePpmyAp3rBeRovnS8eRBL4aWcIwrNYbsXCGxOV8Z2+ESYeZeAtTDpri1vZeZXjzUJd/zFThLk//bN12yjYbyqJ1v8xpKcph4B3poDFtprCfyopKzHTTiRjoLINDjq,iv:TdxDDKvOFhgPZ1V96Xn7bB4THXiLqwlJgNOY4zbfTls=,tag:hI3l6/FAl+OdpvJNY3QMBA==,type:str]
     affinity:
         podAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
@@ -165,29 +157,29 @@ backup:
             memory: 256Mi
 sops:
     encrypted_regex: ^(data|stringData|loadBalancerIP)$
-    lastmodified: "2026-08-17T22:59:45Z"
-    mac: ENC[AES256_GCM,data:VnhOizbqQmmEKOoECNlJvGFiq+9eWSZwXLS54LkT3v7mBXV3aRYPPueqqL+k3S1Myoml8Q8DPnROlPTSOsO3DkSXpF7HRQZxnIW04srXvnpyWg7632+0L2wlnGJihbN2F5ZYk4DVVjbCfMkvmseAVDaKUEkRx3mLJ3zKQK86FEQ=,iv:E4nKqJEADgxiNY1BO0egUEpRi0GnvKuFKaLzKod6SDU=,tag:sAzhB86AUIO9uwSyRhIE6Q==,type:str]
+    lastmodified: "2026-09-23T00:26:45Z"
+    mac: ENC[AES256_GCM,data:SBGrsg6y/8NOaMZcUVfiLbNsIW2RdrFCc6FhOeaBCi0RSd3ArNeD0TS/Ql4j8iX8oSQSVOtQaqV2g5iosjYoqq9f/dJW+PQ9brPwkz77RqdUkXPV+AuBqPeZUMfwWSoxkxqwd9uE9zjYgiIHJ0RVS4o5ExNCk4rsiNVzFGFJi9M=,iv:1eUb2zn4c5TrUOcgV0ys2ZXa5DSfCSsaddSWlJZk2EQ=,tag:KhJUHoRZGnCLMoscU8X8CQ==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-04-13T20:28:41Z"
+        - created_at: "2026-09-23T00:26:45Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/8DxUPx/CEx13YKQy/3jKC1yK/SUMi3X533C7A5Tgaewz0
-            7irz/0xTiKiO47hLJE9RK3Ap/eKLsopdmJMSCTDXpb5bwd9DmOk4W+hjr3PS/fEK
-            QSRr79cHtNqPrvZ9Xk+fKn3AS7Rj+GnjAkpzEODPGHCSs0qjQKPES+3z/ioP9ToM
-            QcBhbQCL6AGy+wU+KORXY0qTMZMLM3Y6EbrWWPe6ToFeGl3ykNUq/8tSo8n/Mv1r
-            L+6Y4eqtQSdfLvoBZqqGLNafw0UlDcpbiAr/VNF4ZlnyKtOM3IuoPOHSmKApw4ZD
-            +wiciUV1ehDSU9s/ozvVVI7TT1woZ/IzARmNrzTzvKYTvx7oiacPDANBrPdj72WU
-            SfQaWM69NDLBrN3UzNnxkn5ORqC9y1SdtoN2BUGtS7diinu396ORaMm+YyDn+vZL
-            1Cw1wre0uJkYLMJAkGglnVfr6kpVM3r0JdDS0ji2ihaP/SFJ/3BztRsIMbelBR27
-            7xnJsZClR0WO2mewzTd4XRJow9CxM+ddFDBVM9o3y4FByQGbDcP3ysLCWzYjJWhm
-            /m19RWiwemiotIi5M+zxse8s+P0SnpepivdykCeLHZR9TcSS+SSerriCrvVZcgPe
-            C9JEAWXXt/gR/q0LST53O81YufE4OITHX8N6n7BcvJKg9Gh/VTqTd3CJX9xLnFnU
-            ZgEJAhAWq7RZHRgW8eyW1NY8YA0duC2nPgvsAKFQ1sEp3p0P6GwCLBzk/qSxOEJh
-            uTbJOS0cZOqWi2vjkPqaLbvLtfBqhdHRHzbszkvQisjUQAxjit941uKwGqTE8QIW
-            Ne1bkDrxnQ==
-            =tF9R
+            hQIMA5NT/LvuRqeGAQ//dwE0MgkITEyNZaLr2KkoshfOsqhSdKJrvJwAdJ1TGcBi
+            s4/FK2JVh7k+Z37qso5JeHeTDNKUYM6I0G4THYg9TR2GxCp0xbh1L2Qq/b0gul/a
+            7sRqPF0mh2twwJUEN9tMOYaHmnnsP+16QdiStB/zfjdxUyBFNWXFt4jGKit3Y8YR
+            0zVoTP617U/CgAzPmiKerazLJ1pOXs1D8Ih0VX0Ms9DxsL3SspK6YFfFebEPJ4CR
+            AF+tihqGZsTNxV1k3zunERhVO1NfMv4605l6zBXsGvTAEvh+jsbiJJT9wLOyT0o4
+            GJXRv3fXlzvM01zgXwTPhD+OjFiOH4x2s9eAF9hIhRGaAmZX4mkgUywfToqO5dCn
+            etX2bOaNT+IS82DnAxU8XspveEMNo4BXU2ns1Ss1qg/MalYpCtACP8JWU59po3E0
+            +BAkbr8z5sNFGncj3cRqhXN6u6D9ArKw7X7GcEDVubjkoa/7En6RP+e4QaSiZTK+
+            0zHb+9nmfD11ClqX01WXkL0Mm+JfIgJp5gMpN/mmvvFfq0jwQClPR6pYRIJP6q2p
+            YqNhRnzcIcZQWdtTMthbxTkksM/PVlxuBVXrwZL4GCHQ4+lbOOP/igT+Cam0kYe5
+            6MiHl/8Ev6ohEBlehZnznce37IblJX3jPATiz0Esz+R5m14JEMljy9hxfZyS7TDU
+            aAEJAhAt4qPocT3Xfw/s0Lz3SxZllbqh/EQ1g0AyIhmZLty+x8W3X21FxFj3KWah
+            3ZfMT5Wp41oPLdQig858DoePuTpUL73HN50nsQJ4mxhWt39kAl2MDFt8Q/jBam+A
+            QSQqXcnPtacS
+            =uNLE
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.12.2
+    version: 3.13.2

@@ -110,9 +110,12 @@ affinity: {}
 backup:
   enabled: false
   image:
-    repository: tiredofit/db-backup
-    tag: latest
+    repository: ghcr.io/nfrastack/db-backup
+    tag: 5.0.1
   args: ["backup-now"]
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
-  config: {}
+  prometheusRule:
+    enabled: false
+  configmap:
+    data: {}
