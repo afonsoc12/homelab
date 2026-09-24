@@ -340,7 +340,7 @@ repoServer:
             - -ec
           env:
             - name: HELM_SECRETS_VERSION
-              value: 4.7.7
+              value: 4.7.8
             - name: HELM3_VERSION
               value: 3.22.0
             - name: KUBECTL_VERSION
