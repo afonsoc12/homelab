@@ -26,7 +26,7 @@ cronjobs:
       restartPolicy: Never
       image:
         repository: ghcr.io/hotio/cloudflareddns
-        digest: sha256:dbdb3f7854ce46ec52abd392920cd74a02b7d0b95543f16c94108cb864d6cec3
+        digest: sha256:7cb9f3ad0f7438e664fd54bc488eab5bc6d1e9749be92712b3e83f2f214b12ee
       nodeSelector:
         kubernetes.io/hostname: k3s-m2
       resources:
@@ -38,8 +38,8 @@ cronjobs:
             memory: 64Mi
 sops:
     encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-    lastmodified: "2026-08-17T23:00:03Z"
-    mac: ENC[AES256_GCM,data:sKTvfc8yUQqZ6Fa+8SjIilSJ2hkxwBmvV8n3m7pbgR17O2PNLP0+h2BCkqLpy6hiulR9RCbLc7ZvK9oPAmlzwOPgdD/o/6pVHDbY8pA0ViA1/eBmXYzNqa0YcR0h/0f/VYRMfEoXWtwDCEO6mir2djRp4UHFYJ+hY/Ah0nJ41b8=,iv:pfzPr4ZJ6TJls38s7cA4DIUuq67Owsf7SkR4dBBJnTo=,tag:VZPDJ1c/u8yX/HUHq1eqcw==,type:str]
+    lastmodified: "2026-09-25T18:37:46Z"
+    mac: ENC[AES256_GCM,data:vBH3FCZInTOAPBuUDBqYv1A/eKzYQUrhtZbMfAggG71lsH+Bt3WJCtW8JgG0qcpaoXK6rJVEp4JOVgcl7o1TGBph7KxTFICP6RFhLM9D+MSHECoz8LURoJo9bUs1x3sgdQ0yv/L9acZWH618p9Lezf96hmM3YVyKeVdYaWZ14kY=,iv:O5dsPgrAGn0Kh32yWjQF8hqply7E7jieDJhkOtNpR/w=,tag:exDtyA7csWeZUDvFtHFKNw==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-05-09T18:49:37Z"
