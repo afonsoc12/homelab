@@ -36,6 +36,16 @@ Recipe manager and meal planner. Supports import from any URL, nutritional data,
 
 ---
 
+### <img src="https://raw.githubusercontent.com/afonsoc12/cookistash/master/cookistash/cookidoo/static/cookidoo/img/icon.png" class="svc-icon"> Cookistash
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+🥘 Stash your Cookidoo recipes and sync them to Mealie
+
+[:octicons-book-16: Documentation](https://github.com/afonsoc12/cookistash) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/cookistash/values.sops.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/freshrss.png" class="svc-icon"> FreshRSS
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>

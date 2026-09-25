@@ -1,0 +1,144 @@
+# --------------------
+# Cookistash
+#   - Repo:           https://github.com/afonsoc12/cookistash
+#   - Docs:           https://github.com/afonsoc12/cookistash/blob/master/README.md
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+podAnnotations: {}
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/afonsoc12/cookistash
+    tag: "0.0.2"
+    pullPolicy: Always
+command: {}
+args: {}
+ports:
+    - containerPort: 8000
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        DB_PASSWORD: ENC[AES256_GCM,data:qWpyrQjNuz9GGTC23Z8D3s0aBOA=,iv:GLZL7JYDK2sHyffXh6FbyFdBLThNnW373YUSrN18ekk=,tag:FaPBj6jmYcwZIkFTO8GAiQ==,type:str]
+        MEALIE_API_TOKEN: ENC[AES256_GCM,data:GvhxBxTGMIPo37+Ej78DVyr+yolOdhtRhZqTqiq64mZth9IgWgGNMSVGQAgaqjO7bVUIzhse0udFMCPTxARg50sA4ynmQs2iFjIMr2dWZqAA1k1FTjA2T0bhtsYBczQG5Cq/fgP2wsPRvnHBqiWJdfPibI3rU34vJTc1dRNUXzNpLPAtJTV9QmDhriaVFJe4vJatkBW4qydVtH069nZ+7LPuIJTyTGvXtAwF0qoLVJZd0LHH4k14jkTxsEYb13LXfXT4fGKitpCe76WToXnwmH7lrVUjECreAB/O0oFVo2zzfOBZjAsZT0XERyJ4GebYev9t+lflRBiYOQM2TNExpm7Tp3H9aZ5P25K3vVmMb+3IAQSnL9vemx4AlDRL0mz67kA2zSY=,iv:JQvrIA5trf96eDDHQvFoRdbim+q72nbdXzLQybiUCjo=,tag:PNkBGvX3jy7c9CrrHAZOqQ==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        TZ: '{{ .Values.tz }}'
+        DEBUG: "false"
+        CSRF_TRUSTED_ORIGINS: https://cookistash.local.{{ .Values.domain }}
+        DB_HOST: postgres.databases
+        DB_USER: cookistash
+        CELERY_BROKER_URL: redis://redis.databases:6379/0
+        REDIS_CACHE_URL: redis://redis.databases:6379/1
+        COOKIDOO_EXPLORE_URL: https://cookidoo.pt/foundation/pt-PT/explore
+        MEALIE_API_URL: http://mealie.homelab:9000
+        MEALIE_PUBLIC_URL: https://mealie.local.{{ .Values.domain }}
+        DATA_DIR: /data
+volumeMounts:
+    - mountPath: /data
+      name: data
+volumes:
+    - name: data
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 50Mi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: cookistash.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+podSecurityContext: {}
+securityContext: {}
+nodeSelector: {}
+tolerations: []
+affinity:
+    podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                namespaceSelector: {}
+                labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - postgres
+                topologyKey: kubernetes.io/hostname
+resources:
+    limits:
+        cpu: 250m
+        memory: 512Mi
+    requests:
+        cpu: 50m
+        memory: 256Mi
+livenessProbe:
+    httpGet:
+        path: /
+        port: 8000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /
+        port: 8000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    httpGet:
+        path: /
+        port: 8000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
+sops:
+    encrypted_regex: ^(stringData)$
+    lastmodified: "2026-09-25T17:46:26Z"
+    mac: ENC[AES256_GCM,data:RKlQOUrG6vaIgNi/6zyATM4RJvGGpGzKGnWjWTG5HJIiAd76x9dUXCPP/iwuJPrytlbMn3C5uY1qdblrnIO11CAZ+33ZbDoP31ZU2tZOG4pyyjFsEhzC/LR34nuGxCYZn+aU/F+dlQkfdwtaDKlgcxN4NafFXxYiUj9Bsuorcqw=,iv:bOKHmE2Wqhkc3Hbb461Z46VwVAXiIFKsFQG9XkNv4Rw=,tag:7yM1GB9h+Sjv4kIg0I4KgA==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-09-25T17:46:26Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAAoL7VYWTc/Z1fYuyCfgVWHwFva7UIdJbXuw/CA3gvB+OD
+            0RGUxYEAWLl8jMlu83HaUaLZG+2m2sZPPXxtDR2wfKwzMuxJYlXYdUcKfhkucYNF
+            d/5OR1lc7SZdLwLco2F8LJ6uvONrcQ9G7OJhzlHbN7Y3oE8mMPdrhe4JODTe11pP
+            3lDKblblZ7SWkqvOisQ2ITevtMP67KnixGIGF4G8hjX6YLQqm9bVbV7qRD+o3b0B
+            Y2Vumc7F7UnibkTF9r0Mn/ujHsY4lw2RAvw5+I5kYNaEKUV9dk7L1xitwmK9lc5Q
+            dkch9LZeqZhr5+sULtGcVc21dEpze4UsshT4CAdFNCC4jp9liC8BRQCOiAQNW93L
+            lj1oDXeQldHmhHu5XXzn+5xG2SfxIoABx0h6kZ6wmlIbsKpa2oKGvncNrGGn7a7g
+            hHNarwev5gWbf8E1qRUe9/XHwHkFcZA1JWbiDO6cKyrWMTAIUurH8utRI2ff+Tp5
+            vXScQOE5gS8YxRCFaXsiB9bnLbha0FUTtjTtTYrJMJCkBwiY/OaklvXPzIV0FS2A
+            CCdX/VSTLyNLPFhbNExOMqLl2vCgxATboIlmmoRAt7qrITE7JOwbPImYxxRfQayT
+            Wxwzln2+axACrPP2Y3PGlj7210vFXLi/+1BrlzOE6YfaDT7gOGxCd4inXFhlIeXU
+            ZgEJAhDBwHKsQ12C73KGX/ZX9CzdT+dlWt5mwpmhzp2g5JJlkZ27svr6oZ9hgl3z
+            /x22ZpA+SYVSg8CIRl5B8J/RwM3IlZONxenrcLRl2VIn4ON5jJFkzA9lCk0QD3jD
+            cyV+TJCQFA==
+            =6uZr
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

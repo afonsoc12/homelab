@@ -5,6 +5,7 @@ locals {
     "airflow_data",
     "authentik",
     "bambuddy",
+    "cookistash",
     "forgejo",
     "ghostfolio",
     "mealie",
