@@ -40,7 +40,7 @@ Recipe manager and meal planner. Supports import from any URL, nutritional data,
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
 
-Scrapes recipes from Cookidoo (Bimby/Thermomix) and syncs them to Mealie. Nightly rescrapes keep stale recipes fresh.
+🥘 Stash your Cookidoo recipes and sync them to Mealie
 
 [:octicons-book-16: Documentation](https://github.com/afonsoc12/cookistash) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/cookistash/values.sops.yaml)
 
