@@ -14,7 +14,7 @@ strategy:
     type: Recreate
 image:
     repository: ghcr.io/afonsoc12/cookistash
-    tag: v0.0.2
+    tag: "0.0.2"
     pullPolicy: Always
 command: {}
 args: {}
