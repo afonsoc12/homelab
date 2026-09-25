@@ -55,10 +55,10 @@ server:
               pathType: Prefix
     resources:
         requests:
-            cpu: 100m
+            cpu: "1"
             memory: 512Mi
         limits:
-            cpu: 500m
+            cpu: "2"
             memory: 1Gi
 worker:
     name: worker
@@ -89,8 +89,10 @@ postgresql:
 redis:
     enabled: false
 sops:
-    lastmodified: "2026-04-29T20:01:45Z"
-    mac: ENC[AES256_GCM,data:D3u/tKOy5zACUW6OvmqZy3L77EHdMtdvkA6UjfFvY6Djgbnm74Vt2Y3gHWArxI0krvp0UNWfFYVwLQ03NGQMAqWO9y7FRV7ULq7kUzyD6oKjifC0Uz7UsWng4dGeG4MNGN/hn9LjpJstf05cGsxNgGsNXuY99T3039WCRmJ+68o=,iv:FPBIjFS01zaA5MATncczmBT1oTMxX5xagWWT6qERpk4=,tag:ZXyFQlpK7wFmz2WvHEZsPw==,type:str]
+    encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
+    lastmodified: "2026-09-25T13:15:05Z"
+    mac: ENC[AES256_GCM,data:aK8HH8jg7mNyzWwaQwPlUGBD28hM33/k1itkcIvfm1HS67AZSyKqRiM52Y6AJVGLBjGrjRkwov/o8Va9yG+hGc4fgIbrF1jvjBCsaRvB/8PfoTR7Abv7SAoe7rmI9M7sIBzBeRhBEiwqqWiqOWVeqvM32crAOrUgcwNrvj+1vpI=,iv:sMoIO+r3FnpGCNdJvs8DMgDMNH8yASuSWpipkm6Nthg=,tag:VCiIaYwTai80iU6bX6+MRg==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:43Z"
           enc: |-
@@ -113,6 +115,4 @@ sops:
             =6Bef
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
-    mac_only_encrypted: true
     version: 3.12.2
