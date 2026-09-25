@@ -109,6 +109,11 @@
       "groupName": "argocd app definitions"
     },
     {
+      "description": "Group ArgoCD init container tool version bumps (custom managers) with argocd app definitions — same file, deployed/tested as one unit",
+      "matchDepNames": ["jkroepke/helm-secrets", "helm/helm", "getsops/sops", "helmfile/vals", "kubernetes/kubernetes"],
+      "groupName": "argocd app definitions"
+    },
+    {
       "description": "Group Helm chart dependency minor/patch updates",
       "matchManagers": ["helmv3"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
@@ -117,6 +122,13 @@
     {
       "description": "Group Helm values image minor/patch updates",
       "matchManagers": ["helm-values"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "groupName": "helm values images"
+    },
+    {
+      "description": "Group ArgoCD Application chart version updates with helm values images, not argocd app definitions — a chart bump behaves the same as if it were declared in a values.yaml",
+      "matchManagers": ["argocd"],
+      "matchDepTypes": ["helm"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "helm values images"
     },
