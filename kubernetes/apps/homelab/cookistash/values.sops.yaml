@@ -28,30 +28,22 @@ service:
 secret:
     mountEnv: true
     stringData:
-        DB_PASSWORD: ENC[AES256_GCM,data:YgFTb4m9VtlCVMckhVR4SvtvqUw=,iv:Ips47gr81yEpUwBF+kdWe+zkYNTLxH4PlLBfI8mivSw=,tag:P/3iyDstOq1ibp3YQrbDWg==,type:str]
-        MEALIE_API_TOKEN: ENC[AES256_GCM,data:7TwS2aOooT5F12Y75Y6cZRIc5CGfY99IWOH4Wvpe9fVqAOrHXJrMOk+gBzhrQkjOsHF0xmMVcv1ZE7DqG/BpmIWW46k0JYznB8TVt50yki04z77Aq8ZuHFmiAFpsNau6ojV6SRPE9pLWcLo46WsVJQYu8Z5UtNY29Bwnj+2EabsDBNpTx3xrt5lCzb193YyUVb7yDWRd6pjRByqYT1t4cEGXWReX2UIupsbdbUfhZId8LYXwH4Hmd8J3IVv1bokBWMDN4I4gIGsEFHTcwerWHIXHq3D/nUiCfVFpo1wp0KwI7e121qc77zx5AiKeT4gfVQ87OqxY3ot45hTQYBInE9gNZLDKO8VDxJN1Iqe7W75Pqu38T7WzzoFjY9VtBuyN8MZAtcY=,iv:z25C7NNYRpAXwixoNhH6uiVkFOG/1SXEM9+ZnYE0uTk=,tag:kAdnsNeR58tq7o1aKsidGw==,type:str]
+        DB_PASSWORD: ENC[AES256_GCM,data:qWpyrQjNuz9GGTC23Z8D3s0aBOA=,iv:GLZL7JYDK2sHyffXh6FbyFdBLThNnW373YUSrN18ekk=,tag:FaPBj6jmYcwZIkFTO8GAiQ==,type:str]
+        MEALIE_API_TOKEN: ENC[AES256_GCM,data:GvhxBxTGMIPo37+Ej78DVyr+yolOdhtRhZqTqiq64mZth9IgWgGNMSVGQAgaqjO7bVUIzhse0udFMCPTxARg50sA4ynmQs2iFjIMr2dWZqAA1k1FTjA2T0bhtsYBczQG5Cq/fgP2wsPRvnHBqiWJdfPibI3rU34vJTc1dRNUXzNpLPAtJTV9QmDhriaVFJe4vJatkBW4qydVtH069nZ+7LPuIJTyTGvXtAwF0qoLVJZd0LHH4k14jkTxsEYb13LXfXT4fGKitpCe76WToXnwmH7lrVUjECreAB/O0oFVo2zzfOBZjAsZT0XERyJ4GebYev9t+lflRBiYOQM2TNExpm7Tp3H9aZ5P25K3vVmMb+3IAQSnL9vemx4AlDRL0mz67kA2zSY=,iv:JQvrIA5trf96eDDHQvFoRdbim+q72nbdXzLQybiUCjo=,tag:PNkBGvX3jy7c9CrrHAZOqQ==,type:str]
 configmap:
     mountEnv: true
     data:
         TZ: '{{ .Values.tz }}'
         DEBUG: "false"
-        ALLOWED_HOSTS: '*'
         CSRF_TRUSTED_ORIGINS: https://cookistash.local.{{ .Values.domain }}
         DB_HOST: postgres.databases
-        DB_PORT: "5432"
-        DB_NAME: cookistash
         DB_USER: cookistash
         CELERY_BROKER_URL: redis://redis.databases:6379/0
-        CELERY_RESULT_BACKEND: django-db
         REDIS_CACHE_URL: redis://redis.databases:6379/1
         COOKIDOO_EXPLORE_URL: https://cookidoo.pt/foundation/pt-PT/explore
         MEALIE_API_URL: http://mealie.homelab:9000
         MEALIE_PUBLIC_URL: https://mealie.local.{{ .Values.domain }}
-        MEALIE_GROUP_SLUG: home
         DATA_DIR: /data
-        # Ingress terminates behind Authelia, safe to auto-authenticate as
-        # the superuser rather than showing a second login form.
-        AUTO_ADMIN_LOGIN: "true"
 volumeMounts:
     - mountPath: /data
       name: data
@@ -124,29 +116,29 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData)$
-    lastmodified: "2026-09-25T17:41:36Z"
-    mac: ENC[AES256_GCM,data:zKlYF5WtrmJ7FtGzFz8nlajQmxYIh0BsDCS5rULECAbMG/FyVVZCaOY16mRLCNsDjq/ARvGGOojX7Q4vvPHHN/fvY6b/1ZaYhXJm+E0tYu50bXbb0mop27bfeuHXJoOzdDgEaJImbGUqRE1x0BeEBOFNuubawoh01AH3b3yBmxY=,iv:zzfLlRkBWhUzpTazl5ZyE4/uJjiV682CSUm78n3QjgE=,tag:1oBGIewi6SbnLFbVgjLi+g==,type:str]
+    lastmodified: "2026-09-25T17:46:26Z"
+    mac: ENC[AES256_GCM,data:RKlQOUrG6vaIgNi/6zyATM4RJvGGpGzKGnWjWTG5HJIiAd76x9dUXCPP/iwuJPrytlbMn3C5uY1qdblrnIO11CAZ+33ZbDoP31ZU2tZOG4pyyjFsEhzC/LR34nuGxCYZn+aU/F+dlQkfdwtaDKlgcxN4NafFXxYiUj9Bsuorcqw=,iv:bOKHmE2Wqhkc3Hbb461Z46VwVAXiIFKsFQG9XkNv4Rw=,tag:7yM1GB9h+Sjv4kIg0I4KgA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-09-25T17:41:36Z"
+        - created_at: "2026-09-25T17:46:26Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/+IRdBDevKq4ukqKQ1hKY/R7Ih7GmFq85nUwll3l57KYHY
-            5nqFd1hobLpvFt2fYB1D+FV2OzeIgpulMB5KEYuJTFyeiYddUBqmokK0BimTGu39
-            gx4KttMX51a/e8P+LOGhyRBnh6PL581S4c8wUPGFrTljn3vrVvn3AZuZVLUJ4rlD
-            AIlYb0qjsz5JlMkwsqPztntbv2Y7eAwYNUxpKEi/0FJWP6eV0juTc4804zfv2T0d
-            Sgmrs9sgYyXHmEeO/3mkAJC9D8KV4mg+S/g9emZb45aw2IEkHbCfGDnuihBBJym7
-            zIfEHD1+WCc7VaZvSEDESdSIvMprIormRx9CUN3kUTEsKpO0Oxw3p6ybSRYfp/i4
-            wALP8ZRC+BzZr04RnHLkW4quWB7/nWfFY84jqBNciG1elT46nhhrLhK8+diO8BnI
-            QnL2Ok0yekIPv2cw5Ls9zOnfiTgJdP6G8a9lRkhVA5rXZy5sJnt/hZGujql/sQxp
-            svWiOmsNlT0eiAkJbronu1+6CKyrKLamwc8xG6s8uM8liWYTiAh1PAXfMxNznUO7
-            dhbfqhp1iS3eAOHEayUGUwVxOtNoNNwlOD32izbz/wT/ifzTjAeZzB6AqYP75hsd
-            XiWoGo+rjBvqCVT2Va/MLbQFXJn1JPIXNU1EUiUndkAVZuA7oDAxDsAQ+6Axw0DU
-            aAEJAhDc8ez/yeAG9y7hFP2zqVTgaBujaBRMqQjmqMiAgW23ZvvMpGZKi4AiPznU
-            pEc5D4FTSCgUd9z9BVHiskIP/WPtF0aQrxACM1jcnhBYgMGuFW4NGgor3FtgDjQR
-            hE0zmcenmius
-            =82WB
+            hQIMA5NT/LvuRqeGARAAoL7VYWTc/Z1fYuyCfgVWHwFva7UIdJbXuw/CA3gvB+OD
+            0RGUxYEAWLl8jMlu83HaUaLZG+2m2sZPPXxtDR2wfKwzMuxJYlXYdUcKfhkucYNF
+            d/5OR1lc7SZdLwLco2F8LJ6uvONrcQ9G7OJhzlHbN7Y3oE8mMPdrhe4JODTe11pP
+            3lDKblblZ7SWkqvOisQ2ITevtMP67KnixGIGF4G8hjX6YLQqm9bVbV7qRD+o3b0B
+            Y2Vumc7F7UnibkTF9r0Mn/ujHsY4lw2RAvw5+I5kYNaEKUV9dk7L1xitwmK9lc5Q
+            dkch9LZeqZhr5+sULtGcVc21dEpze4UsshT4CAdFNCC4jp9liC8BRQCOiAQNW93L
+            lj1oDXeQldHmhHu5XXzn+5xG2SfxIoABx0h6kZ6wmlIbsKpa2oKGvncNrGGn7a7g
+            hHNarwev5gWbf8E1qRUe9/XHwHkFcZA1JWbiDO6cKyrWMTAIUurH8utRI2ff+Tp5
+            vXScQOE5gS8YxRCFaXsiB9bnLbha0FUTtjTtTYrJMJCkBwiY/OaklvXPzIV0FS2A
+            CCdX/VSTLyNLPFhbNExOMqLl2vCgxATboIlmmoRAt7qrITE7JOwbPImYxxRfQayT
+            Wxwzln2+axACrPP2Y3PGlj7210vFXLi/+1BrlzOE6YfaDT7gOGxCd4inXFhlIeXU
+            ZgEJAhDBwHKsQ12C73KGX/ZX9CzdT+dlWt5mwpmhzp2g5JJlkZ27svr6oZ9hgl3z
+            /x22ZpA+SYVSg8CIRl5B8J/RwM3IlZONxenrcLRl2VIn4ON5jJFkzA9lCk0QD3jD
+            cyV+TJCQFA==
+            =6uZr
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
