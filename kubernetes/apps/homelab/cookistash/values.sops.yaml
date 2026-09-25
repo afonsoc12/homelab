@@ -1,0 +1,152 @@
+# --------------------
+# Cookistash
+#   - Repo:           https://github.com/afonsoc12/cookistash
+#   - Docs:           https://github.com/afonsoc12/cookistash/blob/master/README.md
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+nameOverride: ""
+fullnameOverride: ""
+labels: {}
+podAnnotations: {}
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/afonsoc12/cookistash
+    tag: v0.0.2
+    pullPolicy: Always
+command: {}
+args: {}
+ports:
+    - containerPort: 8000
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        DB_PASSWORD: ENC[AES256_GCM,data:YgFTb4m9VtlCVMckhVR4SvtvqUw=,iv:Ips47gr81yEpUwBF+kdWe+zkYNTLxH4PlLBfI8mivSw=,tag:P/3iyDstOq1ibp3YQrbDWg==,type:str]
+        MEALIE_API_TOKEN: ENC[AES256_GCM,data:7TwS2aOooT5F12Y75Y6cZRIc5CGfY99IWOH4Wvpe9fVqAOrHXJrMOk+gBzhrQkjOsHF0xmMVcv1ZE7DqG/BpmIWW46k0JYznB8TVt50yki04z77Aq8ZuHFmiAFpsNau6ojV6SRPE9pLWcLo46WsVJQYu8Z5UtNY29Bwnj+2EabsDBNpTx3xrt5lCzb193YyUVb7yDWRd6pjRByqYT1t4cEGXWReX2UIupsbdbUfhZId8LYXwH4Hmd8J3IVv1bokBWMDN4I4gIGsEFHTcwerWHIXHq3D/nUiCfVFpo1wp0KwI7e121qc77zx5AiKeT4gfVQ87OqxY3ot45hTQYBInE9gNZLDKO8VDxJN1Iqe7W75Pqu38T7WzzoFjY9VtBuyN8MZAtcY=,iv:z25C7NNYRpAXwixoNhH6uiVkFOG/1SXEM9+ZnYE0uTk=,tag:kAdnsNeR58tq7o1aKsidGw==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        TZ: '{{ .Values.tz }}'
+        DEBUG: "false"
+        ALLOWED_HOSTS: '*'
+        CSRF_TRUSTED_ORIGINS: https://cookistash.local.{{ .Values.domain }}
+        DB_HOST: postgres.databases
+        DB_PORT: "5432"
+        DB_NAME: cookistash
+        DB_USER: cookistash
+        CELERY_BROKER_URL: redis://redis.databases:6379/0
+        CELERY_RESULT_BACKEND: django-db
+        REDIS_CACHE_URL: redis://redis.databases:6379/1
+        COOKIDOO_EXPLORE_URL: https://cookidoo.pt/foundation/pt-PT/explore
+        MEALIE_API_URL: http://mealie.homelab:9000
+        MEALIE_PUBLIC_URL: https://mealie.local.{{ .Values.domain }}
+        MEALIE_GROUP_SLUG: home
+        DATA_DIR: /data
+        # Ingress terminates behind Authelia, safe to auto-authenticate as
+        # the superuser rather than showing a second login form.
+        AUTO_ADMIN_LOGIN: "true"
+volumeMounts:
+    - mountPath: /data
+      name: data
+volumes:
+    - name: data
+      mountPvc: "yes"
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 50Mi
+ingress:
+    enabled: true
+    authelia: true
+    className: nginx
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: cookistash.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+podSecurityContext: {}
+securityContext: {}
+nodeSelector: {}
+tolerations: []
+affinity:
+    podAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                namespaceSelector: {}
+                labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - postgres
+                topologyKey: kubernetes.io/hostname
+resources:
+    limits:
+        cpu: 250m
+        memory: 512Mi
+    requests:
+        cpu: 50m
+        memory: 256Mi
+livenessProbe:
+    httpGet:
+        path: /
+        port: 8000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /
+        port: 8000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    httpGet:
+        path: /
+        port: 8000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
+sops:
+    encrypted_regex: ^(stringData)$
+    lastmodified: "2026-09-25T17:41:36Z"
+    mac: ENC[AES256_GCM,data:zKlYF5WtrmJ7FtGzFz8nlajQmxYIh0BsDCS5rULECAbMG/FyVVZCaOY16mRLCNsDjq/ARvGGOojX7Q4vvPHHN/fvY6b/1ZaYhXJm+E0tYu50bXbb0mop27bfeuHXJoOzdDgEaJImbGUqRE1x0BeEBOFNuubawoh01AH3b3yBmxY=,iv:zzfLlRkBWhUzpTazl5ZyE4/uJjiV682CSUm78n3QjgE=,tag:1oBGIewi6SbnLFbVgjLi+g==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-09-25T17:41:36Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/+IRdBDevKq4ukqKQ1hKY/R7Ih7GmFq85nUwll3l57KYHY
+            5nqFd1hobLpvFt2fYB1D+FV2OzeIgpulMB5KEYuJTFyeiYddUBqmokK0BimTGu39
+            gx4KttMX51a/e8P+LOGhyRBnh6PL581S4c8wUPGFrTljn3vrVvn3AZuZVLUJ4rlD
+            AIlYb0qjsz5JlMkwsqPztntbv2Y7eAwYNUxpKEi/0FJWP6eV0juTc4804zfv2T0d
+            Sgmrs9sgYyXHmEeO/3mkAJC9D8KV4mg+S/g9emZb45aw2IEkHbCfGDnuihBBJym7
+            zIfEHD1+WCc7VaZvSEDESdSIvMprIormRx9CUN3kUTEsKpO0Oxw3p6ybSRYfp/i4
+            wALP8ZRC+BzZr04RnHLkW4quWB7/nWfFY84jqBNciG1elT46nhhrLhK8+diO8BnI
+            QnL2Ok0yekIPv2cw5Ls9zOnfiTgJdP6G8a9lRkhVA5rXZy5sJnt/hZGujql/sQxp
+            svWiOmsNlT0eiAkJbronu1+6CKyrKLamwc8xG6s8uM8liWYTiAh1PAXfMxNznUO7
+            dhbfqhp1iS3eAOHEayUGUwVxOtNoNNwlOD32izbz/wT/ifzTjAeZzB6AqYP75hsd
+            XiWoGo+rjBvqCVT2Va/MLbQFXJn1JPIXNU1EUiUndkAVZuA7oDAxDsAQ+6Axw0DU
+            aAEJAhDc8ez/yeAG9y7hFP2zqVTgaBujaBRMqQjmqMiAgW23ZvvMpGZKi4AiPznU
+            pEc5D4FTSCgUd9z9BVHiskIP/WPtF0aQrxACM1jcnhBYgMGuFW4NGgor3FtgDjQR
+            hE0zmcenmius
+            =82WB
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

@@ -243,6 +243,10 @@ configmap:
                         description: Recipes management
                         icon: di:mealie
                         url: https://mealie.local.{{ .Values.domain }}
+                      - title: Cookistash
+                        description: Cookidoo recipe scraper
+                        icon: https://raw.githubusercontent.com/afonsoc12/cookistash/master/cookistash/cookidoo/static/cookidoo/img/icon.png
+                        url: https://cookistash.local.{{ .Values.domain }}
                       - title: FreshRSS
                         description: RSS news aggregator
                         icon: di:freshrss
