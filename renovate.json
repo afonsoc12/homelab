@@ -74,14 +74,16 @@
       "versioning": "regex:^version-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
-      "description": "Track hotio image by digest",
+      "description": "Track hotio image by digest — explicitly re-enabled since the earlier 'latest' blanket-disable rule matches its currentValue too and would otherwise silently suppress digest updates entirely (pinDigests alone doesn't override enabled)",
       "matchPackageNames": ["ghcr.io/hotio/cloudflareddns"],
-      "pinDigests": true
+      "pinDigests": true,
+      "enabled": true
     },
     {
-      "description": "Track Unraid docker-compose images with no published version tags by digest",
+      "description": "Track Unraid docker-compose images with no published version tags by digest — explicitly re-enabled for the same reason as the hotio rule above",
       "matchPackageNames": ["ghcr.io/afonsoc12/kopia-temp"],
-      "pinDigests": true
+      "pinDigests": true,
+      "enabled": true
     },
     {
       "description": "Pin Helm chart versions in ArgoCD (remove range constraints)",
