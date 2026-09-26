@@ -3,7 +3,8 @@
   "extends": ["config:recommended"],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["after 8pm on friday"]
+    "schedule": ["after 8pm on friday"],
+    "groupName": "lock file maintenance"
   },
   "labels": ["renovate"],
   "argocd": {
