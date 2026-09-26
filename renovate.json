@@ -3,7 +3,7 @@
   "extends": ["config:recommended"],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["after 4am and before 5am"]
+    "schedule": ["after 8pm on friday"]
   },
   "labels": ["renovate"],
   "argocd": {
@@ -102,7 +102,7 @@
       "allowedVersions": "<4.0.0"
     },
     {
-      "description": "Group ArgoCD app-of-apps minor/patch updates",
+      "description": "Group ArgoCD app-of-apps minor/patch updates with helm values images — one group for anything that deploys/updates an app's running version, whether declared as a chart in an Application manifest or an image in a values.yaml",
       "matchManagers": ["argocd"],
       "matchFileNames": ["kubernetes/apps/addons/argocd-apps/**"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
@@ -120,22 +120,21 @@
       "groupName": "helm chart dependencies"
     },
     {
-      "description": "Group Helm values image minor/patch updates",
+      "description": "Group Helm values image minor/patch updates with argocd app definitions",
       "matchManagers": ["helm-values"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
-      "groupName": "helm values images"
+      "groupName": "argocd app definitions"
     },
     {
-      "description": "Group ArgoCD Application chart version updates with helm values images, not argocd app definitions — a chart bump behaves the same as if it were declared in a values.yaml",
+      "description": "Group ArgoCD Application chart version updates with argocd app definitions — a chart bump behaves the same as if it were declared in a values.yaml",
       "matchManagers": ["argocd"],
       "matchDepTypes": ["helm"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
-      "groupName": "helm values images"
+      "groupName": "argocd app definitions"
     },
     {
-      "description": "Group Terraform provider minor/patch updates",
+      "description": "Group all Terraform provider updates, including majors — providers here are pinned to loose ranges on purpose, so a major bump is still low-risk enough to bundle with the rest",
       "matchManagers": ["terraform"],
-      "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "terraform providers"
     },
     {
