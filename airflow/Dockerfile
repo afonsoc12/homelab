@@ -1,4 +1,4 @@
-FROM apache/airflow:slim-3.2.1-python3.14
+FROM apache/airflow:slim-3.3.2-python3.14
 
 LABEL org.opencontainers.image.source="https://github.com/afonsoc12/homelab"
 
