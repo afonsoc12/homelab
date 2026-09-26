@@ -10,7 +10,7 @@ strategy:
     type: Recreate
 image:
     repository: ghcr.io/paperless-ngx/paperless-ngx
-    tag: 3.2.0
+    tag: 3.2.1
     pullPolicy: Always
 ports:
     - containerPort: 8000

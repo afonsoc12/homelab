@@ -18,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/fireflyiii/core
-    tag: version-6.7.3
+    tag: version-6.7.4
     pullPolicy: Always
 #   restartPolicy:
 command: {}
