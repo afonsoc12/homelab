@@ -16,6 +16,8 @@ permissions:
 jobs:
   airflow:
     runs-on: ubuntu-latest
+    outputs:
+      airflow_version: ${{ steps.version.outputs.airflow_version }}
 
     steps:
       - name: "📥 Checkout"
@@ -39,6 +41,12 @@ jobs:
       - name: "🧪 Run pytest"
         run: uv run --directory airflow pytest
 
+      - name: "🔖 Read Airflow version from Dockerfile"
+        id: version
+        run: |
+          version=$(grep -oP '^FROM apache/airflow:slim-\K\d+\.\d+\.\d+' airflow/Dockerfile)
+          echo "airflow_version=${version}" >> "$GITHUB_OUTPUT"
+
       - name: "🏗️ Set up Docker Buildx"
         uses: docker/setup-buildx-action@v4
 
@@ -56,7 +64,7 @@ jobs:
           context: airflow
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/${{ github.repository_owner }}/airflow:3.2.1-b${{ github.run_number }}
+          tags: ghcr.io/${{ github.repository_owner }}/airflow:${{ steps.version.outputs.airflow_version }}-b${{ github.run_number }}
 
   bump-tag:
     runs-on: ubuntu-latest
@@ -69,10 +77,10 @@ jobs:
 
       - name: "🏷️ Bump image tag"
         run: |
-          yq -i '.image.tag = "3.2.1-b${{ github.run_number }}"' kubernetes/apps/addons/airflow/values.sops.yaml
+          yq -i '.image.tag = "${{ needs.airflow.outputs.airflow_version }}-b${{ github.run_number }}"' kubernetes/apps/addons/airflow/values.sops.yaml
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add kubernetes/apps/addons/airflow/values.sops.yaml
-          git commit -m "chore: bump airflow image to 3.2.1-b${{ github.run_number }}"
+          git commit -m "chore: bump airflow image to ${{ needs.airflow.outputs.airflow_version }}-b${{ github.run_number }}"
           git pull --rebase
           git push

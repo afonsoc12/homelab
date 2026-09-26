@@ -13,12 +13,6 @@
       "/^kubernetes\\/apps\\/addons\\/argocd-apps\\/templates\\/.+\\.ya?ml$/"
     ]
   },
-  "helmv3": {
-    "enabled": true,
-    "managerFilePatterns": [
-      "/^kubernetes\\/bootstrap\\/helmfile\\.ya?ml$/"
-    ]
-  },
   "helmfile": {
     "enabled": true
   },
@@ -67,6 +61,17 @@
       "description": "Use regex versioning for afonsoc12/airflow build tags (3.x.y-bN)",
       "matchPackageNames": ["ghcr.io/afonsoc12/airflow"],
       "versioning": "regex:^\\d+\\.\\d+\\.\\d+-b(?<patch>\\d+)$"
+    },
+    {
+      "description": "Use regex versioning for apache/airflow base image tags (slim-X.Y.Z-pythonA.B) — the default docker versioning can't parse this compound tag shape, so the Dockerfile FROM line was never tracked. compatibility group keeps bumps within the same pinned Python line.",
+      "matchPackageNames": ["apache/airflow"],
+      "versioning": "regex:^slim-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-python(?<compatibility>[\\d.]+)$"
+    },
+    {
+      "description": "Auto-merge apache/airflow base image bumps once CI passes — the build workflow reads the version straight from the Dockerfile and publishes/redeploys automatically on merge to master, so this just lets that pipeline run unattended",
+      "matchPackageNames": ["apache/airflow"],
+      "automerge": true,
+      "automergeType": "pr"
     },
     {
       "description": "Use regex versioning for fireflyiii/core tags (version-X.Y.Z)",
