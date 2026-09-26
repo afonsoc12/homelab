@@ -59,7 +59,7 @@ services:
       start_period: 60s
 
   bazarr:
-    image: ghcr.io/linuxserver/bazarr:1.6.1
+    image: ghcr.io/linuxserver/bazarr:1.6.2
     container_name: bazarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
