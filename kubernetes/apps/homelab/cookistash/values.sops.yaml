@@ -44,6 +44,7 @@ configmap:
         MEALIE_API_URL: http://mealie.homelab:9000
         MEALIE_PUBLIC_URL: https://mealie.local.{{ .Values.domain }}
         DATA_DIR: /data
+        AUTO_ADMIN_LOGIN: "false"
 volumeMounts:
     - mountPath: /data
       name: data
