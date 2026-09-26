@@ -1,5 +1,7 @@
 FROM apache/airflow:slim-3.2.1-python3.14
 
+LABEL org.opencontainers.image.source="https://github.com/afonsoc12/homelab"
+
 ENV PYTHONPATH=/opt/airflow/libs:$PYTHONPATH
 
 COPY --chown=airflow:root pyproject.toml uv.lock .
