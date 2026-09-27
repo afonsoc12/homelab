@@ -1,0 +1,101 @@
+# --------------------
+# Music Assistant
+#   - Repo:           https://github.com/music-assistant/server
+#   - Docs:           https://www.music-assistant.io/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+
+image:
+  repository: ghcr.io/music-assistant/server
+  tag: "2.10.4"
+  pullPolicy: Always
+
+# Required for player discovery (mDNS/UPnP/AirPlay/Chromecast, DLNA, etc.)
+hostNetwork: true
+
+ports:
+  - containerPort: 8095
+    name: ui
+    protocol: TCP
+    service: true
+  - containerPort: 8097
+    name: streamserver
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+securityContext:
+  privileged: true
+  capabilities:
+    add: ["SYS_ADMIN", "DAC_READ_SEARCH"]
+
+volumeMounts:
+  - name: data
+    mountPath: /data
+
+volumes:
+  - name: data
+    mountPvc: true
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+ingress:
+  enabled: true
+  authelia: false
+  className: nginx
+  tls:
+    - secretName: local-wildcard-cert
+  # Will assume the first element in .ports, regardless of service
+  hosts:
+    - host: music-assistant.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+nodeSelector:
+  kubernetes.io/hostname: k3s-m1
+tolerations: []
+affinity: {}
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 100m
+    memory: 384Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 8095
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  tcpSocket:
+    port: 8095
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  tcpSocket:
+    port: 8095
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
