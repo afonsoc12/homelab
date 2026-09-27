@@ -37,7 +37,7 @@ server:
     replicas: 1
     env:
         - name: AUTHENTIK_WEB__WORKERS
-          value: "4"
+          value: "2"
     ingress:
         enabled: true
         ingressClassName: nginx
@@ -62,7 +62,7 @@ server:
             memory: 512Mi
         limits:
             cpu: "2"
-            memory: 1Gi
+            memory: 2Gi
 worker:
     name: worker
     replicas: 1
