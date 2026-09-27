@@ -305,6 +305,10 @@ configmap:
                         description: Controller for ESP8266 devices
                         icon: di:esphome
                         url: https://esphome.local.{{ .Values.domain }}
+                      - title: Music Assistant
+                        description: Multi-room music player hub
+                        icon: di:music-assistant
+                        url: https://music-assistant.local.{{ .Values.domain }}
                   - title: Media
                     links:
                       - title: Plex

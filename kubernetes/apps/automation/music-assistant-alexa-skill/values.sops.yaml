@@ -1,0 +1,120 @@
+# --------------------
+# Music Assistant Alexa Skill (prototype)
+#   - Repo:           https://github.com/alams154/music-assistant-alexa-skill-prototype
+#   - Docs:           https://www.music-assistant.io/player-support/alexa/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+# NOTE: image has no versioned releases upstream — only `:latest` is published,
+# so this pins by digest instead (resolved from ghcr.io/alams154/music-assistant-skill:latest).
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/alams154/music-assistant-skill
+    digest: sha256:8e8bfc59af754e6892599b36e9d2ba154e2e4ddb4461118900764477d4adb70e
+    pullPolicy: Always
+ports:
+    - containerPort: 5000
+      name: http
+      protocol: TCP
+      service: true
+# Uses ports from .ports section, if service is true
+service:
+    enabled: true
+secret:
+    mountEnv: true
+    stringData:
+        APP_USERNAME: ENC[AES256_GCM,data:byWIJ6Q=,iv:vBWcAqT37F3uYnd9IzlCxQ+D9Hl5B28zIT0oPHr6vgU=,tag:HPkPPp+rQ3IXct0XGQgONg==,type:str]
+        APP_PASSWORD: ENC[AES256_GCM,data:IJrP1CnCi04vc75XmA7kUjdLtf32whiB,iv:57huCO18N0Z7Pwr4B673SaGXVNvgFvI038F7SHNTGis=,tag:JiESRynCh5jrvncho5ytTw==,type:str]
+configmap:
+    mountEnv: true
+    data:
+        SKILL_HOSTNAME: music-assistant-alexa-skill.{{ .Values.domain }}
+        # Must proxy to Music Assistant's streamserver port (8097), not the UI port.
+        MA_HOSTNAME: music-assistant.local.{{ .Values.domain }}
+        PORT: "5000"
+        LOCALE: en-GB
+        AWS_DEFAULT_REGION: eu-west-1
+volumeMounts:
+    - name: ask-data
+      mountPath: /root/.ask
+volumes:
+    - name: ask-data
+      mountPvc: true
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 20Mi
+ingress:
+    enabled: true
+    authelia: false
+    className: nginx
+    tls:
+        - secretName: music-assistant-alexa-skill-cert
+    # Will assume the first element in .ports, regardless of service
+    hosts:
+        - host: music-assistant-alexa-skill.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+nodeSelector: {}
+tolerations: []
+affinity: {}
+resources:
+    limits:
+        cpu: 500m
+        memory: 512Mi
+    requests:
+        cpu: 25m
+        memory: 128Mi
+livenessProbe:
+    tcpSocket:
+        port: 5000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    tcpSocket:
+        port: 5000
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+startupProbe:
+    tcpSocket:
+        port: 5000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 5
+sops:
+    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    lastmodified: "2026-09-27T13:40:42Z"
+    mac: ENC[AES256_GCM,data:GVvq6V9fbd+cDqj6T2Z3mwn8vHHvxkWmeAisL9I/LdkIYuQvSVS0ho6QWtAaMq12ydZ89J8Tsnrn8ypUYapO8f5NHXXMLi04ocu2OC2e9s4s9QFNJydbgab7hOvGPyTt0nfMaid9OpQ+T4pcDi3BVrLceiRtGQGw+sGCJJRCrpU=,iv:3hyW4eVQef5ZSOf3itXyyliNJfodus2wQkHY2yfV5Gc=,tag:9Fl0DMugBW0ssJY464kVqA==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-09-27T13:40:42Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//SBOpLECwA+GLtVscC+1AhhVLxL0nr0Omlf542cF+VneP
+            e1g8t5xRhnxDEVS5wloP8pkWnLYDT1yGB62iyrw0l+/7JAfCqkrNH6LB+XPS8uQ0
+            2Lce3cG0cM5YyPpGqjdIArwYvEnJLdO326/z5D1YMYah23GmuAzQwK05kqdou6CY
+            KmP2BKbfud0TsTHkVomPdBzq+b2lEKtXv44EzEV9W/DaZ33dHzkbysV3Iyfx/Ey7
+            s3rInMbfFYUNNXjcvD0CuhKIvDkTNbgmvYuqhYTpvZg9IACosNBA6eY+C+aCVq+E
+            mKQ7vVJ2o8WidXCkaf7lD1N3rw47TMggoM/2cipq2lo/GSmyc00PDL3wlsBtwoSX
+            1kvmkPMZGqX2aAMEfRWcvh31tjOTPzuBDfDKwP7YZZHPui2vZSXQX8Q0wqteW9LA
+            yFKMlIxnAMdDZpTtj+t4GMRqd4ia4ffGYztV/nPOeGiCmYQDrtZjzBvzmFvPoWhn
+            QR79WUAyqmvfdOZArKMhI/vOdGF93VoT2ymcZs4CaMmG4bGVdjKB/cwH0F9QsmjK
+            hiM53qBifds1e0+k9tnM+mXfWYwysc3jNFenzQN9OZA0ZC2m568hBRsLIolJmeLC
+            8z8i7lQRP/G83whkplNALafaMdMlhKMNTQ60tQ6L0/42DJUX55xO4Av8UW+qwcHU
+            aAEJAhCLRoq1AyhIIjy40ft+7fB95a+2Im3tBRlvNJPSXGSIX6Q4OVPPOLrpxABj
+            PezqWbFmHzEbOGPmrYSiYhfkZFpxcQDaf+gwL3ClaK98kY0xj/LaGqKxE7CHaMIJ
+            +3br0a4ty+r4
+            =2Ktq
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2
