@@ -194,10 +194,6 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         }
       },
       {
-        # Public HTTPS endpoint for Music Assistant's streamserver (port
-        # 8097) — required by the Alexa skill's MA_HOSTNAME so Amazon's
-        # AudioPlayer service can actually fetch stream URLs. Auth: none at
-        # this layer (audio URLs are unguessable per-play tokens).
         hostname = "music-assistant-stream.${var.domain}"
         service  = "https://ingress-nginx-controller"
         origin_request = {
@@ -214,10 +210,6 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         }
       },
       {
-        # Public HTTPS endpoint for the Music Assistant Alexa skill —
-        # Amazon's SMAPI/Alexa service calls this directly. Auth is handled
-        # at the app layer (basic auth + Alexa request signature
-        # verification), no Cloudflare Access gate needed here.
         hostname = "music-assistant-alexa-skill.${var.domain}"
         service  = "https://ingress-nginx-controller"
         origin_request = {

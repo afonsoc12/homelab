@@ -4,8 +4,6 @@
 #   - Docs:           https://www.music-assistant.io/player-support/alexa/
 #   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
 # --------------------
-# NOTE: image has no versioned releases upstream — only `:latest` is published,
-# so this pins by digest instead (resolved from ghcr.io/alams154/music-assistant-skill:latest).
 replicas: 1
 revisionHistoryLimit: 0
 strategy:
@@ -31,10 +29,6 @@ configmap:
     mountEnv: true
     data:
         SKILL_HOSTNAME: music-assistant-alexa-skill.{{ .Values.domain }}
-        # Must be internet-reachable over HTTPS on MA's streamserver port
-        # (8097) — Amazon's AudioPlayer service fetches stream URLs built
-        # from this hostname directly. See music-assistant-resources for
-        # the ingress wiring this points at.
         MA_HOSTNAME: music-assistant-stream.{{ .Values.domain }}
         PORT: "5000"
         LOCALE: en-GB

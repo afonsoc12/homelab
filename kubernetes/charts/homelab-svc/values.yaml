@@ -88,6 +88,14 @@ secret: {}
 #     data:
 #       key3: dmFsdWUz
 
+extraResources: []
+# - apiVersion: networking.k8s.io/v1
+#   kind: Ingress
+#   metadata:
+#     name: extra-ingress
+#     namespace: my-namespace
+#   spec: {}
+
 configmap: {}
   # mountEnv: false
   # data:
