@@ -194,10 +194,22 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         }
       },
       {
-        # Public HTTPS endpoint for the Music Assistant Alexa skill —
-        # Amazon's SMAPI/Alexa service calls this directly. Auth is handled
-        # at the app layer (basic auth + Alexa request signature
-        # verification), no Cloudflare Access gate needed here.
+        hostname = "music-assistant-stream.${var.domain}"
+        service  = "https://ingress-nginx-controller"
+        origin_request = {
+          connect_timeout          = 30
+          disable_chunked_encoding = false
+          http2_origin             = false
+          keep_alive_connections   = 100
+          keep_alive_timeout       = 90
+          no_happy_eyeballs        = false
+          no_tls_verify            = false
+          origin_server_name       = "music-assistant-stream.${var.domain}"
+          tcp_keep_alive           = 30
+          tls_timeout              = 10
+        }
+      },
+      {
         hostname = "music-assistant-alexa-skill.${var.domain}"
         service  = "https://ingress-nginx-controller"
         origin_request = {
@@ -221,7 +233,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
 }
 
 locals {
-  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git-hook", "home", "music-assistant-alexa-skill", "rss", "seerr", "split", "sso", "status", "wallabag"])
+  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git-hook", "home", "music-assistant-alexa-skill", "music-assistant-stream", "rss", "seerr", "split", "sso", "status", "wallabag"])
 }
 
 # Spliit isn't behind Authelia (friends without homelab SSO accounts need

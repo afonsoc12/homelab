@@ -14,7 +14,6 @@ image:
   tag: "2.10.4"
   pullPolicy: Always
 
-# Required for player discovery (mDNS/UPnP/AirPlay/Chromecast, DLNA, etc.)
 hostNetwork: true
 
 ports:
@@ -99,3 +98,25 @@ startupProbe:
   periodSeconds: 10
   failureThreshold: 18
   timeoutSeconds: 5
+
+extraResources:
+  - apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: music-assistant-stream
+      namespace: automation
+    spec:
+      ingressClassName: nginx
+      tls:
+        - secretName: music-assistant-stream-cert
+      rules:
+        - host: music-assistant-stream.{{ .Values.domain }}
+          http:
+            paths:
+              - path: /
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: music-assistant
+                    port:
+                      number: 8097

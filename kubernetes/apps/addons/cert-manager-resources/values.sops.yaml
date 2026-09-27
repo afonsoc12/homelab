@@ -56,6 +56,11 @@ certificates:
       reflectNamespaces:
         - automation
         - sandbox
+    - name: music-assistant-stream
+      dnsNames:
+        - music-assistant-stream.{{ .Values.domain }}
+      reflectNamespaces:
+        - automation
     - name: local-wildcard
       dnsNames:
         - local.{{ .Values.domain }}
