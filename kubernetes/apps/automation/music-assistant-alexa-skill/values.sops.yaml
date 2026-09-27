@@ -30,6 +30,7 @@ configmap:
     data:
         SKILL_HOSTNAME: music-assistant-alexa-skill.{{ .Values.domain }}
         MA_HOSTNAME: music-assistant-stream.{{ .Values.domain }}
+        SKIP_URL_VALIDATION: "true"
         PORT: "5000"
         LOCALE: en-GB
         AWS_DEFAULT_REGION: eu-west-1
