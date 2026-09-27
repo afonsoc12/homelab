@@ -35,6 +35,9 @@ authentik:
 server:
     name: server
     replicas: 1
+    env:
+        - name: AUTHENTIK_WEB__WORKERS
+          value: "4"
     ingress:
         enabled: true
         ingressClassName: nginx
@@ -65,11 +68,11 @@ worker:
     replicas: 1
     resources:
         requests:
-            cpu: 50m
-            memory: 256Mi
+            cpu: 200m
+            memory: 512Mi
         limits:
             cpu: 500m
-            memory: 512Mi
+            memory: 2Gi
 serviceAccount:
     create: true
 prometheus:
