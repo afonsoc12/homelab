@@ -48,7 +48,7 @@ pvc:
         - ReadWriteOnce
     resources:
         requests:
-            storage: 256Mi
+            storage: 20Mi
 ingress:
     enabled: true
     authelia: false
