@@ -78,6 +78,11 @@ resource "adguard_rewrite" "wallabag" {
   answer = "10.0.10.220"
 }
 
+resource "adguard_rewrite" "music-assistant-alexa-skill" {
+  domain = "music-assistant-alexa-skill.${local.domain}"
+  answer = "10.0.10.220"
+}
+
 resource "adguard_rewrite" "hoarder" {
   domain = "hoarder.srv.${local.domain}"
   answer = "10.0.10.220"
