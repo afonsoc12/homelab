@@ -143,6 +143,64 @@
   roles:
     - k3s.orchestration.k3s_server
 
+- name: Pin one CoreDNS replica per master and keep DNS traffic node-local
+  hosts: masters
+  become: true
+  gather_facts: false
+  tags: [coredns]
+  vars:
+    # DNS lookups were measured at ~300ms because CoreDNS ran a single replica,
+    # pinned wherever the addon controller happened to schedule it (usually
+    # k3s-oci-m3), forcing every other node's pods to resolve DNS over the
+    # Tailscale WAN link. The addon's own topologySpreadConstraint (maxSkew: 1,
+    # DoNotSchedule, topologyKey: kubernetes.io/hostname) guarantees one pod
+    # per node once replicas >= node count, so 3 replicas across our 3 masters
+    # pins a local CoreDNS pod on every node. But the kube-dns Service still
+    # load-balances across all 3 endpoints regardless of which node asks, so
+    # internalTrafficPolicy: Local is also needed to keep each node's queries
+    # on its own local pod instead of round-robining cross-node again.
+    #
+    # This patches the manifest k3s itself writes to
+    # /var/lib/rancher/k3s/server/manifests/coredns.yaml (embedded in the k3s
+    # binary), rather than checking in our own copy of it — so it stays in
+    # sync with whatever CoreDNS version/Corefile ships with the pinned
+    # k3s_version instead of going stale. See
+    # https://github.com/k3s-io/k3s-ansible/issues/305 for the upstream
+    # discussion of this gap.
+    k3s_coredns_manifest: /var/lib/rancher/k3s/server/manifests/coredns.yaml
+  tasks:
+    - name: Set CoreDNS replica count in the k3s addon manifest
+      ansible.builtin.lineinfile:
+        path: "{{ k3s_coredns_manifest }}"
+        insertafter: "^  revisionHistoryLimit: 0$"
+        line: "  replicas: 3"
+        regexp: "^  replicas: \\d+$"
+      notify: Wait for CoreDNS replicas to reconcile
+
+    - name: Set kube-dns Service to node-local traffic policy
+      ansible.builtin.lineinfile:
+        path: "{{ k3s_coredns_manifest }}"
+        insertafter: "^  ipFamilyPolicy: SingleStack$"
+        line: "  internalTrafficPolicy: Local"
+        regexp: "^  internalTrafficPolicy: \\w+$"
+      notify: Wait for kube-dns traffic policy to reconcile
+  handlers:
+    - name: Wait for CoreDNS replicas to reconcile
+      ansible.builtin.command: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml -n kube-system get deploy coredns -o jsonpath='{.spec.replicas}'
+      register: k3s_coredns_replicas_live
+      until: k3s_coredns_replicas_live.stdout == "3"
+      retries: 12
+      delay: 5
+      changed_when: false
+
+    - name: Wait for kube-dns traffic policy to reconcile
+      ansible.builtin.command: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml -n kube-system get svc kube-dns -o jsonpath='{.spec.internalTrafficPolicy}'
+      register: k3s_coredns_traffic_policy_live
+      until: k3s_coredns_traffic_policy_live.stdout == "Local"
+      retries: 12
+      delay: 5
+      changed_when: false
+
 - name: Setup K3s nodes
   hosts: nodes
   become: true
