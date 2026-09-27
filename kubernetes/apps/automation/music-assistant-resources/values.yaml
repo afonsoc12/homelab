@@ -1,0 +1,31 @@
+# --------------------
+# Music Assistant Resources (extra ingress)
+#   - Chart: adhoc-resources
+# --------------------
+# Public ingress for MA's streamserver port (8097), separate from the main
+# homelab-svc-managed ingress (which only ever binds the first .ports entry,
+# UI port 8095, and is LAN-only). Needed so MA_HOSTNAME in the Alexa skill
+# (kubernetes/apps/automation/music-assistant-alexa-skill) points at a
+# real internet-reachable HTTPS endpoint, as required by
+# https://www.music-assistant.io/player-support/alexa/ for non-APL playback.
+resources:
+  - apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: music-assistant-stream
+      namespace: automation
+    spec:
+      ingressClassName: nginx
+      tls:
+        - secretName: music-assistant-stream-cert
+      rules:
+        - host: music-assistant-stream.{{ .Values.domain }}
+          http:
+            paths:
+              - path: /
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: music-assistant
+                    port:
+                      number: 8097

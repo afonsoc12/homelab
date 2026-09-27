@@ -83,6 +83,11 @@ resource "adguard_rewrite" "music-assistant-alexa-skill" {
   answer = "10.0.10.220"
 }
 
+resource "adguard_rewrite" "music-assistant-stream" {
+  domain = "music-assistant-stream.${local.domain}"
+  answer = "10.0.10.220"
+}
+
 resource "adguard_rewrite" "hoarder" {
   domain = "hoarder.srv.${local.domain}"
   answer = "10.0.10.220"
