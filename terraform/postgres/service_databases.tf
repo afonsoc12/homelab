@@ -30,10 +30,11 @@ resource "random_password" "this" {
 # ----- Roles (users) -----
 
 resource "postgresql_role" "this" {
-  for_each = local.service_databases
-  name     = each.key
-  login    = true
-  password = random_password.this[each.key].result
+  for_each    = local.service_databases
+  name        = each.key
+  login       = true
+  password    = random_password.this[each.key].result
+  valid_until = "9999-12-31"
 }
 
 # ----- Databases -----
