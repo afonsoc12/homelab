@@ -50,6 +50,12 @@ certificates:
       reflectNamespaces:
         - automation
         - sandbox
+    - name: music-assistant-alexa-skill
+      dnsNames:
+        - music-assistant-alexa-skill.{{ .Values.domain }}
+      reflectNamespaces:
+        - automation
+        - sandbox
     - name: local-wildcard
       dnsNames:
         - local.{{ .Values.domain }}

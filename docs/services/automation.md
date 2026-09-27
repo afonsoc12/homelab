@@ -96,6 +96,16 @@ Local text-to-speech engine. Generates natural-sounding voice output for Home As
 
 ---
 
+## <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/music-assistant.png" class="svc-icon"> Music Assistant
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>automation</code></em>
+
+Multi-room music player hub. Aggregates streaming providers and local libraries, and controls players (Chromecast, AirPlay, Sonos, etc.) — the backend used for Alexa smart-home integration.
+
+[:octicons-book-16: Documentation](https://www.music-assistant.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/music-assistant/values.yaml)
+
+---
+
 ## <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/web-whisper.png" class="svc-icon"> Whisper
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>automation</code></em>
