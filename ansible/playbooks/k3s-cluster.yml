@@ -143,6 +143,49 @@
   roles:
     - k3s.orchestration.k3s_server
 
+- name: Pin one CoreDNS replica per master and keep DNS traffic node-local
+  hosts: masters
+  become: true
+  gather_facts: false
+  tags: [coredns]
+  vars:
+    # Patches the manifest k3s itself writes here (embedded in the k3s binary)
+    # instead of checking in our own copy, so it stays in sync with whatever
+    # CoreDNS ships with the pinned k3s_version. See k3s-io/k3s-ansible#305.
+    k3s_coredns_manifest: /var/lib/rancher/k3s/server/manifests/coredns.yaml
+  tasks:
+    - name: Set CoreDNS replica count in the k3s addon manifest
+      ansible.builtin.lineinfile:
+        path: "{{ k3s_coredns_manifest }}"
+        insertafter: "^  revisionHistoryLimit: 0$"
+        line: "  replicas: 3"
+        regexp: "^  replicas: \\d+$"
+      notify: Wait for CoreDNS replicas to reconcile
+
+    - name: Set kube-dns Service to node-local traffic policy
+      ansible.builtin.lineinfile:
+        path: "{{ k3s_coredns_manifest }}"
+        insertafter: "^  ipFamilyPolicy: SingleStack$"
+        line: "  internalTrafficPolicy: Local"
+        regexp: "^  internalTrafficPolicy: \\w+$"
+      notify: Wait for kube-dns traffic policy to reconcile
+  handlers:
+    - name: Wait for CoreDNS replicas to reconcile
+      ansible.builtin.command: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml -n kube-system get deploy coredns -o jsonpath='{.spec.replicas}'
+      register: k3s_coredns_replicas_live
+      until: k3s_coredns_replicas_live.stdout == "3"
+      retries: 12
+      delay: 5
+      changed_when: false
+
+    - name: Wait for kube-dns traffic policy to reconcile
+      ansible.builtin.command: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml -n kube-system get svc kube-dns -o jsonpath='{.spec.internalTrafficPolicy}'
+      register: k3s_coredns_traffic_policy_live
+      until: k3s_coredns_traffic_policy_live.stdout == "Local"
+      retries: 12
+      delay: 5
+      changed_when: false
+
 - name: Setup K3s nodes
   hosts: nodes
   become: true
