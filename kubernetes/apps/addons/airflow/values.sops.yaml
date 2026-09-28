@@ -68,6 +68,8 @@ configmap:
   mountEnv: true
   data:
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__PARALLELISM: "8"
+    AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: "8"
     AIRFLOW_VAR_KPO_IMAGE: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
 pvc:
   storageClassName: longhorn
