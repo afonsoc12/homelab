@@ -24,6 +24,14 @@ rbac:
         - watch
         - create
         - delete
+        - patch
+    - apiGroups:
+        - ""
+      resources:
+        - pods/exec
+      verbs:
+        - create
+        - get
     - apiGroups:
         - ""
       resources:
