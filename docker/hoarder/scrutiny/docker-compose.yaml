@@ -5,7 +5,7 @@
 # --------------------
 services:
   scrutiny:
-    image: ghcr.io/analogj/scrutiny:v0.9.4-omnibus
+    image: ghcr.io/analogj/scrutiny:v0.9.5-omnibus
     container_name: scrutiny
     restart: unless-stopped
     network_mode: bridge
