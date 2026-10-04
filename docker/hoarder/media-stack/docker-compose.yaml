@@ -9,7 +9,7 @@
 # --------------------
 services:
   privoxyvpn:
-    image: binhex/arch-privoxyvpn:4.1.0-1-02
+    image: binhex/arch-privoxyvpn:4.2.0-1-02
     container_name: privoxyvpn
     restart: unless-stopped
     privileged: true
@@ -285,7 +285,7 @@ services:
       - "/mnt/user/appdata/tautulli:/config"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:2.92.01
+    image: ghcr.io/haveagitgat/tdarr:2.94.02
     container_name: tdarr
     restart: unless-stopped
     ports:
