@@ -14,7 +14,7 @@ strategy:
     type: Recreate
 image:
     repository: ghcr.io/spliit-app/spliit
-    tag: "1.28.0"
+    tag: "1.29.0"
     pullPolicy: Always
 command: {}
 args: {}
