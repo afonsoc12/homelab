@@ -10,7 +10,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/homeassistant/home-assistant
-    tag: 2026.9.4
+    tag: 2026.10.1
     pullPolicy: Always
 hostNetwork: true
 ports:
