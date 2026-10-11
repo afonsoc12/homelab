@@ -285,7 +285,7 @@ services:
       - "/mnt/user/appdata/tautulli:/config"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:2.96.01
+    image: ghcr.io/haveagitgat/tdarr:3.00.00
     container_name: tdarr
     restart: unless-stopped
     ports:
