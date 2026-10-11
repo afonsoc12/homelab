@@ -21,6 +21,7 @@ The primary playbook for managing the k3s-cluster. Runs in plays:
 | Setup K3s nodes | `nodes` | *(always)* | Install K3s agent on worker nodes |
 | Bootstrap ArgoCD | `localhost` | `bootstrap` | Runs Helmfile — installs GPG secret, repo key, ArgoCD, root app |
 | Reset cluster | `k3s_cluster` | `reset` | Full uninstall of K3s (destructive — never tagged) |
+| Prune unused container images | `k3s_cluster` | `prune` | `k3s crictl rmi --prune -all` — reclaim node disk space |
 | Reboot masters | `masters` | `reboot` | Rolling reboot of masters (serial: 1) |
 | Reboot nodes | `nodes` | `reboot` | Reboot all agent nodes |
 | Upgrade K3s masters | `masters` | `upgrade` | Rolling upgrade (serial: 1) |
@@ -43,6 +44,9 @@ uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags upgrade
 
 # Rolling reboot of masters only
 uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags reboot --limit masters
+
+# Prune unused container images to reclaim node disk space
+uv run ansible-playbook ansible/playbooks/k3s-cluster.yml --tags prune
 ```
 
 !!! danger "`--tags reset`"
