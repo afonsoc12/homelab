@@ -234,7 +234,7 @@ services:
       - /mnt/user/appdata/decide:/data
 
   kometa:
-    image: kometateam/kometa:v2.5.2
+    image: kometateam/kometa:v2.5.3
     container_name: kometa
     restart: unless-stopped
     environment:
@@ -285,7 +285,7 @@ services:
       - "/mnt/user/appdata/tautulli:/config"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:3.00.00
+    image: ghcr.io/haveagitgat/tdarr:3.01.00
     container_name: tdarr
     restart: unless-stopped
     ports:
