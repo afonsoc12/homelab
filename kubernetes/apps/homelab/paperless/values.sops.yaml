@@ -10,7 +10,7 @@ strategy:
     type: Recreate
 image:
     repository: ghcr.io/paperless-ngx/paperless-ngx
-    tag: 3.3.0
+    tag: 3.3.2
     pullPolicy: Always
 ports:
     - containerPort: 8000
@@ -19,7 +19,7 @@ ports:
       service: true
 additionalContainers:
     - name: gotenberg
-      image: docker.io/gotenberg/gotenberg:8.37.0
+      image: docker.io/gotenberg/gotenberg:8.38.1
       command:
         - gotenberg
         - --chromium-disable-javascript=true
