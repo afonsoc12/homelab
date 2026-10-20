@@ -135,7 +135,7 @@ The repo-server init container verifies pinned SHA256 checksums before installin
 uv run python scripts/check_argocd_tools.py --verify-downloads
 ```
 
-CI rejects tool version changes without matching checksum entries. It also checks that every field selected by each SOPS file encryption policy is encrypted. GitHub Actions use immutable commit references and grant write permissions only to jobs that publish an image, update an image tag, deploy Pages or publish a release.
+CI rejects tool version changes without matching checksum entries. It also checks that every field selected by each SOPS file encryption policy is encrypted. GitHub Actions grant write permissions only to jobs that publish an image, update an image tag, deploy Pages or publish a release.
 
 The SOPS private-key volume is read-only. Only the `secrets` downloader scheme is enabled, and symlinks and path traversal are rejected. Absolute values paths remain enabled because Argo CD resolves values files to absolute paths.
 
