@@ -10,11 +10,13 @@ on: # yamllint disable-line rule:truthy
   workflow_dispatch:
 
 permissions:
-  contents: write
-  packages: write
+  contents: read
 
 jobs:
   airflow:
+    permissions:
+      contents: read
+      packages: write
     runs-on: ubuntu-latest
     outputs:
       airflow_version: ${{ steps.version.outputs.airflow_version }}
@@ -67,6 +69,8 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/airflow:${{ steps.version.outputs.airflow_version }}-b${{ github.run_number }}
 
   bump-tag:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     needs: airflow
     if: github.event_name != 'pull_request'

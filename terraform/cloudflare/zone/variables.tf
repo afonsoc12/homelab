@@ -32,10 +32,15 @@ variable "block_bots" {
   default     = true
 }
 
-variable "allow_aws" {
-  description = "Skip WAF rules for AWS IPs (ASN 16509) — needed for services that call back from AWS"
-  type        = bool
-  default     = false
+variable "aws_callback_hosts" {
+  description = "Subdomains whose POST / endpoint accepts AWS callbacks without geo/bot filtering"
+  type        = set(string)
+  default     = []
+
+  validation {
+    condition     = alltrue([for host in var.aws_callback_hosts : can(regex("^[a-z0-9-]+$", host))])
+    error_message = "AWS callback hosts must be individual subdomain labels."
+  }
 }
 
 variable "geo_block_enabled" {
@@ -51,13 +56,7 @@ variable "geo_allowlist" {
 }
 
 variable "domain" {
-  description = "Base domain — only required when allow_github_hooks = true"
+  description = "Base domain — required when AWS callback exceptions are configured"
   type        = string
   default     = ""
-}
-
-variable "allow_github_hooks" {
-  description = "Skip geo-block for GitHub's published webhook IPs, scoped to git-hook.<domain> only — used to let GitHub's push webhook reach the Forgejo mirror-sync API"
-  type        = bool
-  default     = false
 }

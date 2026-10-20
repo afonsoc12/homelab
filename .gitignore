@@ -12,6 +12,9 @@ backend.tf
 .venv/
 .env
 /tmp
+.agents/plans
+.agents/todo.md
+.agents/worktrees/
 .claude/plans
 .claude/todo.md
 .claude/worktrees/

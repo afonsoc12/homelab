@@ -29,13 +29,12 @@ module "zone_homelab" {
   min_tls_version  = "1.2"
   always_use_https = true
 
-  block_bots        = true
-  allow_aws         = true
-  geo_block_enabled = true
-  geo_allowlist     = ["PT", "GB", "ES"]
+  block_bots         = true
+  aws_callback_hosts = ["music-assistant-alexa-skill"]
+  geo_block_enabled  = true
+  geo_allowlist      = ["PT", "GB"]
 
-  domain             = data.sops_file.secrets.data["zones.0.domain"]
-  allow_github_hooks = true
+  domain = data.sops_file.secrets.data["zones.0.domain"]
 }
 
 module "zone_personal" {
@@ -47,7 +46,6 @@ module "zone_personal" {
   always_use_https = true
 
   block_bots        = true
-  allow_aws         = false
   geo_block_enabled = false
 }
 

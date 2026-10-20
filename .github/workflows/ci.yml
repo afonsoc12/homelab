@@ -11,6 +11,9 @@ on: # yamllint disable-line rule:truthy
     branches:
       - master
   workflow_dispatch:
+permissions:
+  contents: read
+
 jobs:
   gitleaks:
     name: 🔑 Secret Scan
@@ -46,6 +49,9 @@ jobs:
       - name: 📦 Install dependencies
         run: uv sync --locked --group dev
 
+      - name: 🔐 Check SOPS encryption
+        run: uv run python scripts/check_sops.py
+
       - name: 🔍 Run yamllint
         run: uv run yamllint .
 
@@ -69,10 +75,13 @@ jobs:
 
       - name: 🔍 Run Helm lint
         run: |
-          find kubernetes -name "Chart.yaml" | xargs -I{} dirname {} | while read chart; do
+          result=0
+          while IFS= read -r -d '' chart_file; do
+            chart="${chart_file%/Chart.yaml}"
             echo "Linting $chart"
-            helm lint "$chart"
-          done
+            helm lint "$chart" || result=1
+          done < <(find kubernetes -name "Chart.yaml" -print0)
+          exit "$result"
 
   terraform-fmt:
     name: 🏗️ Terraform Format
