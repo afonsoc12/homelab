@@ -129,13 +129,7 @@ Renovate is configured to ignore `.decrypted~*.yaml` files so it never touches S
 
 Argo CD verifies the OIDC provider certificate with its system CA trust store. Keep the provider certificate chain valid rather than disabling verification.
 
-The repo-server init container verifies pinned SHA256 checksums before installing any downloaded tool or extracting its archive. Checksums cover both amd64 and arm64 nodes. When updating a tool version, update its matching checksums from the upstream release and run:
-
-```bash
-uv run python scripts/check_argocd_tools.py --verify-downloads
-```
-
-CI rejects tool version changes without matching checksum entries. It also checks that every field selected by each SOPS file encryption policy is encrypted. GitHub Actions grant write permissions only to jobs that publish an image, update an image tag, deploy Pages or publish a release.
+CI checks that every field selected by each SOPS file encryption policy is encrypted. GitHub Actions grant write permissions only to jobs that publish an image, update an image tag, deploy Pages or publish a release.
 
 The SOPS private-key volume is read-only. Only the `secrets` downloader scheme is enabled, and symlinks and path traversal are rejected. Absolute values paths remain enabled because Argo CD resolves values files to absolute paths.
 
