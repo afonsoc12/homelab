@@ -37,7 +37,7 @@ ingress:
     tls:
         - secretName: auth-cert
     hosts:
-        - host: auth.mydata247.top
+        - host: auth.{{ .Values.domain }}
           paths:
             - path: /
               pathType: Prefix

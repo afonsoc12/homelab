@@ -33,3 +33,9 @@ module "zone_homelab" {
 ## `tunnels` — Cloudflare Tunnel
 
 Creates and configures the Cloudflared tunnel that connects the k3s-cluster to the Cloudflare edge. The tunnel secret is read from SOPS.
+
+## Public access restrictions
+
+The homelab zone allows Portugal and the UK. AWS traffic receives an exception only for `POST /` on the Alexa skill callback subdomain; other AWS traffic is subject to the same country and bot rules. Application request verification remains required on that callback.
+
+Forgejo has no public tunnel, DNS record or webhook ingress. Its LAN ingress remains available; GitHub cannot use the former public mirror-sync endpoint.

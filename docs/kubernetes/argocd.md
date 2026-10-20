@@ -124,3 +124,19 @@ argocd app rollback <app-name>
 - Update container image tags in values files
 
 Renovate is configured to ignore `.decrypted~*.yaml` files so it never touches SOPS intermediaries.
+
+## Deployment tool security
+
+Argo CD verifies the OIDC provider certificate with its system CA trust store. Keep the provider certificate chain valid rather than disabling verification.
+
+The repo-server init container verifies pinned SHA256 checksums before installing any downloaded tool or extracting its archive. Checksums cover both amd64 and arm64 nodes. When updating a tool version, update its matching checksums from the upstream release and run:
+
+```bash
+uv run python scripts/check_argocd_tools.py --verify-downloads
+```
+
+CI rejects tool version changes without matching checksum entries. It also checks that every field selected by each SOPS file encryption policy is encrypted. GitHub Actions use immutable commit references and grant write permissions only to jobs that publish an image, update an image tag, deploy Pages or publish a release.
+
+The SOPS private-key volume is read-only. Only the `secrets` downloader scheme is enabled, and symlinks and path traversal are rejected. Absolute values paths remain enabled because Argo CD resolves values files to absolute paths.
+
+MetalLB address pools are stored in `kubernetes/apps/addons/metallb-resources/values.sops.yaml` and decrypted by helm-secrets during rendering.

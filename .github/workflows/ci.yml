@@ -11,18 +11,22 @@ on: # yamllint disable-line rule:truthy
     branches:
       - master
   workflow_dispatch:
+permissions:
+  contents: read
+
 jobs:
   gitleaks:
     name: 🔑 Secret Scan
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
+          persist-credentials: false
           fetch-depth: 0
 
       - name: 🔑 Run Gitleaks
-        uses: gitleaks/gitleaks-action@v3
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -31,20 +35,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version-file: .python-version
 
       - name: ⚡ Setup uv
-        uses: astral-sh/setup-uv@v10.3.0
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
           activate-environment: true
 
       - name: 📦 Install dependencies
         run: uv sync --locked --group dev
+
+      - name: 🔐 Check SOPS encryption and pinned deployment tools
+        run: |
+          uv run python scripts/check_sops.py
+          uv run python scripts/check_argocd_tools.py
 
       - name: 🔍 Run yamllint
         run: uv run yamllint .
@@ -62,27 +73,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: ⎈ Setup Helm
-        uses: azure/setup-helm@v5
+        uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
 
       - name: 🔍 Run Helm lint
         run: |
-          find kubernetes -name "Chart.yaml" | xargs -I{} dirname {} | while read chart; do
+          result=0
+          while IFS= read -r -d '' chart_file; do
+            chart="${chart_file%/Chart.yaml}"
             echo "Linting $chart"
-            helm lint "$chart"
-          done
+            helm lint "$chart" || result=1
+          done < <(find kubernetes -name "Chart.yaml" -print0)
+          exit "$result"
 
   terraform-fmt:
     name: 🏗️ Terraform Format
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
 
       - name: 🏗️ Setup Terraform
-        uses: hashicorp/setup-terraform@v4
+        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4
 
       - name: 🔍 Run Terraform format
         run: terraform fmt -check -recursive terraform/

@@ -36,16 +36,8 @@ ingress:
             - path: /
               pathType: Prefix
               port: http
-        - host: ENC[AES256_GCM,data:n3LAOf6Z63xf252qwaM9ql32KATn8g==,iv:dgTkfyx+c9pfqxP0G/iM5ma/6C8bMticFhm8HBRlWZM=,tag:5fQOzU8gAk0VLR0s5U4E3w==,type:str]
-          paths:
-            - path: /api/v1/repos/afonsoc12/homelab/mirror-sync
-              pathType: Exact
-              port: http
     tls:
         - secretName: local-wildcard-cert
-        - secretName: git-hook-cert
-          hosts:
-            - git-hook.{{ .Values.domain }}
 resources:
     requests:
         cpu: 100m
@@ -55,8 +47,8 @@ resources:
         memory: 1Gi
 sops:
     encrypted_regex: ^(password|PASSWD|DOMAIN|ROOT_URL|host|username|email)$
-    lastmodified: "2026-08-18T21:27:56Z"
-    mac: ENC[AES256_GCM,data:wZIpbJxsRflgf3RRgrhQKiOtoEHabhfsUrUmZ8wLowQAwGbP8DKlcfXSmZLsWVakmuUaXWeXApWSuIZ/n6v4tHdDFgwu5J2+Sfrvynp3/GP7z5IOtMowTvIURDyOOWg7rJ+W9qITHjp/lpW9FTEW/zUKFGCNd6rc8/tmisXsqi4=,iv:NLC3lnAAnPud5pE4ll0IHPbKsser1Np0x3HCH1vYCNE=,tag:mYWHrWTchpHhFw4j+499GA==,type:str]
+    lastmodified: "2026-10-20T20:56:35Z"
+    mac: ENC[AES256_GCM,data:tSWyBIlm+UUmt2xGRiWyMqjMhn2My041K9mW+iX3Fs4560kVjQmqoRqyZbswNNNlPrmLVW1WxOMQ/0+shfyKMXrItZ8KgDObWsOjP2bIisMGqiEw7qJDnLJiMtBt9C16qY3qtqS7Acg5Ow/bASI2khlsZqbPzon8raLpUzIiDWw=,iv:i16bOQQDRMDUdYwnNyDF2j4gjrxllbm8/daqt0SYf0Q=,tag:DFPfG/uTb/Yc2PTAQdCing==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-08-18T21:27:56Z"

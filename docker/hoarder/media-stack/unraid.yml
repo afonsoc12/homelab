@@ -276,7 +276,7 @@ decide:
   volume_descriptions:
     /data: "SQLite database and artwork cache."
   env_descriptions:
-    LOCAL_URL: "Address the join QR shows to people on your LAN (e.g. http://192.0.2.10:8090, a documentation-range example - use your own LAN IP). Also settable in-app."
+    LOCAL_URL: "Address the join QR shows to people on your LAN (e.g. http://<lan-host>:8090 - use your own LAN host). Also settable in-app."
     REMOTE_URL: "Address the join QR shows to remote friends. Points at the Authelia-fronted ingress hostname."
     PUID: "User ID to run as (99 = nobody on Unraid)."
     PGID: "Group ID to run as (100 = users on Unraid)."

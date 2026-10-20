@@ -38,10 +38,10 @@ configs:
     cm:
         # -- Create the argocd-cm configmap for [declarative setup]
         create: true
-        helm.valuesFileSchemes: secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import, secrets+age-import-kubernetes, secrets,secrets+literal, https
+        helm.valuesFileSchemes: secrets
         admin.enabled: "false"
         oidc.config: ENC[AES256_GCM,data:5YTeHr0sY0B8/GdM90gjISmAEiJZBhVw7NohuyzF+1UTF1PcgyWDs6t6gZvUmahTcLpww6PaKZvvQ2BnLJ0epmzSfG6XZWyAoZkO2jquw5f+p9ouV7FTZyOGck+k4sdSQoEfZEuSN4TAb4p8ibqYV9VQ4eWh+lFks/1Ju2XkfmfUmYdyriynk1Zzod4WWbZ+8SIz34XgzOnX+VDoKVTy5/YKTn6HFmuas7akWS+Vm3E2pBhy2mCqc8KoC/n2bWhPOy3Lans5JRdHHztHOpKUFuhVmVcxyIClF6AE0b61lK/+kcES6KO2Tes=,iv:6Kz7OtuA3mx4IGSoCoSDW4W5OgVKgDrCXu7VXor74Q8=,tag:S7Unp6M/E5Gm8OlJ1PrmRg==,type:str]
-        oidc.tls.insecure.skip.verify: "true"
+        oidc.tls.insecure.skip.verify: "false"
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
             jqPathExpressions:
@@ -312,10 +312,11 @@ repoServer:
         # https://github.com/jkroepke/helm-secrets/wiki/Security-in-shared-environments
         - name: HELM_SECRETS_VALUES_ALLOW_SYMLINKS
           value: "false"
+        # Argo CD resolves values files to absolute paths; required by its wrapper.
         - name: HELM_SECRETS_VALUES_ALLOW_ABSOLUTE_PATH
           value: "true"
         - name: HELM_SECRETS_VALUES_ALLOW_PATH_TRAVERSAL
-          value: "true"
+          value: "false"
         - name: HELM_SECRETS_WRAPPER_ENABLED
           value: "true"
         - name: HELM_SECRETS_DECRYPT_SECRETS_IN_TMP_DIR
@@ -349,25 +350,60 @@ repoServer:
               value: 0.47.0
             - name: SOPS_VERSION
               value: 3.13.3
+            - name: CURL_VERSION
+              value: 8.11.0
+            - name: TOOL_CHECKSUMS
+              value: |
+                1b050abd1669f9a2ac29b34eb022cdeafb271dce5a4fb57d8ef8fadff6d7be1f  curl-8.11.0-aarch64
+                d18aa1f4e03b50b649491ca2c401cd8c5e89e72be91ff758952ad2ab5a83135d  curl-8.11.0-amd64
+                bbdfcf121bbbe5e9525f63ed50ad2e07c43034fc3762f488563061620b76b1be  helm-secrets-4.7.9.tar.gz
+                896cf63684a42a723d61c980369d6e588330927deb13676ca0d85006dd6da0ea  helm-v3.22.1-linux-amd64.tar.gz
+                4c29e286b279d170fa048ddfc3e4e83dcd069ca9c52102766ba672d7149e694d  helm-v3.22.1-linux-arm64.tar.gz
+                65691ff77eb6fa44c908b77a1082c9f092c3b9733b5cefabec0d1104890e21a8  kubectl-v1.37.1-linux-amd64
+                ff749f4b78d9c4f1ec87307df9b50119ed819e2094aa9810cb9acffc3286c8c7  kubectl-v1.37.1-linux-arm64
+                e5bec3346a873ae91d871550f3e698c1aad962aff462a080e40f25fde17fef6b  sops-v3.13.3.linux.amd64
+                53b0abacd38ef1b12a66d6c100956691b9cefce018d91f81e73ddf7438b94d77  sops-v3.13.3.linux.arm64
+                b327e52811c0c84c5adad26bf2536491e07fc75018a84a66109e1e5325a3d833  vals_0.47.0_linux_amd64.tar.gz
+                835f3d5d438ab92ce7929498b6fe0543d1972efde39cfd956b1ecda3dc6adff7  vals_0.47.0_linux_arm64.tar.gz
           args:
             - |
-              sleep 2
+              set -eu
 
-              mkdir -p /gitops-tools/helm-plugins
+              case "$(uname -m)" in
+                x86_64) GO_ARCH=amd64; CURL_ARCH=amd64 ;;
+                aarch64|arm64) GO_ARCH=arm64; CURL_ARCH=aarch64 ;;
+                *) echo "Unsupported tool architecture" >&2; exit 1 ;;
+              esac
 
-              GO_ARCH=$(uname -m | sed -e 's/x86_64/amd64/')
-              wget -qO /gitops-tools/curl https://github.com/moparisthebest/static-curl/releases/download/v8.11.0/curl-${GO_ARCH}
+              mkdir -p /gitops-tools/helm-plugins /tmp/verified-tools
+              printf '%s\n' "$TOOL_CHECKSUMS" > /tmp/verified-tools/checksums
+              cd /tmp/verified-tools
 
-              GO_ARCH=$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/') && \
-              wget -qO /gitops-tools/kubectl https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${GO_ARCH}/kubectl
-              wget -qO /gitops-tools/sops https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.${GO_ARCH}
-              wget -qO- https://github.com/helmfile/vals/releases/download/v${VALS_VERSION}/vals_${VALS_VERSION}_linux_${GO_ARCH}.tar.gz | tar zxv -C /gitops-tools vals
-              wget -qO- https://github.com/jkroepke/helm-secrets/releases/download/v${HELM_SECRETS_VERSION}/helm-secrets.tar.gz | tar -C /gitops-tools/helm-plugins -xzf-
-              wget -qO- https://get.helm.sh/helm-v${HELM3_VERSION}-linux-${GO_ARCH}.tar.gz | tar -C /gitops-tools --strip-components=1 -xzf- linux-${GO_ARCH}/helm
+              download() {
+                asset="$1"
+                url="$2"
+                expected=$(awk -v asset="$asset" '$2 == asset { print $1 }' checksums)
+                test "${#expected}" -eq 64
+                wget -qO "$asset" "$url"
+                printf '%s  %s\n' "$expected" "$asset" | sha256sum -c -
+              }
+
+              download "curl-${CURL_VERSION}-${CURL_ARCH}" "https://github.com/moparisthebest/static-curl/releases/download/v${CURL_VERSION}/curl-${CURL_ARCH}"
+              download "kubectl-v${KUBECTL_VERSION}-linux-${GO_ARCH}" "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/${GO_ARCH}/kubectl"
+              download "sops-v${SOPS_VERSION}.linux.${GO_ARCH}" "https://github.com/getsops/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux.${GO_ARCH}"
+              download "vals_${VALS_VERSION}_linux_${GO_ARCH}.tar.gz" "https://github.com/helmfile/vals/releases/download/v${VALS_VERSION}/vals_${VALS_VERSION}_linux_${GO_ARCH}.tar.gz"
+              download "helm-secrets-${HELM_SECRETS_VERSION}.tar.gz" "https://github.com/jkroepke/helm-secrets/releases/download/v${HELM_SECRETS_VERSION}/helm-secrets.tar.gz"
+              download "helm-v${HELM3_VERSION}-linux-${GO_ARCH}.tar.gz" "https://get.helm.sh/helm-v${HELM3_VERSION}-linux-${GO_ARCH}.tar.gz"
+
+              cp "curl-${CURL_VERSION}-${CURL_ARCH}" /gitops-tools/curl
+              cp "kubectl-v${KUBECTL_VERSION}-linux-${GO_ARCH}" /gitops-tools/kubectl
+              cp "sops-v${SOPS_VERSION}.linux.${GO_ARCH}" /gitops-tools/sops
+              tar -xzf "vals_${VALS_VERSION}_linux_${GO_ARCH}.tar.gz" -C /gitops-tools vals
+              tar -xzf "helm-secrets-${HELM_SECRETS_VERSION}.tar.gz" -C /gitops-tools/helm-plugins
+              tar -xzf "helm-v${HELM3_VERSION}-linux-${GO_ARCH}.tar.gz" -C /gitops-tools --strip-components=1 "linux-${GO_ARCH}/helm"
               mv /gitops-tools/helm /gitops-tools/helm3
-
-              chmod +x /gitops-tools/*
               cp /gitops-tools/helm-plugins/helm-secrets/scripts/wrapper/helm.sh /gitops-tools/helm
+              chmod 0755 /gitops-tools/curl /gitops-tools/kubectl /gitops-tools/sops /gitops-tools/vals /gitops-tools/helm3 /gitops-tools/helm
           volumeMounts:
             - mountPath: /gitops-tools
               name: gitops-tools
@@ -380,6 +416,7 @@ repoServer:
           name: gitops-tools
         - mountPath: /homelab-sops-gpg/
           name: homelab-sops-gpg
+          readOnly: true
     # -- Additional volumes to the repo server pod
     volumes:
         - name: gitops-tools

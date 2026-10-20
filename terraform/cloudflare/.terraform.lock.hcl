@@ -43,18 +43,7 @@ provider "registry.terraform.io/cloudflare/cloudflare" {
 provider "registry.terraform.io/hashicorp/http" {
   version = "3.6.2"
   hashes = [
-    "h1:1KFjXLvKnG9WgJ7v64JZK4v3bk1NL1Si/NlzjYXVS6Y=",
-    "h1:G0gVRyy5SuURfJYLoyyXh2o2qAWm5655pUaNdpVxg8E=",
-    "h1:N/wta5L2f9Gdn7r43i/R82WDbVJscE4C9CxSVk8jav0=",
     "h1:Nszr/m6TvK0WN0u2GPrPOAIcr4/KwKh/Y2YwvZMyWbA=",
-    "h1:RMUFpMzFCNMJ2JF8xxiI86zcIvwbrCZ7IZ/ikZyBujQ=",
-    "h1:RdcbLYf1BNlPmO5cMz1slzDsK9l9En1W2IalqHX3r+w=",
-    "h1:UoBTYoBRzdOXjK8Gs6FXTQ8Hmps+LC296uaFD+Cdykk=",
-    "h1:YX6PmX1t+BSiclSmnbjqunRRS6Oi33FdK5wWY1hLd4Y=",
-    "h1:kho1fFPdAVGCshzsYbJdFMxApfGqsGYhEe5vyYovhgg=",
-    "h1:knSqOK0hEyo6tw71bPBnDWf+FjTbJ2kVNzjh5TFIQ+c=",
-    "h1:lopjSUTIsEsCcwqXT4tClQDXM04Cq3JydoKjs5QrkcE=",
-    "h1:t+H0t7gUCC+pomSuC+t/Ca3z9WOpvyErPs+kTLs4/as=",
     "zh:1de57c0f889a6a35e018e8f83b1a1fcaafccda31b1c300fbbb29d29c3a1ce038",
     "zh:502925fe2ebd90715922db22588727c4c688e56939a3e87568ad1ae32ace0da3",
     "zh:5dc16040d1f59e1fadef2247ab4026b661f0e6e06fee8f44fad6bcbce7c1cb73",
