@@ -11,7 +11,7 @@ variable "zone_id" {
 }
 
 variable "domain" {
-  description = "Base domain used to build tunnel hostnames (e.g. mydata247.top)"
+  description = "Base domain used to build tunnel hostnames"
   type        = string
 }
 

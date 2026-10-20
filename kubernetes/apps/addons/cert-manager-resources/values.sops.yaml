@@ -39,11 +39,6 @@ certificates:
       reflectNamespaces:
         - homelab
         - sandbox
-    - name: git-hook
-      dnsNames:
-        - git-hook.{{ .Values.domain }}
-      reflectNamespaces:
-        - devops
     - name: home
       dnsNames:
         - home.{{ .Values.domain }}
@@ -132,8 +127,8 @@ certificates:
         - sandbox
 sops:
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-08-15T12:02:56Z"
-    mac: ENC[AES256_GCM,data:0J2wVnx8PH4W5/eZ+PmU5Drxn89Pzd8D8iCDbvXYmMjbrzvTM3GtsPgUmVNOa3p9SJoEYMpiFH0feuudJ4sPYOqKnPewXQdmPJsbJ3aHPMwXp293A+5ftC0apyu/XYwRGSb3PkdrlbnzuxKrowMMtGJhlHO0rzpWmnGfrKs/vhA=,iv:ZMk97y1poIigo7HeGUv/vVLr5Vp06dnvLxuuWy9kfhM=,tag:FNj/tLA6lHpUCZSJ8SbInw==,type:str]
+    lastmodified: "2026-10-20T20:58:02Z"
+    mac: ENC[AES256_GCM,data:zAripEUquRkJkV0XShH7QXY0s/kdDfiMQxgUziqEtT7vh2M4QbuzA2Xg4K7whIF6ncoWMgSHjEzR3ZSQn45fiIYCPJXsiZwtyqqZ5Bw+Wy+asIEpMIWHfGcvvQWsILcvWXfAD1wI0UHdPzhIIcIoAfaDI45BY2gfY6TSsBZuSUc=,iv:YF2GXSPW+GdL5A9+WP+bF6ReKpv9ieL5LoQDOjEtmVU=,tag:mclae2p28MimzfqNujy+hg==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:40Z"
