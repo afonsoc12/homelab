@@ -315,8 +315,9 @@ repoServer:
         # Argo CD resolves values files to absolute paths; required by its wrapper.
         - name: HELM_SECRETS_VALUES_ALLOW_ABSOLUTE_PATH
           value: "true"
+        # Local charts load encrypted values from ../../apps within this repository.
         - name: HELM_SECRETS_VALUES_ALLOW_PATH_TRAVERSAL
-          value: "false"
+          value: "true"
         - name: HELM_SECRETS_WRAPPER_ENABLED
           value: "true"
         - name: HELM_SECRETS_DECRYPT_SECRETS_IN_TMP_DIR
