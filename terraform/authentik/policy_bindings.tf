@@ -21,7 +21,7 @@ resource "authentik_policy_binding" "access_uptime_kuma" {
 resource "authentik_policy_binding" "access_node_red" {
   enabled        = true
   failure_result = false
-  group          = authentik_group.administrators.id
+  group          = data.sops_file.secrets.data["value_079"]
   negate         = false
   order          = 0
   target         = authentik_application.node_red.uuid
@@ -41,7 +41,7 @@ resource "authentik_policy_binding" "notification_policy_exception" {
 resource "authentik_policy_binding" "access_argo_cd" {
   enabled        = true
   failure_result = false
-  group          = authentik_group.administrators.id
+  group          = data.sops_file.secrets.data["value_079"]
   negate         = false
   order          = 0
   target         = authentik_application.argo_cd.uuid
