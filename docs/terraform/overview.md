@@ -25,17 +25,18 @@ account lifecycle flows, access policies, and memberships are retained.
 |------|---------|
 | `applications.tf`, `mappings.tf` | OAuth2 providers, Uptime Kuma proxy, applications, and claims |
 | `flows.tf`, `stages.tf`, `policies.tf`, `policy_bindings.tf` | Login, MFA, account lifecycle, and authorization |
-| `directory.tf`, `notifications.tf`, `system.tf` | Groups, event rules, certificate, and outpost |
+| `notifications.tf`, `system.tf` | Event rules, certificate, and outpost |
 | `blueprints.tf` | Disable packaged reconciliation except system user attributes |
 | `brand.tf` | Homelab title and login CSS |
 | `secrets.sops.yaml` | Encrypted provider credentials, access-binding IDs, and private configuration with opaque keys |
 
-Terraform owns static administrative settings and group definitions. Authentik
-owns user accounts, their metadata and memberships, passwords, MFA devices,
+Terraform owns static administrative settings. Authentik owns groups, group
+memberships, user accounts, their metadata, passwords, MFA devices,
 sessions, tokens, OAuth grants, event history, its built-in source, generated
-outpost accounts/permissions, and packaged system attribute definitions. User
-resources were forgotten from Terraform state without deleting their accounts.
-Existing user-specific access bindings reference encrypted account IDs.
+outpost accounts/permissions, and packaged system attribute definitions. User and group
+resources were forgotten from Terraform state without deleting accounts or groups
+or changing memberships. Existing user- and group-specific access bindings reference
+encrypted IDs.
 Tenant-level configuration is outside this module's ownership.
 
 Use `terraform plan -parallelism=1 -out=change.tfplan` and review the saved plan
