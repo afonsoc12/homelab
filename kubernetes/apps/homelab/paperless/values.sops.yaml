@@ -32,7 +32,7 @@ additionalContainers:
             cpu: 500m
             memory: 512Mi
     - name: tika
-      image: docker.io/apache/tika:3.3.1.0-full
+      image: docker.io/apache/tika:3.3.3.0-full
       ports:
         - containerPort: 9998
           name: tika
