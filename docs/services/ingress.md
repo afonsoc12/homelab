@@ -10,7 +10,7 @@ Traffic routing, VPN, DNS filtering, identity, and authentication.
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Identity provider (IdP). Handles SSO, OAuth2/OIDC, SAML, and LDAP for all protected services. The primary auth system going forward.
+Identity provider (IdP) for the ongoing SSO migration. Existing OAuth2/OIDC integrations and Uptime Kuma forward authentication are managed in `terraform/authentik`, together with login/MFA flows, access policies, memberships, events, and branding.
 
 [:octicons-book-16: Documentation](https://docs.goauthentik.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authentik/values.sops.yaml)
 
@@ -20,7 +20,7 @@ Identity provider (IdP). Handles SSO, OAuth2/OIDC, SAML, and LDAP for all protec
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-SSO and 2FA authentication proxy. Currently being decommissioned in favour of Authentik.
+SSO and 2FA authentication proxy. Still protects services awaiting migration. Keep it running until those consumers and all ingress templates support Authentik.
 
 [:octicons-book-16: Documentation](https://www.authelia.com/configuration/prologue/introduction/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authelia/values.sops.yaml)
 
@@ -30,7 +30,7 @@ SSO and 2FA authentication proxy. Currently being decommissioned in favour of Au
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Lightweight LDAP server. Provides a simple user directory consumed by Authentik and other LDAP-aware services.
+Lightweight LDAP server used by the legacy authentication stack. Keep it running until its consumers migrate; Authentik currently uses its built-in source.
 
 [:octicons-book-16: Documentation](https://github.com/lldap/lldap) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/lldap/values.sops.yaml)
 
