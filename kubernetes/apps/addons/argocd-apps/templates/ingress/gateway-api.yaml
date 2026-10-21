@@ -1,0 +1,32 @@
+# Shared CRDs are retained when an individual controller or route is removed.
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gateway-api
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  project: default
+  sources:
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      path: kubernetes/apps/ingress/gateway-api
+    - repoURL: docker.io/envoyproxy
+      chart: gateway-crds-helm
+      targetRevision: v1.9.2
+      helm:
+        parameters:
+          - name: crds.envoyGateway.enabled
+            value: "true"
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: ingress
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

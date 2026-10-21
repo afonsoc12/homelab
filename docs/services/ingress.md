@@ -40,6 +40,17 @@ Lightweight LDAP server used by the legacy authentication stack. Keep it running
 
 ## Ingress & Tunnels
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/envoy.png" class="svc-icon"> Envoy Gateway
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
+
+Gateway API controller and Envoy proxy. Grafana is the first migrated application,
+using native Authentik OIDC login behind the existing nginx forwarding edge.
+
+[:octicons-book-16: Documentation](../kubernetes/envoy-gateway.md) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/envoy-gateway/values.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/nginx.png" class="svc-icon"> ingress-nginx
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
