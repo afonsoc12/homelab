@@ -12,6 +12,8 @@ Traffic routing, VPN, DNS filtering, identity, and authentication.
 
 Identity provider (IdP) for the ongoing SSO migration. Existing OAuth2/OIDC integrations and Uptime Kuma forward authentication are managed in `terraform/authentik`, together with login/MFA flows, access policies, memberships, events, and branding.
 
+The server and worker prefer the node running PostgreSQL to reduce database round-trip latency. This is a scheduling preference; both can run elsewhere when needed.
+
 [:octicons-book-16: Documentation](https://docs.goauthentik.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authentik/values.sops.yaml)
 
 ---
