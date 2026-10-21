@@ -1,0 +1,106 @@
+# Shared Gateway API and Envoy CRDs are managed by the gateway-api Application.
+crds:
+  enabled: false
+
+# Official gateway-helm controller values; probes use the pinned chart defaults.
+deployment:
+  envoyGateway:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+# Rendered by the existing adhoc-resources chart in the same Argo CD Application.
+resources:
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: GatewayClass
+    metadata:
+      name: envoy
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+    spec:
+      controllerName: gateway.envoyproxy.io/gatewayclass-controller
+      parametersRef:
+        group: gateway.envoyproxy.io
+        kind: EnvoyProxy
+        name: homelab
+        namespace: ingress
+
+  - apiVersion: gateway.envoyproxy.io/v1alpha1
+    kind: EnvoyProxy
+    metadata:
+      name: homelab
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+    spec:
+      provider:
+        type: Kubernetes
+        kubernetes:
+          envoyService:
+            name: envoy
+            # The first route stays behind the existing nginx address.
+            type: ClusterIP
+          envoyDeployment:
+            replicas: 1
+            container:
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  cpu: 500m
+                  memory: 256Mi
+            # The controller supplies all three probes on both proxy containers.
+            # Bound the auxiliary container as well as the Envoy process.
+            patch:
+              type: StrategicMerge
+              value:
+                spec:
+                  template:
+                    spec:
+                      containers:
+                        - name: shutdown-manager
+                          resources:
+                            requests:
+                              cpu: 10m
+                              memory: 32Mi
+                            limits:
+                              cpu: 100m
+                              memory: 128Mi
+
+  - apiVersion: gateway.networking.k8s.io/v1
+    kind: Gateway
+    metadata:
+      name: homelab
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
+    spec:
+      gatewayClassName: envoy
+      listeners:
+        - name: http
+          protocol: HTTP
+          port: 80
+          hostname: 'grafana.local.{{ .Values.domain }}'
+          allowedRoutes:
+            namespaces:
+              from: Selector
+              selector:
+                matchLabels:
+                  kubernetes.io/metadata.name: monitoring
+        - name: https
+          protocol: HTTPS
+          port: 443
+          hostname: 'grafana.local.{{ .Values.domain }}'
+          tls:
+            mode: Terminate
+            certificateRefs:
+              - name: local-wildcard-cert
+          allowedRoutes:
+            namespaces:
+              from: Selector
+              selector:
+                matchLabels:
+                  kubernetes.io/metadata.name: monitoring

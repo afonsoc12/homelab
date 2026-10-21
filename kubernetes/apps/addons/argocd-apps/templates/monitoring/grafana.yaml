@@ -19,7 +19,7 @@ spec:
       chart: grafana
       helm:
         valueFiles:
-        # - $values/kubernetes/apps/values.sops.yaml
+          - $values/kubernetes/apps/values.sops.yaml
           - $values/kubernetes/apps/monitoring/grafana/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
@@ -33,5 +33,13 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 2m
     syncOptions:
       - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true
+      - PruneLast=true

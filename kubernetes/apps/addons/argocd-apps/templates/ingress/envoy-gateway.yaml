@@ -1,0 +1,48 @@
+# Official Envoy Gateway chart plus the shared Gateway resources.
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: envoy-gateway
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+    - repoURL: docker.io/envoyproxy
+      chart: gateway-helm
+      targetRevision: v1.9.2
+      helm:
+        valueFiles:
+          - $values/kubernetes/apps/values.sops.yaml
+          - $values/kubernetes/apps/ingress/envoy-gateway/values.yaml
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      path: kubernetes/charts/adhoc-resources
+      helm:
+        valueFiles:
+          - secrets://../../apps/values.sops.yaml
+          - ../../apps/ingress/envoy-gateway/values.yaml
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: ingress
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    retry:
+      limit: 10
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 2m
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - SkipDryRunOnMissingResource=true
