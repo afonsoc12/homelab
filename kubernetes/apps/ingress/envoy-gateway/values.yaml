@@ -1,4 +1,5 @@
-# Shared Gateway API and Envoy CRDs are managed by the gateway-api Application.
+# Reuse the installed Gateway API CRDs. The separate chart source installs only
+# Envoy CRDs within this Application.
 crds:
   enabled: false
 

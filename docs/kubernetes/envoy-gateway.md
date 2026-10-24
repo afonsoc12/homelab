@@ -51,19 +51,18 @@ not delete the Authentik application/provider it created.
 
 ## Ownership and rollout
 
-- `gateway-api` owns the pinned Gateway API v1.6.3 standard definitions and the
-  official v1.9.2 Envoy CRD chart. Automatic pruning is disabled and the Application
-  has no deletion finalizer, so shared CRDs survive a controller rollback.
-- `envoy-gateway` owns the upstream controller chart and shared GatewayClass,
-  EnvoyProxy, and Gateway, rendered with the existing `adhoc-resources` chart.
-  One values file supplies both chart sources. The controller chart's bundled
-  CRDs are disabled to avoid replacing the newer installed Gateway API bundle.
+- `envoy-gateway` owns the upstream controller and Envoy CRD charts, plus the
+  GatewayClass, EnvoyProxy, and Gateway rendered with `adhoc-resources`.
+  One values file supplies the controller and resource charts. The CRD chart
+  enables only Envoy definitions; the cluster's existing Gateway API v1.6.3
+  definitions are reused and remain outside this Application's ownership.
+  The controller chart's bundled CRDs are disabled to avoid replacing them.
 - `grafana` owns its native routes, forwarding edge, and OAuth client Secret.
 - `authentik` owns the OIDC blueprint Secret and mounts it into its worker.
 
 Argo CD retries initial synchronization while CRDs become available. Resources
 within the Envoy Application use sync waves to create the controller before the
-Gateway. Application-level waves alone do not guarantee child readiness. A brief
+Gateway. A brief
 first-sync routing/login interruption is possible while the controller, routes,
 and Authentik blueprint converge. Nothing is applied before merge.
 
@@ -83,7 +82,7 @@ or route was deployed during validation.
 
 ## Verification after merge
 
-1. Confirm `gateway-api`, `envoy-gateway`, `authentik`, and `grafana` sync in Argo CD.
+1. Confirm `envoy-gateway`, `authentik`, and `grafana` sync in Argo CD.
 2. Check that `ingress/homelab` is Programmed and both Grafana HTTPRoutes are Accepted
    with resolved references. Check the Authentik blueprint status for errors.
 3. Open Grafana at its existing bookmark and complete Authentik login. Verify the
