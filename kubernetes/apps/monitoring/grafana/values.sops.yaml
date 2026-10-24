@@ -1,7 +1,20 @@
 deploymentStrategy:
     type: Recreate
 ingress:
-    enabled: false
+    enabled: true
+    ingressClassName: contour
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/websocket-routes: /
+    projectcontour.io/response-timeout: 60s
+    path: /
+    pathType: Prefix
+    hosts:
+        - ENC[AES256_GCM,data:V3LmtO3N3pl8+NVVrTwa36OMS0EVga4MU06G,iv:VyhDLCCs99iwTBdZzscBMbfWLS96lY747IW5R6QYkJc=,tag:dwjI+odDbhqhQV0AN9CyqA==,type:str]
+    tls:
+        - secretName: local-wildcard-cert
+          hosts:
+            - ENC[AES256_GCM,data:AFnK4d0TCct2Mj+WxG2IA2jXZxRrN6DWLSQ6,iv:R1NnxHraQui+5UFsW6miLtMm+zEWxe9UdDSohWRXApk=,tag:wIZXPOOEz0B4OUsc+3ktzw==,type:str]
 persistence:
     type: pvc
     enabled: true
@@ -26,8 +39,8 @@ grafana.ini:
     grafana_net:
         url: https://grafana.net
     server:
-        domain: '{{ .Values.route.main.hostnames | first }}'
-        root_url: https://{{ .Values.route.main.hostnames | first }}
+        domain: '{{ .Values.ingress.hosts | first }}'
+        root_url: https://{{ .Values.ingress.hosts | first }}
     auth:
         signout_redirect_url: https://sso.{{ .Values.domain }}/application/o/grafana/end-session/
     auth.anonymous:
@@ -88,94 +101,33 @@ startupProbe:
     periodSeconds: 10
     failureThreshold: 18
     timeoutSeconds: 5
-route:
-    main:
-        enabled: true
-        hostnames:
-            - ENC[AES256_GCM,data:zXqLD/I8QREyq4Cjf4DSOphUjidvHKBZYpjh,iv:wxzfKR47iofm8pyRQO2kdX6Wh62cJvABgqGu+0xz8gU=,tag:2pHtqdLWiPKyX4F8L9PLFQ==,type:str]
-        parentRefs:
-            - name: homelab
-              namespace: ingress
-              sectionName: https
-        annotations:
-            argocd.argoproj.io/sync-wave: "1"
-    http:
-        enabled: true
-        hostnames:
-            - ENC[AES256_GCM,data:8tcwh5cjiLa2wQItO0WPw6ct6g90iDoF023F2+8/kP131ao3sHf5vY2y,iv:bByP40WFvYh9Sa78Vsn1lp+KiGN9jeZVn4i32WLjBAk=,tag:jDlgFUB2nSxBt+aLwx4gKQ==,type:str]
-        parentRefs:
-            - name: homelab
-              namespace: ingress
-              sectionName: http
-        httpsRedirect: true
-        annotations:
-            argocd.argoproj.io/sync-wave: "1"
-extraObjects:
-    - apiVersion: v1
-      kind: Service
-      metadata:
-        name: grafana-gateway
-      spec:
-        type: ExternalName
-        externalName: envoy.ingress.svc.cluster.local
-        ports:
-            - name: https
-              port: 443
-    - apiVersion: networking.k8s.io/v1
-      kind: Ingress
-      metadata:
-        name: grafana
-        namespace: monitoring
-        annotations:
-            argocd.argoproj.io/sync-wave: "2"
-            nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-            nginx.ingress.kubernetes.io/proxy-ssl-server-name: "on"
-            nginx.ingress.kubernetes.io/proxy-ssl-name: '{{ .Values.route.main.hostnames | first }}'
-            nginx.ingress.kubernetes.io/ssl-redirect: "true"
-      spec:
-        ingressClassName: nginx
-        tls:
-            - secretName: local-wildcard-cert
-              hosts:
-                - ENC[AES256_GCM,data:qSPQSB7ZzTuYmBwhfqVQE7Z98bknX8BJGLLn/q/hejyOHUJSMcuBNq2i,iv:dYTbsJ8wdBLnjS353aoTHMs48gxQikyoQ9EeHE0cMO0=,tag:BJjy2FwNVDWIug1GUtlN6g==,type:str]
-        rules:
-            - host: '{{ .Values.route.main.hostnames | first }}'
-              http:
-                paths:
-                    - path: /
-                      pathType: Prefix
-                      backend:
-                        service:
-                            name: grafana-gateway
-                            port:
-                                number: 443
 envRenderSecret:
-    GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ENC[AES256_GCM,data:jA+Zfs8EJNw81amvhZe5BV7CM9jGVfLE1EX8Wcay8uvgbOgGk+swxQ0TfWFtbSAIAfIY9rcbXdStsbF5thx9iQ==,iv:AD/N+UEDg8IM0/YAU7w86xwOBXCepVFJePgLW29oX/4=,tag:RnNYGtCtg9ZB+5/w6cc7Zg==,type:str]
+    GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ENC[AES256_GCM,data:rAFsl9AfVMEU5QfRDmF7I2H8eo0PsszS7sFmX3xh+Txby173X1GwANW8t1BkV/0h5j5+yKhKM7ZgWUUkzvJoyg==,iv:We0MHMunq22p3l7xvNsB7O4MrOp04ueOpV2X97J3P4U=,tag:XQ4tAYZzBzK5O+SIfNZphw==,type:str]
 sops:
     encrypted_regex: ^(hosts|hostnames|envRenderSecret)$
-    lastmodified: "2026-10-21T23:23:06Z"
-    mac: ENC[AES256_GCM,data:yi1wKhOk9tZte++nir9rew1LIsC2UvOsxL5Gh6F/rCGbEnXYc5QY420DA8Z7dnpwI2AR/Tv0iE+IhG0yM2QDLH8q+qY/14ojW+g81KFSMoJm8DqoA6qkHyIO/JUiVIQ+mo/De6HxFFK5MpGi+RWFesZJ8HdCTDLbJY2BLsAv7po=,iv:CFfDkpvMEvE6FByM19QN9kIjEoBT+V/HgmUIn5gWTeY=,tag:XUX+IMcE2Ycmc/43c3dEtw==,type:str]
+    lastmodified: "2026-10-24T22:19:37Z"
+    mac: ENC[AES256_GCM,data:XogmZNjGbRonOja1vIznytRqqnZgSErsaRRxbMJEZ8aqxbivzuhHmz1POnCPEnQJdq/DfDlSR3Tuy8kzEwooj/QmGNMGOfZNvWUMw+QBNMfJmbCwDt+qFkfagTiwXua97Kno7aw9Kh0o/bJNdRogSXuyFX6+AaVjNLVEp012x5o=,iv:hBYNFBcUFyEpbArtY+LgWjXjQEN6nLMnrWctKobdHhU=,tag:riUl2YG3+wEY9pGP1n2bNA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-10-21T23:23:06Z"
+        - created_at: "2026-10-24T22:19:37Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//f1Wm+a89jldN6O+wwqwNmsdKiKKO0TxeEg42rtTjpcT6
-            eW7RhHLmT04itiOa8IwzcfjsG3Y8078hBUjF9v5FCiech++a0TnGHyQ6pcLxUYhp
-            mXmiQdu8O/nmi0orykfSIPH1z1Kq31TDTOhjEL1QLUrQ4Ve2x2yh2LkS//NoluvC
-            FHACRN+KBSH+dJQ99qyZXKAtYVJ6qvLFMmrNxO/cin8XZSc295UuiYXPDR2m0F6d
-            zipCfRHJXLjIG3P4YUtQR/Gn98QmL/v3FvCMG7YAZoXFZn5wRTtb6QxhbbEkgQ+9
-            qCWdpBxDpzJGIaYEOSsg1oWtyqDwrfxYPri9n1VOEhrXoZFmDlEUf9VzLlByj6Dn
-            lbxRQKpzcqFDNtBewpCzQanfpm8+jkZrJNXKmfyD0fnJY3V5QMf0PxgxOUmp/g64
-            GosjKrAjALUITi0+nEiyJIpr1s4Jm2VjzwBfkiTZ09PNJNadfE75Of+I/aGNu04c
-            D3PtO76Ce95+PuYskjoV2w+x9mkUKcrJWbBjZrVwPOixHV0TJrg7JLUODnvNJxSj
-            ZGYSewlMKJ4ln6ZermcNHcktyJikXMAXts9gw9MqaifHVdPs1fHq7TeBkyq3sSie
-            cRXM1jbrbIvTNIw52w9jEFZ4rp2uFGBNtFkkWAuQKoaSdfA1eK/UwQv0zg47+KjU
-            aAEJAhA366TG9sglmX0koohDxZ8UnvLzjVPVfQvT33OdtRGPgHX8LXSK/YetFFi/
-            GaDN4hn2S5wN+UohTRH3xUJJw5/QjJmxo1LT6J/x6d1cHlF62lgwIF2s1S+ZVdzz
-            rvzc9JoXk73N
-            =LaOt
+            hQIMA5NT/LvuRqeGAQ//X/bc0LG61eZ6t87tH/qIa9YtoMiqDMdYdfBvrbQ7Bkw2
+            f7r91cU12iuTT+a2R4H4L+9AeRetAB8e2SPRLe8Ig5b/bTkv0m+3Op3k2lFHME8+
+            dRivXUIllsLSzTpc3BsNLgzcJTrVIVc1htw1NjbwMlGf33vINVmT7AaoFEcCgu1z
+            K5jDCsPA91t7Qw7S58QHdArnHdmsq7ChVMses4CiPOvaVs58VPGHy1hrfPaX8WvZ
+            QmzPg9enRQV63YSPC5PMp2eSOmGkajlP+6HdomAqAZErR3QQb+hWpNjWHxfB10G5
+            cRJtJURpsjMloLBGqDns5AT6ahvcGGf+kFwa30ZX9FMK7j/muz0S/VqBrlEzWxGC
+            Ld15SZyJx3nAvyJxV7t3DpKrSg7KgQ7YvJGfmRRkgB0D5p7bcc1JMyP/3UuS81Fz
+            i9rWH9JwzsuSf9wwnIvfvxJgNseOy/asM7OaLtiFaLFIPm7xc2Nu/z1enhHK9FkU
+            ZW5AiXgNmz55OLv+dR/0PwtwBOXXk5zDW2UpbMqPtH1XKPBPoZ1mo6kQa5qCR9kS
+            1ZPEPguU6sd2YqW9Dzro0Hyh/qw1SZ+wYisKIl6ACD+9gyUjmyA5zcXDm+mw39vT
+            wuu7411XTNVqF5HUKfaXlqQHcOUSsuABckBg1ngXehi4g1Qnglcd/SfPDiLYK4rU
+            aAEJAhBO9aQ0p29t0T3culLNBEd4kXXd9YXVi2gQdjaO+fUy8KA6xu/S8uFj9n7e
+            J2/daExsOEG+6nRvdnGlXsaHH9lD4qM9I8v6ClHtPXQ960nukWMW1TYcVm9HNHaC
+            Q34RZafZG0pg
+            =/KwS
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2

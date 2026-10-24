@@ -92,7 +92,7 @@ nav:
       - DevOps: services/devops.md
   - Kubernetes:
       - GitOps with ArgoCD: kubernetes/argocd.md
-      - Envoy Gateway: kubernetes/envoy-gateway.md
+      - Contour and Envoy: kubernetes/contour.md
       - Namespaces & Apps: kubernetes/namespaces.md
   - Ansible:
       - Overview: ansible/overview.md

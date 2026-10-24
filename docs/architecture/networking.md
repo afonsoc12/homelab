@@ -33,9 +33,9 @@ Two Cloudflare zones are managed:
 
 ## Internal Ingress
 
-[Envoy Gateway](https://gateway.envoyproxy.io/) is the standard ingress controller, using Gateway API for routing and TLS termination. [MetalLB](https://metallb.universe.tf/) provides `LoadBalancer` services on bare-metal by announcing IPs via ARP on the LAN.
+[Contour](https://projectcontour.io/) is the standard ingress controller, using [Envoy](https://www.envoyproxy.io/) for routing and TLS termination. [MetalLB](https://metallb.universe.tf/) provides `LoadBalancer` services on bare-metal by announcing IPs via ARP on the LAN.
 
-ingress-nginx is retained temporarily during migration to [Envoy Gateway](https://gateway.envoyproxy.io/).
+ingress-nginx is retained temporarily during migration to [Contour](https://projectcontour.io/).
 
 All apps get their TLS certificates from **cert-manager** using Let's Encrypt (via Cloudflare DNS-01 challenge).
 
