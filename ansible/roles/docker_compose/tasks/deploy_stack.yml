@@ -1,46 +1,102 @@
 ---
-# Prunes right after each stack instead of batching at the end.
+- name: "Load services for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_stack_services: "{{ (lookup('ansible.builtin.file', stack.path + '/docker-compose.yaml') | from_yaml).services }}"
 
-- name: "Deploy stack {{ stack.path | basename }}"
+- name: "Find network namespace dependents for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_stack_manual_services: >-
+      {{ docker_compose_stack_services | dict2items
+         | selectattr('value.restart', 'defined')
+         | selectattr('value.restart', 'equalto', 'no') | map(attribute='key') | list }}
+    docker_compose_stack_dependents: >-
+      {{ docker_compose_stack_services | dict2items
+         | selectattr('value.network_mode', 'defined')
+         | selectattr('value.network_mode', 'match', '^(service|container):')
+         | map(attribute='key') | list }}
+
+# Fetch before removing anything so an unavailable image leaves running apps intact.
+- name: "Fetch missing images for {{ stack.path | basename }}"
+  community.docker.docker_compose_v2_pull:
+    project_src: "{{ docker_compose_base_dir }}/{{ stack.path | basename }}"
+    policy: missing
+
+- name: Reconcile containers moved between Unraid stacks
+  ansible.builtin.include_tasks: unraid_reconcile.yml
+  when: "'unraid' in group_names"
+
+# Bring up the namespace providers first. A broken dependent must not prevent
+# the VPN from being repaired, and must never start against a replaced VPN ID.
+- name: "Deploy independent services for {{ stack.path | basename }}"
   community.docker.docker_compose_v2:
     project_src: "{{ docker_compose_base_dir }}/{{ stack.path | basename }}"
-    pull: missing
+    services: "{{ docker_compose_stack_services.keys() | difference(docker_compose_stack_dependents + docker_compose_stack_manual_services) }}"
+    dependencies: false
+    pull: never
     build: never
     recreate: "{{ docker_compose_recreate_policy }}"
     remove_orphans: true
+  register: docker_compose_stack_base_result
+  when: docker_compose_stack_services.keys() | difference(docker_compose_stack_dependents + docker_compose_stack_manual_services) | length > 0
 
-# Services with network_mode: service:<x>/container:<x> pin to that target's
-# network namespace at container-create time. If the target is later recreated
-# (image update, config change, another ansible run), the dependents keep
-# pointing at the now-gone namespace and just sit "Created" forever, failing
-# with exit 128 on every start attempt. docker compose won't recreate them on
-# its own since their own config didn't change, so force it every run.
-- name: "Compute network_mode dependents for {{ stack.path | basename }}"
+- name: "Inspect network dependents for {{ stack.path | basename }}"
+  community.docker.docker_container_info:
+    name: "{{ docker_compose_stack_services[item].container_name }}"
+  loop: "{{ docker_compose_stack_dependents }}"
+  register: docker_compose_stack_dependent_info
+  no_log: true
+
+# Inspect providers too, since Docker saves container:<ID>, even for --net=container:<name>.
+- name: "Inspect namespace providers for {{ stack.path | basename }}"
+  community.docker.docker_container_info:
+    name: >-
+      {{ docker_compose_stack_services[docker_compose_stack_services[item].network_mode.split(':', 1)[1]].container_name
+         if docker_compose_stack_services[item].network_mode.startswith('service:')
+         else docker_compose_stack_services[item].network_mode.split(':', 1)[1] }}
+  loop: "{{ docker_compose_stack_dependents }}"
+  register: docker_compose_stack_provider_info
+  no_log: true
+
+- name: "Detect invalid or stale namespace attachments for {{ stack.path | basename }}"
   ansible.builtin.set_fact:
-    docker_compose_stack_dependents: >-
-      {{
-        (lookup('ansible.builtin.file', stack.path + '/docker-compose.yaml') | from_yaml).services
-        | dict2items
-        | selectattr('value.network_mode', 'defined')
-        | selectattr('value.network_mode', 'match', '^(service|container):')
-        | map(attribute='key')
-        | list
-      }}
+    docker_compose_stack_repair_dependents: >-
+      {{ (docker_compose_stack_repair_dependents | default(false)) or
+         (not item.0.exists) or (not item.1.exists) or
+         (item.0.container.HostConfig.NetworkMode | default('') != 'container:' ~ (item.1.container.Id | default(''))) or
+         (item.0.container.NetworkSettings.Networks | default({}) | length > 0) }}
+  loop: "{{ docker_compose_stack_dependent_info.results | zip(docker_compose_stack_provider_info.results) | list }}"
+  no_log: true
 
-- name: "Force-recreate network_mode dependents to avoid stale netns after target recreate: {{ stack.path | basename }}"
+- name: "Deploy network namespace dependents for {{ stack.path | basename }}"
   community.docker.docker_compose_v2:
     project_src: "{{ docker_compose_base_dir }}/{{ stack.path | basename }}"
     services: "{{ docker_compose_stack_dependents }}"
     pull: never
     build: never
-    recreate: always
+    recreate: >-
+      {{ 'always' if (docker_compose_stack_base_result.changed | default(false)
+          or docker_compose_stack_repair_dependents | default(false)) else docker_compose_recreate_policy }}
   when: docker_compose_stack_dependents | length > 0
 
-- name: "Prune unused resources after {{ stack.path | basename }}"
+- name: "Create manual tools without starting them for {{ stack.path | basename }}"
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_compose_base_dir }}/{{ stack.path | basename }}"
+    services: "{{ docker_compose_stack_manual_services }}"
+    state: stopped
+    dependencies: false
+    pull: never
+    build: never
+  when: docker_compose_stack_manual_services | length > 0
+
+- name: Reset namespace repair flag between stacks
+  ansible.builtin.set_fact:
+    docker_compose_stack_repair_dependents: false
+
+# Stopped containers (including manual tools) and their images are intentional.
+# Prune images only when no running OR stopped container uses them.
+- name: "Prune unused images after {{ stack.path | basename }}"
   community.docker.docker_prune:
     timeout: 180
-    containers: true
     images: true
     images_filters:
       dangling: false
-    networks: true

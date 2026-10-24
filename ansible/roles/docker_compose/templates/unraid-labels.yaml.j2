@@ -14,7 +14,9 @@
 {% for name, svc in stack_compose.services.items() %}
 {% set svc_meta = stack_meta[name] | default({}) %}
 {% set extra_labels = ['net.unraid.docker.managed=dockerman'] %}
-{% if svc_meta.webui is defined %}
+{% if svc_meta.ingress_host is defined %}
+{% set extra_labels = extra_labels + ['net.unraid.docker.webui=https://' ~ svc_meta.ingress_host ~ '.${DOMAIN}/'] %}
+{% elif svc_meta.webui is defined %}
 {% set extra_labels = extra_labels + ['net.unraid.docker.webui=' ~ svc_meta.webui] %}
 {% endif %}
 {% if svc_meta.icon is defined %}

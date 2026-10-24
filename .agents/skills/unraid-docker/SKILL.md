@@ -79,13 +79,12 @@ group (e.g. `docker/rpi-4b/adguard/`). A second Unraid box would get its own
      env_descriptions: {}      # {ENV_KEY: description shown under the field}
      env_display: {}           # {ENV_KEY: 'always'|'advanced'}, default always
      env_defaults: {}          # {ENV_KEY: override}, default is the compose value itself
-     secret_env: []            # env keys to mask + blank out in the XML
+     secret_env: []            # env keys to mask in the GUI
    ```
-   Non-secret env vars render with their **real current value** from compose
-   as both `Default` and the tag's inner text — the GUI shows actual running
-   config, not blanks. `secret_env` vars are always rendered empty/masked,
-   regardless of what's in compose, even though the container itself gets
-   the real value via `.env`.
+   Templates use resolved runtime configuration. Secret/interpolated variables
+   are masked with blank defaults but retain their current value as inner text
+   so native GUI Apply/Update preserves credentials. Rendered XML stays on the
+   server with mode `0600`; never copy resolved templates into Git.
 
    `<Registry>` (Unraid's "check for updates" link) auto-derives from the
    image name if `registry:` isn't set — `ghcr.io/<owner>/<repo>` becomes
@@ -157,7 +156,7 @@ group (e.g. `docker/rpi-4b/adguard/`). A second Unraid box would get its own
 
 ## Autostart and Docker tab order (both Ansible-managed)
 
-Both separate from compose's `restart:` policy, both handled automatically
+Both derived from Compose configuration, both handled automatically
 in `main.yml` after the DockerMan render step — don't edit by hand:
 
 - **Autostart** (`/var/lib/docker/unraid-autostart`) — flat list of
@@ -173,5 +172,27 @@ in `main.yml` after the DockerMan render step — don't edit by hand:
 ```bash
 docker ps --filter name=<stack> --format '{{.Status}}\t{{.Ports}}'
 curl -s -o /dev/null -w '%{http_code}\n' http://<host>:<port>/<health-path>
-cat /boot/config/plugins/dockerMan/templates-user/<stack>.xml   # sanity-check rendered fields
+# Inspect only selected non-secret XML fields; never print the full template
 ```
+
+## Native startup and shared VPN namespaces
+
+- Templates use `my-<container>.xml`, resolved configuration, and mode `0600`.
+  Duplicate templates for configured apps are removed. Never print resolved XML:
+  masked environment fields contain real runtime credentials.
+- `service:privoxyvpn` becomes `<Network>container:privoxyvpn</Network>`, without
+  an additional `--net` in ExtraParams. Preserve privileges, healthchecks, sysctls,
+  devices, tmpfs, entrypoint, and restart policy when changing the renderer.
+- The native autostart list puts namespace providers before dependents; optional
+  delays come from `docker_compose_unraid_start_delays` (VPN default: 30 seconds).
+  The legacy `start-containers` User Script is retired; do not reintroduce a
+  concurrent `docker compose up --force-recreate` at array start.
+- Deploy providers before dependents. Docker resolves container names to IDs,
+  so check the saved provider ID and recreate stale/invalid dependents before
+  attempting to start them. Use Ansible for VPN replacement; if replaced alone
+  through the GUI, run Ansible afterwards to rebind dependents.
+- Fetch images before removing containers during a stack migration. Reconcile
+  only configured names with managed ownership and interrupted replacement
+  containers for the same service/project. Preserve volumes and appdata.
+- Never globally prune stopped containers, their images, or networks. Tools with
+  `restart: "no"` must remain created/stopped, excluded from boot autostart.
