@@ -124,7 +124,7 @@ Installs and manages Hyperion.ng on `rpi-z2w-hyperion`. Installs via `apt`, disa
 
 Deploys Docker Compose stacks to hosts in the `docker` group (`rpi-4b`) and `unraid` group (`hoarder`). Stack definitions live under `docker/<inventory_hostname>/` at the repo root (e.g. `docker/rpi-4b/adguard/`, `docker/hoarder/decide/`). The role syncs each stack directory to the host, ensures volume directories exist, and manages the compose lifecycle.
 
-Full guide, including all the Unraid-specific gotchas below: `.claude/skills/unraid-docker/SKILL.md`.
+Full guide, including all the Unraid-specific gotchas below: `.agents/skills/unraid-docker/SKILL.md`.
 
 ### Unraid DockerMan Templates
 
@@ -150,7 +150,21 @@ Compose stays the single source of truth for the container spec (image, ports, v
     - SOME_API_KEY            # masked in the DockerMan edit form, value never shown
 ```
 
-If `unraid.yml` is omitted, sane defaults are used. For non-secret vars, the rendered XML's `Default`/inner text is the actual value from the compose file (so the GUI shows real current config, not blanks) — except vars listed in `secret_env`, which are always left empty in the XML even though the running container has the real value (from `.env`, mode `0600`, generated from `secrets.sops.yaml`).
+Templates use the resolved runtime configuration and the native `my-<container>.xml` filename. They preserve network mode, privileges, sysctls, healthchecks, restart policy, tmpfs, devices, entrypoint, and command. `network_mode: service:privoxyvpn` renders as `<Network>container:privoxyvpn</Network>` with no second network flag. Duplicate templates for managed apps are removed. This also prevents Unraid from restoring an incompatible extra `none`/bridge network onto a container that shares the VPN namespace.
+
+Variables listed in `secret_env`, and variables interpolated from `.env`, are masked in the edit form. Their current values remain in the root-readable template (mode `0600`) so GUI Apply/Update preserves credentials. These resolved templates stay on the server; Git contains only encrypted secrets and template code.
+
+### Unraid startup and VPN replacement
+
+Unraid's native autostart list starts independent containers before shared-network dependents. `docker_compose_unraid_start_delays` controls native delays after individual containers start; the default gives `privoxyvpn` 30 seconds. No Compose process runs at boot. The previous User Scripts `start-containers` workaround is replaced with a no-op to avoid racing DockerMan.
+
+Docker saves a container ID for `--net=container:privoxyvpn`. Ansible therefore deploys namespace providers first, checks dependents against the current provider ID, and recreates dependents with stale IDs or invalid extra networks. Apps moved between stacks are reconciled by their configured container names and managed ownership. Interrupted Compose replacement containers are removed only for the affected service/project, preserving volumes.
+
+Use Ansible for VPN image/config changes so it can rebind dependents after replacing the VPN container. Restarting an existing VPN container keeps its ID and needs no recreation. A standalone GUI replacement of the VPN cannot repair Docker's saved namespace IDs in other containers; run the Unraid playbook afterwards.
+
+For apps sharing the VPN namespace, use IPv4 loopback for upstream connections when the VPN firewall drops IPv6; resolving `localhost` to IPv6 can otherwise stall application initialization.
+
+Containers with `restart: "no"` are created stopped and omitted from autostart. Global container/network pruning is disabled so manual tools survive.
 
 **Gotchas learned the hard way (full detail in the skill file):**
 

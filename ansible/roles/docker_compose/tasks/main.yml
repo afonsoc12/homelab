@@ -26,7 +26,7 @@
     dest: "{{ docker_compose_base_dir }}/{{ item.path | basename }}"
     rsync_opts: >-
       {{
-        ['--exclude=secrets.sops.yaml', '--exclude=.env']
+        ['--omit-dir-times', '--exclude=secrets.sops.yaml', '--exclude=.env']
         + (['--exclude=docker-compose.yaml'] if 'unraid' in group_names else [])
       }}
     delete: true
@@ -89,22 +89,23 @@
     attachable: "{{ item.value.attachable | default(omit) }}"
   with_dict: "{{ docker_compose_networks if docker_compose_networks is iterable else {} }}"
 
-- name: Deploy stacks (and prune after each)
+- name: Deploy stacks and prune unused images
   ansible.builtin.include_tasks: deploy_stack.yml
   vars:
-    stack: "{{ item }}"
+    stack: "{{ docker_compose_stack }}"
   loop: "{{ docker_compose_stacks.files }}"
   loop_control:
-    label: "{{ item.path | basename }}"
-    pause: 5
+    loop_var: docker_compose_stack
+    label: "{{ docker_compose_stack.path | basename }}"
 
 - name: Render DockerMan templates (Unraid hosts)
   ansible.builtin.include_tasks: unraid_templates.yml
   vars:
-    stack: "{{ item }}"
+    stack: "{{ docker_compose_stack }}"
   loop: "{{ docker_compose_stacks.files }}"
   loop_control:
-    label: "{{ item.path | basename }}"
+    loop_var: docker_compose_stack
+    label: "{{ docker_compose_stack.path | basename }}"
   when: "'unraid' in group_names"
 
 - name: "Unraid | Build autostart container list"
@@ -133,7 +134,7 @@
       {%- set independents = docker_compose_unraid_autostart_containers
           | map(attribute='container_name') | reject('in', dependents) | list -%}
       {% for name in (independents | sort + dependents | sort) %}
-      {{ name }}
+      {{ name }}{{ (' ' ~ docker_compose_unraid_start_delays[name]) if name in docker_compose_unraid_start_delays else '' }}
       {% endfor %}
     dest: /var/lib/docker/unraid-autostart
     mode: "0644"
@@ -186,3 +187,21 @@
     dest: /boot/config/plugins/dockerMan/userprefs.cfg
     mode: "0644"
   when: "'unraid' in group_names"
+
+- name: "Unraid | Check for the legacy force-recreate boot workaround"
+  ansible.builtin.stat:
+    path: /boot/config/plugins/user.scripts/scripts/start-containers/script
+  register: docker_compose_unraid_legacy_boot
+  when: "'unraid' in group_names"
+
+- name: "Unraid | Retire the legacy force-recreate boot workaround"
+  ansible.builtin.copy:
+    content: |
+      #!/bin/bash
+      # Containers now use native DockerMan autostart. Do not race it with Compose.
+      exit 0
+    dest: /boot/config/plugins/user.scripts/scripts/start-containers/script
+    mode: "0700"
+  when:
+    - "'unraid' in group_names"
+    - docker_compose_unraid_legacy_boot.stat.exists

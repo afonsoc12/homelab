@@ -5,3 +5,6 @@ docker_compose_stacks_src: "{{ playbook_dir }}/../../docker"
 docker_compose_networks: {}
 docker_compose_recreate_policy: auto
 docker_compose_unraid_templates_dir: /boot/config/plugins/dockerMan/templates-user
+# Unraid's native autostart format accepts a delay after each container starts.
+docker_compose_unraid_start_delays:
+  privoxyvpn: 30
