@@ -1,8 +1,9 @@
-# Envoy Gateway and Grafana OIDC
+# Envoy Gateway
 
-Envoy Gateway is installed in `ingress` using the official `gateway-helm` chart,
-pinned to v1.9.2. One controller and one Envoy proxy replica serve the initial
-Grafana migration. No new database, mesh, or authorization proxy is installed.
+[Envoy Gateway](https://gateway.envoyproxy.io/) is the standard Kubernetes ingress
+controller. It runs in `ingress` using the official `gateway-helm` chart, pinned to
+v1.9.2, with one controller and one Envoy proxy replica. ingress-nginx is retained
+temporarily while applications migrate to Gateway API.
 
 ## Traffic path
 
@@ -68,7 +69,7 @@ and Authentik blueprint converge. Nothing is applied before merge.
 
 Controller and proxy resource requests/limits are explicit, including the proxy's
 shutdown-manager container. Startup, readiness, and liveness probes use the pinned
-upstream defaults. There is no persistent volume for Envoy. This first stage uses
+upstream defaults. There is no persistent volume for Envoy. The deployment uses
 one proxy replica; it is not a high-availability or measured memory comparison.
 
 ## Validation before merge

@@ -44,8 +44,7 @@ Lightweight LDAP server used by the legacy authentication stack. Keep it running
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Gateway API controller and Envoy proxy. Grafana is the first migrated application,
-using native Authentik OIDC login behind the existing nginx forwarding edge.
+Standard Kubernetes ingress, using Gateway API for HTTP/HTTPS routing and TLS termination.
 
 [:octicons-book-16: Documentation](../kubernetes/envoy-gateway.md) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/envoy-gateway/values.yaml)
 
@@ -55,7 +54,7 @@ using native Authentik OIDC login behind the existing nginx forwarding edge.
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Kubernetes ingress controller. Routes external HTTP/HTTPS traffic to the appropriate services based on hostname and path rules.
+Temporary ingress controller retained while applications migrate to [Envoy Gateway](https://gateway.envoyproxy.io/).
 
 [:octicons-book-16: Documentation](https://kubernetes.github.io/ingress-nginx/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/ingress-nginx/values.sops.yaml)
 

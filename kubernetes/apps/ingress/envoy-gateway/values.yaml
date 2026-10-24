@@ -41,7 +41,7 @@ resources:
         kubernetes:
           envoyService:
             name: envoy
-            # The first route stays behind the existing nginx address.
+            # Keep the existing nginx address during migration.
             type: ClusterIP
           envoyDeployment:
             replicas: 1
