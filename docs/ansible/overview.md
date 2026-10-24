@@ -156,7 +156,7 @@ Variables listed in `secret_env`, and variables interpolated from `.env`, are ma
 
 ### Unraid startup and VPN replacement
 
-Unraid's native autostart list starts independent containers before shared-network dependents. `docker_compose_unraid_start_delays` controls native delays after individual containers start; the default gives `privoxyvpn` 30 seconds. No Compose process runs at boot. The previous User Scripts `start-containers` workaround is replaced with a no-op to avoid racing DockerMan.
+Unraid's native autostart list starts independent containers before shared-network dependents. `docker_compose_unraid_start_delays` controls native delays after individual containers start; the default gives `privoxyvpn` 30 seconds. No Compose process runs at boot. When testing a Docker service restart over SSH, unset `XDG_RUNTIME_DIR` before invoking `/etc/rc.d/rc.docker restart`; otherwise the daemon can inherit a session directory that disappears on logout and breaks `docker exec`/healthchecks. The previous User Scripts `start-containers` workaround is replaced with a no-op to avoid racing DockerMan.
 
 Docker saves a container ID for `--net=container:privoxyvpn`. Ansible therefore deploys namespace providers first, checks dependents against the current provider ID, and recreates dependents with stale IDs or invalid extra networks. Apps moved between stacks are reconciled by their configured container names and managed ownership. Interrupted Compose replacement containers are removed only for the affected service/project, preserving volumes.
 
