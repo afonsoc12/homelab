@@ -35,8 +35,6 @@ Two Cloudflare zones are managed:
 
 [MetalLB](https://metallb.universe.tf/) provides `LoadBalancer` services on bare-metal by announcing IPs via ARP on the LAN. ingress-nginx uses a MetalLB-assigned IP as its external address.
 
-Grafana is the first [Envoy Gateway migration](../kubernetes/envoy-gateway.md). Its existing nginx entry forwards to an internal Envoy Gateway in `ingress`, which routes to Grafana through Gateway API. Grafana authenticates directly with Authentik using OIDC. DNS and other application routes stay unchanged.
-
 All apps get their TLS certificates from **cert-manager** using Let's Encrypt (via Cloudflare DNS-01 challenge).
 
 ## Tailscale Mesh

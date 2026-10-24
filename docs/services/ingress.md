@@ -40,7 +40,7 @@ Lightweight LDAP server used by the legacy authentication stack. Keep it running
 
 ## Ingress & Tunnels
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/envoy.png" class="svc-icon"> Envoy Gateway
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/envoy.png" class="svc-icon"> [Envoy Gateway](https://gateway.envoyproxy.io/)
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
