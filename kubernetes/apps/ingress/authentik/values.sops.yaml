@@ -1,10 +1,21 @@
+# --------------------
+# Authentik
+#   - Repo:           https://github.com/goauthentik/authentik
+#   - Docs:           https://docs.goauthentik.io/
+#   - Chart Defaults: https://github.com/goauthentik/authentik/blob/main/helm/values.yaml
+# --------------------
 authentik:
     log_level: info
+    # don't change this after the first install
     secret_key: ENC[AES256_GCM,data:xM8bvGJ5Iutxy+yfZ8cvOyKDjkW0a7Klh/8Lw1sERbXcdPzaui2ZNTNtXHoPmpwhT5jymVKVrv1d+gUjXgE8E2seJUs1xe/fk2J8szYR4/w=,iv:qO4QWDZqlepsEmV2kzXasBbny23whR9ptAxgx4FzB7s=,tag:okrDVfoWuYx2WPUV6Vut3w==,type:str]
     email:
+        # -- SMTP Server emails are sent from, fully optional
         host: ENC[AES256_GCM,data:pDRtAgFuSGH15m0t/thSUNU=,iv:8j/1poT6iPf84ToH/d9dDdlSDEuSp9HSDoy9HztME4g=,tag:bgEjGPFzxZdei4DM/RZYMg==,type:str]
+        # -- SMTP server port
         port: 587
+        # -- SMTP credentials, when left empty, no authentication will be done
         username: ENC[AES256_GCM,data:Z8myPmmikKhPPAz927ruNFZs9My4ed9be4G42j20+bY=,iv:wrICyFG1yD7SC6jfDisPywc5KO2LIEB5T8uX9kOOXF0=,tag:ZI0FFCjFBwnn/zUn2MPPkw==,type:str]
+        # -- SMTP credentials, when left empty, no authentication will be done
         password: ENC[AES256_GCM,data:WLUHMUXEeDTf3OjS77jG33a/J/vN88FWQFsAlwmCuiE=,iv:4u6UZ+Z/lo9899ZG4eepULM7t0f2h5b6NvjFt8yOMhc=,tag:8bjThNKEw3WlrQefapdQ2A==,type:str]
         use_tls: true
         timeout: 10
@@ -20,6 +31,7 @@ authentik:
         port: 5432
     redis:
         host: ENC[AES256_GCM,data:/zpx3Gt2QSrwz1vNj68o,iv:MCwdCZfj4QeaKRihEUqcJmUgbp8YZ7m5/gV9w6Dc03A=,tag:A8mbpQSvJOOoqli1LqMpyg==,type:str]
+## authentik server
 server:
     name: server
     affinity:
@@ -94,9 +106,14 @@ serviceAccount:
 prometheus:
     rules:
         enabled: false
+        # -- PrometheusRule namespace
         namespace: ""
+        # -- PrometheusRule selector
         selector: {}
+        # prometheus: kube-prometheus
+        # -- PrometheusRule labels
         labels: {}
+        # -- PrometheusRule annotations
         annotations: {}
 postgresql:
     enabled: false
