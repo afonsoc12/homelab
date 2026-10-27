@@ -335,14 +335,14 @@ repoServer:
     # -- Init containers to add to the repo server pods
     initContainers:
         - name: download-tools
-          image: docker.io/alpine:3.24.2
+          image: docker.io/alpine:3.24.3
           imagePullPolicy: IfNotPresent
           command:
             - sh
             - -ec
           env:
             - name: HELM_SECRETS_VERSION
-              value: 4.7.9
+              value: 4.7.10
             - name: HELM3_VERSION
               value: 3.22.1
             - name: KUBECTL_VERSION
