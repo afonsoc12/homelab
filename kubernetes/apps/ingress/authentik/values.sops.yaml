@@ -7,30 +7,30 @@
 authentik:
     log_level: info
     # don't change this after the first install
-    secret_key: ENC[AES256_GCM,data:55V+ok8jQNVnGdOV8gepybc18saq7iLwxz9nMuIwjHtsN3KuHnFPCg4rRzzGqKvBFkv+zwIiRRpr9KEOgql2t0YgtgE7dcWfVzadJ8n3wgQ=,iv:Q6lKHmnD2qIOYkTPJzqcro6vt2sXLL6mbPb7wfNexvk=,tag:ZeqwUkaVOd1tUBIwiuvmAg==,type:str]
+    secret_key: ENC[AES256_GCM,data:xM8bvGJ5Iutxy+yfZ8cvOyKDjkW0a7Klh/8Lw1sERbXcdPzaui2ZNTNtXHoPmpwhT5jymVKVrv1d+gUjXgE8E2seJUs1xe/fk2J8szYR4/w=,iv:qO4QWDZqlepsEmV2kzXasBbny23whR9ptAxgx4FzB7s=,tag:okrDVfoWuYx2WPUV6Vut3w==,type:str]
     email:
         # -- SMTP Server emails are sent from, fully optional
-        host: ENC[AES256_GCM,data:ZH7ygXU7QI3AQesHQmZJ9ak=,iv:r0is2T+kjuw1DsiaWmPPAhdXLoZ6eK+9K+flyQiLi2Y=,tag:aJjYWbMiiVaknTmmI6hYVQ==,type:str]
+        host: ENC[AES256_GCM,data:pDRtAgFuSGH15m0t/thSUNU=,iv:8j/1poT6iPf84ToH/d9dDdlSDEuSp9HSDoy9HztME4g=,tag:bgEjGPFzxZdei4DM/RZYMg==,type:str]
         # -- SMTP server port
         port: 587
         # -- SMTP credentials, when left empty, no authentication will be done
-        username: ENC[AES256_GCM,data:bWuitbwQoaqbUMn/vzmxbsBdjcYe697keirkGH+y0eM=,iv:8Dm23J4DNAp5akZVU2409/8p9HJeN7L/PJBnfW9+ZlA=,tag:a0oBHNQps27Zk1mhwK083g==,type:str]
+        username: ENC[AES256_GCM,data:Z8myPmmikKhPPAz927ruNFZs9My4ed9be4G42j20+bY=,iv:wrICyFG1yD7SC6jfDisPywc5KO2LIEB5T8uX9kOOXF0=,tag:ZI0FFCjFBwnn/zUn2MPPkw==,type:str]
         # -- SMTP credentials, when left empty, no authentication will be done
-        password: ENC[AES256_GCM,data:OXtxqpNeeIl0oY8NKTVGF4zoC0FAstneNgbsQvw/uS0=,iv:DN+5kmVhunaAFFJVNZdcGeDjDE18SEHHc4ZIkbQJqRY=,tag:pUvbTdZdsUHV8bTquEXXyQ==,type:str]
+        password: ENC[AES256_GCM,data:WLUHMUXEeDTf3OjS77jG33a/J/vN88FWQFsAlwmCuiE=,iv:4u6UZ+Z/lo9899ZG4eepULM7t0f2h5b6NvjFt8yOMhc=,tag:8bjThNKEw3WlrQefapdQ2A==,type:str]
         use_tls: true
         timeout: 10
-        from: ENC[AES256_GCM,data:FBF8yUjJgUVQx18330tHLQBqDfOLmROzqjwhjzw75Ttd,iv:mn7peAtBXdTz7DJaR09DsMuvn0lgaSdZPccClU1vdW0=,tag:gKJiSbq5CE/be8g8oXFaNA==,type:str]
+        from: ENC[AES256_GCM,data:WUgiZ1Rxxx2BsdaLeYq5WaBArfl0bLEuel2kayPfkSQV,iv:feZzTXM8eimsyMWyurAEnog44s+bcERMz4XeyzFg2jE=,tag:7LkacaAPdMhzPGX49145RQ==,type:str]
     error_reporting:
         enabled: false
         send_pii: false
     postgresql:
-        host: ENC[AES256_GCM,data:5GkFsRl053hZdwg/eUnohtRN,iv:0p/qu5cfWbLyipmNpXO43TcVPDjKZE9WENphx+MSOt4=,tag:Vw5b8cKpic/nO+yn28Ay5Q==,type:str]
+        host: ENC[AES256_GCM,data:S89StR2FMTKGVQPH7Dnyk0rL,iv:n5eaVrAnaU/cEV16LNWQhanYrMhIHgJiVPSgM09M2Zc=,tag:DdmTnpxlwM97+4MCBC6t5A==,type:str]
         name: authentik
-        user: ENC[AES256_GCM,data:jQzoD+3Q5009,iv:apZp5ICdaHi3iZgnk6GOTPl49fxBWoKlq8pSIdvp4/M=,tag:dntQbybhq+gXnpWXhNqfcg==,type:str]
-        password: ENC[AES256_GCM,data:OsH79vEpmi8T9Excs1LNWLWh9EM=,iv:OTT2OFUmFlghk+n0bqcl/sGbqUrEzwZa/hIWAsUo/nA=,tag:kXCLlzMzDfb3SYnDwxsqUw==,type:str]
+        user: ENC[AES256_GCM,data:Rl0soLMXz3YN,iv:l+X7SSY+YsZ0o2p7FUNPCPC0+0cVDA8JW5RIpxuzjxc=,tag:8DX+oWSsc0SihdcGFZjvQQ==,type:str]
+        password: ENC[AES256_GCM,data:99Ea+Mz/WjuLcRF26vd3zt3+TDs=,iv:TTQU96Ywo+FtBULpII6fGpqMlW7xxZqFG7MYHuMZFl4=,tag:jl9j4ftE0WLcYBBw6Q9oUw==,type:str]
         port: 5432
     redis:
-        host: ENC[AES256_GCM,data:n/wlfMBjeFrWBTHHyGl4,iv:2bMBzaWqorDqkFv9L+FRIsSfc8MnHoPJV5ZissINzLY=,tag:5j6vkk/rVyHtU79G3S79kQ==,type:str]
+        host: ENC[AES256_GCM,data:/zpx3Gt2QSrwz1vNj68o,iv:MCwdCZfj4QeaKRihEUqcJmUgbp8YZ7m5/gV9w6Dc03A=,tag:A8mbpQSvJOOoqli1LqMpyg==,type:str]
 ## authentik server
 server:
     name: server
@@ -56,7 +56,7 @@ server:
         enabled: true
         ingressClassName: nginx
         hosts:
-            - ENC[AES256_GCM,data:ztVKubsoWYA/lWPNfcsSkh4=,iv:8AUzHd3pxzhNdEMs3VXV3ULVja3QxoccYNh1oiRUXpA=,tag:ysKtrC4yznEciYWUbSY3PA==,type:str]
+            - ENC[AES256_GCM,data:sC3oZZWufV6CepEjdsqbgi0=,iv:UCdviQkdvggdiDz6GUKa8VW3zwRlr7Anq7U0a8kj6Qc=,tag:cgRKFYpwuhvjUQxcJUcuyQ==,type:str]
         paths:
             - /
         pathType: Prefix
@@ -119,31 +119,42 @@ postgresql:
     enabled: false
 redis:
     enabled: false
+blueprints:
+    secrets:
+        - authentik-grafana-oidc
+additionalObjects:
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: authentik-grafana-oidc
+      type: Opaque
+      stringData:
+        grafana.yaml: ENC[AES256_GCM,data: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,iv:5AMZCwfw5aaqTMC+Pf4s+UXLCPkc3Zd9dZmxSZpi2Ls=,tag:xBZ/k8BzneQ8Ix8FvAp/Jg==,type:str]
 sops:
     encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
-    lastmodified: "2026-09-25T13:15:05Z"
-    mac: ENC[AES256_GCM,data:aK8HH8jg7mNyzWwaQwPlUGBD28hM33/k1itkcIvfm1HS67AZSyKqRiM52Y6AJVGLBjGrjRkwov/o8Va9yG+hGc4fgIbrF1jvjBCsaRvB/8PfoTR7Abv7SAoe7rmI9M7sIBzBeRhBEiwqqWiqOWVeqvM32crAOrUgcwNrvj+1vpI=,iv:sMoIO+r3FnpGCNdJvs8DMgDMNH8yASuSWpipkm6Nthg=,tag:VCiIaYwTai80iU6bX6+MRg==,type:str]
+    lastmodified: "2026-10-21T23:33:05Z"
+    mac: ENC[AES256_GCM,data:EGfQk7k00PLzli4OPKqKtRUM5Dpbin1JrwSGAz4UErGGLGfTx+YvomX3hLodYvKIZJm6OXzZg/k4nIMtyQ0m/HC3PT//VXxV3s29Rh0VKC1suRXMPMiXEcV8GDXe6YdeHkgEfev640+Ed2L6e+y3WrltI2qstSv4fFzfoIyndGQ=,iv:pBAQ+MkbbcEkRp5Kto1djCcW7csbz0XfydwN5xlBNRQ=,tag:KyjQdD6Sl1PUB0PErTH7dQ==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-04-13T20:28:43Z"
+        - created_at: "2026-10-21T23:23:06Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//Y4tXQfbtOQGSm1cwZSfpcJ5HKBucjPJ9MhElG7zgIdjZ
-            eBMOMDJmXDNDGpDjRxW27zgOKDX4RCv9ckug85eK3ODtdKKWZ343j7Zgm5XBsPHs
-            p6F6jmm0dJM7m0z2mp+nVtHrHvmMMFGcE8bCjm4AcCZo6FAKYMCymUhTphLgX0nY
-            LIMvdzclEzYCG+DsWBbCBiI+28AWx2igqXuZuTh8HDYUvQE8pxC5JtKr3K9a3Vxt
-            fY5o10ZtUvy+uci4Bj6FcUU2pwiOAN/ErLcr/WgIBOCmVKcLc1+UBYTn10vSYMed
-            I2PLFYogcsJlMieew5Ql6TqNbo7lEH9LapcB3mA0m8McAarM5QENKMcGvLbFv2X5
-            +zPD3gnQEzqdY+ZPpEqSU+hkE2v1xlnjjo5vpSE9G9Iy3PvfMejJaMynceWKad36
-            XeOEGR/5vwo2215zPtOJUqDUt28kz6fJ2+9OcQNFBwCQVKlld7v111CRzhvsruM9
-            AvCuq+4SBQgC9hqrblzow/UW4Lfuxv2wVFkzRN6XsI2VN5jiv4gi6YrwiLoI7WZZ
-            mbg2/Ol/KE+w4Csr8fYQtVMqdPrmXRW4E6G0rTiqlDO3QmkXlMHtDzGoiRu182YW
-            1hCF4CJyLGjhSXCKF6YkR+U13ZQcVG1pVcgzfTyiPn693eJQi7mTI/Icm8Blz/DU
-            aAEJAhBr2XTEIOxu7tIcuMO2WkpnUz8m3+rlihJesKm0kvGsHsjnAozakPUz9y6N
-            PmdKy4nFis+Ps1KTVWMTShNlv5O4i9UhAAvjjE94slxy2eGwoDPKLwRmp5keeRFE
-            /78PQDnWhIm1
-            =6Bef
+            hQIMA5NT/LvuRqeGAQ/9EDw/xxEkjLOzGRjscjPase6tXpY7MBd6EruDqzfgyriU
+            +wvKkHxRLdqWRTmBCnHLdeWl794P5gaFVLA5XMivg98KBc9QM6Obprd9cZc8zd55
+            ikzJSlcOg23EkqCULvbl+/zImAtp3X93I2r0DNIf0Gmr/jWKFOdHfnCqjp/PsDFq
+            811+TCCmQdSVv/ygVtSeqzBhV/YB8myy9C5KXFINxJI+f9qZwdh/orlh/3JELikN
+            c5Rpqan8XBUighUiDG2n5vKG/nvbDu3KSa9rLuKawZQ67TtiiQzBbbXAnRpGSsOd
+            2sDGrUtdYdyFt+7TkSM5e2W5v2D9UnQN1eDpymqT8npiOUCrQ2iw40OZWgBWizK+
+            n+g1MBaAP/qYKHzAiQJufqxoS+TIGnMIvJN4PiIFVjYIQuYdEwDEVJGA46gt8sUi
+            ND4LP+SWqGN2O9Wg5iVDsylByWURSjpUigOH2ENDpg/TUbpVDcbd6KBrtSkFyNJQ
+            MRwRNSsL4xtCFOwkO5ZqgQHGqcx8sdhaHCKku7MFaZBK5bpSKUlcn/sF5LQ/UXGd
+            6lE8PGd6WLyvaW/tvaLOKvxZmiGarYArmvv+z1y14zEMOCmiRnfZobyLvvy6dUbv
+            emBnIYkJvsi9a0O9YTTfY35nulzRieTtZJKfRZVR5cWZ5nDvQG1xaW01B4RoYurU
+            ZgEJAhC7OU4hA4pnP9WBUswAWrM3D/TKZ243I09XwiMquo3Fg3P8+ngpKtxphoQb
+            57A42Z2xOVvPKi7uXvqryyiYe7DlDmbPe6U2DSIZdONSLwZDcB7acwtkr06YDrmo
+            RRdBPBi24Q==
+            =2Yu5
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.12.2
+    version: 3.13.2

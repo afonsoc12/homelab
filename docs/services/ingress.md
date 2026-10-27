@@ -40,11 +40,21 @@ Lightweight LDAP server used by the legacy authentication stack. Keep it running
 
 ## Ingress & Tunnels
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/contour.png" class="svc-icon"> [Contour](https://projectcontour.io/)
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
+
+Standard Kubernetes ingress controller, using [Envoy](https://www.envoyproxy.io/) for HTTP/HTTPS routing and TLS termination.
+
+[:octicons-book-16: Documentation](../kubernetes/contour.md) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/contour/values.sops.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/nginx.png" class="svc-icon"> ingress-nginx
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Kubernetes ingress controller. Routes external HTTP/HTTPS traffic to the appropriate services based on hostname and path rules.
+Temporary ingress controller retained while applications migrate to [Contour](https://projectcontour.io/).
 
 [:octicons-book-16: Documentation](https://kubernetes.github.io/ingress-nginx/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/ingress-nginx/values.sops.yaml)
 

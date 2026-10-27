@@ -7,7 +7,7 @@ External requests reach self-hosted apps through two paths:
 ```
 Internet
     │
-    ├─── Cloudflare Tunnel (cloudflared) ──► ingress-nginx ──► app
+    ├─── Cloudflare Tunnel (cloudflared) ──► ingress ──► app
     │         └─ Zero-trust, no open ports
     │
     └─── Wireguard VPN ──► direct cluster access
@@ -31,9 +31,11 @@ Two Cloudflare zones are managed:
 - **homelab zone** — self-hosted services, geo-restricted, bot blocking enabled
 - **personal zone** — personal site/domain, no geo restriction
 
-## Internal Ingress (MetalLB + ingress-nginx)
+## Internal Ingress
 
-[MetalLB](https://metallb.universe.tf/) provides `LoadBalancer` services on bare-metal by announcing IPs via ARP on the LAN. ingress-nginx uses a MetalLB-assigned IP as its external address.
+[Contour](https://projectcontour.io/) is the standard ingress controller, using [Envoy](https://www.envoyproxy.io/) for routing and TLS termination. [MetalLB](https://metallb.universe.tf/) provides `LoadBalancer` services on bare-metal by announcing IPs via ARP on the LAN.
+
+ingress-nginx is retained temporarily during migration to [Contour](https://projectcontour.io/).
 
 All apps get their TLS certificates from **cert-manager** using Let's Encrypt (via Cloudflare DNS-01 challenge).
 

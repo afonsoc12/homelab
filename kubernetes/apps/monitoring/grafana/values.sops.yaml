@@ -1,32 +1,20 @@
-# --------------------
-# Grafana
-#   - Repo:           https://github.com/grafana/grafana
-#   - Docs:           https://grafana.com/docs/grafana/
-#   - Chart Defaults: https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
-# --------------------
 deploymentStrategy:
     type: Recreate
-
 ingress:
     enabled: true
-    # For Kubernetes >= 1.18 you should specify the ingress-controller via the field ingressClassName
-    # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
-    ingressClassName: nginx
-    # Values can be templated
+    ingressClassName: contour
     annotations:
-        nginx.ingress.kubernetes.io/auth-method: GET
-        nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
-        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:TKfPz5CON462tGz1UkZysChoND0RMzgIoY3E48D/oMk2yBRI96bBZy1RkuoF,iv:rFvhPDaSAtumiuL69gvj2YgVDzgQkTyvhKx3w1AND+w=,tag:6XKNvpDjGTxYhjYH+P40/A==,type:str]
-        nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-        nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-    labels: {}
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/websocket-routes: /
+    projectcontour.io/response-timeout: 60s
     path: /
-    # pathType is only for k8s >= 1.1=
     pathType: Prefix
     hosts:
-        - ENC[AES256_GCM,data:snGSBY7L2n5sbLzez3tCaarYjE3S9VGOiqTu,iv:KwaB4/FrEM5ihrFpRohAY98ULgcxnd9YTLSlDLmzyj0=,tag:Ym+kjJLZT4VoidP9/u7UZA==,type:str]
+        - ENC[AES256_GCM,data:V3LmtO3N3pl8+NVVrTwa36OMS0EVga4MU06G,iv:VyhDLCCs99iwTBdZzscBMbfWLS96lY747IW5R6QYkJc=,tag:dwjI+odDbhqhQV0AN9CyqA==,type:str]
     tls:
         - secretName: local-wildcard-cert
+          hosts:
+            - ENC[AES256_GCM,data:AFnK4d0TCct2Mj+WxG2IA2jXZxRrN6DWLSQ6,iv:R1NnxHraQui+5UFsW6miLtMm+zEWxe9UdDSohWRXApk=,tag:wIZXPOOEz0B4OUsc+3ktzw==,type:str]
 persistence:
     type: pvc
     enabled: true
@@ -35,9 +23,6 @@ persistence:
         - ReadWriteOnce
     size: 1Gi
 initChownData:
-    ## If false, data ownership will not be reset at startup
-    ## This allows the grafana-server to be run with an arbitrary user
-    ##
     enabled: true
 env:
     GF_SECURITY_DISABLE_INITIAL_ADMIN_CREATION: true
@@ -54,56 +39,36 @@ grafana.ini:
     grafana_net:
         url: https://grafana.net
     server:
-        domain: '{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ .Values.ingress.hosts | first }}{{ else }}''''{{ end }}'
-        ## grafana Authentication can be enabled with the following values on grafana.ini
-        # server:
-        # The full public facing url you use in browser, used for redirects and emails
-        root_url: https://{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ .Values.ingress.hosts | first }}{{ else }}''{{ end }}
-        # https://grafana.com/docs/grafana/latest/auth/github/#enable-github-in-grafana
-        # auth.github:
-        #    enabled: false
-        #    allow_sign_up: false
-        #    scopes: user:email,read:org
-        #    auth_url: https://github.com/login/oauth/authorize
-        #    token_url: https://github.com/login/oauth/access_token
-        #    api_url: https://api.github.com/user
-        #    team_ids:
-        #    allowed_organizations:
-        #    client_id:
-        #    client_secret:
-    ## LDAP Authentication can be enabled with the following values on grafana.ini
-    ## NOTE: Grafana will fail to start if the value for ldap.toml is invalid
-    # auth.ldap:
-    #   enabled: true
-    #   allow_sign_up: true
-    #   config_file: /etc/grafana/ldap.toml
-## Grafana's LDAP configuration
-## Templated by the template in _helpers.tpl
-## NOTE: To enable the grafana.ini must be configured with auth.ldap.enabled
-## ref: http://docs.grafana.org/installation/configuration/#auth-ldap
-## ref: http://docs.grafana.org/installation/ldap/#configuration
+        domain: '{{ .Values.ingress.hosts | first }}'
+        root_url: https://{{ .Values.ingress.hosts | first }}
+    auth:
+        signout_redirect_url: https://sso.{{ .Values.domain }}/application/o/grafana/end-session/
+    auth.anonymous:
+        enabled: false
+    auth.proxy:
+        enabled: false
+    auth.generic_oauth:
+        enabled: true
+        name: Authentik
+        allow_sign_up: true
+        auto_login: true
+        client_id: grafana
+        scopes: openid profile email offline_access
+        auth_url: https://sso.{{ .Values.domain }}/application/o/authorize/
+        token_url: https://sso.{{ .Values.domain }}/application/o/token/
+        api_url: https://sso.{{ .Values.domain }}/application/o/userinfo/
+        login_attribute_path: preferred_username
+        name_attribute_path: name
+        email_attribute_path: email
+        role_attribute_path: contains(groups[*], 'authentik_admins') && 'Admin' || 'Viewer'
+        use_pkce: true
+        use_refresh_token: true
+        auth_style: InHeader
 ldap:
     enabled: false
-    # `existingSecret` is a reference to an existing secret containing the ldap configuration
-    # for Grafana in a key `ldap-toml`.
     existingSecret: ""
-    # `config` is the content of `ldap.toml` that will be stored in the created secret
     config: ""
-    # config: |-
-    #   verbose_logging = true
-#   [[servers]]
-#   host = "my-ldap-server"
-#   port = 636
-#   use_ssl = true
-#   start_tls = false
-#   ssl_skip_verify = false
-#   bind_dn = "uid=%s,ou=users,dc=myorg,dc=com"
-## Grafana's SMTP configuration
-## NOTE: To enable, grafana.ini must be configured with smtp.enabled
-## ref: http://docs.grafana.org/installation/configuration/#smtp
 smtp:
-    # `existingSecret` is a reference to an existing secret containing the smtp configuration
-    # for Grafana.
     existingSecret: ""
     userKey: user
     passwordKey: password
@@ -136,31 +101,33 @@ startupProbe:
     periodSeconds: 10
     failureThreshold: 18
     timeoutSeconds: 5
+envRenderSecret:
+    GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ENC[AES256_GCM,data:rAFsl9AfVMEU5QfRDmF7I2H8eo0PsszS7sFmX3xh+Txby173X1GwANW8t1BkV/0h5j5+yKhKM7ZgWUUkzvJoyg==,iv:We0MHMunq22p3l7xvNsB7O4MrOp04ueOpV2X97J3P4U=,tag:XQ4tAYZzBzK5O+SIfNZphw==,type:str]
 sops:
-    lastmodified: "2026-04-19T00:58:06Z"
-    mac: ENC[AES256_GCM,data:967K2/iQVokY1SM6ZfgDaP0YwFNwuVenVCxQUWRgQRh+xd/sRRi8XqYYG5DWwlchdKCUoDAZcKrfTMY/Zr9l31VgH5CW72lD2wqBYkaCcIa8o/jdJk3IqFnjtJJ7+iK/DGPgipAL1tfwCzkgwN3mfJZFvbgrD0XeLA1YXF23wLY=,iv:qeMhW/Drdco07pTp2zUp+IYy+nfrS4EGhLadYeiYcqI=,tag:CwPo5PFFow7GBuA2cJBJPQ==,type:str]
+    encrypted_regex: ^(hosts|hostnames|envRenderSecret)$
+    lastmodified: "2026-10-24T22:19:37Z"
+    mac: ENC[AES256_GCM,data:XogmZNjGbRonOja1vIznytRqqnZgSErsaRRxbMJEZ8aqxbivzuhHmz1POnCPEnQJdq/DfDlSR3Tuy8kzEwooj/QmGNMGOfZNvWUMw+QBNMfJmbCwDt+qFkfagTiwXua97Kno7aw9Kh0o/bJNdRogSXuyFX6+AaVjNLVEp012x5o=,iv:hBYNFBcUFyEpbArtY+LgWjXjQEN6nLMnrWctKobdHhU=,tag:riUl2YG3+wEY9pGP1n2bNA==,type:str]
+    mac_only_encrypted: true
     pgp:
-        - created_at: "2026-04-13T20:28:45Z"
+        - created_at: "2026-10-24T22:19:37Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//fwlnGBt9nLMybuk62vg04R3GV6AFeX9Dz4mo+H3aG/t2
-            ItOX29M3h+OXcnGvmnFuDo0jnCtb+AGjUBvJ8bvI+16MurqsWG4n0iOQ7FpAaxkt
-            qC0whJpEBPNF+s60CAGJWdAhmhFxz42FyrQm/h7Bzre54PHbjxZSWCIiqjeWKdML
-            iIl/eNYggPCyjBfI512BtLAriGMusTI07JTb+by17Xq5GzQ7wookkQJ4yGeYCPGO
-            gFzBbA48KZB7lVgzSBoQ0i27bmCdaQ4N6ZxIpTtT0LLJMJ7JhJmnCj+aEsCG81AM
-            rRovbOPs/PM8UCTgngcZXgmH551EKLdkPzt0DFCQiu2pbuSsQ5y415s0+HXvPgPG
-            Ls/avfvQOx9UwLKd3hyAX6pAUbWUKVimdFstGrMlfyTm5IKMDYRg7mYAk69BDtio
-            NEvyXpJ5ssk7shq6ry9IJ44VsuTd9LQQs3rk48Y3UGKukoiTI6HKZyzpccZsHByJ
-            09Wqd8CBkPhnc7ZNR2dQ0DGBJ1BPyWiy0Df2eaxYQ5/biYKeh70iUg/t0xtgLDSE
-            tSVLhJVUhL3KSqHwfEnLRqgC3V4xPRzVgpXlqGz/+ErWP9bSNVKGYHoJ4fqpGO2H
-            X75CkZBB3gJZ7bKfCFTtSOYHqcBBYfVXpfZox5vPHqowjcCi+Le+IwlIo4kC2yPU
-            aAEJAhButpMr5P/aYTXIJ7IYQcxNq+hp1OfJRwUyNNzVH7pkcL9hsEMjq5GOt5cJ
-            +6+AzIn93/3GgpEuc57T7+dVQi2Q7rGeUmrx0oy9yNYbNEmJ0NZ/5np3mthPE8Ik
-            Dx/PRZDXNtB/
-            =k2tK
+            hQIMA5NT/LvuRqeGAQ//X/bc0LG61eZ6t87tH/qIa9YtoMiqDMdYdfBvrbQ7Bkw2
+            f7r91cU12iuTT+a2R4H4L+9AeRetAB8e2SPRLe8Ig5b/bTkv0m+3Op3k2lFHME8+
+            dRivXUIllsLSzTpc3BsNLgzcJTrVIVc1htw1NjbwMlGf33vINVmT7AaoFEcCgu1z
+            K5jDCsPA91t7Qw7S58QHdArnHdmsq7ChVMses4CiPOvaVs58VPGHy1hrfPaX8WvZ
+            QmzPg9enRQV63YSPC5PMp2eSOmGkajlP+6HdomAqAZErR3QQb+hWpNjWHxfB10G5
+            cRJtJURpsjMloLBGqDns5AT6ahvcGGf+kFwa30ZX9FMK7j/muz0S/VqBrlEzWxGC
+            Ld15SZyJx3nAvyJxV7t3DpKrSg7KgQ7YvJGfmRRkgB0D5p7bcc1JMyP/3UuS81Fz
+            i9rWH9JwzsuSf9wwnIvfvxJgNseOy/asM7OaLtiFaLFIPm7xc2Nu/z1enhHK9FkU
+            ZW5AiXgNmz55OLv+dR/0PwtwBOXXk5zDW2UpbMqPtH1XKPBPoZ1mo6kQa5qCR9kS
+            1ZPEPguU6sd2YqW9Dzro0Hyh/qw1SZ+wYisKIl6ACD+9gyUjmyA5zcXDm+mw39vT
+            wuu7411XTNVqF5HUKfaXlqQHcOUSsuABckBg1ngXehi4g1Qnglcd/SfPDiLYK4rU
+            aAEJAhBO9aQ0p29t0T3culLNBEd4kXXd9YXVi2gQdjaO+fUy8KA6xu/S8uFj9n7e
+            J2/daExsOEG+6nRvdnGlXsaHH9lD4qM9I8v6ClHtPXQ960nukWMW1TYcVm9HNHaC
+            Q34RZafZG0pg
+            =/KwS
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|hosts)$
-    mac_only_encrypted: true
-    version: 3.12.2
+    version: 3.13.2

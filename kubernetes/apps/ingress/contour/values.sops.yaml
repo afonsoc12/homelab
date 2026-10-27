@@ -1,0 +1,85 @@
+fullnameOverride: contour
+contour:
+    replicaCount: 1
+    ingressClass:
+        name: contour
+        create: true
+        default: false
+    resources:
+        requests:
+            cpu: 50m
+            memory: 64Mi
+        limits:
+            cpu: 300m
+            memory: 256Mi
+    livenessProbe:
+        enabled: true
+    readinessProbe:
+        enabled: true
+    startupProbe:
+        enabled: true
+        failureThreshold: 30
+envoy:
+    kind: deployment
+    replicaCount: 1
+    nodeSelector:
+        kubernetes.io/hostname: k3s-m1
+    resources:
+        requests:
+            cpu: 50m
+            memory: 64Mi
+        limits:
+            cpu: 500m
+            memory: 256Mi
+    livenessProbe:
+        enabled: true
+    readinessProbe:
+        enabled: true
+    startupProbe:
+        enabled: true
+        failureThreshold: 30
+    shutdownManager:
+        resources:
+            requests:
+                cpu: 10m
+                memory: 32Mi
+            limits:
+                cpu: 100m
+                memory: 128Mi
+        startupProbe:
+            enabled: true
+            failureThreshold: 30
+    service:
+        type: LoadBalancer
+        loadBalancerIP: ENC[AES256_GCM,data:1HjJ59sMjdnYlBE=,iv:duqqXG7jHQLwuW0Mv6ROwXK1m0jMtWtkTuQT/zSYwk4=,tag:LDCQlVx9974eP/u2dc74WA==,type:str]
+        externalTrafficPolicy: Local
+gatewayAPI:
+    manageCRDs: false
+sops:
+    encrypted_regex: ^(loadBalancerIP)$
+    lastmodified: "2026-10-24T22:19:37Z"
+    mac: ENC[AES256_GCM,data:2Ydl4lA+6C7X8FT8/6xL858xs2QThWd9e+WOsvtpixCECe91ows0dIuadm8A5QwiVM3vHr8pO7bh505/yGkWpJnMtMD2EZEOvS3nuQ9UA6dc0ykcHFxtqNeal5zQJNLadS1+L+A5MwkWI+YUwLWCcqQrQ7aHvNmpFUG0drL32is=,iv:f72D8Jv/nNxaHPyOjryNzvgoa93DC3Z8PV02ll/LeUw=,tag:lowCPypQMxaQ4FHMjSh5ZA==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-10-24T22:19:37Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ//RZcX2qGcVe6PiuxCVIEPDjqMbistEhzIyR4XQ2hUcFQ1
+            SAjgd8N/Ll02xa0hdaYZYaufp1TD1THCIY+XhX0mwf312pvHkJ8L39mIaFXv3axW
+            pON6b/WE1lMV9dapk5xXsJGYdMcP7XchU4Ydb+0i+jg14cMx9A+VRgeNZ0VW9TZe
+            RXR2iK+LqWfaL3skumr/Jm+VpoNdh3OQ8x+Zar2HqZ/fGsHKnpxXZLGk5CBkpuVg
+            RixSgO6TkrYSfvLZ8FfV9nPJIEdgDHfnd3N3mrYrXsymGsGBUbtFBalNeIE21kO8
+            ZkmqGpxYr6FPUy/xRYaQXnrDRsBrw46SQ6/QNJxK46MUOV/LcgrTvzrXtVNswpTE
+            eMZW9Kw5xIIvGSuMEQr0DU6bg7XCeLX4JExaSdyR8fgsTevD+ZDV4RotcpAOH4ao
+            3duGrLm/8dJLNGFf33l5ACo5ia3e6wQPx1I5RY8boUiftmGTWxZ78sSLFMDamSzX
+            SmuKNp4bsFEOhsjSyo/wUwPDjZs9Tv0jg3Hi8+nD/HaKElrwSPm6XQfDUeDObEgE
+            YzRjQr8pzdw4J5+mf3gxI/TaUq6FwD+FHjBizFiAqWicuaPeMFYyBD5ooczA2M5t
+            Mqnvx8ZuCARA5j30hsYbg97SR11Rxwbz8v6uEFe+YioweIZDI2JV2Sx8uRiWbc3U
+            aAEJAhBc7NSNLKW8GYOdLu7bAZmMjmpV8tAZ8UrH1Yrmhp1ZemG+jWJP12DHdNP7
+            mqBK4+DUxNtUhWD+D3qPyGfV5jdqqMztJfxpvzmHo+pXhC29mgVMlI1LH0cN4WvJ
+            4NclxdlsSHjI
+            =/9pT
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2
