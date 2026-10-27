@@ -46,8 +46,11 @@ envoy:
             limits:
                 cpu: 100m
                 memory: 128Mi
-        startupProbe:
-            enabled: true
+        customStartupProbe:
+            httpGet:
+                path: /healthz
+                port: http-shutdown
+            periodSeconds: 10
             failureThreshold: 30
     service:
         type: LoadBalancer
