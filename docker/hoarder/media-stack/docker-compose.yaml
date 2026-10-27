@@ -75,7 +75,7 @@ services:
       - "/mnt/user/appdata/bazarr:/config"
 
   lidarr:
-    image: ghcr.io/linuxserver/lidarr:3.1.0
+    image: ghcr.io/linuxserver/lidarr:3.1.6
     container_name: lidarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -102,7 +102,7 @@ services:
         condition: service_healthy
 
   prowlarr:
-    image: ghcr.io/linuxserver/prowlarr:2.6.5
+    image: ghcr.io/linuxserver/prowlarr:2.7.0
     container_name: prowlarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -285,7 +285,7 @@ services:
       - "/mnt/user/appdata/tautulli:/config"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:3.01.00
+    image: ghcr.io/haveagitgat/tdarr:3.04.00
     container_name: tdarr
     restart: unless-stopped
     ports:
