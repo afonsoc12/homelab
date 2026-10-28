@@ -119,69 +119,10 @@ postgresql:
     enabled: false
 redis:
     enabled: false
-blueprints:
-    secrets:
-        - authentik-grafana-oidc
-additionalObjects:
-    - apiVersion: v1
-      kind: Secret
-      metadata:
-        name: authentik-grafana-oidc
-      type: Opaque
-      stringData:
-        grafana.yaml: ENC[AES256_GCM,data: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,iv:5AMZCwfw5aaqTMC+Pf4s+UXLCPkc3Zd9dZmxSZpi2Ls=,tag:xBZ/k8BzneQ8Ix8FvAp/Jg==,type:str]
-    - apiVersion: networking.k8s.io/v1
-      kind: Ingress
-      metadata:
-        name: longhorn-authentik
-        annotations:
-            ingress.kubernetes.io/force-ssl-redirect: "true"
-            projectcontour.io/websocket-routes: /
-            projectcontour.io/response-timeout: 60s
-      spec:
-        ingressClassName: contour
-        tls:
-            - secretName: local-wildcard-cert
-              hosts:
-                - ENC[AES256_GCM,data:WorstFl0f35BfTg6sI98hmI+SKCBF7/BUi1KCwON30BViJI=,iv:BJpCcHx+Xo1jrGTnNzDtxq9pJ0rk5lqU/xVExc3rHZs=,tag:NDwehQzM7Xc6AN6TONVjqA==,type:str]
-        rules:
-            - host: ENC[AES256_GCM,data:AJDf1sowkbdGgJpt0w5WDJVbM8m9MniTtFhkf0JYVzPDuxI=,iv:k/6NxFFAftdVT93lX/t8trqDRihpnnmpebvRzndP10c=,tag:P2O4+SB2f/2S8Gv8t6D7XQ==,type:str]
-              http:
-                paths:
-                    - path: /
-                      pathType: Prefix
-                      backend:
-                        service:
-                            name: authentik-server
-                            port:
-                                name: http
-    - apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: longhorn-ui-authentik
-        namespace: longhorn-system
-      spec:
-        podSelector:
-            matchLabels:
-                app: longhorn-ui
-        policyTypes:
-            - Ingress
-        ingress:
-            - from:
-                - namespaceSelector:
-                    matchLabels:
-                        kubernetes.io/metadata.name: ENC[AES256_GCM,data:z4qJHqiW4Q==,iv:rJFj3wW/jnXVrjm4BX2GU/01w5xAAU7iVfYqXiqIAM0=,tag:isn9C86CaGZ+SEO/1C0Xdg==,type:str]
-                  podSelector:
-                    matchLabels:
-                        app.kubernetes.io/name: ENC[AES256_GCM,data:kEX7huxuiwio,iv:IXlMixEikfv5NYNdYjymrUHTzJty7slJPT8oVjnzEHQ=,tag:oS+SFSmgQo6FN195VKD0Lw==,type:str]
-                        app.kubernetes.io/component: ENC[AES256_GCM,data:ErKVQwE5,iv:kUB5bywzcn1NDEuFw7DFG8gbLqQ4ZdqJx+PNlFBf/rk=,tag:O7mV9x10sZmhdJbzx+fDxg==,type:str]
-              ports:
-                - protocol: TCP
-                  port: 8000
 sops:
     encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
-    lastmodified: "2026-10-28T00:20:48Z"
-    mac: ENC[AES256_GCM,data:dQgBVwMuCQ2ALxYq4W7YIZWqbcq3ccdPPA2KUL3csW74LeW0yGW54mikS2732XR8uszLi5qhaEn4532WMTrtq5p40HFuniND+7UY/pmxM9HEB6VGW7DgNt8xXn2OM25dH9SdVrRDDWzn1ciKcTHpWaE0df9JZerp1/pQ5tFk0ak=,iv:hkCIJhy0QdErR89JN4UAdW6O90KX18/OVTR3+eX0uzE=,tag:0HQeJBWaZtv77lCFqXfsgQ==,type:str]
+    lastmodified: "2026-10-28T00:33:02Z"
+    mac: ENC[AES256_GCM,data:ZDHwEJRRVJ5eLYwLcAdQ4dIiPoGNJWrYPG5L0tp8CrOiy2tslWqqhm1QQmMnPQJJaJh/N8Bsevs9SzXfXG+/tVrTYMiD/PGDVKeZ5YVES/C7vt8cdMYfI7xvAztkgNrZBn+f+AH2MTp0V7i+nMSMxtHjSTyTqTaPYZog47AIdlA=,iv:wP+qZVM9tWLZtNpBY8XsOPz7fI17ZnVRzlQzlQFthlg=,tag:DvJXvnyMqtXcD94uGC35tw==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-10-21T23:23:06Z"
