@@ -130,10 +130,35 @@ additionalObjects:
       type: Opaque
       stringData:
         grafana.yaml: ENC[AES256_GCM,data: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,iv:5AMZCwfw5aaqTMC+Pf4s+UXLCPkc3Zd9dZmxSZpi2Ls=,tag:xBZ/k8BzneQ8Ix8FvAp/Jg==,type:str]
+    - apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: longhorn-authentik
+        annotations:
+            ingress.kubernetes.io/force-ssl-redirect: "true"
+            projectcontour.io/websocket-routes: /
+            projectcontour.io/response-timeout: 60s
+      spec:
+        ingressClassName: contour
+        tls:
+            - secretName: local-wildcard-cert
+              hosts:
+                - ENC[AES256_GCM,data:WorstFl0f35BfTg6sI98hmI+SKCBF7/BUi1KCwON30BViJI=,iv:BJpCcHx+Xo1jrGTnNzDtxq9pJ0rk5lqU/xVExc3rHZs=,tag:NDwehQzM7Xc6AN6TONVjqA==,type:str]
+        rules:
+            - host: ENC[AES256_GCM,data:AJDf1sowkbdGgJpt0w5WDJVbM8m9MniTtFhkf0JYVzPDuxI=,iv:k/6NxFFAftdVT93lX/t8trqDRihpnnmpebvRzndP10c=,tag:P2O4+SB2f/2S8Gv8t6D7XQ==,type:str]
+              http:
+                paths:
+                    - path: /
+                      pathType: Prefix
+                      backend:
+                        service:
+                            name: authentik-server
+                            port:
+                                name: http
 sops:
     encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
-    lastmodified: "2026-10-21T23:33:05Z"
-    mac: ENC[AES256_GCM,data:EGfQk7k00PLzli4OPKqKtRUM5Dpbin1JrwSGAz4UErGGLGfTx+YvomX3hLodYvKIZJm6OXzZg/k4nIMtyQ0m/HC3PT//VXxV3s29Rh0VKC1suRXMPMiXEcV8GDXe6YdeHkgEfev640+Ed2L6e+y3WrltI2qstSv4fFzfoIyndGQ=,iv:pBAQ+MkbbcEkRp5Kto1djCcW7csbz0XfydwN5xlBNRQ=,tag:KyjQdD6Sl1PUB0PErTH7dQ==,type:str]
+    lastmodified: "2026-10-28T00:13:59Z"
+    mac: ENC[AES256_GCM,data:VnZjRfEr0XBAiP4GqW/CMzmvFuR9ekkQglQG9a1vUuu4sIydxy8zXLdGszVkrsEkOAICi/vL/XIs/ZDOONgFZqhaE6915PkycWlhVhlqbYC3b69roilIbemMqA4Arn4nMoGkKpKMP9sr4XtFTzOP7MYq9tbbfHwCQ9yJg1CIwus=,iv:b1HV6YogncPKo51TMPfq3wOJUwPzdQWQWJ0UIZH6JGI=,tag:YnRgnf8nwUe4AMOHjQGUjQ==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-10-21T23:23:06Z"
