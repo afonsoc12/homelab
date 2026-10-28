@@ -29,29 +29,6 @@ defaultSettings:
 ingress:
     enabled: false
     host: ENC[AES256_GCM,data:3ZZUp26LHuGTqIgDdL991yhmz3Fdvm82LK6/IQ==,iv:UdqfNG4Rcav7n+hp8SAj0KYHXEgOJPMVStV3vEM9RFE=,tag:EHNGU52HphU7fh4J5A3zyQ==,type:str]
-extraObjects:
-    - apiVersion: networking.k8s.io/v1
-      kind: NetworkPolicy
-      metadata:
-        name: longhorn-ui-authentik
-      spec:
-        podSelector:
-            matchLabels:
-                app: longhorn-ui
-        policyTypes:
-            - Ingress
-        ingress:
-            - from:
-                - namespaceSelector:
-                    matchLabels:
-                        kubernetes.io/metadata.name: ingress
-                  podSelector:
-                    matchLabels:
-                        app.kubernetes.io/name: authentik
-                        app.kubernetes.io/component: server
-              ports:
-                - protocol: TCP
-                  port: 8000
 sops:
     encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
     lastmodified: "2026-10-28T00:16:06Z"

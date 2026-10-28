@@ -155,10 +155,33 @@ additionalObjects:
                             name: authentik-server
                             port:
                                 name: http
+    - apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata:
+        name: longhorn-ui-authentik
+        namespace: longhorn-system
+      spec:
+        podSelector:
+            matchLabels:
+                app: longhorn-ui
+        policyTypes:
+            - Ingress
+        ingress:
+            - from:
+                - namespaceSelector:
+                    matchLabels:
+                        kubernetes.io/metadata.name: ENC[AES256_GCM,data:z4qJHqiW4Q==,iv:rJFj3wW/jnXVrjm4BX2GU/01w5xAAU7iVfYqXiqIAM0=,tag:isn9C86CaGZ+SEO/1C0Xdg==,type:str]
+                  podSelector:
+                    matchLabels:
+                        app.kubernetes.io/name: ENC[AES256_GCM,data:kEX7huxuiwio,iv:IXlMixEikfv5NYNdYjymrUHTzJty7slJPT8oVjnzEHQ=,tag:oS+SFSmgQo6FN195VKD0Lw==,type:str]
+                        app.kubernetes.io/component: ENC[AES256_GCM,data:ErKVQwE5,iv:kUB5bywzcn1NDEuFw7DFG8gbLqQ4ZdqJx+PNlFBf/rk=,tag:O7mV9x10sZmhdJbzx+fDxg==,type:str]
+              ports:
+                - protocol: TCP
+                  port: 8000
 sops:
     encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
-    lastmodified: "2026-10-28T00:13:59Z"
-    mac: ENC[AES256_GCM,data:VnZjRfEr0XBAiP4GqW/CMzmvFuR9ekkQglQG9a1vUuu4sIydxy8zXLdGszVkrsEkOAICi/vL/XIs/ZDOONgFZqhaE6915PkycWlhVhlqbYC3b69roilIbemMqA4Arn4nMoGkKpKMP9sr4XtFTzOP7MYq9tbbfHwCQ9yJg1CIwus=,iv:b1HV6YogncPKo51TMPfq3wOJUwPzdQWQWJ0UIZH6JGI=,tag:YnRgnf8nwUe4AMOHjQGUjQ==,type:str]
+    lastmodified: "2026-10-28T00:20:48Z"
+    mac: ENC[AES256_GCM,data:dQgBVwMuCQ2ALxYq4W7YIZWqbcq3ccdPPA2KUL3csW74LeW0yGW54mikS2732XR8uszLi5qhaEn4532WMTrtq5p40HFuniND+7UY/pmxM9HEB6VGW7DgNt8xXn2OM25dH9SdVrRDDWzn1ciKcTHpWaE0df9JZerp1/pQ5tFk0ak=,iv:hkCIJhy0QdErR89JN4UAdW6O90KX18/OVTR3+eX0uzE=,tag:0HQeJBWaZtv77lCFqXfsgQ==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-10-21T23:23:06Z"
