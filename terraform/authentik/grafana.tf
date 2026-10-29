@@ -33,7 +33,7 @@ resource "authentik_provider_oauth2" "grafana" {
   allowed_redirect_uris      = jsondecode(data.sops_file.secrets.data["grafana_redirect_uris"])
   signing_key                = data.sops_file.secrets.data["grafana_signing_key"]
   issuer_mode                = "per_provider"
-  sub_mode                   = "user_uuid"
+  sub_mode                   = "hashed_user_id"
   property_mappings = [
     authentik_property_mapping_provider_scope.oidc_openid.id,
     authentik_property_mapping_provider_scope.oidc_email.id,

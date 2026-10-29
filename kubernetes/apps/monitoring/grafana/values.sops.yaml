@@ -43,6 +43,7 @@ grafana.ini:
         root_url: https://{{ .Values.ingress.hosts | first }}
     auth:
         signout_redirect_url: https://sso.{{ .Values.domain }}/application/o/grafana/end-session/
+        disable_login_form: true
     auth.anonymous:
         enabled: false
     auth.proxy:
@@ -64,6 +65,8 @@ grafana.ini:
         use_pkce: true
         use_refresh_token: true
         auth_style: InHeader
+    auth.basic:
+        enabled: false
 ldap:
     enabled: false
     existingSecret: ""
@@ -105,8 +108,8 @@ envRenderSecret:
     GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ENC[AES256_GCM,data:rAFsl9AfVMEU5QfRDmF7I2H8eo0PsszS7sFmX3xh+Txby173X1GwANW8t1BkV/0h5j5+yKhKM7ZgWUUkzvJoyg==,iv:We0MHMunq22p3l7xvNsB7O4MrOp04ueOpV2X97J3P4U=,tag:XQ4tAYZzBzK5O+SIfNZphw==,type:str]
 sops:
     encrypted_regex: ^(hosts|hostnames|envRenderSecret)$
-    lastmodified: "2026-10-24T22:19:37Z"
-    mac: ENC[AES256_GCM,data:XogmZNjGbRonOja1vIznytRqqnZgSErsaRRxbMJEZ8aqxbivzuhHmz1POnCPEnQJdq/DfDlSR3Tuy8kzEwooj/QmGNMGOfZNvWUMw+QBNMfJmbCwDt+qFkfagTiwXua97Kno7aw9Kh0o/bJNdRogSXuyFX6+AaVjNLVEp012x5o=,iv:hBYNFBcUFyEpbArtY+LgWjXjQEN6nLMnrWctKobdHhU=,tag:riUl2YG3+wEY9pGP1n2bNA==,type:str]
+    lastmodified: "2026-10-29T00:34:07Z"
+    mac: ENC[AES256_GCM,data:yfgvIjLRccBb1KCxwca3LXlHF0zUVU4yk9RuzjoXz5nIQUFykgdfIgGii/TmqZPLvYj4Dsf9CBd/pWSXUCkiF7zKvzxN3E5YKaiioAkrWnO0cM6ZVRAtAukVKPhaU+86Il5MsWYVGDMFeHcmsJDPfvEeGHwPZtNJ6GdSe5lpNrE=,iv:WA2MTekhdOZ9IuzjUuAxXjmN8MXRCzSd3d0p29WXrew=,tag:gYz31s95mbYz1Y/QKSIksA==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-10-24T22:19:37Z"

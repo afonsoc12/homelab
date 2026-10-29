@@ -54,7 +54,7 @@ resource "authentik_application" "uptime_kuma" {
   meta_icon             = ""
   meta_launch_url       = data.sops_file.secrets.data["value_004"]
   meta_publisher        = ""
-  name                  = data.sops_file.secrets.data["value_074"]
+  name                  = "Homelab Protected Apps"
   open_in_new_tab       = false
   policy_engine_mode    = "any"
   protocol_provider     = authentik_provider_proxy.uptime_kuma.id
@@ -148,7 +148,7 @@ resource "authentik_provider_proxy" "uptime_kuma" {
   jwt_federation_providers      = []
   jwt_federation_sources        = []
   mode                          = "forward_domain"
-  name                          = "Uptime Kuma"
+  name                          = "Homelab Forward Auth"
   property_mappings             = [authentik_property_mapping_provider_scope.proxy_outpost.id, authentik_property_mapping_provider_scope.oidc_entitlements.id, authentik_property_mapping_provider_scope.oidc_openid.id, authentik_property_mapping_provider_scope.oidc_email.id, authentik_property_mapping_provider_scope.oidc_profile.id]
   refresh_token_validity        = "days=30"
   skip_path_regex               = ""
