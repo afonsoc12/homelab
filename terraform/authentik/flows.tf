@@ -99,7 +99,7 @@ resource "authentik_flow" "provider_consent" {
   name               = "Homelab - Provider Consent"
   policy_engine_mode = "any"
   slug               = "homelab-provider-consent"
-  title              = "Continue to your application"
+  title              = "Redirecting to %(app)s"
 }
 
 resource "authentik_flow" "provider_authorization" {
@@ -112,7 +112,7 @@ resource "authentik_flow" "provider_authorization" {
   name               = "Homelab - Provider Authorization"
   policy_engine_mode = "any"
   slug               = "homelab-provider-authorization"
-  title              = "Signing you in"
+  title              = "Redirecting to %(app)s"
 }
 
 resource "authentik_flow" "provider_logout" {
@@ -125,7 +125,7 @@ resource "authentik_flow" "provider_logout" {
   name               = "Homelab - Provider Logout"
   policy_engine_mode = "any"
   slug               = "homelab-provider-logout"
-  title              = "You have signed out"
+  title              = "You've logged out of %(app)s."
 }
 
 resource "authentik_flow" "account_settings" {
