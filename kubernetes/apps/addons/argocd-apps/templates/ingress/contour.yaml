@@ -4,6 +4,8 @@ kind: Application
 metadata:
   name: contour
   namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
