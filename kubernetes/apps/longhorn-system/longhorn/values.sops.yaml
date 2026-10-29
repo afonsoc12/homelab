@@ -36,13 +36,15 @@ ingress:
     annotations:
         nginx.ingress.kubernetes.io/proxy-body-size: 10000m
         nginx.ingress.kubernetes.io/auth-method: GET
-        nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
-        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:W/UIJ2b6+0vJN5ACXYcV6ko/nUOnaD4ivKyqKYYLCL3qUWiGV3n9gZYcJEYD,iv:7/T92jiQuva3x6Men7eLel0wKokBJfGYalT7FPDX/kE=,tag:D8QdemgkhIOI1aBetVPu/A==,type:str]
-        nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-        nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+        nginx.ingress.kubernetes.io/auth-url: http://authentik-server.ingress.svc.cluster.local/outpost.goauthentik.io/auth/nginx
+        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:rNF9bwwjyPm3aZV0Uex6GwGRrNI5HzP6p215NNhquZeiznvEtvcRp1iYP42g6UdXHXDDMWfQgRTdvy5R4c/xpWVv/8GAgVH889BKWAj00Ugwi4BAwLtKFRrKci32wC9BBiiMrG3aX0WtPf+u+csE+mxltA0=,iv:J1GQYRQFEqswEAJGasUgIKgncKNzJ4R9xHX6bGqwO2U=,tag:isKDCEJ9gl4W4hD+pnBxZA==,type:str]
+        nginx.ingress.kubernetes.io/auth-response-headers: Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-entitlements,X-authentik-email,X-authentik-name,X-authentik-uid
+        nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Host $host;
 sops:
-    lastmodified: "2026-04-18T12:50:02Z"
-    mac: ENC[AES256_GCM,data:QUx0WE7JkJ7b9cN5jx4QZKOKop+zdJjG5JPGMiaCAVPTFO79HM2zC+0vUG9MgDJTjuBe+XPENbyuaIGs+45QcIl7LD95LVtHB8R88KMl3CjNTXiKNxYx+rFlQMPMI/Dgvl3ADWENKqWngjJj0NToy9Cyx04+qSXWAUbdcEEjTvE=,iv:Oj+PKCKzoZtrFh8ZsgA+eOsq8Q95n9rS3GuqpfasHic=,tag:o3q767XIPC4wbFryZhR36A==,type:str]
+    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
+    lastmodified: "2026-10-28T23:55:42Z"
+    mac: ENC[AES256_GCM,data:ikC6oQOOWyo9y2jG/zvhkwkU3gmNu9SabIcugMDul9HSapQeEZtFYNZfyDSnKPvWR0OhpVLAQl9XAK8LrY6QDMaaaaIDvwUugyx9lZ4sPUI0p35yP3MQxUBALzX802LbzUiReByCHzfSHV0L88zknZPkqCvwhiZ3Pz/wcUqVzLY=,iv:ri1+IKQjVJBwgxum8P5CUQlOpJSTox9ffn8/yzJWvTo=,tag:QmUls1ysp6wf3xsQQ2dXyg==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:44Z"
           enc: |-
@@ -65,6 +67,4 @@ sops:
             =Iw4Z
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
-    mac_only_encrypted: true
     version: 3.12.2
