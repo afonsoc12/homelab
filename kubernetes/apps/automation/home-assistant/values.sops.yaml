@@ -37,6 +37,7 @@ pvc:
 ingress:
     annotations:
         ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/response-timeout: 60s
         projectcontour.io/websocket-routes: /
     namespace: ingress
     backend:

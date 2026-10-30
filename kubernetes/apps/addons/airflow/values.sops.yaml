@@ -99,7 +99,8 @@ volumes:
       secretName: airflow-secrets-backend
 ingress:
   annotations:
-    ingress.kubernetes.io/force-ssl-redirect: "true"
+      ingress.kubernetes.io/force-ssl-redirect: "true"
+      projectcontour.io/response-timeout: 60s
   enabled: true
   authelia: false
   className: contour

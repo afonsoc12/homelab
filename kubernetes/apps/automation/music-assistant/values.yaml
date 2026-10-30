@@ -54,6 +54,7 @@ pvc:
 ingress:
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "true"
+    projectcontour.io/response-timeout: 60s
     projectcontour.io/websocket-routes: /
   enabled: true
   authelia: false
@@ -109,6 +110,7 @@ extraResources:
       name: music-assistant-stream
       annotations:
         ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/response-timeout: infinity
       namespace: automation
     spec:
       ingressClassName: contour
