@@ -6,7 +6,7 @@
 # --------------------
 image:
   repository: ghcr.io/afonsoc12/airflow
-  tag: 3.3.2-b58
+  tag: 3.3.2-b59
   pullPolicy: Always
 serviceAccount:
   create: true
@@ -99,7 +99,7 @@ volumes:
       secretName: airflow-secrets-backend
 ingress:
   annotations:
-      ingress.kubernetes.io/force-ssl-redirect: "true"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
   enabled: true
   authelia: false
   className: contour
