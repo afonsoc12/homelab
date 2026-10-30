@@ -129,6 +129,9 @@ pvc: {}
 
 ingress:
   enabled: false
+  # Override together when routing through a shared authentication proxy.
+  namespace: ""
+  backend: {}
   authelia: false
   authentik: false
   className: "nginx"

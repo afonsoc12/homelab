@@ -147,7 +147,22 @@ configs:
             g, authentik_admins, role:admin
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
-extraObjects: []
+extraObjects:
+- apiVersion: projectcontour.io/v1
+  kind: HTTPProxy
+  metadata:
+    name: argocd-server
+  spec:
+    ingressClassName: contour
+    virtualhost:
+      fqdn: '{{ .Values.global.domain }}'
+      tls:
+        passthrough: true
+    tcpproxy:
+      services:
+      - name: argocd-server
+        port: 443
+
 # - apiVersion: secrets-store.csi.x-k8s.io/v1
 #   kind: SecretProviderClass
 #   metadata:
@@ -237,6 +252,11 @@ redis:
         failureThreshold: 3
 ## Server
 server:
+    certificate:
+        enabled: true
+        issuer:
+            kind: Issuer
+            name: letsencrypt
     # -- Argo CD server name
     name: server
     # -- The number of server pods to run
@@ -250,17 +270,7 @@ server:
             cpu: 500m
             memory: 256Mi
     ingress:
-        enabled: true
-        annotations:
-            nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-            nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-        ingressClassName: nginx
-        path: /
-        pathType: Prefix
-        tls: false
-        extraTls:
-            - secretName: local-wildcard-cert
+        enabled: false
 ## Repo Server
 repoServer:
     # -- Repo server name

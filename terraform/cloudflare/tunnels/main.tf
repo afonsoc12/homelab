@@ -55,7 +55,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "home.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy.ingress.svc.cluster.local"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -157,6 +157,22 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         }
       },
       {
+        hostname = "git-hook.${var.domain}"
+        service  = "https://ingress-nginx-controller"
+        origin_request = {
+          connect_timeout          = 30
+          disable_chunked_encoding = false
+          http2_origin             = false
+          keep_alive_connections   = 100
+          keep_alive_timeout       = 90
+          no_happy_eyeballs        = false
+          no_tls_verify            = false
+          origin_server_name       = "git-hook.${var.domain}"
+          tcp_keep_alive           = 30
+          tls_timeout              = 10
+        }
+      },
+      {
         hostname = "split.${var.domain}"
         service  = "https://ingress-nginx-controller"
         origin_request = {
@@ -174,7 +190,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "music-assistant-stream.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy.ingress.svc.cluster.local"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -190,7 +206,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "music-assistant-alexa-skill.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy.ingress.svc.cluster.local"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -212,7 +228,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
 }
 
 locals {
-  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "home", "music-assistant-alexa-skill", "music-assistant-stream", "rss", "seerr", "split", "sso", "status", "wallabag"])
+  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git-hook", "home", "music-assistant-alexa-skill", "music-assistant-stream", "rss", "seerr", "split", "sso", "status", "wallabag"])
 }
 
 # Spliit isn't behind Authelia (friends without homelab SSO accounts need

@@ -53,10 +53,16 @@ pvc:
         requests:
             storage: 512Mi
 ingress:
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/websocket-routes: /
+    namespace: ingress
+    backend:
+        name: authentik-server
+        port: 80
     enabled: true
-    authelia: true
-    className: nginx
-    annotations: null
+    authelia: false
+    className: contour
     tls:
         - secretName: local-wildcard-cert
     hosts:

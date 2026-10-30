@@ -35,9 +35,16 @@ pvc:
         requests:
             storage: 10Gi
 ingress:
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/websocket-routes: /
+    namespace: ingress
+    backend:
+        name: authentik-server
+        port: 80
     enabled: true
-    authelia: true
-    className: nginx
+    authelia: false
+    className: contour
     tls:
         - secretName: home-cert
     # Will assume the first element in .ports, regardless of service

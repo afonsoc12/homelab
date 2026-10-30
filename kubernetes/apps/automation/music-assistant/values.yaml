@@ -52,9 +52,12 @@ pvc:
       storage: 5Gi
 
 ingress:
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    projectcontour.io/websocket-routes: /
   enabled: true
   authelia: false
-  className: nginx
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   # Will assume the first element in .ports, regardless of service
@@ -62,7 +65,7 @@ ingress:
     - host: music-assistant.local.{{ .Values.domain }}
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
 
 nodeSelector:
   kubernetes.io/hostname: k3s-m1
@@ -104,9 +107,11 @@ extraResources:
     kind: Ingress
     metadata:
       name: music-assistant-stream
+      annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
       namespace: automation
     spec:
-      ingressClassName: nginx
+      ingressClassName: contour
       tls:
         - secretName: music-assistant-stream-cert
       rules:
@@ -114,7 +119,7 @@ extraResources:
           http:
             paths:
               - path: /
-                pathType: ImplementationSpecific
+                pathType: Prefix
                 backend:
                   service:
                     name: music-assistant

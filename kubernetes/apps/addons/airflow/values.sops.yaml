@@ -59,6 +59,8 @@ secret:
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:mCLBii93tflqUTCV17F63JYE6SXJn4XVtq9MNaQeKn0qiP4gchvuOOTCBZWz3L1dW1VOh4ermTqiP/jTtkG6sBovewJfM0GNlKZ2IXbQ5tc92M/KSNc=,iv:yiFD3sTYNaQRdtfmaUdzvL6fBadfSJPY9UUTpM4jYCs=,tag:hTxCmrcz3DUDRx21h+Uy/w==,type:str]
     AIRFLOW__CORE__SECRET_KEY: ENC[AES256_GCM,data:CvKHWVWNi+DcLNHC+FeI5siXmrevc91wC2p6ETunEnjNIjXVD6Bu8eWlYL5QffhiZr9qAqi5ClX837/Y55pJBg==,iv:PGI9GzKvbFHVWz3HQ5Qq+hqVcrz/+xS/XAfUi3T/aT8=,tag:XiHets+Xd+1odlhRCBRMzQ==,type:str]
     AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:LzIVY53J2lWfSojwAGS4ScOQEfHTJ1/dKB2xyOf1W1PZAKR6zfiGSSm/qCiWHS3FkyT5WN0U10+gG7gSBrZarg==,iv:adP96CO3Fr7gtvQ5qfUTBkHyWpVGGfv0aMVxEntYZqk=,tag:fxXE+L0/K/smobswfpVIBg==,type:str]
+    OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:mrPZhY+jmclxbP9RG0ypmj36+SGWRX3+Idt1cOxVLHEkbgaomQH0x+DtaSWiq7cHTTh9TQe7M31qpHRdda2TsA==,iv:/b+wqlHZwDXco1HqTWeutTqLSpxbMjFElJ7gGkdI2QI=,tag:Yd48CwUsna65H/W0AOH2wQ==,type:str]
+    FORWARDED_ALLOW_IPS: ENC[AES256_GCM,data:Eojq/KYS1pd4jsu2,iv:P1WiNBcZCwtMtC8JAfO9MNTZAxznXc86C489Z8TOScM=,tag:Wza2xeh1zvZ6LIHV/dk9Cg==,type:str]
 extraSecrets:
   - name: airflow-secrets-backend
     stringData:
@@ -67,6 +69,11 @@ extraSecrets:
 configmap:
   mountEnv: true
   data:
+    AIRFLOW__CORE__AUTH_MANAGER: "airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager"
+    AIRFLOW__FAB__CONFIG_FILE: "/opt/airflow/webserver_config.py"
+    AIRFLOW__FAB__ENABLE_PROXY_FIX: "True"
+    AIRFLOW__API__BASE_URL: "https://airflow.local.{{ .Values.domain }}"
+    OIDC_DISCOVERY_URL: "https://sso.{{ .Values.domain }}/application/o/airflow/.well-known/openid-configuration"
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__CORE__PARALLELISM: "8"
     AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: "8"
@@ -91,16 +98,18 @@ volumes:
     secret:
       secretName: airflow-secrets-backend
 ingress:
+  annotations:
+      ingress.kubernetes.io/force-ssl-redirect: "true"
   enabled: true
-  authelia: true
-  className: nginx
+  authelia: false
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:
     - host: airflow.local.{{ .Values.domain }}
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
 resources:
   requests:
     cpu: 500m
@@ -132,8 +141,8 @@ startupProbe:
   timeoutSeconds: 5
 sops:
   encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
-  lastmodified: "2026-08-23T14:15:52Z"
-  mac: ENC[AES256_GCM,data:O/gr9Pj+TP5GtGyPZ9W4V2q5ecCO4DFL7CRwVrk73qbiqGoYhSQd3EiTPUwSag95ehoN26tgxk6amZfrIkKyabjn1jqD8seyrTx5qWtKLScYkNOQrQwXXLmhHjQkWtLSlVUGlMHS50Ld0xsJKaISR7OAejaFs0WIhz4tXRYkHSI=,iv:gxsd6uT5g5y0qNse5wdtAxnBEBiXHpU5SmkP1/HbTQ4=,tag:4ggcX0CbH0q/XPIzIWsqgg==,type:str]
+  lastmodified: "2026-10-30T00:53:58Z"
+  mac: "ENC[AES256_GCM,data:QgKNWNhBzMUdrMq8mgB9JQx1AQTuKCFN+BAXf9Px9Qf93EWe9Sr9CMMSMzRQQo2st+P98uw9SA867RlgT1gaqsE+PKJWsSOhkKCFvuSnOZ1M8LwO+JR2H5Et1NkmtyWQBjZsXIbeumE8YnAQ7Bjv+tBNOsNVE6FlRLepQo/hW0Y=,iv:HWatBZ5XX1bYhYAZU644TbJxhP4VtyMvbKUfbpDXrSQ=,tag:ZupJbPYAQc0WdAwwooq1pQ==,type:str]"
   mac_only_encrypted: true
   pgp:
     - created_at: "2026-08-23T14:15:52Z"
