@@ -119,6 +119,48 @@ postgresql:
     enabled: false
 redis:
     enabled: false
+additionalObjects:
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: authentik-outposts
+    namespace: automation
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    - services
+    verbs:
+    - get
+    - create
+    - delete
+    - list
+    - patch
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    verbs:
+    - get
+    - create
+    - delete
+    - list
+    - patch
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: authentik-outposts
+    namespace: automation
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: authentik-outposts
+  subjects:
+  - kind: ServiceAccount
+    name: authentik
+    namespace: ingress
+
 sops:
     encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
     lastmodified: "2026-10-28T00:33:02Z"

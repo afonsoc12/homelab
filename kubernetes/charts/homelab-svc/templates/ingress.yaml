@@ -6,9 +6,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "homelab-svc.fullname" . }}
-  {{- with .Values.ingress.namespace }}
-  namespace: {{ . }}
-  {{- end }}
   labels:
     {{- include "homelab-svc.labels" . | nindent 4 }}
   annotations:

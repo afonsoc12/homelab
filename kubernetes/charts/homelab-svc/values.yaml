@@ -129,8 +129,7 @@ pvc: {}
 
 ingress:
   enabled: false
-  # Override together when routing through a shared authentication proxy.
-  namespace: ""
+  # Optional namespace-local authentication proxy backend.
   backend: {}
   authelia: false
   authentik: false

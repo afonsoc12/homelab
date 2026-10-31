@@ -5,12 +5,9 @@ resource "authentik_certificate_key_pair" "signing" {
 }
 
 resource "authentik_outpost" "embedded" {
-  config = data.sops_file.secrets.data["value_009"]
-  name   = "authentik Embedded Outpost"
-  protocol_providers = concat(
-    [authentik_provider_proxy.uptime_kuma.id],
-    [for provider in authentik_provider_proxy.automation : provider.id],
-  )
+  config             = data.sops_file.secrets.data["value_009"]
+  name               = "authentik Embedded Outpost"
+  protocol_providers = [authentik_provider_proxy.uptime_kuma.id]
   service_connection = authentik_service_connection_kubernetes.cluster.id
   type               = "proxy"
 }

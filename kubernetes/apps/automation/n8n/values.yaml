@@ -51,10 +51,10 @@ ingress:
     ingress.kubernetes.io/force-ssl-redirect: "true"
     projectcontour.io/response-timeout: 60s
     projectcontour.io/websocket-routes: /
-  namespace: ingress
+
   backend:
-    name: authentik-server
-    port: 80
+    name: authentik-automation-proxy
+    port: 9000
   enabled: true
   authelia: false
   className: contour
