@@ -129,6 +129,8 @@ pvc: {}
 
 ingress:
   enabled: false
+  # Optional namespace-local authentication proxy backend.
+  backend: {}
   authelia: false
   authentik: false
   className: "nginx"

@@ -6,4 +6,7 @@ It supports Kubernetes Ingress and Gateway API.
 
 ingress-nginx is retained temporarily while applications migrate to Contour.
 
+Applications use native OpenID Connect where supported, or
+[Authentik](https://goauthentik.io/) proxy authentication for browser access.
+
 See the [official documentation](https://projectcontour.io/docs/) for configuration guidance.

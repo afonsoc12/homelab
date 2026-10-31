@@ -1,4 +1,7 @@
 {{- if .Values.ingress.enabled -}}
+{{- if and (or .Values.ingress.authelia .Values.ingress.authentik) (ne .Values.ingress.className "nginx") -}}
+{{- fail "nginx forward-auth annotations cannot protect another ingress class; configure native SSO or a proxy backend" -}}
+{{- end -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -46,10 +49,16 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
+                {{- if $.Values.ingress.backend }}
+                name: {{ $.Values.ingress.backend.name }}
+                port:
+                  number: {{ $.Values.ingress.backend.port }}
+                {{- else }}
                 name: {{ include "homelab-svc.fullname" $ }}
-                {{- with (first $.Values.ports) | required "Must specify at least one in .Values.ports"  }}
+                {{- with (first $.Values.ports) | required "Must specify at least one in .Values.ports" }}
                 port:
                   number: {{ .containerPort }}
+                {{- end }}
                 {{- end }}
           {{- end }}
     {{- end }}

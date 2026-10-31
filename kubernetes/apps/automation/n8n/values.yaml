@@ -40,13 +40,24 @@ pvc:
 configmap:
   mountEnv: true
   data:
+    N8N_PROXY_HOPS: "2"
+    N8N_EDITOR_BASE_URL: https://n8n.local.{{ .Values.domain }}
+    WEBHOOK_URL: https://n8n.local.{{ .Values.domain }}/
     N8N_PORT: "5678"
     NODE_OPTIONS: "--max-old-space-size=450"
 
 ingress:
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
+
+  backend:
+    name: authentik-automation-proxy
+    port: 9000
   enabled: true
-  authelia: true
-  className: "nginx"
+  authelia: false
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:

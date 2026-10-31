@@ -249,13 +249,16 @@ server:
         limits:
             cpu: 500m
             memory: 256Mi
+    service:
+        annotations:
+            projectcontour.io/upstream-protocol.tls: "https,443"
     ingress:
         enabled: true
+        ingressClassName: contour
         annotations:
-            nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-            nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-        ingressClassName: nginx
+            ingress.kubernetes.io/force-ssl-redirect: "true"
+            projectcontour.io/websocket-routes: /
+            projectcontour.io/response-timeout: 60s
         path: /
         pathType: Prefix
         tls: false
