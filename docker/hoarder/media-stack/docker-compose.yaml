@@ -200,7 +200,7 @@ services:
       - "/mnt/user/appdata/seerr:/app/config"
 
   plex:
-    image: ghcr.io/linuxserver/plex:1.43.5
+    image: ghcr.io/linuxserver/plex:1.43.5@sha256:01a53d9c7adcbb3701fbb0a4230c0a37c85453759b6b05a67356c3c7a09de08d
     container_name: plex
     restart: unless-stopped
     network_mode: host
