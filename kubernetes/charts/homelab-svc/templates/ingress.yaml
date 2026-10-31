@@ -32,9 +32,15 @@ spec:
   {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
+    {{- $tlsHosts := default (list) .hosts }}
+    {{- if and (empty $tlsHosts) (eq $.Values.ingress.className "contour") }}
+    {{- range $.Values.ingress.hosts }}
+    {{- $tlsHosts = append $tlsHosts .host }}
+    {{- end }}
+    {{- end }}
     - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
+        {{- range $tlsHosts }}
+        - {{ tpl (. | quote) $ }}
         {{- end }}
       secretName: {{ .secretName }}
     {{- end }}
