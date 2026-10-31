@@ -146,6 +146,10 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
+          # Optional Service override; otherwise uses the app Service and port.
+          # service:
+          #   name: authentication-proxy
+          #   port: 9000
 
 livenessProbe: {}
 readinessProbe: {}

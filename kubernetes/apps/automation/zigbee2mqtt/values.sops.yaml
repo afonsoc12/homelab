@@ -53,10 +53,14 @@ pvc:
         requests:
             storage: 512Mi
 ingress:
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/response-timeout: 60s
+        projectcontour.io/websocket-routes: /
+
     enabled: true
-    authelia: true
-    className: nginx
-    annotations: null
+    authelia: false
+    className: contour
     tls:
         - secretName: local-wildcard-cert
     hosts:
@@ -64,6 +68,9 @@ ingress:
           paths:
             - path: /
               pathType: Prefix
+              service:
+                name: authentik-automation-proxy
+                port: 9000
 livenessProbe:
     httpGet:
         path: /
