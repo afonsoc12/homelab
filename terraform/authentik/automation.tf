@@ -36,10 +36,10 @@ resource "authentik_provider_proxy" "automation" {
   refresh_token_validity       = "hours=8"
   property_mappings = [
     authentik_property_mapping_provider_scope.proxy_outpost.id,
-    authentik_property_mapping_provider_scope.oidc_entitlements.id,
     authentik_property_mapping_provider_scope.oidc_openid.id,
     authentik_property_mapping_provider_scope.oidc_email.id,
     authentik_property_mapping_provider_scope.oidc_profile.id,
+    authentik_property_mapping_provider_scope.oidc_entitlements.id,
   ]
 }
 
