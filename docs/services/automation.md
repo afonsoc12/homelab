@@ -12,7 +12,7 @@ Most services run on the **k3s-cluster** (`automation` namespace). Hyperion.ng r
 
 The central home automation hub. Integrates with hundreds of devices and services, provides dashboards, automations, and the local voice assistant pipeline.
 
-[:octicons-book-16: Documentation](https://www.home-assistant.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/home-assistant/values.sops.yaml)
+[:octicons-book-16: Documentation](https://www.home-assistant.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/home-assistant/values.yaml)
 
 ---
 
@@ -20,7 +20,7 @@ The central home automation hub. Integrates with hundreds of devices and service
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>automation</code></em>
 
-Firmware builder and OTA manager for ESP8266/ESP32 microcontrollers. Devices are defined in YAML and communicate directly with Home Assistant.
+Firmware builder and OTA manager for ESP8266/ESP32 microcontrollers, with single sign-on for the dashboard. Devices communicate directly with Home Assistant.
 
 [:octicons-book-16: Documentation](https://esphome.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/esphome/values.yaml)
 
@@ -30,7 +30,7 @@ Firmware builder and OTA manager for ESP8266/ESP32 microcontrollers. Devices are
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>automation</code></em>
 
-Bridges the Zigbee coordinator to MQTT, exposing all Zigbee devices as MQTT entities without a proprietary hub.
+Bridges the Zigbee coordinator to MQTT, with single sign-on for the web dashboard.
 
 [:octicons-book-16: Documentation](https://www.zigbee2mqtt.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/zigbee2mqtt/values.sops.yaml)
 

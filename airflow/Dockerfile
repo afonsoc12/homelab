@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir uv && \
     uv pip sync --python /home/airflow/.local/bin/python requirements.txt && \
     rm requirements.txt
 
-CMD ["bash", "/opt/airflow/start.sh"]
+CMD ["airflow", "standalone"]

@@ -11,7 +11,7 @@ strategy:
 
 image:
   repository: ghcr.io/music-assistant/server
-  tag: "2.10.8"
+  tag: "2.10.9"
   pullPolicy: Always
 
 hostNetwork: true
@@ -52,13 +52,9 @@ pvc:
       storage: 5Gi
 
 ingress:
-  annotations:
-    ingress.kubernetes.io/force-ssl-redirect: "true"
-    projectcontour.io/response-timeout: 60s
-    projectcontour.io/websocket-routes: /
   enabled: true
   authelia: false
-  className: contour
+  className: nginx
   tls:
     - secretName: local-wildcard-cert
   # Will assume the first element in .ports, regardless of service
@@ -66,7 +62,7 @@ ingress:
     - host: music-assistant.local.{{ .Values.domain }}
       paths:
         - path: /
-          pathType: Prefix
+          pathType: ImplementationSpecific
 
 nodeSelector:
   kubernetes.io/hostname: k3s-m1
@@ -108,12 +104,9 @@ extraResources:
     kind: Ingress
     metadata:
       name: music-assistant-stream
-      annotations:
-        ingress.kubernetes.io/force-ssl-redirect: "true"
-        projectcontour.io/response-timeout: infinity
       namespace: automation
     spec:
-      ingressClassName: contour
+      ingressClassName: nginx
       tls:
         - secretName: music-assistant-stream-cert
       rules:
@@ -121,7 +114,7 @@ extraResources:
           http:
             paths:
               - path: /
-                pathType: Prefix
+                pathType: ImplementationSpecific
                 backend:
                   service:
                     name: music-assistant

@@ -25,7 +25,7 @@ resource "adguard_rewrite" "mqtt" {
 
 resource "adguard_rewrite" "home" {
   domain = "home.${local.domain}"
-  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
+  answer = "10.0.10.220"
 }
 
 resource "adguard_rewrite" "calibre" {
@@ -80,12 +80,12 @@ resource "adguard_rewrite" "wallabag" {
 
 resource "adguard_rewrite" "music-assistant-alexa-skill" {
   domain = "music-assistant-alexa-skill.${local.domain}"
-  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
+  answer = "10.0.10.220"
 }
 
 resource "adguard_rewrite" "music-assistant-stream" {
   domain = "music-assistant-stream.${local.domain}"
-  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
+  answer = "10.0.10.220"
 }
 
 resource "adguard_rewrite" "hoarder" {

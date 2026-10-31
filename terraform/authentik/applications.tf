@@ -70,7 +70,7 @@ resource "authentik_provider_oauth2" "argo_cd" {
   client_id                  = data.sops_file.secrets.data["value_011"]
   client_secret              = data.sops_file.secrets.data["value_012"]
   client_type                = "confidential"
-  grant_types                = ["authorization_code", "refresh_token"]
+  grant_types                = ["authorization_code", "implicit", "hybrid", "refresh_token", "client_credentials", "password", "urn:ietf:params:oauth:grant-type:device_code"]
   include_claims_in_id_token = true
   invalidation_flow          = authentik_flow.provider_logout.uuid
   issuer_mode                = "per_provider"
@@ -118,7 +118,7 @@ resource "authentik_provider_oauth2" "node_red" {
   client_id                  = data.sops_file.secrets.data["value_017"]
   client_secret              = data.sops_file.secrets.data["value_018"]
   client_type                = "confidential"
-  grant_types                = ["authorization_code", "refresh_token"]
+  grant_types                = ["authorization_code", "hybrid", "implicit", "client_credentials", "password", "urn:ietf:params:oauth:grant-type:device_code", "refresh_token"]
   include_claims_in_id_token = true
   invalidation_flow          = authentik_flow.provider_logout.uuid
   issuer_mode                = "per_provider"

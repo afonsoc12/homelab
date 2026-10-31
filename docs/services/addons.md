@@ -60,6 +60,6 @@ Syncs Secrets and ConfigMaps across namespaces. Used to replicate TLS certificat
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>addons</code></em>
 
-Workflow orchestration platform for scheduled and dependency-aware pipelines, with OpenID Connect sign-in. DAGs are baked into a custom image.
+Workflow orchestration platform for scheduled and dependency-aware pipelines. DAGs are baked into a custom image and deployed in the `addons` namespace.
 
-[:octicons-book-16: Documentation](https://airflow.apache.org/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/addons/airflow/values.sops.yaml)
+[:octicons-book-16: Documentation](https://airflow.apache.org/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/addons/airflow/values.yaml)

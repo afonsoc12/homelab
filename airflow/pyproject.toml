@@ -7,8 +7,6 @@ dependencies = [
     "apache-airflow==3.3.2",
     "apache-airflow-providers-postgres==7.1.0",
     "apache-airflow-providers-cncf-kubernetes==10.23.0",
-    "apache-airflow-providers-fab==3.10.2",
-    "authlib==1.9.1",
 ]
 
 [dependency-groups]

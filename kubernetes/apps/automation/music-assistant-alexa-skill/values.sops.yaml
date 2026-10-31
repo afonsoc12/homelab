@@ -47,11 +47,9 @@ pvc:
         requests:
             storage: 20Mi
 ingress:
-    annotations:
-        ingress.kubernetes.io/force-ssl-redirect: "true"
     enabled: true
     authelia: false
-    className: contour
+    className: nginx
     tls:
         - secretName: music-assistant-alexa-skill-cert
     # Will assume the first element in .ports, regardless of service
@@ -59,7 +57,7 @@ ingress:
         - host: music-assistant-alexa-skill.{{ .Values.domain }}
           paths:
             - path: /
-              pathType: Prefix
+              pathType: ImplementationSpecific
 nodeSelector: {}
 tolerations: []
 affinity: {}

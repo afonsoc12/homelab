@@ -32,7 +32,7 @@ ports:
 
 additionalContainers:
   - name: playwright
-    image: ghcr.io/browserless/chromium:v2.57.3
+    image: ghcr.io/browserless/chromium:v2.58.1
     resources:
       requests:
         cpu: 25m

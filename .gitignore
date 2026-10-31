@@ -1,7 +1,6 @@
 .vscode
 .terraform
 *.tfstate*
-*.tfplan
 *.tfbackend
 !*.sops.tfbackend
 .decrypted~*
