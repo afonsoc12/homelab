@@ -31,17 +31,10 @@ pvc:
   resources:
     requests:
       storage: 500Mi
-configmap:
-  mountEnv: true
-  data:
-    GROCY_AUTH_CLASS: "Grocy\\Middleware\\Auth\\ReverseProxyAuthMiddleware"
-    GROCY_REVERSE_PROXY_AUTH_HEADER: X-authentik-username
-
 ingress:
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "true"
     projectcontour.io/response-timeout: 60s
-    projectcontour.io/websocket-routes: /
 
   backend:
     name: authentik-automation-proxy
@@ -56,31 +49,6 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-
-extraResources:
-  # Only the authentication proxy and the existing Home Assistant integration
-  # should reach an application that trusts proxy-supplied usernames.
-  - apiVersion: networking.k8s.io/v1
-    kind: NetworkPolicy
-    metadata:
-      name: grocy-auth-proxy
-    spec:
-      podSelector:
-        matchLabels:
-          app.kubernetes.io/instance: grocy
-      policyTypes: [Ingress]
-      ingress:
-        - from:
-            - podSelector:
-                matchLabels:
-                  app.kubernetes.io/name: authentik-outpost-proxy
-                  goauthentik.io/outpost-name: automation-proxy
-            - podSelector:
-                matchLabels:
-                  app.kubernetes.io/instance: home-assistant
-          ports:
-            - port: 80
-              protocol: TCP
 
 resources:
   limits:
