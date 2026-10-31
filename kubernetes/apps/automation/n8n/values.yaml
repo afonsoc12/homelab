@@ -52,9 +52,6 @@ ingress:
     projectcontour.io/response-timeout: 60s
     projectcontour.io/websocket-routes: /
 
-  backend:
-    name: authentik-automation-proxy
-    port: 9000
   enabled: true
   authelia: false
   className: contour
@@ -65,6 +62,9 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          service:
+            name: authentik-automation-proxy
+            port: 9000
 
 livenessProbe:
   httpGet:
