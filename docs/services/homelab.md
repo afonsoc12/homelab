@@ -134,6 +134,8 @@ Investment portfolio tracker. Tracks stocks, ETFs, and other assets with a clean
 
 Personal finance manager. Tracks income, expenses, and budgets with full double-entry bookkeeping.
 
+Supports an additional access layer with [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/access-controls/) and [Authentik SSO](https://integrations.goauthentik.io/security/cloudflare-access/).
+
 [:octicons-book-16: Documentation](https://docs.firefly-iii.org/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/firefly/values.sops.yaml)
 
 ---

@@ -26,3 +26,20 @@ variable "spliit_access_emails" {
   type        = list(string)
   sensitive   = true
 }
+
+variable "authentik_idp_id" {
+  description = "Authentik OIDC identity provider for Firefly Access"
+  type        = string
+}
+
+variable "firefly_access_email" {
+  description = "Account allowed to access Firefly"
+  type        = string
+  sensitive   = true
+}
+
+variable "access_team_name" {
+  description = "Cloudflare Access team name used to validate tunnel JWTs"
+  type        = string
+  sensitive   = true
+}
