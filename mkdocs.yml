@@ -108,3 +108,4 @@ nav:
       - k3s Upgrade: runbooks/k3s-upgrade.md
       - Adding a Server: runbooks/adding-server.md
       - Adding a New App: runbooks/adding-app.md
+      - Migrating Ingress and SSO: runbooks/migrating-ingress-sso.md
