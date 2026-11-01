@@ -1,3 +1,20 @@
+data "sops_file" "firefly" {
+  source_file = "../../kubernetes/apps/homelab/firefly/values.sops.yaml"
+  input_type  = "yaml"
+}
+
+# A separate origin credential prevents direct clients from forging user headers.
+resource "authentik_property_mapping_provider_scope" "firefly_origin" {
+  name       = "Firefly proxy origin"
+  scope_name = "firefly_origin"
+  expression = <<-PY
+    headers = {"X-Firefly-Proxy-Token": ""}
+    if request.user.pk == ${tonumber(data.sops_file.secrets.data["value_078"])}:
+        headers["X-Firefly-Proxy-Token"] = ${jsonencode(data.sops_file.firefly.data["secret.stringData.FIREFLY_PROXY_TOKEN"])}
+    return {"ak_proxy": {"user_attributes": {"additionalHeaders": headers}}}
+  PY
+}
+
 resource "authentik_provider_proxy" "firefly" {
   name                         = "Firefly Proxy"
   mode                         = "proxy"
@@ -15,6 +32,7 @@ resource "authentik_provider_proxy" "firefly" {
     authentik_property_mapping_provider_scope.oidc_email.id,
     authentik_property_mapping_provider_scope.oidc_profile.id,
     authentik_property_mapping_provider_scope.oidc_entitlements.id,
+    authentik_property_mapping_provider_scope.firefly_origin.id,
   ]
 }
 
@@ -25,9 +43,14 @@ resource "authentik_application" "firefly" {
   policy_engine_mode = "any"
 }
 
-resource "authentik_policy_binding" "firefly_admins" {
+moved {
+  from = authentik_policy_binding.firefly_admins
+  to   = authentik_policy_binding.firefly_owner
+}
+
+resource "authentik_policy_binding" "firefly_owner" {
   target         = authentik_application.firefly.uuid
-  group          = data.sops_file.secrets.data["value_079"]
+  user           = tonumber(data.sops_file.secrets.data["value_078"])
   order          = 0
   failure_result = false
 }

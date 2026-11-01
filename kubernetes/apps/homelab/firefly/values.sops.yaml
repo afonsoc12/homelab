@@ -44,10 +44,16 @@ secret:
         MAIL_PORT: ENC[AES256_GCM,data:NF5a,iv:Vgp9pcDuaw0Jc3WdO+udLc4bojqORJ2nYeJYsohZrCE=,tag:IoM8nshGPA1eXcyp3EwtGg==,type:str]
         MAIL_USERNAME: ENC[AES256_GCM,data:kZf4W7QT,iv:L/fU/Rcm/stOGfE/GacHuz3tsTix5ElY9C/X19oLKWA=,tag:53F+s9/fhb2fMA8iZdJgkA==,type:str]
         MAIL_PASSWORD: ENC[AES256_GCM,data:EivbRkfsgjaYTEi8VEZLroT7/xAzE6FcWehqvWg28IPhFd1gFSJF0wwOPbx54S6Piar2H3UOqr342xgd/eEUY9UdXtlD,iv:Ge0D7XlziljeU/uQzGOuGR6jcUvzPFnA0TVnWS/zgiY=,tag:nO394t+jggYlwLkbQNA17A==,type:str]
+        FIREFLY_PROXY_TOKEN: ENC[AES256_GCM,data:soMtH/RtsZl09JCQYh1tCmufoQPaHGGlkinGZH5m9zxp8f05pZMSePLp6vl95DcMlAUU+O9NumHwDFm/1og5Hg==,iv:jdtjcjlzxUFxiJkSjUL9R3mCJ9h78SouvGWuE7QMYs0=,tag:ZGHNmIP0sHH1DRIiDwCQDA==,type:str]
+        FIREFLY_PROXY_EMAIL: ENC[AES256_GCM,data:+kSXRhLsVeb8ExUzVBsJWgV1IOMsP8/5RluP8eGRHg==,iv:yRQ4ujnmgfR2NW/WyRHg+1zYkf8i/YFOSRg2R52VXy0=,tag:WFicaWdbcePOaaQWSuexXg==,type:str]
+        FIREFLY_NGINX_PROXY_GATE: ENC[AES256_GCM,data:w2ln8SNpktTehxN5XUTxsNkUILSnF48zNYcO4eVLCKbL/3Phk1b4bK4GKt+76SukN/aHf3olsUwZr/amUGOoVHr4RSfr0roKUQEHoyKokY3uVqnjaLYp5Tc6xqGxDa7VYFcNa6h+H8Q3J5qA2xYVu7Xkubr5ja9siOPp5T573gQtfrdd31G8b/WdcuJ2vNrS3Ye+CGn+tAGvUJR48IKnmxZH1hGMYd6eYgCQLRo7cJX8+ch1L7XUDjRq3SeyNeJatgWOI2X8Ycg4P8wXXgf45EYe2MWzNKw7pKMs5McWcQ9AdVOl70mEKYYi+08mw/Q3DDVgIAyZJzWxbmFS6J/BQc99Uj/jzu7BtCAV39JQPYWBQgtJawcOS0JazsXfM2GmAVPL8FWotQ0QbGXClL0MKB56It3NF4/2LTKyVA5nEaXj4s6yI6T3rt13bOm2eqNdkK1xz7agNlA68wDsZTU=,iv:cvuoBh9V+nwGP0yH/LQdPi3mqdawEyMg6IyOELJMp2Q=,tag:IrbohwU1rQsP1AZCJplNpw==,type:str]
 configmap:
     mountEnv: true
     data:
         APP_URL: firefly.{{ .Values.domain }}
+        AUTHENTICATION_GUARD: remote_user_guard
+        AUTHENTICATION_GUARD_HEADER: HTTP_X_AUTHENTIK_EMAIL
+        CUSTOM_LOGOUT_URL: /outpost.goauthentik.io/sign_out
         DB_CONNECTION: mysql
         DB_HOST: mariadb.databases
         DB_PORT: "3306"
@@ -61,7 +67,17 @@ configmap:
 volumeMounts:
     - mountPath: /var/www/html/storage/upload
       name: upload
+    - name: proxy-origin
+      mountPath: /etc/nginx/server-opts.d/firefly-proxy-auth.conf
+      subPath: firefly-proxy-auth.conf
+      readOnly: true
 volumes:
+    - name: proxy-origin
+      secret:
+        secretName: firefly
+        items:
+            - key: FIREFLY_NGINX_PROXY_GATE
+              path: firefly-proxy-auth.conf
     - name: upload
       mountPvc: "yes"
 pvc:
@@ -129,7 +145,7 @@ cronjobs:
         - -c
       args:
         - |
-          curl -vv \
+          curl --silent --show-error \
             --fail \
             --retry 5 \
             --retry-delay 5 \
@@ -137,6 +153,8 @@ cronjobs:
             --connect-timeout 5 \
             --max-time 15 \
             -H 'accept: application/json' \
+            -H "X-Firefly-Proxy-Token: ${FIREFLY_PROXY_TOKEN}" \
+            -H "X-Authentik-Email: ${FIREFLY_PROXY_EMAIL}" \
             http://firefly:8080/api/v1/cron/$(CRON_TOKEN)
       env:
         - name: CRON_TOKEN
@@ -194,8 +212,8 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData)$
-    lastmodified: "2026-08-17T23:00:03Z"
-    mac: ENC[AES256_GCM,data:kYGQI76X2yQd54d/VQPDTch1b/yJXI+pFogLw+fFtWd5DeEqp7j+ZEdGS0BhnY4knLlQp7YshFowZIj5CGKz3gaEko7T6Tq1cj4CgiDHwGfVnUpN4KCYOsYLZCYkKpPIIrSMv2GBykasQD0Wy6Vlbi7fTsXIYzY0SZiWFy311f0=,iv:PpCv3hGCqxpQqRmTwPtQZrVg8/rEGSBCKHLOCOkBFRU=,tag:Iski96gZ68BhHU1W84PyvQ==,type:str]
+    lastmodified: "2026-11-01T19:06:31Z"
+    mac: ENC[AES256_GCM,data:s+saE2n7LKKX2sCINSQEjIwLgNSWB8p++5/tHbXczZ8iXnR83WsU8FaYSvSK+pduC+CHa+x1ZYuvh7NZ18uUOYpwnDo0Cj9WUIFTDHkgQ1TiALqdn/pOqeKC/IbUBJAC7eteYu7g2p2PYpyRk0mjFVUDb7gCXVOADXKZyVnYFy8=,iv:afk3eo2hKSXizApaJhfv61HJGFjkyHXG51EekEiXAoc=,tag:Iarw6z2i5hs8B8EDoUzKAA==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:41Z"
