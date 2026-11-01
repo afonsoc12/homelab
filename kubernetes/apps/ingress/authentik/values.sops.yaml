@@ -54,7 +54,11 @@ server:
           value: "2"
     ingress:
         enabled: true
-        ingressClassName: nginx
+        annotations:
+            ingress.kubernetes.io/force-ssl-redirect: "true"
+            projectcontour.io/websocket-routes: /
+            projectcontour.io/response-timeout: 60s
+        ingressClassName: contour
         hosts:
             - ENC[AES256_GCM,data:sC3oZZWufV6CepEjdsqbgi0=,iv:UCdviQkdvggdiDz6GUKa8VW3zwRlr7Anq7U0a8kj6Qc=,tag:cgRKFYpwuhvjUQxcJUcuyQ==,type:str]
         paths:
@@ -62,6 +66,8 @@ server:
         pathType: Prefix
         tls:
             - secretName: sso-cert
+              hosts:
+                  - ENC[AES256_GCM,data:sp3Jew/EtPIy1Jtv73teAeE=,iv:ilTTSayh0um9Wf/Gf+QCL/RlwF1yguaJKszN0dwBFs4=,tag:mo8k9l+yH8rlhuXtNXCcDg==,type:str]
         extraPaths:
             - backend:
                 service:
@@ -204,8 +210,8 @@ additionalObjects:
 
 sops:
     encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
-    lastmodified: "2026-10-28T00:33:02Z"
-    mac: ENC[AES256_GCM,data:ZDHwEJRRVJ5eLYwLcAdQ4dIiPoGNJWrYPG5L0tp8CrOiy2tslWqqhm1QQmMnPQJJaJh/N8Bsevs9SzXfXG+/tVrTYMiD/PGDVKeZ5YVES/C7vt8cdMYfI7xvAztkgNrZBn+f+AH2MTp0V7i+nMSMxtHjSTyTqTaPYZog47AIdlA=,iv:wP+qZVM9tWLZtNpBY8XsOPz7fI17ZnVRzlQzlQFthlg=,tag:DvJXvnyMqtXcD94uGC35tw==,type:str]
+    lastmodified: "2026-11-01T01:20:19Z"
+    mac: ENC[AES256_GCM,data:E+ET/flBbj0BiI4f5WbOnti7lseEWz4Hqej3W+eWM1RiTCI0sonI6/ujQM/nS2vDd1mGtFcw2LVo8oraC8VD3UmZyK9AtQslFCuGjOVUY4c4pdphVKxuiJnR7z80aFEwAvaREtdj9romz893gitGiw2Goz/deW3p2rgx2B23iK8=,iv:my5zdnT16ByxFeYJKGSHus5EDfQWrq/w/f2DQKqRi4Q=,tag:5KomSqqoeWLg2tiequ9N+Q==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-10-21T23:23:06Z"
