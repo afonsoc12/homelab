@@ -35,7 +35,7 @@ resource "adguard_rewrite" "calibre" {
 
 resource "adguard_rewrite" "firefly" {
   domain = "firefly.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "sso" {

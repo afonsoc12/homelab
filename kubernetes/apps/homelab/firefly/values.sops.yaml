@@ -73,19 +73,20 @@ pvc:
             storage: 2Gi
 ingress:
     enabled: true
-    authelia: true
-    className: nginx
+    authelia: false
+    className: contour
     annotations:
-        nginx.ingress.kubernetes.io/client-max-body-size: "0"
-        nginx.ingress.kubernetes.io/proxy-body-size: "0"
+        ingress.kubernetes.io/force-ssl-redirect: "true"
     tls:
         - secretName: firefly-cert
-    # Will assume the first element in .ports, regardless of service
     hosts:
         - host: firefly.{{ .Values.domain }}
           paths:
             - path: /
-              pathType: ImplementationSpecific
+              pathType: Prefix
+              service:
+                  name: authentik-homelab-proxy
+                  port: 9000
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext: {}
