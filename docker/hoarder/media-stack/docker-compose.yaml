@@ -234,7 +234,7 @@ services:
       - /mnt/user/appdata/decide:/data
 
   kometa:
-    image: kometateam/kometa:v2.5.3
+    image: kometateam/kometa:v2.5.4
     container_name: kometa
     restart: unless-stopped
     environment:
