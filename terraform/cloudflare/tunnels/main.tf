@@ -156,8 +156,9 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "sso.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
+          no_tls_verify      = false
           origin_server_name = "sso.${var.domain}"
         }
       },

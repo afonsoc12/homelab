@@ -5,7 +5,10 @@ resource "authentik_certificate_key_pair" "signing" {
 }
 
 resource "authentik_outpost" "embedded" {
-  config             = data.sops_file.secrets.data["value_009"]
+  # The Helm chart owns the Ingress, including the embedded-outpost path.
+  config = jsonencode(merge(jsondecode(data.sops_file.secrets.data["value_009"]), {
+    kubernetes_disabled_components = ["ingress"]
+  }))
   name               = "authentik Embedded Outpost"
   protocol_providers = [authentik_provider_proxy.uptime_kuma.id]
   service_connection = authentik_service_connection_kubernetes.cluster.id
