@@ -58,3 +58,16 @@ resource "authentik_outpost" "homelab" {
     }
   })
 }
+
+# Restore the original binding address after retiring header-based login.
+moved {
+  from = authentik_policy_binding.firefly_owner
+  to   = authentik_policy_binding.firefly_admins
+}
+
+resource "authentik_policy_binding" "firefly_shared_user" {
+  target         = authentik_application.firefly.uuid
+  user           = tonumber(data.sops_file.secrets.data["firefly.additional_user_id"])
+  order          = 1
+  failure_result = false
+}
