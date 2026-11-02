@@ -11,8 +11,35 @@ locals {
       action_parameters = {
         ruleset = "current"
       }
+      logging = { enabled = true }
       enabled = true
     }] : [],
+
+    # Keep the source allowlist and its matching deny rule together, before
+    # general bot/geo checks. Neither expression is stored in plaintext.
+    var.github_webhook_rules != null ? [
+      {
+        action      = "skip"
+        description = "Allow GitHub webhook IPs"
+        expression  = var.github_webhook_rules.allow_expression
+        action_parameters = {
+          ruleset = "current"
+        }
+        logging = { enabled = true }
+        enabled = true
+      },
+    ] : [],
+
+    var.github_webhook_rules != null ? [
+      {
+        action            = "block"
+        description       = "Block webhook requests outside GitHub IPs"
+        expression        = var.github_webhook_rules.block_expression
+        action_parameters = null
+        logging           = null
+        enabled           = true
+      },
+    ] : [],
 
     var.block_bots ? [{
       action      = "block"
@@ -45,6 +72,7 @@ resource "cloudflare_ruleset" "waf" {
       description       = r.description
       expression        = r.expression
       enabled           = r.enabled
+      logging           = try(r.logging, null)
       action_parameters = can(r.action_parameters) ? r.action_parameters : null
     }
   ]

@@ -60,3 +60,12 @@ variable "domain" {
   type        = string
   default     = ""
 }
+
+variable "github_webhook_rules" {
+  description = "Paired GitHub webhook source rules supplied from encrypted configuration"
+  type = object({
+    allow_expression = string
+    block_expression = string
+  })
+  default = null
+}
