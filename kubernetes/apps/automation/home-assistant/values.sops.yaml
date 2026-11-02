@@ -78,6 +78,12 @@ startupProbe:
     timeoutSeconds: 5
 # Prometheus scrape secret + alerting
 #   - Docs: https://www.home-assistant.io/integrations/prometheus/
+# Keep logs in container output, where kubelet manages rotation.
+configmap:
+    mountEnv: true
+    data:
+        HA_DISABLE_LOG_FILE: "true"
+
 secret:
     stringData:
         prometheus-token: ENC[AES256_GCM,data:fYESSX4gg115aNAJdCsPjqouKcff6mRarehXwEr2HVYJfocAu4435nnxo2vxWRKXH3/9xjrOgAEI6WDvKtRclV4NyM1Qk+BLqcdt52kjkwk5s5jzX5156WelETiiuhqLUOtP/Yp9EnRArIWVP/UJen2efB9x7Sfns5WJZy7+Zeu+AsXNbnNNqDWCww5JQU1ln8CZQqahfnos7OJLekAwDPPqi3kwlI+Nk53S/k3PHwe4cQuz1W+p,iv:8g2AzzMWU6FKhMRnvZR3c2mk/80Q8beO4LGsKd9Tkek=,tag:2tLzqOH11XA5avubsotAow==,type:str]
