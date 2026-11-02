@@ -31,8 +31,12 @@ module "zone_homelab" {
 
   block_bots         = true
   aws_callback_hosts = ["music-assistant-alexa-skill"]
-  geo_block_enabled  = true
-  geo_allowlist      = ["PT", "GB"]
+  github_webhook_rules = {
+    allow_expression = data.sops_file.secrets.data["waf.github_webhook_allow_expression"]
+    block_expression = data.sops_file.secrets.data["waf.github_webhook_block_expression"]
+  }
+  geo_block_enabled = true
+  geo_allowlist     = ["PT", "GB"]
 
   domain = data.sops_file.secrets.data["zones.0.domain"]
 }
