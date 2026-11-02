@@ -142,7 +142,7 @@ resource "authentik_flow" "account_settings" {
 }
 
 resource "authentik_flow" "invitation_enrollment" {
-  authentication     = "none"
+  authentication     = "require_unauthenticated"
   background         = "/static/dist/assets/images/flow_background.jpg"
   compatibility_mode = true
   denied_action      = "message_continue"
