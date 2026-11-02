@@ -1,13 +1,18 @@
 locals {
   geo_expr = "(not ip.geoip.country in {${join(" ", [for c in var.geo_allowlist : format("\"%s\"", c)])}})"
 
+  aws_callback_expr = join(" or ", [
+    for host, paths in var.aws_callback_endpoints :
+    "(http.host eq ${jsonencode("${host}.${var.domain}")} and http.request.uri.path in {${join(" ", [for path in sort(tolist(paths)) : jsonencode(path)])}})"
+  ])
+
   waf_rules = concat(
-    # The Alexa skill accepts signed callbacks at POST /. AWS hosting alone
-    # grants no exception on any other hostname, method or path.
-    length(var.aws_callback_hosts) > 0 ? [{
+    # AWS is only a source filter. Each exact endpoint still enforces its own
+    # authentication; managed WAF rules and rate limits are not skipped.
+    length(var.aws_callback_endpoints) > 0 ? [{
       action      = "skip"
       description = "Allow AWS callbacks only on configured endpoints"
-      expression  = "(ip.geoip.asnum eq 16509 and http.host in {${join(" ", [for host in sort(tolist(var.aws_callback_hosts)) : format("\"%s.%s\"", host, var.domain)])}} and http.request.method eq \"POST\" and http.request.uri.path eq \"/\")"
+      expression  = "(ip.geoip.asnum eq 16509 and http.request.method eq \"POST\" and (${local.aws_callback_expr}))"
       action_parameters = {
         ruleset = "current"
       }

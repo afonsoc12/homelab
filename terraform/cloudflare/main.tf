@@ -29,8 +29,11 @@ module "zone_homelab" {
   min_tls_version  = "1.2"
   always_use_https = true
 
-  block_bots         = true
-  aws_callback_hosts = ["music-assistant-alexa-skill"]
+  block_bots = true
+  aws_callback_endpoints = {
+    music-assistant-alexa-skill = ["/"]
+    home                        = ["/api/alexa/smart_home", "/auth/token"]
+  }
   github_webhook_rules = {
     allow_expression = data.sops_file.secrets.data["waf.github_webhook_allow_expression"]
     block_expression = data.sops_file.secrets.data["waf.github_webhook_block_expression"]
