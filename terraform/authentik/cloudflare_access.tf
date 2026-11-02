@@ -38,3 +38,10 @@ resource "authentik_policy_binding" "cloudflare_access_admins" {
   order          = 0
   failure_result = false
 }
+
+resource "authentik_policy_binding" "cloudflare_access_firefly_user" {
+  target         = authentik_application.cloudflare_access.uuid
+  user           = tonumber(data.sops_file.secrets.data["firefly.additional_user_id"])
+  order          = 1
+  failure_result = false
+}
