@@ -32,9 +32,9 @@ variable "authentik_idp_id" {
   type        = string
 }
 
-variable "firefly_access_email" {
-  description = "Account allowed to access Firefly"
-  type        = string
+variable "firefly_access_emails" {
+  description = "Accounts allowed to access Firefly"
+  type        = list(string)
   sensitive   = true
 }
 

@@ -50,14 +50,17 @@ module "zone_personal" {
 }
 
 module "tunnels" {
-  source               = "./tunnels"
-  account_id           = data.sops_file.secrets.data["account_id"]
-  zone_id              = data.sops_file.secrets.data["zones.0.zone_id"]
-  domain               = data.sops_file.secrets.data["zones.0.domain"]
-  k3s_cluster_secret   = data.sops_file.secrets.data["tunnels.k3s_cluster.secret"]
-  authentik_idp_id     = cloudflare_zero_trust_access_identity_provider.authentik.id
-  firefly_access_email = data.sops_file.authentik.data["cloudflare_access.email"]
-  access_team_name     = trimsuffix(data.sops_file.authentik.data["cloudflare_access.team_domain"], ".cloudflareaccess.com")
+  source             = "./tunnels"
+  account_id         = data.sops_file.secrets.data["account_id"]
+  zone_id            = data.sops_file.secrets.data["zones.0.zone_id"]
+  domain             = data.sops_file.secrets.data["zones.0.domain"]
+  k3s_cluster_secret = data.sops_file.secrets.data["tunnels.k3s_cluster.secret"]
+  authentik_idp_id   = cloudflare_zero_trust_access_identity_provider.authentik.id
+  firefly_access_emails = [
+    data.sops_file.authentik.data["cloudflare_access.email"],
+    data.sops_file.authentik.data["firefly.additional_user_email"],
+  ]
+  access_team_name = trimsuffix(data.sops_file.authentik.data["cloudflare_access.team_domain"], ".cloudflareaccess.com")
   # sops_file flattens lists to dot-indexed keys — add an index here for each
   # email added to access.spliit_emails in secrets.sops.yaml
   spliit_access_emails = [data.sops_file.secrets.data["access.spliit_emails.0"], data.sops_file.secrets.data["access.spliit_emails.1"]]

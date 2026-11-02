@@ -46,13 +46,13 @@ secret:
         MAIL_PASSWORD: ENC[AES256_GCM,data:EivbRkfsgjaYTEi8VEZLroT7/xAzE6FcWehqvWg28IPhFd1gFSJF0wwOPbx54S6Piar2H3UOqr342xgd/eEUY9UdXtlD,iv:Ge0D7XlziljeU/uQzGOuGR6jcUvzPFnA0TVnWS/zgiY=,tag:nO394t+jggYlwLkbQNA17A==,type:str]
         FIREFLY_PROXY_TOKEN: ENC[AES256_GCM,data:soMtH/RtsZl09JCQYh1tCmufoQPaHGGlkinGZH5m9zxp8f05pZMSePLp6vl95DcMlAUU+O9NumHwDFm/1og5Hg==,iv:jdtjcjlzxUFxiJkSjUL9R3mCJ9h78SouvGWuE7QMYs0=,tag:ZGHNmIP0sHH1DRIiDwCQDA==,type:str]
         FIREFLY_PROXY_EMAIL: ENC[AES256_GCM,data:+kSXRhLsVeb8ExUzVBsJWgV1IOMsP8/5RluP8eGRHg==,iv:yRQ4ujnmgfR2NW/WyRHg+1zYkf8i/YFOSRg2R52VXy0=,tag:WFicaWdbcePOaaQWSuexXg==,type:str]
-        FIREFLY_NGINX_PROXY_GATE: ENC[AES256_GCM,data:w2ln8SNpktTehxN5XUTxsNkUILSnF48zNYcO4eVLCKbL/3Phk1b4bK4GKt+76SukN/aHf3olsUwZr/amUGOoVHr4RSfr0roKUQEHoyKokY3uVqnjaLYp5Tc6xqGxDa7VYFcNa6h+H8Q3J5qA2xYVu7Xkubr5ja9siOPp5T573gQtfrdd31G8b/WdcuJ2vNrS3Ye+CGn+tAGvUJR48IKnmxZH1hGMYd6eYgCQLRo7cJX8+ch1L7XUDjRq3SeyNeJatgWOI2X8Ycg4P8wXXgf45EYe2MWzNKw7pKMs5McWcQ9AdVOl70mEKYYi+08mw/Q3DDVgIAyZJzWxbmFS6J/BQc99Uj/jzu7BtCAV39JQPYWBQgtJawcOS0JazsXfM2GmAVPL8FWotQ0QbGXClL0MKB56It3NF4/2LTKyVA5nEaXj4s6yI6T3rt13bOm2eqNdkK1xz7agNlA68wDsZTU=,iv:cvuoBh9V+nwGP0yH/LQdPi3mqdawEyMg6IyOELJMp2Q=,tag:IrbohwU1rQsP1AZCJplNpw==,type:str]
+        FIREFLY_NGINX_PROXY_GATE: ENC[AES256_GCM,data:fLiz8wVgAqCXJa50NZUXHnm3uNA5qrLLuvNptPdfGaKtHFjXgsKHa0gXv+zbPB/I5MWPLOJEWnu96JxuHmO8SdraR/rvHJ+G7N9C9AS0lhKNeEUE1jlj2AdUUEwzaN9pOB6biXQ34Kpg8bSEu1yIVtTEDHcBCAGCOxfz4ydAS3cGKDxDqQdoLqlWk2FxBt2xB8sRaTbSnTW2fu7IIKOt4R+EEBpbHbPBr7jfWfjnJ94o5Bgntu757vD7WsU8XVOGwXHNGy+tQ7i0ZKCSdRP8EtEmn5sFICTP2tIsHo4fefE2Q/Dla7ezG+vfo82Ai3/RGS9V9SCBeo8uIMO6wIjCv+U5JVzIJ7dni04iaUxlCqvvL38tx2vcXTPvVOLez13O2nEyYJPCCnrtx4t57fRTQNnHaZrM0Zj9o/2x7zs1yx2PetkzEsFARvzN1M+f4MvR/05TQDpnO41yuSY=,iv:o9PBPquK/C6hWS7ggoV9gvr019wE+yyKHQwtkwUAImw=,tag:ysrynDxzxgb0LYhH+AkfiQ==,type:str]
 configmap:
     mountEnv: true
     data:
         APP_URL: firefly.{{ .Values.domain }}
         AUTHENTICATION_GUARD: remote_user_guard
-        AUTHENTICATION_GUARD_HEADER: HTTP_X_AUTHENTIK_EMAIL
+        AUTHENTICATION_GUARD_HEADER: HTTP_X_FIREFLY_USER
         CUSTOM_LOGOUT_URL: /outpost.goauthentik.io/sign_out
         DB_CONNECTION: mysql
         DB_HOST: mariadb.databases
@@ -154,7 +154,7 @@ cronjobs:
             --max-time 15 \
             -H 'accept: application/json' \
             -H "X-Firefly-Proxy-Token: ${FIREFLY_PROXY_TOKEN}" \
-            -H "X-Authentik-Email: ${FIREFLY_PROXY_EMAIL}" \
+            -H "X-Firefly-User: ${FIREFLY_PROXY_EMAIL}" \
             http://firefly:8080/api/v1/cron/$(CRON_TOKEN)
       env:
         - name: CRON_TOKEN
@@ -212,8 +212,8 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData)$
-    lastmodified: "2026-11-01T19:06:31Z"
-    mac: ENC[AES256_GCM,data:s+saE2n7LKKX2sCINSQEjIwLgNSWB8p++5/tHbXczZ8iXnR83WsU8FaYSvSK+pduC+CHa+x1ZYuvh7NZ18uUOYpwnDo0Cj9WUIFTDHkgQ1TiALqdn/pOqeKC/IbUBJAC7eteYu7g2p2PYpyRk0mjFVUDb7gCXVOADXKZyVnYFy8=,iv:afk3eo2hKSXizApaJhfv61HJGFjkyHXG51EekEiXAoc=,tag:Iarw6z2i5hs8B8EDoUzKAA==,type:str]
+    lastmodified: "2026-11-02T00:25:26Z"
+    mac: ENC[AES256_GCM,data:Dowe7RAhDWR/B/jE30byg5WPpT89P+K2mxjZebIgDuZJFV1enniezUdAkC5+Qdee1Q42vOye4My9l657RgaZbqnuwwYgTX7B6vNhGv7bIF2egXJ7oEPXnRGJQO7XrUpy6d+Il7n1gRRdOitUVfQpUSYbEW+lQkaQbY353MbChFQ=,iv:pdDDubuwoi/INW4vsNXSUwRDegKnRz76brKW+OPIhQE=,tag:pxJaS59lywWXvrkxKTm1lg==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:41Z"

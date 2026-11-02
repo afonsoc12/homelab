@@ -1,3 +1,10 @@
+locals {
+  firefly_user_ids = [
+    tonumber(data.sops_file.secrets.data["value_078"]),
+    tonumber(data.sops_file.secrets.data["firefly.additional_user_id"]),
+  ]
+}
+
 data "sops_file" "firefly" {
   source_file = "../../kubernetes/apps/homelab/firefly/values.sops.yaml"
   input_type  = "yaml"
@@ -8,9 +15,10 @@ resource "authentik_property_mapping_provider_scope" "firefly_origin" {
   name       = "Firefly proxy origin"
   scope_name = "firefly_origin"
   expression = <<-PY
-    headers = {"X-Firefly-Proxy-Token": ""}
-    if request.user.pk == ${tonumber(data.sops_file.secrets.data["value_078"])}:
+    headers = {"X-Firefly-Proxy-Token": "", "X-Firefly-User": ""}
+    if request.user.pk in ${jsonencode(local.firefly_user_ids)}:
         headers["X-Firefly-Proxy-Token"] = ${jsonencode(data.sops_file.firefly.data["secret.stringData.FIREFLY_PROXY_TOKEN"])}
+        headers["X-Firefly-User"] = ${jsonencode(data.sops_file.firefly.data["secret.stringData.FIREFLY_PROXY_EMAIL"])}
     return {"ak_proxy": {"user_attributes": {"additionalHeaders": headers}}}
   PY
 }
@@ -80,4 +88,19 @@ resource "authentik_outpost" "homelab" {
       }]
     }
   })
+}
+
+# Both identities select the same existing Firefly account through this provider only.
+resource "authentik_policy_binding" "firefly_shared_user" {
+  target         = authentik_application.firefly.uuid
+  user           = tonumber(data.sops_file.secrets.data["firefly.additional_user_id"])
+  order          = 1
+  failure_result = false
+}
+
+resource "authentik_policy_binding" "cloudflare_access_firefly_user" {
+  target         = authentik_application.cloudflare_access.uuid
+  user           = tonumber(data.sops_file.secrets.data["firefly.additional_user_id"])
+  order          = 1
+  failure_result = false
 }
