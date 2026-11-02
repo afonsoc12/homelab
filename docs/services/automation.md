@@ -10,7 +10,7 @@ Most services run on the **k3s-cluster** (`automation` namespace). Hyperion.ng r
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>automation</code></em>
 
-The central home automation hub. Integrates with hundreds of devices and services, provides dashboards, automations, and the local voice assistant pipeline.
+The central home automation hub. Integrates with hundreds of devices and services, provides dashboards, automations, and the local voice assistant pipeline. See the official [logging documentation](https://www.home-assistant.io/integrations/logger/) for log levels and troubleshooting.
 
 [:octicons-book-16: Documentation](https://www.home-assistant.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/home-assistant/values.yaml)
 
