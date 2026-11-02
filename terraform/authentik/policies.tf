@@ -6,18 +6,6 @@ resource "authentik_policy_reputation" "login_reputation" {
   threshold         = -5
 }
 
-resource "authentik_policy_expression" "login_mfa_required" {
-  execution_logging = false
-  expression        = data.sops_file.secrets.data["value_040"]
-  name              = "Homelab - Login MFA Required"
-}
-
-resource "authentik_policy_expression" "login_password_required" {
-  execution_logging = false
-  expression        = data.sops_file.secrets.data["value_041"]
-  name              = "Homelab - Login Password Required"
-}
-
 resource "authentik_policy_expression" "account_authorization" {
   execution_logging = false
   expression        = data.sops_file.secrets.data["value_042"]

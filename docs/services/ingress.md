@@ -10,7 +10,7 @@ Traffic routing, VPN, DNS filtering, identity, and authentication.
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Identity provider for single sign-on and multi-factor authentication. Supports native application integrations and [proxy protection](https://docs.goauthentik.io/add-secure-apps/providers/proxy/) for applications without built-in login.
+Identity provider for single sign-on and required multi-factor authentication. New users join through administrator-issued [invitations](https://docs.goauthentik.io/users-sources/user/invitations/). Supports native application integrations and [proxy protection](https://docs.goauthentik.io/add-secure-apps/providers/proxy/) for applications without built-in login.
 
 [:octicons-book-16: Documentation](https://docs.goauthentik.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authentik/values.sops.yaml)
 

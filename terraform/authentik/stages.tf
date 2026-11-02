@@ -24,7 +24,12 @@ resource "authentik_stage_authenticator_totp" "mfa_totp_setup" {
 }
 
 resource "authentik_stage_authenticator_validate" "login_mfa_validation" {
-  configuration_stages          = [authentik_stage_authenticator_totp.mfa_totp_setup.id, authentik_stage_authenticator_duo.mfa_duo_setup.id, authentik_stage_authenticator_static.mfa_static_setup.id, authentik_stage_authenticator_webauthn.mfa_webauthn_setup.id]
+  # Recovery codes can satisfy MFA, but must not be the only enrollment option.
+  configuration_stages = [
+    authentik_stage_authenticator_totp.mfa_totp_setup.id,
+    authentik_stage_authenticator_duo.mfa_duo_setup.id,
+    authentik_stage_authenticator_webauthn.mfa_webauthn_setup.id,
+  ]
   device_classes                = ["static", "totp", "webauthn", "duo"]
   email_otp_throttling_factor   = 1
   last_auth_threshold           = "seconds=0"
@@ -184,7 +189,7 @@ resource "authentik_stage_user_write" "enrollment_invitation_write" {
   create_users_as_inactive = false
   create_users_group       = ""
   name                     = "Homelab - Enrollment Invitation Write"
-  user_creation_mode       = "create_when_required"
+  user_creation_mode       = "always_create"
   user_path_template       = "users"
   user_type                = "internal"
 }

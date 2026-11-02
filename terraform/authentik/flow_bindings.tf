@@ -217,3 +217,15 @@ resource "authentik_flow_stage_binding" "recovery_email" {
   stage                   = authentik_stage_email.recovery_email.id
   target                  = authentik_flow.recovery.uuid
 }
+
+# Both login and invitation enrollment must validate/enroll MFA before creating
+# a session. Keep these bindings unconditional: a false stage policy skips MFA.
+resource "authentik_flow_stage_binding" "invitation_mfa_validation" {
+  evaluate_on_plan        = false
+  invalid_response_action = "retry"
+  order                   = 35
+  policy_engine_mode      = "all"
+  re_evaluate_policies    = true
+  stage                   = authentik_stage_authenticator_validate.login_mfa_validation.id
+  target                  = authentik_flow.invitation_enrollment.uuid
+}

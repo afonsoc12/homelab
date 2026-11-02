@@ -78,36 +78,18 @@ resource "authentik_policy_binding" "notification_property_mapping_exception" {
   timeout        = 30
 }
 
-resource "authentik_policy_binding" "login_mfa_required" {
+# Reputation must deny the whole login flow. A failed policy on a stage
+# binding only skips that stage, which must never be possible for password/MFA.
+moved {
+  from = authentik_policy_binding.login_identification_reputation
+  to   = authentik_policy_binding.login_reputation
+}
+
+resource "authentik_policy_binding" "login_reputation" {
+  target         = authentik_flow.login.uuid
+  policy         = authentik_policy_reputation.login_reputation.id
+  order          = 0
+  negate         = true
   enabled        = true
-  failure_result = true
-  negate         = false
-  order          = 10
-  policy         = authentik_policy_expression.login_mfa_required.id
-  target         = authentik_flow_stage_binding.login_mfa_validation.id
-  timeout        = 30
-}
-
-resource "authentik_policy_binding" "login_password_required" {
-  enabled        = true
-  failure_result = true
-  negate         = false
-  order          = 10
-  policy         = authentik_policy_expression.login_password_required.id
-  target         = authentik_flow_stage_binding.login_password.id
-  timeout        = 30
-}
-
-resource "authentik_policy_binding" "login_identification_reputation" {
-  target = authentik_flow_stage_binding.login_identification.id
-  policy = authentik_policy_reputation.login_reputation.id # login-brute-force-protection
-  order  = 0
-  negate = true
-}
-
-resource "authentik_policy_binding" "login_mfa_reputation" {
-  target = authentik_flow_stage_binding.login_mfa_validation.id
-  policy = authentik_policy_reputation.login_reputation.id # login-brute-force-protection
-  order  = 0
-  negate = true
+  failure_result = false
 }
