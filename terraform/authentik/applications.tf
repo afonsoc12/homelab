@@ -1,9 +1,9 @@
 resource "authentik_application" "argo_cd" {
   backchannel_providers = []
-  group                 = ""
+  group                 = "addons"
   meta_description      = ""
   meta_hide             = false
-  meta_icon             = data.sops_file.secrets.data["value_061"]
+  meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png"
   meta_launch_url       = ""
   meta_publisher        = ""
   name                  = data.sops_file.secrets.data["value_062"]
@@ -16,10 +16,10 @@ resource "authentik_application" "argo_cd" {
 
 resource "authentik_application" "mealie" {
   backchannel_providers = []
-  group                 = ""
+  group                 = "homelab"
   meta_description      = ""
   meta_hide             = false
-  meta_icon             = data.sops_file.secrets.data["value_065"]
+  meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/mealie.png"
   meta_launch_url       = ""
   meta_publisher        = ""
   name                  = data.sops_file.secrets.data["value_066"]
@@ -32,10 +32,10 @@ resource "authentik_application" "mealie" {
 
 resource "authentik_application" "node_red" {
   backchannel_providers = []
-  group                 = data.sops_file.secrets.data["value_069"]
+  group                 = "automation"
   meta_description      = ""
   meta_hide             = false
-  meta_icon             = ""
+  meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/node-red.png"
   meta_launch_url       = data.sops_file.secrets.data["value_003"]
   meta_publisher        = data.sops_file.secrets.data["value_070"]
   name                  = data.sops_file.secrets.data["value_071"]
@@ -48,11 +48,11 @@ resource "authentik_application" "node_red" {
 
 resource "authentik_application" "uptime_kuma" {
   backchannel_providers = []
-  group                 = ""
+  group                 = "ingress"
   meta_description      = ""
-  meta_hide             = false
-  meta_icon             = ""
-  meta_launch_url       = data.sops_file.secrets.data["value_004"]
+  meta_hide             = true
+  meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/authentik.png"
+  meta_launch_url       = ""
   meta_publisher        = ""
   name                  = "Homelab Protected Apps"
   open_in_new_tab       = false
