@@ -38,6 +38,8 @@ resource "authentik_provider_proxy" "automation" {
 resource "authentik_application" "automation" {
   for_each = local.protected_apps
 
+  group              = "automation"
+  meta_icon          = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/${each.key}.png"
   name               = each.value.name
   slug               = each.key
   protocol_provider  = authentik_provider_proxy.automation[each.key].id
