@@ -36,13 +36,18 @@ server:
     name: server
     affinity:
         podAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-                - namespaces:
-                    - databases
-                  labelSelector:
-                    matchLabels:
-                        app.kubernetes.io/instance: postgres
-                  topologyKey: kubernetes.io/hostname
+            preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 1
+                  podAffinityTerm:
+                    namespaces:
+                        - databases
+                    labelSelector:
+                        matchExpressions:
+                            - key: app.kubernetes.io/instance
+                              operator: In
+                              values:
+                                - postgres
+                    topologyKey: kubernetes.io/hostname
     replicas: 1
     env:
         - name: AUTHENTIK_WEB__WORKERS
@@ -87,13 +92,18 @@ worker:
             maxUnavailable: 1
     affinity:
         podAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-                - namespaces:
-                    - databases
-                  labelSelector:
-                    matchLabels:
-                        app.kubernetes.io/instance: postgres
-                  topologyKey: kubernetes.io/hostname
+            preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 1
+                  podAffinityTerm:
+                    namespaces:
+                        - databases
+                    labelSelector:
+                        matchExpressions:
+                            - key: app.kubernetes.io/instance
+                              operator: In
+                              values:
+                                - postgres
+                    topologyKey: kubernetes.io/hostname
     replicas: 1
     resources:
         requests:
