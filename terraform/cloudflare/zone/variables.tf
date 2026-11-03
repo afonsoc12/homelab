@@ -32,14 +32,24 @@ variable "block_bots" {
   default     = true
 }
 
-variable "aws_callback_hosts" {
-  description = "Subdomains whose POST / endpoint accepts AWS callbacks without geo/bot filtering"
-  type        = set(string)
-  default     = []
+variable "aws_callback_endpoints" {
+  description = "Exact subdomain/path pairs whose POST endpoints accept AWS callbacks without custom geo/bot filtering"
+  type        = map(set(string))
+  default     = {}
 
   validation {
-    condition     = alltrue([for host in var.aws_callback_hosts : can(regex("^[a-z0-9-]+$", host))])
-    error_message = "AWS callback hosts must be individual subdomain labels."
+    condition = alltrue([
+      for host, paths in var.aws_callback_endpoints :
+      can(regex("^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$", host)) &&
+      length(paths) > 0 &&
+      alltrue([for path in paths : can(regex("^/[A-Za-z0-9/_-]*$", path))])
+    ])
+    error_message = "AWS callbacks require individual subdomain labels and nonempty exact paths, without wildcards, queries or encoded characters."
+  }
+
+  validation {
+    condition     = length(var.aws_callback_endpoints) == 0 || length(trimspace(var.domain)) > 0
+    error_message = "A base domain is required when AWS callbacks are configured."
   }
 }
 
