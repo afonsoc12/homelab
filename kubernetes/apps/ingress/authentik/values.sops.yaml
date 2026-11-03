@@ -36,13 +36,18 @@ server:
     name: server
     affinity:
         podAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-                - namespaces:
-                    - databases
-                  labelSelector:
-                    matchLabels:
-                        app.kubernetes.io/instance: postgres
-                  topologyKey: kubernetes.io/hostname
+            preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 1
+                  podAffinityTerm:
+                    namespaces:
+                        - databases
+                    labelSelector:
+                        matchExpressions:
+                            - key: app.kubernetes.io/instance
+                              operator: In
+                              values:
+                                - postgres
+                    topologyKey: kubernetes.io/hostname
     replicas: 1
     env:
         - name: AUTHENTIK_WEB__WORKERS
@@ -73,27 +78,27 @@ server:
               pathType: Prefix
     resources:
         requests:
-            cpu: 500m
+            cpu: "1"
             memory: 512Mi
         limits:
             cpu: "2"
             memory: 2Gi
 worker:
     name: worker
-    deploymentStrategy:
-        type: RollingUpdate
-        rollingUpdate:
-            maxSurge: 0
-            maxUnavailable: 1
     affinity:
         podAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-                - namespaces:
-                    - databases
-                  labelSelector:
-                    matchLabels:
-                        app.kubernetes.io/instance: postgres
-                  topologyKey: kubernetes.io/hostname
+            preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 1
+                  podAffinityTerm:
+                    namespaces:
+                        - databases
+                    labelSelector:
+                        matchExpressions:
+                            - key: app.kubernetes.io/instance
+                              operator: In
+                              values:
+                                - postgres
+                    topologyKey: kubernetes.io/hostname
     replicas: 1
     resources:
         requests:
