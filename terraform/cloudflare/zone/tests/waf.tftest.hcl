@@ -33,8 +33,8 @@ run "exact_callback_contract" {
   # pairs must stay separate: it must not allow POST / on home or the Home
   # Assistant APIs on the music callback hostname, unrelated hosts, or GET.
   assert {
-    condition = cloudflare_ruleset.waf[0].rules[0].expression == join("", [
-      "(ip.geoip.asnum eq 16509 and http.request.method eq \"POST\" and (",
+    condition = local.aws_callback_expr == join("", [
+      "(ip.src.asnum eq 16509 and ssl and http.request.method eq \"POST\" and (",
       "(http.host eq \"home.example.invalid\" and http.request.uri.path in {\"/api/alexa/smart_home\" \"/auth/token\"})",
       " or (http.host eq \"music-assistant-alexa-skill.example.invalid\" and http.request.uri.path in {\"/\"})))",
     ])
@@ -43,18 +43,16 @@ run "exact_callback_contract" {
 
   assert {
     condition = (
-      length(cloudflare_ruleset.waf[0].rules) == 5 &&
-      cloudflare_ruleset.waf[0].rules[0].action == "skip" &&
-      cloudflare_ruleset.waf[0].rules[0].logging.enabled &&
-      cloudflare_ruleset.waf[0].rules[0].action_parameters.ruleset == "current" &&
-      cloudflare_ruleset.waf[0].rules[0].action_parameters.phases == null &&
-      cloudflare_ruleset.waf[0].rules[0].action_parameters.products == null &&
-      cloudflare_ruleset.waf[0].rules[1].description == "Allow GitHub webhook IPs" &&
-      cloudflare_ruleset.waf[0].rules[2].description == "Block webhook requests outside GitHub IPs" &&
+      length(cloudflare_ruleset.waf[0].rules) == 4 &&
+      cloudflare_ruleset.waf[0].rules[0].description == "Allow GitHub webhook IPs" &&
+      cloudflare_ruleset.waf[0].rules[1].description == "Block webhook requests outside GitHub IPs" &&
+      cloudflare_ruleset.waf[0].rules[2].action == "block" &&
       cloudflare_ruleset.waf[0].rules[3].action == "block" &&
-      cloudflare_ruleset.waf[0].rules[4].action == "block"
+      cloudflare_ruleset.waf[0].rules[2].expression == "(cf.client.bot and not ${local.aws_callback_expr})" &&
+      cloudflare_ruleset.waf[0].rules[3].expression == "(${local.geo_expr} and not ${local.aws_callback_expr})" &&
+      alltrue([for rule in cloudflare_ruleset.waf[0].rules : rule.action != "skip" || rule.description == "Allow GitHub webhook IPs"])
     )
-    error_message = "Retain five custom rules, callback logging, webhook protections and bot/geo blocks; never skip other WAF phases or products."
+    error_message = "AWS callbacks must only amend bot/geo predicates; no callback skip action may bypass present or future rules."
   }
 }
 
