@@ -13,7 +13,7 @@ spec:
   sources:
     - repoURL: https://projectcontour.github.io/helm-charts/
       chart: contour
-      targetRevision: 0.8.0
+      targetRevision: 0.9.0
       helm:
         valueFiles:
           - $values/kubernetes/apps/values.sops.yaml
