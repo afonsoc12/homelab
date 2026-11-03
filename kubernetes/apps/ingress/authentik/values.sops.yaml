@@ -85,6 +85,11 @@ server:
             memory: 2Gi
 worker:
     name: worker
+    deploymentStrategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxSurge: 0
+            maxUnavailable: 1
     affinity:
         podAffinity:
             preferredDuringSchedulingIgnoredDuringExecution:
@@ -105,7 +110,7 @@ worker:
             cpu: 200m
             memory: 512Mi
         limits:
-            cpu: 500m
+            cpu: "2"
             memory: 2Gi
 serviceAccount:
     create: true
