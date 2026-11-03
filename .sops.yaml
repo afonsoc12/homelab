@@ -1,11 +1,5 @@
 ---
 creation_rules:
-  # Ingress proxy addresses and trusted network ranges
-  - path_regex: 'kubernetes/apps/ingress/ingress-nginx/values\.sops\.yaml$'
-    encrypted_regex: ^(data|stringData|loadBalancerIP|proxy-real-ip-cidr)$
-    mac_only_encrypted: true
-    pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-
   # Kubernetes
   - path_regex: "kubernetes/.*.y?ml"
     encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
