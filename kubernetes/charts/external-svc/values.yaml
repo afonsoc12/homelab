@@ -12,9 +12,6 @@ server:
 # Ingress configuration
 ingress:
   enabled: false
-  # trustedLan/protectedLan preserve network exceptions using Contour HTTPProxy.
-  contourPolicy: ""
-  responseTimeout: 60s
   authelia: false
   className: "nginx"
   annotations: {}
@@ -28,7 +25,6 @@ ingress:
   #     paths:
   #       - path: /
   #         pathType: Prefix
-  # Each host path may set service: {name: namespace-local-proxy, port: 9000}.
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

@@ -2,8 +2,7 @@
 
 [Contour](https://projectcontour.io/) runs [Envoy](https://www.envoyproxy.io/) as the
 standard Kubernetes ingress proxy, providing HTTP/HTTPS routing and TLS termination.
-It supports Kubernetes Ingress, HTTPProxy, and Gateway API.
-HTTPProxy supports routing features such as [IP filtering](https://projectcontour.io/docs/main/config/ip-filtering/) and TLS passthrough.
+It supports Kubernetes Ingress and Gateway API.
 
 ingress-nginx is retained temporarily while applications migrate to Contour.
 

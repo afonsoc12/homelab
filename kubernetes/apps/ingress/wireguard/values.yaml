@@ -59,6 +59,8 @@ ingress:
   className: contour
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -66,7 +68,9 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-  contourPolicy: trustedLan
+          service:
+            name: authentik-embedded-outpost
+            port: 9000
 
 livenessProbe:
   tcpSocket:

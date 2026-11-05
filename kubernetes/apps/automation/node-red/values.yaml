@@ -58,9 +58,13 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          service:
+            name: authentik-automation-proxy
+            port: 9000
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
-  contourPolicy: trustedLan
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
 
 podSecurityContext:
   fsGroup: 1000

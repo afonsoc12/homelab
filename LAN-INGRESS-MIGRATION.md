@@ -1,47 +1,56 @@
 # LAN ingress migration inventory
 
-Public tunnel routes are unchanged. Standalone sandbox manifests and applications with public tunnel endpoints, including Forgejo and Music Assistant, remain outside this migration.
+The migration uses standard Ingress resources and Authentik proxy providers. Existing public tunnel routes remain unchanged.
 
-| App | Namespace | Access handling |
+| App | Namespace | Handling |
 | --- | --- | --- |
-| airflow | addons | Existing trusted-network bypass |
-| grocy | automation | Existing trusted-network bypass |
-| n8n | automation | Existing trusted-network bypass |
-| node-red | automation | Existing trusted-network bypass |
-| bambuddy | homelab | Existing trusted-network bypass |
-| bentopdf | homelab | Existing native authentication or bypass |
-| changedetection | homelab | Existing trusted-network bypass |
-| cookistash | homelab | Existing trusted-network bypass |
-| docuseal | homelab | Existing trusted-network bypass |
-| adguard | homelab | Existing trusted-network bypass |
-| bazarr | homelab | Existing trusted-network bypass |
-| booklore | homelab | Existing trusted-network bypass |
-| decide | homelab | Existing trusted-network bypass |
-| hyperion | homelab | Existing trusted-network bypass |
-| kopia | homelab | Authentik forward auth; HTTP/2 upstream |
-| krusader | homelab | Existing trusted-network bypass |
-| lidarr | homelab | Existing trusted-network bypass |
-| navidrome | homelab | Existing trusted-network bypass |
-| prowlarr | homelab | Existing trusted-network bypass |
-| qbittorrent | homelab | Existing trusted-network bypass |
-| radarr | homelab | Existing trusted-network bypass |
-| radarr-4k | homelab | Existing trusted-network bypass |
-| scrutiny | homelab | Existing trusted-network bypass |
-| sonarr | homelab | Existing trusted-network bypass |
-| tautulli | homelab | Existing trusted-network bypass |
-| tdarr | homelab | Existing trusted-network bypass |
-| unifi | homelab | Authentik proxy with existing network restriction |
-| wled-kitchen | homelab | Existing trusted-network bypass |
-| glance | homelab | Existing trusted-network bypass and protected path exceptions |
-| mealie | homelab | Existing trusted-network bypass |
-| paperless | homelab | Existing trusted-network bypass |
-| tracktor | homelab | Existing trusted-network bypass |
-| wealthfolio | homelab | Existing trusted-network bypass |
-| wedding-site | homelab | Existing native authentication or bypass |
-| lldap | ingress | Authentik proxy with existing network restriction |
-| wireguard | ingress | Existing trusted-network bypass |
-| ntfy | monitoring | Existing trusted-network bypass |
-| octo-track | monitoring | Existing trusted-network bypass |
-| argocd | addons | Native Authentik OIDC; standard Ingress with HTTPS/gRPC |
-| prometheus-stack | monitoring | Existing trusted-network bypass |
-| longhorn | longhorn-system | Authentik proxy |
+| adguard | homelab | Authentik proxy; explicit administrator access |
+| airflow | addons | Authentik proxy; explicit administrator access |
+| alertmanager | monitoring | Authentik proxy; outpost-owned standard Ingress |
+| argocd | addons | Existing native Authentik OIDC; standard chart Ingress |
+| bambuddy | homelab | Authentik proxy; explicit administrator access |
+| bazarr | homelab | Authentik proxy; explicit administrator access |
+| bentopdf | homelab | Authentik proxy; explicit administrator access |
+| booklore | homelab | Authentik proxy; explicit administrator access |
+| changedetection | homelab | Authentik proxy; explicit administrator access |
+| cookistash | homelab | Authentik proxy; explicit administrator access |
+| decide | homelab | Authentik proxy; explicit administrator access |
+| docuseal | homelab | Authentik proxy; explicit administrator access |
+| forgejo | devops | Existing native authentication |
+| glance | homelab | Authentik proxy; explicit administrator access |
+| grocy | automation | Authentik proxy; explicit administrator access |
+| hyperion | homelab | Authentik proxy; explicit administrator access |
+| kopia | homelab | Unchanged: original nginx authentication retained |
+| krusader | homelab | Authentik proxy; explicit administrator access |
+| lidarr | homelab | Authentik proxy; explicit administrator access |
+| lldap | ingress | Authentik proxy; explicit administrator access |
+| longhorn | longhorn-system | Authentik proxy; outpost-owned standard Ingress |
+| mealie | homelab | Existing native Authentik OIDC |
+| music-assistant | automation | Authentik proxy; explicit administrator access |
+| n8n | automation | Authentik proxy; explicit administrator access |
+| navidrome | homelab | Authentik proxy; explicit administrator access |
+| node-red | automation | Authentik proxy; explicit administrator access |
+| ntfy | monitoring | Authentik proxy; outpost-owned standard Ingress |
+| octo-track | monitoring | Authentik proxy; outpost-owned standard Ingress |
+| paperless | homelab | Authentik proxy; explicit administrator access |
+| prometheus | monitoring | Authentik proxy; outpost-owned standard Ingress |
+| prowlarr | homelab | Authentik proxy; explicit administrator access |
+| qbittorrent | homelab | Authentik proxy; explicit administrator access |
+| radarr | homelab | Authentik proxy; explicit administrator access |
+| radarr-4k | homelab | Authentik proxy; explicit administrator access |
+| scrutiny | homelab | Authentik proxy; explicit administrator access |
+| sonarr | homelab | Authentik proxy; explicit administrator access |
+| tautulli | homelab | Authentik proxy; explicit administrator access |
+| tdarr | homelab | Authentik proxy; explicit administrator access |
+| tracktor | homelab | Authentik proxy; explicit administrator access |
+| unifi | homelab | Unchanged: original nginx authentication retained |
+| wealthfolio | homelab | Authentik proxy; explicit administrator access |
+| wedding-site | homelab | Authentik proxy; explicit administrator access |
+| wireguard | ingress | Authentik proxy; explicit administrator access |
+| wled-kitchen | homelab | Authentik proxy; explicit administrator access |
+
+Kopia and UniFi remain on their existing protected routes pending the gRPC integration and upstream certificate-trust work. The standalone sandbox remains outside the migration.
+
+The existing local DNS wildcard changes to Contour. Only those retained legacy routes have DNS exceptions.
+
+LAN origin alone does not grant anonymous access. Native app authentication and account links are retained; API bypasses require verification.

@@ -17,62 +17,36 @@ defaultSettings:
 ingress:
     enabled: false
     ingressClassName: contour
-    host: ENC[AES256_GCM,data:7PzFfDLTespTcU+HH6twN1jqABBCwRfTySpxKA==,iv:zQHt5gguxhrbX7vkRNKHX/ENW2UCb73MLhOqEB/t2TQ=,tag:/VJpJhOcYbFTVC1eaapU9w==,type:str]
+    host: ENC[AES256_GCM,data:sFCNKE82Fo39jktOUbGQvtCIF/IPM4FHDED7WA==,iv:jBZoMerYhfWy9dLdjrN1KVYEnI5tdTYDA9A1o/Tm1Ls=,tag:PhJRF7tEgA80V/4gObR3Vg==,type:str]
     tls: true
     tlsSecret: local-wildcard-cert
     path: /
     annotations: {}
-extraObjects:
-    - apiVersion: networking.k8s.io/v1
-      kind: Ingress
-      metadata:
-        name: longhorn-ingress
-        annotations:
-            ingress.kubernetes.io/force-ssl-redirect: "true"
-            projectcontour.io/websocket-routes: /
-            projectcontour.io/response-timeout: 300s
-      spec:
-        ingressClassName: contour
-        tls:
-            - secretName: local-wildcard-cert
-              hosts:
-                - ENC[AES256_GCM,data:jgfBSjihkiLNNiWi3390DUvihENrGAPfVhMV8g==,iv:bCenv3Skzs0U25aoC2rsNXgwq3DxxREQEGTCXPR+jSs=,tag:VNzUe9nCbdMJOKGo6eeZUQ==,type:str]
-        rules:
-            - host: ENC[AES256_GCM,data:Rgn8Lydkn7sfv2ZTJeHorn2cUlQMxwoTYVCU3Q==,iv:LOkcQXKcGd9Bsllo6V+14pnAiqG3XcloBUKXi8soWMQ=,tag:MlGkfkqAt5boKgyrJxB9Gw==,type:str]
-              http:
-                paths:
-                    - path: /
-                      pathType: Prefix
-                      backend:
-                        service:
-                            name: authentik-longhorn-proxy
-                            port:
-                                number: 9000
 sops:
-    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host|hosts)$
-    lastmodified: "2026-11-05T21:23:19Z"
-    mac: ENC[AES256_GCM,data:elIHO27nInTajB89Tm0ZpG5bKAVBkDHDDO5Mk9gwpXOR93ggTWO5kO95aZhEA7SysE4n9TV0Iqb1nu1KSrKgAQedpHx8hyZI+YnrPhXNOhHE+d6mzb127sUaXK3s9OgNfq1CfN55+Y3n1CgYO6jSkfbt/PjGZ2lOynqX3mj47M0=,iv:7pXYVzJS+XtVdB/xUT1Ui6go1ZGTmGfHRImvIcINTsk=,tag:EpqDIVlVXa+bjYSgPabv5A==,type:str]
+    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
+    lastmodified: "2026-11-05T21:52:41Z"
+    mac: ENC[AES256_GCM,data:8dT0NFfdOJm+yjw79xQM3s9Ia9aCxhAqk+KD8tec+z8WQKUUnz1CthFuLLpJUgzts+smL8iHJZhl7LIjWUQ9UimG7j8jr0wIEuF+l77xg/39NDkySivnebGHBXjcQI2nRlJlo9dEtsxyh4fxlPvvLU+GfUtbWHkJD1PN8mKBrkc=,iv:4514piQXJMPpGQSc8lVSVrbvskT/B7nT/STuuAWZRMQ=,tag:R5FaEq7yeZlaukqHooQlug==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-11-05T21:23:19Z"
+        - created_at: "2026-11-05T21:52:41Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/+NS6oF8+3RXgLkFanpk48dbQWlR5honzV8PROWmXamxVx
-            rr2vwbFZGucqXxZlmmeFFf8YBuzcWzoom8YsmYPaG9ITQZIrC2V7G65qODgDFc8x
-            Yar/u3bfD/f/CFVCT/f0mj0ms5SU37BK1bTYMYsHnEV5QVho6ItZQF2kqwGdgfBE
-            u0Q5HLqdtNEat+mqUCQZpWX+sMRT8XNPlb68L8J+U5j9N4BQZLq1b2WfMHnsHVV1
-            TAp5tvfTWGcKXrd6WxqZxf7kAO6+kpKyFrPZKwnuxLcMc6aZ6/OBxGw/f2MdekM+
-            R75TKpSMOAHbQhjWNHzgICWou8VZCKvtJHIbiFYsL31DdMoLEBFWlbSoJ5mPIsi2
-            nl7JHmiKcUbYZ4Ztb2LZm6FfPi+iIiXcAi46E/lX22pH8Vg7ViMVrIHB+NMCM0rt
-            fbXtECbFSyYGQ5PvQffO54CXGMOQgNi02z6bMvn/YeFFbqV6ZegMfs8KMYESwazM
-            SxRVehFGY30qhzN6X+D/DQ1Ti7sbCP7oPVh3YiKDYNThijUmieO3yZqituJqiiQp
-            CDUON9q1yDHDgX6IxDmKSjPRlbbMOny20VjNkqy33LVhcy0jYI/2ZZ7Cm0AoAHGO
-            htn/kXSOx3FgP8B+vqRTjdz7nEftC8Oa2VzvPBR1oCFsuLjsGrFRe0q1a5xFlrHU
-            aAEJAhAh0W+fXwtxNtFU3a2DuLQqJyQszsi5D4CsEssyKTosNmMhT2jQMetXRWii
-            BH0yXcwcYfwFJ2kygaywDebvh62Dy6yFNlvLATxdM8DyyYT7gIpqjr9en5DEclwb
-            2aBvLoGvTZwi
-            =wYMw
+            hQIMA5NT/LvuRqeGAQ/+NrYrjoTP4boyUrbSLlnjlrkUJET4ctbO7fhvEPtNNzId
+            Ab1hw3x3Yd6YWUQyYEqAZ+WrZ15Xq7ZhsVhht5I/0HtNJxYAVPlJsaxw0QbIFUF5
+            JiwGEp1FHPYqNbbBF7enDpjhn+lH8aCdpZBMSc/rrVnXqThCM1EivPmZRx9J9aSu
+            ICiB05J63rgyeSlqKKZV6Bo3IcbKahQhbx+x+gRtpjajbFBAHjJxJE2Ykx4wBCIZ
+            u7gRSbjiNw9oySILZVYHwKygfb1VwDNB6/lnJu89VzxoJ/3EpIuvZk862n3lZOI+
+            n37lcrDRqoPdtnwUZ79gVnjYdtBnX5QlfqTVzk+FNvcCEroG9/X46yvMDombsg1O
+            OUCGO6AXnf027wlB4F+9sRh/LEdhs1HGrl/DM7hFrFVIayfpeuznq8sgwNOXstdD
+            YN4BTxV0Z5+1ZvhotG0XDx5H4Ooa9QiAhUT2boRnBt1imLdZE8VAx+HQQ9mKq3Tj
+            Tx9u2MHdxfIg9gzlAn1eIONVcVd+saq8MlguXUc7UnZwB5nGlinfoZOTzrUW+R4V
+            kt4yabXjxPWK4nobC2PotZAmTEwEr79FDTDuXe4pEJcjdP2OhCKk5m+KuPEfiJK4
+            6tP2Lwg8vLZJbeI+RGuVSw/rRplqi/Fxp/D90oPlR4aO5aVpjspU01WSQdDpblbU
+            aAEJAhDB3ndwtHYpLIgg6GPGDygDWEmAxSS6oQ9zDpUFRqOnZH379WR/IiToBRGy
+            0Hi/ah2fexTrzleQkjYPSkhn6VOBnaPzDOawWkJdvoCekP0J7qX8l8rn+BIs4rP/
+            KlxXqDzGkeKU
+            =Lato
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2

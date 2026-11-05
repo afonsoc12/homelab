@@ -80,7 +80,7 @@ ingress:
           pathType: Prefix
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
-  contourPolicy: trustedLan
+    projectcontour.io/response-timeout: 60s
 
 podSecurityContext: {}
 # fsGroup: 2000

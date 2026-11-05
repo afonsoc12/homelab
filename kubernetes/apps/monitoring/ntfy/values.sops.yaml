@@ -62,11 +62,14 @@ pvc:
         requests:
             storage: 200Mi
 ingress:
-  enabled: true
+  # The shared Authentik outpost owns the standard Ingress.
+  enabled: false
   authelia: false
   className: contour
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -74,7 +77,9 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-  contourPolicy: trustedLan
+          service:
+            name: authentik-monitoring-proxy
+            port: 9000
 
 resources:
   limits:

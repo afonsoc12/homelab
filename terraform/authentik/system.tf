@@ -5,12 +5,14 @@ resource "authentik_certificate_key_pair" "signing" {
 }
 
 resource "authentik_outpost" "embedded" {
+  depends_on = [authentik_policy_binding.lan_admins]
+
   # The Helm chart owns the Ingress, including the embedded-outpost path.
   config = jsonencode(merge(jsondecode(data.sops_file.secrets.data["value_009"]), {
-    kubernetes_disabled_components = ["ingress"]
+    kubernetes_disabled_components = ["ingress", "httproute"]
   }))
   name               = "authentik Embedded Outpost"
-  protocol_providers = [authentik_provider_proxy.uptime_kuma.id, authentik_provider_proxy.lan["lldap"].id]
+  protocol_providers = concat([authentik_provider_proxy.uptime_kuma.id], [for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == "ingress"])
   service_connection = authentik_service_connection_kubernetes.cluster.id
   type               = "proxy"
 }

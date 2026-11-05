@@ -47,6 +47,7 @@ ingress:
   className: contour
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -57,7 +58,6 @@ ingress:
           service:
             name: authentik-embedded-outpost
             port: 9000
-  contourPolicy: protectedLan
 
 resources:
     limits:
