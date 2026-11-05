@@ -42,6 +42,6 @@ Public tunnel routes are unchanged. Standalone sandbox manifests and application
 | wireguard | ingress | Existing trusted-network bypass |
 | ntfy | monitoring | Existing trusted-network bypass |
 | octo-track | monitoring | Existing trusted-network bypass |
-| argocd | addons | Native Authentik OIDC; HTTPS and gRPC |
+| argocd | addons | Native Authentik OIDC; standard Ingress with HTTPS/gRPC |
 | prometheus-stack | monitoring | Existing trusted-network bypass |
 | longhorn | longhorn-system | Authentik proxy |
