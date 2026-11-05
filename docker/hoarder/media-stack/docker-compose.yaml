@@ -93,7 +93,7 @@ services:
   byparr:
     # Cloudflare-challenge solver for Prowlarr indexers - shares privoxyvpn's
     # network namespace so prowlarr can reach it at localhost:8191.
-    image: ghcr.io/thephaseless/byparr:3.0.4
+    image: ghcr.io/thephaseless/byparr:3.1.1
     container_name: byparr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
