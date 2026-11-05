@@ -10,7 +10,7 @@ resource "authentik_outpost" "embedded" {
     kubernetes_disabled_components = ["ingress"]
   }))
   name               = "authentik Embedded Outpost"
-  protocol_providers = [authentik_provider_proxy.uptime_kuma.id]
+  protocol_providers = [authentik_provider_proxy.uptime_kuma.id, authentik_provider_proxy.lan["lldap"].id]
   service_connection = authentik_service_connection_kubernetes.cluster.id
   type               = "proxy"
 }

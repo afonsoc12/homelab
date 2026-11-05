@@ -70,19 +70,18 @@ pvc:
 
 ingress:
   enabled: true
-  authelia: true
-  className: "nginx"
-
+  authelia: false
+  className: contour
   tls:
     - secretName: local-wildcard-cert
-
-  # Will assume the first element in .ports, regardless of service
   hosts:
     - host: changedetection.local.{{ .Values.domain }}
       paths:
         - path: /
           pathType: Prefix
-
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  contourPolicy: trustedLan
 
 livenessProbe:
   tcpSocket:

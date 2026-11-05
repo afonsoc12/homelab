@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled (not .Values.ingress.contourPolicy) -}}
 {{- if and (or .Values.ingress.authelia .Values.ingress.authentik) (ne .Values.ingress.className "nginx") -}}
 {{- fail "nginx forward-auth annotations cannot protect another ingress class; configure native SSO or a proxy backend" -}}
 {{- end -}}

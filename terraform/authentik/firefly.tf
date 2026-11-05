@@ -38,7 +38,7 @@ resource "authentik_outpost" "homelab" {
   name               = "Homelab Proxy"
   type               = "proxy"
   service_connection = authentik_service_connection_kubernetes.cluster.id
-  protocol_providers = [authentik_provider_proxy.firefly.id]
+  protocol_providers = [authentik_provider_proxy.firefly.id, authentik_provider_proxy.lan["unifi"].id, authentik_provider_proxy.lan["glance"].id, authentik_provider_proxy.lan["kopia"].id]
   config = jsonencode({
     authentik_host                 = data.sops_file.secrets.data["url"]
     authentik_host_insecure        = false

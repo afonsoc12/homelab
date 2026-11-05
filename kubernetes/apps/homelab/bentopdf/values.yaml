@@ -24,8 +24,9 @@ service:
 ingress:
   enabled: true
   authelia: false
-  className: "nginx"
-  annotations: {}
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
   tls:
     - secretName: local-wildcard-cert
   hosts:

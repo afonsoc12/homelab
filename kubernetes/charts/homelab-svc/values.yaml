@@ -129,6 +129,9 @@ pvc: {}
 
 ingress:
   enabled: false
+  # trustedLan/protectedLan preserve network exceptions using Contour HTTPProxy.
+  contourPolicy: ""
+  responseTimeout: 60s
   authelia: false
   authentik: false
   className: "nginx"

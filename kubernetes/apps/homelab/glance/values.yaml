@@ -448,8 +448,8 @@ volumes:
 
 ingress:
   enabled: true
-  authelia: true
-  className: nginx
+  authelia: false
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -457,6 +457,32 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  contourPolicy: trustedLan
+  protectedPrefixes:
+    - longhorn
+    - kubernetes
+    - prometheus
+    - alertmanager
+    - sonarr
+    - radarr
+    - radarr-4k
+    - lidarr
+    - bazarr
+    - adguard
+    - prowlarr
+    - tautulli
+    - deluge
+    - storm
+    - node-red
+    - z2m
+    - outpost.goauthentik.io
+  protectedService:
+    name: authentik-homelab-proxy
+    port: 9000
+  trustedBypassPrefixes:
+    - /tautulli/api
 
 livenessProbe:
   httpGet:

@@ -33,8 +33,8 @@ pvc:
       storage: 500Mi
 ingress:
   enabled: true
-  authelia: true
-  className: nginx
+  authelia: false
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -42,6 +42,9 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  contourPolicy: trustedLan
 
 resources:
   limits:

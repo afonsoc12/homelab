@@ -5,7 +5,7 @@ locals {
 
 resource "adguard_rewrite" "local" {
   domain = "local.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "local-wildcard" {

@@ -147,7 +147,28 @@ configs:
             g, authentik_admins, role:admin
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
-extraObjects: []
+extraObjects:
+- apiVersion: projectcontour.io/v1
+  kind: HTTPProxy
+  metadata:
+    name: argocd-server
+  spec:
+    ingressClassName: contour
+    virtualhost:
+      fqdn: argocd.local.{{ .Values.domain }}
+      tls:
+        secretName: local-wildcard-cert
+    routes:
+    - conditions:
+      - prefix: /
+      enableWebsockets: true
+      timeoutPolicy:
+        response: 300s
+      services:
+      - name: argocd-server
+        port: 443
+        protocol: h2
+
 # - apiVersion: secrets-store.csi.x-k8s.io/v1
 #   kind: SecretProviderClass
 #   metadata:
@@ -250,17 +271,15 @@ server:
             cpu: 500m
             memory: 256Mi
     ingress:
-        enabled: true
-        annotations:
-            nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-            nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-        ingressClassName: nginx
-        path: /
-        pathType: Prefix
-        tls: false
-        extraTls:
-            - secretName: local-wildcard-cert
+      enabled: false
+      annotations: {}
+      ingressClassName: contour
+      path: /
+      pathType: Prefix
+      tls: false
+      extraTls:
+      - secretName: local-wildcard-cert
+
 ## Repo Server
 repoServer:
     # -- Repo server name

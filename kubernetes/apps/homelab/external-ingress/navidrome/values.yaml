@@ -14,7 +14,7 @@ server:
 
 ingress:
   enabled: true
-  authelia: true
+  authelia: false
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -22,3 +22,7 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  contourPolicy: trustedLan

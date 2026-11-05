@@ -37,16 +37,20 @@ volumes:
       emptyDir:
         sizeLimit: 1Gi
 ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    tls:
-        - secretName: local-wildcard-cert
-    hosts:
-        - host: electricity.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: Prefix
+  enabled: true
+  authelia: false
+  className: contour
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: electricity.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  contourPolicy: trustedLan
+
 resources:
   limits:
     cpu: 25m

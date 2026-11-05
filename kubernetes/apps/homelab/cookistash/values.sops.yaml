@@ -58,16 +58,20 @@ pvc:
         requests:
             storage: 50Mi
 ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    tls:
-        - secretName: local-wildcard-cert
-    hosts:
-        - host: cookistash.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: ImplementationSpecific
+  enabled: true
+  authelia: false
+  className: contour
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: cookistash.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  contourPolicy: trustedLan
+
 podSecurityContext: {}
 securityContext: {}
 nodeSelector: {}

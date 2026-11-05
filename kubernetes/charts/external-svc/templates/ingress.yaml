@@ -1,4 +1,7 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled (not .Values.ingress.contourPolicy) -}}
+{{- if and .Values.ingress.authelia (ne .Values.ingress.className "nginx") -}}
+{{- fail "nginx forward-auth annotations cannot protect another ingress class; configure a proxy backend" -}}
+{{- end -}}
 {{- $fullName := include "external-svc.fullname" . -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -23,9 +26,15 @@ spec:
   {{- if .Values.ingress.tls }}
   tls:
     {{- range .Values.ingress.tls }}
+    {{- $tlsHosts := default (list) .hosts }}
+    {{- if and (empty $tlsHosts) (eq $.Values.ingress.className "contour") }}
+    {{- range $.Values.ingress.hosts }}
+    {{- $tlsHosts = append $tlsHosts .host }}
+    {{- end }}
+    {{- end }}
     - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
+        {{- range $tlsHosts }}
+        - {{ tpl (. | quote) $ }}
         {{- end }}
       secretName: {{ .secretName }}
     {{- end }}
@@ -40,9 +49,15 @@ spec:
             pathType: {{ .pathType }}
             backend:
               service:
+                {{- if .service }}
+                name: {{ .service.name }}
+                port:
+                  number: {{ .service.port }}
+                {{- else }}
                 name: {{ $fullName }}
                 port:
                   number: {{ $.Values.server.port }}
+                {{- end }}
           {{- end }}
     {{- end }}
 {{- end }}

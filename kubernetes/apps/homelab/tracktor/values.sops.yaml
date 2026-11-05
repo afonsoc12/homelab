@@ -44,19 +44,20 @@ pvc:
         requests:
             storage: 50Mi
 ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    annotations:
-        nginx.ingress.kubernetes.io/proxy-buffer-size: 16k
-        nginx.ingress.kubernetes.io/proxy-buffers-number: "4"
-    tls:
-        - secretName: local-wildcard-cert
-    hosts:
-        - host: tracktor.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: Prefix
+  enabled: true
+  authelia: false
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: tracktor.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+  contourPolicy: trustedLan
+
 livenessProbe:
     tcpSocket:
         port: 3000

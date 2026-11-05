@@ -92,15 +92,19 @@ volumes:
       secretName: airflow-secrets-backend
 ingress:
   enabled: true
-  authelia: true
-  className: nginx
+  authelia: false
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:
     - host: airflow.local.{{ .Values.domain }}
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  contourPolicy: trustedLan
+
 resources:
   requests:
     cpu: 500m

@@ -47,20 +47,19 @@ pvc:
         requests:
             storage: 20Gi
 ingress:
-    enabled: true
-    authelia: false
-    className: nginx
-    annotations:
-        nginx.ingress.kubernetes.io/proxy-body-size: 5G
-        ingress.kubernetes.io/proxy-body-size: 5000m
-    tls:
-        - secretName: local-wildcard-cert
-    # Will assume the first element in .ports, regardless of service
-    hosts:
-        - host: mariana-afonso.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: Prefix
+  enabled: true
+  authelia: false
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: mariana-afonso.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+
 affinity:
     podAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:

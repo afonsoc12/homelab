@@ -45,8 +45,8 @@ configmap:
 
 ingress:
   enabled: true
-  authelia: true
-  className: "nginx"
+  authelia: false
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -54,6 +54,10 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  contourPolicy: trustedLan
+  responseTimeout: 300s
 
 livenessProbe:
   httpGet:

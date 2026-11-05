@@ -62,18 +62,20 @@ pvc:
         requests:
             storage: 200Mi
 ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    annotations: null
-    tls:
-        - secretName: local-wildcard-cert
-    # Will assume the first element in .ports, regardless of service
-    hosts:
-        - host: ntfy.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: Prefix
+  enabled: true
+  authelia: false
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: ntfy.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+  contourPolicy: trustedLan
+
 resources:
   limits:
     cpu: 25m
