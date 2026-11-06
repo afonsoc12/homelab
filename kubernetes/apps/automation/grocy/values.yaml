@@ -33,8 +33,8 @@ pvc:
       storage: 500Mi
 ingress:
   enabled: true
-  authelia: true
-  className: nginx
+  authelia: false
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -42,6 +42,12 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          service:
+            name: authentik-automation-proxy
+            port: 9000
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
 
 resources:
   limits:

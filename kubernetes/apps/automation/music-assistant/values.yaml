@@ -54,15 +54,21 @@ pvc:
 ingress:
   enabled: true
   authelia: false
-  className: nginx
+  className: contour
   tls:
     - secretName: local-wildcard-cert
-  # Will assume the first element in .ports, regardless of service
   hosts:
     - host: music-assistant.local.{{ .Values.domain }}
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
+          service:
+            name: authentik-automation-proxy
+            port: 9000
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
 
 nodeSelector:
   kubernetes.io/hostname: k3s-m1

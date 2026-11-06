@@ -1,14 +1,6 @@
-# --------------------
-# Longhorn
-#   - Repo:           https://github.com/longhorn/longhorn
-#   - Docs:           https://longhorn.io/docs/
-#   - Chart Defaults: https://github.com/longhorn/longhorn/blob/master/chart/values.yaml
-# --------------------
 longhornUI:
-    # -- Replica count for Longhorn UI.
     replicas: 1
 longhornManager:
-    # -- Resource requests and limits for Longhorn Manager pods.
     resources:
         requests:
             cpu: 50m
@@ -21,50 +13,40 @@ preUpgradeChecker:
 upgradeCheck:
     enabled: false
 defaultSettings:
-    # -- Resource limits for system-managed CSI components (csi-attacher, csi-provisioner,
-    # csi-resizer, csi-snapshotter, longhorn-csi-plugin, node-driver-registrar,
-    # longhorn-liveness-probe). JSON object keyed by component name with standard
-    # Kubernetes ResourceRequirements (requests/limits) as values.
     systemManagedCSIComponentsResourceLimits: '{"csi-attacher":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"csi-provisioner":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"csi-resizer":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"csi-snapshotter":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"longhorn-csi-plugin":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"node-driver-registrar":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}},"longhorn-liveness-probe":{"requests":{"cpu":"10m","memory":"16Mi"},"limits":{"cpu":"50m","memory":"64Mi"}}}'
 ingress:
-    enabled: true
-    ingressClassName: nginx
-    host: ENC[AES256_GCM,data:3ZZUp26LHuGTqIgDdL991yhmz3Fdvm82LK6/IQ==,iv:UdqfNG4Rcav7n+hp8SAj0KYHXEgOJPMVStV3vEM9RFE=,tag:EHNGU52HphU7fh4J5A3zyQ==,type:str]
+    enabled: false
+    ingressClassName: contour
+    host: ENC[AES256_GCM,data:sFCNKE82Fo39jktOUbGQvtCIF/IPM4FHDED7WA==,iv:jBZoMerYhfWy9dLdjrN1KVYEnI5tdTYDA9A1o/Tm1Ls=,tag:PhJRF7tEgA80V/4gObR3Vg==,type:str]
     tls: true
     tlsSecret: local-wildcard-cert
     path: /
-    annotations:
-        nginx.ingress.kubernetes.io/proxy-body-size: 10000m
-        nginx.ingress.kubernetes.io/auth-method: GET
-        nginx.ingress.kubernetes.io/auth-url: http://authentik-server.ingress.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-        nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:rNF9bwwjyPm3aZV0Uex6GwGRrNI5HzP6p215NNhquZeiznvEtvcRp1iYP42g6UdXHXDDMWfQgRTdvy5R4c/xpWVv/8GAgVH889BKWAj00Ugwi4BAwLtKFRrKci32wC9BBiiMrG3aX0WtPf+u+csE+mxltA0=,iv:J1GQYRQFEqswEAJGasUgIKgncKNzJ4R9xHX6bGqwO2U=,tag:isKDCEJ9gl4W4hD+pnBxZA==,type:str]
-        nginx.ingress.kubernetes.io/auth-response-headers: Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-entitlements,X-authentik-email,X-authentik-name,X-authentik-uid
-        nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Host $host;
+    annotations: {}
 sops:
     encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
-    lastmodified: "2026-10-28T23:55:42Z"
-    mac: ENC[AES256_GCM,data:ikC6oQOOWyo9y2jG/zvhkwkU3gmNu9SabIcugMDul9HSapQeEZtFYNZfyDSnKPvWR0OhpVLAQl9XAK8LrY6QDMaaaaIDvwUugyx9lZ4sPUI0p35yP3MQxUBALzX802LbzUiReByCHzfSHV0L88zknZPkqCvwhiZ3Pz/wcUqVzLY=,iv:ri1+IKQjVJBwgxum8P5CUQlOpJSTox9ffn8/yzJWvTo=,tag:QmUls1ysp6wf3xsQQ2dXyg==,type:str]
+    lastmodified: "2026-11-05T21:52:41Z"
+    mac: ENC[AES256_GCM,data:8dT0NFfdOJm+yjw79xQM3s9Ia9aCxhAqk+KD8tec+z8WQKUUnz1CthFuLLpJUgzts+smL8iHJZhl7LIjWUQ9UimG7j8jr0wIEuF+l77xg/39NDkySivnebGHBXjcQI2nRlJlo9dEtsxyh4fxlPvvLU+GfUtbWHkJD1PN8mKBrkc=,iv:4514piQXJMPpGQSc8lVSVrbvskT/B7nT/STuuAWZRMQ=,tag:R5FaEq7yeZlaukqHooQlug==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-04-13T20:28:44Z"
+        - created_at: "2026-11-05T21:52:41Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAhK7eUKXjQDwQMjPXOuQ6zQdbnfGcqlOY3zOQN8cWtcYD
-            PHP79f13Ffk4RUmepOqu/PReNXl+OdfXczU2m6ovlfUzlzy95T54AjSCg5Np9fto
-            PLkqmCOo4XHAIdkX2JVG8lJ+c3AdpIxdQ1cOQ3bHKZXWB4Mol3wZ3t6x4qyx9L4h
-            MDP/B60LlhLVQ6lTJKQEMiMbLLWyrtFR/jIGfgxStbdBZPBDlwSK7714OUzXeoGK
-            Z3sACq1VMNhDhZDQYh/KxwXg+eMp0U5nA6Z8tg0OM80QBmYqZeLu3aateTObfy1V
-            9DIG2+0qzUdkGyK8PZzyrZZFhK7lJyH8N/YM4M1mDbNAarmkQUzs+ubje5TNvU8Z
-            cwTuEzRVXNcjRNW/7AW8zAvOxmmAp1xRkSEDJOP6tQc7+LrvYubitlSbefDweOkT
-            g6mQX8r7I1+EF/anVp7+xZL2ZQBM93h5vql28nsugv+31sDVQ1gtYdis+xiZ7KR1
-            4b3zJpzpsEVh4Nxt53bbB4Z61DuuP7CqRSPPC5ZDtEJeGF0ZFhIq09F4WBfJSmg5
-            /6TSPItZpR4/7Y5QFLb4UJoKauUj0UF+zY/izNKYjgr7c3oFQ5O1vsiA4pTkdaub
-            E5NkjbtnzaUmM3eEH6YIZIZENjDSlS+xR3jj1BE3MBq6YQZutCaEind5aPRtK6nU
-            ZgEJAhCDZl47ztI7uhHVssDaRc3rIZgSWWHEXmD95qBCmpZHZU/5CZhkqBsBk11B
-            xq8RlLqYRLcGyzSUyGqLTmFqUF/hyFj+GQyfOZ//hhbR7CAaAUIN9pG8imyhngpg
-            2f7rXsPX4Q==
-            =Iw4Z
+            hQIMA5NT/LvuRqeGAQ/+NrYrjoTP4boyUrbSLlnjlrkUJET4ctbO7fhvEPtNNzId
+            Ab1hw3x3Yd6YWUQyYEqAZ+WrZ15Xq7ZhsVhht5I/0HtNJxYAVPlJsaxw0QbIFUF5
+            JiwGEp1FHPYqNbbBF7enDpjhn+lH8aCdpZBMSc/rrVnXqThCM1EivPmZRx9J9aSu
+            ICiB05J63rgyeSlqKKZV6Bo3IcbKahQhbx+x+gRtpjajbFBAHjJxJE2Ykx4wBCIZ
+            u7gRSbjiNw9oySILZVYHwKygfb1VwDNB6/lnJu89VzxoJ/3EpIuvZk862n3lZOI+
+            n37lcrDRqoPdtnwUZ79gVnjYdtBnX5QlfqTVzk+FNvcCEroG9/X46yvMDombsg1O
+            OUCGO6AXnf027wlB4F+9sRh/LEdhs1HGrl/DM7hFrFVIayfpeuznq8sgwNOXstdD
+            YN4BTxV0Z5+1ZvhotG0XDx5H4Ooa9QiAhUT2boRnBt1imLdZE8VAx+HQQ9mKq3Tj
+            Tx9u2MHdxfIg9gzlAn1eIONVcVd+saq8MlguXUc7UnZwB5nGlinfoZOTzrUW+R4V
+            kt4yabXjxPWK4nobC2PotZAmTEwEr79FDTDuXe4pEJcjdP2OhCKk5m+KuPEfiJK4
+            6tP2Lwg8vLZJbeI+RGuVSw/rRplqi/Fxp/D90oPlR4aO5aVpjspU01WSQdDpblbU
+            aAEJAhDB3ndwtHYpLIgg6GPGDygDWEmAxSS6oQ9zDpUFRqOnZH379WR/IiToBRGy
+            0Hi/ah2fexTrzleQkjYPSkhn6VOBnaPzDOawWkJdvoCekP0J7qX8l8rn+BIs4rP/
+            KlxXqDzGkeKU
+            =Lato
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.12.2
+    version: 3.13.2

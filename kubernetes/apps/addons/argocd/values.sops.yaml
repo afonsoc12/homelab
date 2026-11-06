@@ -148,6 +148,7 @@ configs:
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 extraObjects: []
+
 # - apiVersion: secrets-store.csi.x-k8s.io/v1
 #   kind: SecretProviderClass
 #   metadata:
@@ -252,15 +253,21 @@ server:
     ingress:
         enabled: true
         annotations:
-            nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-            nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-        ingressClassName: nginx
+            ingress.kubernetes.io/force-ssl-redirect: 'true'
+            projectcontour.io/websocket-routes: /
+            projectcontour.io/response-timeout: 300s
+        ingressClassName: contour
         path: /
         pathType: Prefix
         tls: false
         extraTls:
-            - secretName: local-wildcard-cert
+            -   secretName: local-wildcard-cert
+                hosts:
+                    - '{{ .Values.global.domain }}'
+    service:
+        annotations:
+            projectcontour.io/upstream-protocol.h2: '443'
+
 ## Repo Server
 repoServer:
     # -- Repo server name

@@ -27,17 +27,21 @@ persistence:
     enabled: true
     size: 10Gi
 ingress:
-    enabled: true
-    className: nginx
-    annotations: {}
-    hosts:
-        - host: ENC[AES256_GCM,data:Tnb1PmaAfzcsjHYpKUGmeBRXg3+tURE=,iv:JFoi9vOT4AzBoqztQCgxHz50a+P00znYSN0H4PVB9S8=,tag:b4h9R5oiL4Kb6qSV4+vmaw==,type:str]
-          paths:
-            - path: /
-              pathType: Prefix
-              port: http
-    tls:
-        - secretName: local-wildcard-cert
+  enabled: true
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+  hosts:
+    - host: ENC[AES256_GCM,data:Tnb1PmaAfzcsjHYpKUGmeBRXg3+tURE=,iv:JFoi9vOT4AzBoqztQCgxHz50a+P00znYSN0H4PVB9S8=,tag:b4h9R5oiL4Kb6qSV4+vmaw==,type:str]
+      paths:
+        - path: /
+          pathType: Prefix
+          port: http
+  tls:
+    - secretName: local-wildcard-cert
+      hosts:
+        - '{{ (first .Values.ingress.hosts).host }}'
+
 resources:
     requests:
         cpu: 100m

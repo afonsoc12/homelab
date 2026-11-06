@@ -24,8 +24,10 @@ service:
 ingress:
   enabled: true
   authelia: false
-  className: "nginx"
-  annotations: {}
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -33,6 +35,9 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          service:
+            name: authentik-homelab-proxy
+            port: 9000
 
 resources:
   limits:

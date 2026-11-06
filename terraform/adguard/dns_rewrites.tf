@@ -5,12 +5,12 @@ locals {
 
 resource "adguard_rewrite" "local" {
   domain = "local.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "local-wildcard" {
   domain = "*.local.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "db" {
@@ -91,4 +91,17 @@ resource "adguard_rewrite" "music-assistant-stream" {
 resource "adguard_rewrite" "hoarder" {
   domain = "hoarder.srv.${local.domain}"
   answer = "10.0.10.220"
+}
+
+# Keep existing protected routes and the standalone sandbox outside this cutover.
+data "sops_file" "legacy_ingress" {
+  source_file = "../../kubernetes/apps/ingress/ingress-nginx/values.sops.yaml"
+  input_type  = "yaml"
+}
+
+resource "adguard_rewrite" "legacy_local" {
+  for_each = toset(["kopia", "unifi", "llm"])
+
+  domain = "${each.value}.local.${local.domain}"
+  answer = data.sops_file.legacy_ingress.data["controller.service.loadBalancerIP"]
 }
