@@ -1,5 +1,17 @@
 locals {
   lan_proxy_apps = {
+    "calibre-web" = {
+      name      = "Calibre-Web"
+      namespace = "homelab"
+      host      = "calibre"
+      upstream  = "http://calibre-web-external-external-svc.homelab.svc.cluster.local:8083"
+    }
+    "freshrss" = {
+      name      = "FreshRSS"
+      namespace = "homelab"
+      host      = "rss"
+      upstream  = "http://freshrss.homelab.svc.cluster.local:80"
+    }
     "adguard" = {
       name      = "adguard"
       namespace = "homelab"
@@ -114,6 +126,18 @@ locals {
       host      = "music-assistant.local"
       upstream  = "http://music-assistant.automation.svc.cluster.local:8095"
     }
+    "music-assistant-alexa-skill" = {
+      name      = "Music Assistant Alexa Skill"
+      namespace = "automation"
+      host      = "music-assistant-alexa-skill"
+      upstream  = "http://music-assistant-alexa-skill.automation.svc.cluster.local:5000"
+    }
+    "music-assistant-stream" = {
+      name      = "Music Assistant Stream"
+      namespace = "automation"
+      host      = "music-assistant-stream"
+      upstream  = "http://music-assistant.automation.svc.cluster.local:8097"
+    }
     "n8n" = {
       name      = "n8n"
       namespace = "automation"
@@ -186,11 +210,23 @@ locals {
       host      = "scrutiny.local"
       upstream  = "http://scrutiny-external-external-svc.homelab.svc.cluster.local:8084"
     }
+    "seerr" = {
+      name      = "Seerr"
+      namespace = "homelab"
+      host      = "seerr"
+      upstream  = "http://seerr-external-external-svc.homelab.svc.cluster.local:5055"
+    }
     "sonarr" = {
       name      = "sonarr"
       namespace = "homelab"
       host      = "sonarr.local"
       upstream  = "http://sonarr-external-external-svc.homelab.svc.cluster.local:8989"
+    }
+    "spliit" = {
+      name      = "Spliit"
+      namespace = "homelab"
+      host      = "split"
+      upstream  = "http://spliit.homelab.svc.cluster.local:3000"
     }
     "tautulli" = {
       name      = "tautulli"
@@ -233,6 +269,18 @@ locals {
       namespace = "homelab"
       host      = "wled-kitchen.local"
       upstream  = "http://wled-kitchen-external-external-svc.homelab.svc.cluster.local:80"
+    }
+    "unraid" = {
+      name      = "Unraid"
+      namespace = "homelab"
+      host      = "hoarder.srv"
+      upstream  = "http://unraid-external-external-svc.homelab.svc.cluster.local:8080"
+    }
+    "wallabag" = {
+      name      = "Wallabag"
+      namespace = "homelab"
+      host      = "wallabag"
+      upstream  = "http://wallabag.homelab.svc.cluster.local:80"
     }
   }
 }

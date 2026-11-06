@@ -40,7 +40,9 @@ volumes: []
 ingress:
     enabled: true
     authelia: false
-    className: nginx
+    className: contour
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
     tls:
         - secretName: spliit-cert
     hosts:
@@ -48,6 +50,9 @@ ingress:
           paths:
             - path: /
               pathType: ImplementationSpecific
+              service:
+                  name: authentik-homelab-proxy
+                  port: 9000
 podSecurityContext: {}
 securityContext: {}
 nodeSelector: {}

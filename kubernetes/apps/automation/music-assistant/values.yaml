@@ -111,8 +111,10 @@ extraResources:
     metadata:
       name: music-assistant-stream
       namespace: automation
+      annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
     spec:
-      ingressClassName: nginx
+      ingressClassName: contour
       tls:
         - secretName: music-assistant-stream-cert
       rules:
@@ -123,6 +125,6 @@ extraResources:
                 pathType: ImplementationSpecific
                 backend:
                   service:
-                    name: music-assistant
+                    name: authentik-automation-proxy
                     port:
-                      number: 8097
+                      number: 9000

@@ -30,8 +30,9 @@ ingress:
     enabled: true
     # Don't enable authelia on itself
     authelia: false
-    className: nginx
-    annotations: {}
+    className: contour
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
     # nginx.ingress.kubernetes.io/client-max-body-size: "0"
     # nginx.ingress.kubernetes.io/proxy-body-size: "0"
     tls:
@@ -41,6 +42,9 @@ ingress:
           paths:
             - path: /
               pathType: Prefix
+              service:
+                  name: authelia
+                  port: 80
 livenessProbe:
     httpGet:
         path: /verify

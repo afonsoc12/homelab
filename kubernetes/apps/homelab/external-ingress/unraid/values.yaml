@@ -19,7 +19,10 @@ server:
 # Ingress configuration
 ingress:
   enabled: true
-  authelia: true
+  authelia: false
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: "true"
   tls:
     - secretName: srv-wildcard-cert
   hosts:
@@ -27,3 +30,6 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          service:
+            name: authentik-homelab-proxy
+            port: 9000
