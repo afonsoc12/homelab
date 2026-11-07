@@ -1,0 +1,10 @@
+# The initial invitation entry has no Plex profile yet. Both callbacks must
+# provide an email, checked case-insensitively against the encrypted denylist.
+if not ak_is_sso_flow:
+    return True
+
+email = str(context.get("prompt_data", {}).get("email") or "").strip().casefold()
+denied_emails = ${denied_emails}
+return bool(email) and email not in {
+    value.strip().casefold() for value in denied_emails
+}

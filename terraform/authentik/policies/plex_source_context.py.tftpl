@@ -1,0 +1,12 @@
+source = context.get("source")
+connection = context.get("goauthentik.io/sources/connection")
+verified = bool(
+    ak_is_sso_flow
+    and source is not None
+    and source.enabled
+    and source.slug == "plex"
+    and connection is not None
+    and connection.source_id == source.pk
+    and connection.identifier
+)
+return not verified if ${deny_unverified} else verified

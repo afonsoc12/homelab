@@ -1,8 +1,12 @@
 # Plex proves identity; application bindings independently grant access.
 locals {
-  plex_client_id       = try(data.sops_file.secrets.data["plex.client_id"], "homelab-authentik")
-  plex_token           = try(data.sops_file.secrets.data["plex.token"], "")
-  plex_allowed_servers = jsondecode(try(data.sops_file.secrets.data["plex.allowed_servers"], "[]"))
+  plex_settings              = try(yamldecode(data.sops_file.secrets.raw).plex, {})
+  plex_client_id             = try(local.plex_settings.client_id, "homelab-authentik")
+  plex_token                 = try(local.plex_settings.token, "")
+  plex_allowed_servers_input = try(local.plex_settings.allowed_servers, [])
+  plex_allowed_servers       = try(tolist(local.plex_allowed_servers_input), jsondecode(local.plex_allowed_servers_input))
+  plex_denied_emails_input   = try(local.plex_settings.denied_emails, [])
+  plex_denied_emails         = try(tolist(local.plex_denied_emails_input), jsondecode(local.plex_denied_emails_input))
 }
 
 resource "authentik_source_plex" "plex" {
@@ -28,6 +32,11 @@ resource "authentik_source_plex" "plex" {
     authentik_policy_binding.access_grafana,
     authentik_policy_binding.plex_source_context,
     authentik_policy_binding.plex_reputation,
+    authentik_policy_binding.plex_enrollment_admission,
+    authentik_policy_binding.plex_email_access,
+    authentik_policy_binding.plex_require_source,
+    authentik_flow_stage_binding.plex_require_source,
+    authentik_flow_stage_binding.plex_invitation,
     authentik_flow_stage_binding.plex_enrollment_write,
     authentik_flow_stage_binding.plex_mfa,
     authentik_flow_stage_binding.plex_login,
@@ -66,23 +75,13 @@ resource "authentik_flow" "plex" {
 resource "authentik_policy_expression" "plex_source_context" {
   name              = "Homelab - Verified Plex Source Context"
   execution_logging = false
-  expression        = <<-PY
-    source = context.get("source")
-    connection = context.get("goauthentik.io/sources/connection")
-    return bool(
-        ak_is_sso_flow
-        and source is not None
-        and source.enabled
-        and source.slug == "plex"
-        and connection is not None
-        and connection.source_id == source.pk
-        and connection.identifier
-    )
-  PY
+  expression = templatefile("${path.module}/policies/plex_source_context.py.tftpl", {
+    deny_unverified = "False"
+  })
 }
 
 resource "authentik_policy_binding" "plex_source_context" {
-  for_each       = authentik_flow.plex
+  for_each       = { authentication = authentik_flow.plex["authentication"] }
   target         = each.value.uuid
   policy         = authentik_policy_expression.plex_source_context.id
   order          = 0
@@ -101,7 +100,8 @@ resource "authentik_policy_binding" "plex_reputation" {
   failure_result = false
 }
 
-# No prompt, password, invitation attributes, or automatic group assignment.
+# No password or automatic group assignment. Invitations may not override
+# the profile supplied by Plex; use an empty invitation custom-attributes field.
 # Plex supplies the profile; administrators manage memberships independently.
 resource "authentik_stage_user_write" "plex_enrollment" {
   name                     = "Homelab - Plex Enrollment Write"

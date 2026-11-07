@@ -1,7 +1,6 @@
 """Exercise the source-flow guard without requiring a running Authentik instance."""
 
 from pathlib import Path
-import re
 import textwrap
 from types import SimpleNamespace
 import unittest
@@ -10,17 +9,21 @@ import unittest
 class PlexSourceGuardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        configuration = (Path(__file__).parents[1] / "plex.tf").read_text()
-        expression = re.search(r"expression\s*=\s*<<-PY\n(.*?)\n\s*PY", configuration, re.S)
-        if expression is None:
-            raise AssertionError("Plex flow guard is missing")
+        expression = (Path(__file__).parents[1] / "policies/plex_source_context.py.tftpl").read_text()
         namespace = {}
         exec(
             "def guard(context, ak_is_sso_flow):\n"
-            + textwrap.indent(textwrap.dedent(expression[1]), "    "),
+            + textwrap.indent(expression.replace("${deny_unverified}", "False"), "    "),
             namespace,
         )
         cls.guard = staticmethod(namespace["guard"])
+        namespace = {}
+        exec(
+            "def deny(context, ak_is_sso_flow):\n"
+            + textwrap.indent(expression.replace("${deny_unverified}", "True"), "    "),
+            namespace,
+        )
+        cls.deny = staticmethod(namespace["deny"])
 
     def setUp(self):
         self.source = SimpleNamespace(pk="plex-source", slug="plex", enabled=True)
@@ -61,6 +64,13 @@ class PlexSourceGuardTests(unittest.TestCase):
     def test_missing_plex_identity_is_denied(self):
         self.connection.identifier = ""
         self.assertFalse(self.guard(self.context, True))
+
+    def test_deny_stage_runs_when_source_proof_is_missing(self):
+        self.assertTrue(self.deny({}, False))
+        self.assertTrue(self.deny(self.context, False))
+
+    def test_deny_stage_is_skipped_only_with_verified_source(self):
+        self.assertFalse(self.deny(self.context, True))
 
 
 if __name__ == "__main__":
