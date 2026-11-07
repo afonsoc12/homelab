@@ -1,22 +1,22 @@
 # Plex proves identity; application bindings independently grant access.
 locals {
-  plex_settings              = try(yamldecode(data.sops_file.secrets.raw).plex, {})
-  plex_client_id             = try(local.plex_settings.client_id, "homelab-authentik")
-  plex_token                 = try(local.plex_settings.token, "")
-  plex_allowed_servers_input = try(local.plex_settings.allowed_servers, [])
-  plex_allowed_servers       = try(tolist(local.plex_allowed_servers_input), jsondecode(local.plex_allowed_servers_input))
-  plex_denied_emails_input   = try(local.plex_settings.denied_emails, [])
-  plex_denied_emails         = try(tolist(local.plex_denied_emails_input), jsondecode(local.plex_denied_emails_input))
+  plex_settings            = try(yamldecode(data.sops_file.secrets.raw).plex, {})
+  plex_client_id           = try(local.plex_settings.client_id, "homelab-authentik")
+  plex_token               = try(local.plex_settings.token, "")
+  plex_denied_emails_input = try(local.plex_settings.denied_emails, [])
+  plex_denied_emails       = try(tolist(local.plex_denied_emails_input), jsondecode(local.plex_denied_emails_input))
 }
 
 resource "authentik_source_plex" "plex" {
-  name                = "Plex"
-  slug                = "plex"
-  enabled             = true
-  promoted            = true
-  client_id           = local.plex_client_id
-  plex_token          = local.plex_token
-  allowed_servers     = local.plex_allowed_servers
+  name       = "Plex"
+  slug       = "plex"
+  enabled    = true
+  promoted   = true
+  client_id  = local.plex_client_id
+  plex_token = local.plex_token
+  # Account identity only: the scoped server compatibility patch handles this
+  # mode without contacting Plex Media Server or enumerating its resources.
+  allowed_servers     = []
   allow_friends       = false
   user_matching_mode  = "identifier"
   group_matching_mode = "identifier"
@@ -43,13 +43,6 @@ resource "authentik_source_plex" "plex" {
   ]
 
   lifecycle {
-    precondition {
-      condition = (
-        length(local.plex_allowed_servers) > 0 &&
-        alltrue([for server in local.plex_allowed_servers : length(trimspace(server)) > 0])
-      )
-      error_message = "Plex sign-in requires an explicit allowed server."
-    }
     precondition {
       condition     = length(trimspace(local.plex_token)) > 0
       error_message = "Plex sign-in requires an encrypted Plex token."

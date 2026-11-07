@@ -1,0 +1,39 @@
+---
+name: Authentik authentication tests
+
+on: # yamllint disable-line rule:truthy
+  pull_request:
+    paths:
+      - terraform/authentik/**
+      - kubernetes/apps/ingress/authentik/**
+      - kubernetes/apps/addons/argocd-apps/templates/ingress/authentik.yaml
+      - .github/workflows/authentik-tests.yaml
+      - pyproject.toml
+      - uv.lock
+  push:
+    branches: [master]
+    paths:
+      - terraform/authentik/**
+      - kubernetes/apps/ingress/authentik/**
+      - kubernetes/apps/addons/argocd-apps/templates/ingress/authentik.yaml
+      - .github/workflows/authentik-tests.yaml
+      - pyproject.toml
+      - uv.lock
+
+permissions:
+  contents: read
+
+jobs:
+  policies:
+    name: Invitation, identity, and access guards
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          activate-environment: true
+      - run: uv sync --locked --group dev
+      - run: uv run python -m unittest discover -s terraform/authentik/tests -v
