@@ -88,17 +88,12 @@ resource "adguard_rewrite" "music-assistant-stream" {
   answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
-resource "adguard_rewrite" "llm" {
-  domain = "llm.local.${local.domain}"
-  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
-}
-
 resource "adguard_rewrite" "hoarder" {
   domain = "hoarder.srv.${local.domain}"
   answer = "10.0.10.220"
 }
 
-# Keep Kopia, UniFi, and the standalone sandbox on their current ingress paths until their upstream authentication and TLS behavior is verified.
+# Keep Kopia and UniFi on their current ingress paths until their upstream authentication and TLS behavior is verified.
 data "sops_file" "legacy_ingress" {
   source_file = "../../kubernetes/apps/ingress/ingress-nginx/values.sops.yaml"
   input_type  = "yaml"

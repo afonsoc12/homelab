@@ -152,12 +152,6 @@ locals {
       host      = "n8n.local"
       upstream  = "http://n8n.automation.svc.cluster.local:5678"
     }
-    "ollama" = {
-      name      = "Ollama Web UI"
-      namespace = "homelab"
-      host      = "llm.local"
-      upstream  = "http://webui-service.sandbox.svc.cluster.local:8080"
-    }
     "navidrome" = {
       name      = "navidrome"
       namespace = "homelab"

@@ -38,7 +38,6 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | node-red | automation | Authentik proxy; explicit administrator access |
 | ntfy | monitoring | Authentik proxy; outpost-owned standard Ingress |
 | octo-track | monitoring | Authentik proxy; outpost-owned standard Ingress |
-| ollama | sandbox | Authentik proxy; ingress-only GitOps route uses the existing homelab outpost and UI service |
 | paperless | homelab | Authentik proxy; explicit administrator access |
 | plex | homelab | Unchanged: native Plex authentication and non-tunnel ingress |
 | prometheus | monitoring | Authentik proxy; outpost-owned standard Ingress |
@@ -64,8 +63,8 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 
 Home Assistant is routed through the automation Authentik outpost. Its native API and login endpoints bypass the proxy so Home Assistant clients can authenticate with Home Assistant credentials; Home Assistant enforces authentication on those endpoints. Browser access requires Authentik.
 
-Kopia remains on nginx for TLS/gRPC passthrough while its supported authentication path is verified; the current Authelia annotation is ineffective with passthrough. UniFi remains on its existing route until its upstream certificate can be validated. Uptime Kuma remains on nginx with Authentik forward auth because its public host needs a distinct Contour route and certificate. Ollama's existing application remains in sandbox; this migration adopts only its ingress route.
+Kopia remains on nginx for TLS/gRPC passthrough while its supported authentication path is verified; the current Authelia annotation is ineffective with passthrough. UniFi remains on its existing route until its upstream certificate can be validated. Uptime Kuma remains on nginx with Authentik forward auth because its public host needs a distinct Contour route and certificate.
 
-The existing local DNS wildcard and Ollama rewrite point to Contour. Kopia and UniFi retain their Nginx DNS exceptions.
+The existing local DNS wildcard points to Contour. Kopia and UniFi retain their Nginx DNS exceptions.
 
 LAN origin alone does not grant anonymous access. Native app authentication and account links are retained; API bypasses require verification.
