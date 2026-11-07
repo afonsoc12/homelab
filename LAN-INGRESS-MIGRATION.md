@@ -72,3 +72,9 @@ Uptime Kuma uses its own Authentik outpost because the monitoring wildcard certi
 The Kopia, UniFi, status, and Unraid DNS rewrites target Contour. The previously merged stocks rewrite is also reconciled away from the legacy address. The remaining tunnel origins also target Contour. Apply the reviewed Authentik configuration alongside the ArgoCD cutover, then apply DNS and tunnel plans and verify routes before removing Nginx. These final four route changes are prepared in Git; they are not yet verified in the live cluster.
 
 LAN origin alone does not grant anonymous access. Native app authentication and account links are retained; API bypasses require verification.
+
+## Final controller and legacy identity cutover
+
+Nginx is retained as a Deployment with zero replicas; its external Service and admission webhook are disabled. Contour requests the previous ingress load-balancer address from encrypted values. MetalLB releases the address from the removed Nginx Service before assigning it to Envoy. DNS rewrites that previously pointed to Contour's temporary address must be reconciled after the handoff.
+
+Authelia and LLDAP have zero replicas and disabled portal Ingresses. Their configuration and persistent data are retained. The final consumer audit found only UniFi using Authelia, no configured Authelia OIDC clients, and no Authentik LDAP sources. Retiring them is coupled to UniFi's Authentik migration in this change.

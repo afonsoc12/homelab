@@ -48,14 +48,14 @@ envoy:
                 memory: 128Mi
     service:
         type: LoadBalancer
-        loadBalancerIP: ENC[AES256_GCM,data:1HjJ59sMjdnYlBE=,iv:duqqXG7jHQLwuW0Mv6ROwXK1m0jMtWtkTuQT/zSYwk4=,tag:LDCQlVx9974eP/u2dc74WA==,type:str]
+        loadBalancerIP: ENC[AES256_GCM,data:odH/H2bTbwcFTnI=,iv:OyVFHiAeNHhl6lgPOyZXZCxI2Ly9SBqVZy5VLCkOY6E=,tag:s4LDx8oEFuMzi/lpfDSyww==,type:str]
         externalTrafficPolicy: Local
 gatewayAPI:
     manageCRDs: false
 sops:
     encrypted_regex: ^(loadBalancerIP)$
-    lastmodified: "2026-10-24T22:19:37Z"
-    mac: ENC[AES256_GCM,data:2Ydl4lA+6C7X8FT8/6xL858xs2QThWd9e+WOsvtpixCECe91ows0dIuadm8A5QwiVM3vHr8pO7bh505/yGkWpJnMtMD2EZEOvS3nuQ9UA6dc0ykcHFxtqNeal5zQJNLadS1+L+A5MwkWI+YUwLWCcqQrQ7aHvNmpFUG0drL32is=,iv:f72D8Jv/nNxaHPyOjryNzvgoa93DC3Z8PV02ll/LeUw=,tag:lowCPypQMxaQ4FHMjSh5ZA==,type:str]
+    lastmodified: "2026-11-07T23:57:57Z"
+    mac: ENC[AES256_GCM,data:z2SrSqlzqs17glVCZNIfNAGxPnk/WHIdq8OuhovZX4lHvFEJCqbwhIhN7m3TxiiMWtSB7dChrDAntctDor7NH+dU3fYyTb+nxtqE7tzYRJTUP4AhzxRpVDvauV/tfhgVtTyQVXdy8FelhSfWUeQZyxpieLI4rgmFV594yoRZhhU=,iv:zt707EN6qvW7aIYzOPe2wFynGtNMkgLiiRdKMA6/pV0=,tag:YiD+4pDsWOw/eIAIedsF9A==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-10-24T22:19:37Z"
