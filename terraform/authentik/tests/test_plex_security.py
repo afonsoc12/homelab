@@ -32,6 +32,9 @@ class PlexSourceGuardTests(unittest.TestCase):
         self.context = {
             "source": self.source,
             "goauthentik.io/sources/connection": self.connection,
+            "invitation": SimpleNamespace(
+                single_use=True, expiring=True, expires=object(), fixed_data={}
+            ),
         }
 
     def test_verified_plex_callback_can_continue(self):

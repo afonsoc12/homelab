@@ -37,6 +37,7 @@ resource "authentik_source_plex" "plex" {
     authentik_policy_binding.plex_require_source,
     authentik_flow_stage_binding.plex_require_source,
     authentik_flow_stage_binding.plex_invitation,
+    authentik_policy_binding.plex_invitation_source,
     authentik_flow_stage_binding.plex_enrollment_write,
     authentik_flow_stage_binding.plex_mfa,
     authentik_flow_stage_binding.plex_login,

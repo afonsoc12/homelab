@@ -1,60 +1,18 @@
 # The invite opens the same enrollment flow used by the Plex callback. Its
-# admission policy validates the invite without consuming it before Plex login.
+# callback policy preserves its token for the native Invitation stage.
 resource "authentik_policy_expression" "plex_enrollment_admission" {
   name              = "Homelab - Plex Invitation Admission"
   execution_logging = false
   expression        = <<-PY
-    # Authentik expression policy: validate, but do not consume, the invitation.
-    from uuid import UUID
-
-    from authentik.stages.invitation.models import Invitation
-    from django.utils.timezone import now
-
+    # Keep the invite token across Plex's callback. The native Invitation
+    # stage validates its UUID, expiry, flow, and whether it was already used.
     query = http_request.session.get("authentik/flows/get", {})
     profile = context.get("prompt_data", {})
     token = query.get("itoken") or query.get("token") or profile.get("token")
     if not token:
         return False
-    try:
-        invitation_id = UUID(str(token))
-    except (ValueError, TypeError, AttributeError):
-        return False
-
-    invitation = Invitation.objects.filter(
-        pk=invitation_id,
-        flow__slug="homelab-plex-enrollment",
-        single_use=True,
-        expiring=True,
-    ).first()
-    if (
-        invitation is None
-        or invitation.expires is None
-        or invitation.expires <= now()
-        or invitation.fixed_data
-    ):
-        return False
-
-    if not ak_is_sso_flow:
-        # Only the source-selection stage can run before Plex proves identity.
-        # A separate deny stage blocks any attempt to proceed without that proof.
-        return True
-
-    source = context.get("source")
-    connection = context.get("goauthentik.io/sources/connection")
-    if not (
-        source is not None
-        and source.enabled
-        and source.slug == "plex"
-        and connection is not None
-        and connection.source_id == source.pk
-        and connection.identifier
-    ):
-        return False
-
-    # The Plex callback redirects without the original invitation query string.
-    # Keep its token in the server-side flow plan for the native Invitation stage,
-    # which revalidates and consumes the single-use invitation after Plex login.
-    profile["token"] = str(invitation_id)
+    if ak_is_sso_flow:
+        profile["token"] = token
     return True
   PY
 }
@@ -131,8 +89,8 @@ resource "authentik_policy_binding" "plex_before_source" {
 }
 
 # A source-only identification stage is presentation, not proof of identity.
-# If it is skipped or fails to redirect, explicitly deny before consuming the
-# invitation or creating a user. A policy error must execute this deny stage.
+# After native invitation validation, require proven Plex identity and a
+# single-use, expiring invite before creating a user. Policy errors execute denial.
 resource "authentik_stage_deny" "plex_unverified" {
   name = "Homelab - Deny Unverified Plex Enrollment"
 }
@@ -143,6 +101,7 @@ resource "authentik_policy_expression" "plex_require_source" {
   expression        = <<-PY
     source = context.get("source")
     connection = context.get("goauthentik.io/sources/connection")
+    invitation = context.get("invitation")
     verified = bool(
         ak_is_sso_flow
         and source is not None
@@ -151,6 +110,11 @@ resource "authentik_policy_expression" "plex_require_source" {
         and connection is not None
         and connection.source_id == source.pk
         and connection.identifier
+        and invitation is not None
+        and invitation.single_use
+        and invitation.expiring
+        and invitation.expires is not None
+        and not invitation.fixed_data
     )
     return not verified
   PY
@@ -159,7 +123,7 @@ resource "authentik_policy_expression" "plex_require_source" {
 resource "authentik_flow_stage_binding" "plex_require_source" {
   target                  = authentik_flow.plex["enrollment"].uuid
   stage                   = authentik_stage_deny.plex_unverified.id
-  order                   = 5
+  order                   = 9
   evaluate_on_plan        = false
   re_evaluate_policies    = true
   policy_engine_mode      = "all"
@@ -182,4 +146,14 @@ resource "authentik_flow_stage_binding" "plex_invitation" {
   re_evaluate_policies    = true
   policy_engine_mode      = "all"
   invalid_response_action = "retry"
+}
+
+# Do not consume an invite until Plex has proved identity. If this check fails,
+# the later deny stage rejects the missing native invitation result.
+resource "authentik_policy_binding" "plex_invitation_source" {
+  target         = authentik_flow_stage_binding.plex_invitation.id
+  policy         = authentik_policy_expression.plex_source_context.id
+  order          = 0
+  enabled        = true
+  failure_result = false
 }
