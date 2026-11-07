@@ -68,9 +68,20 @@ resource "authentik_flow" "plex" {
 resource "authentik_policy_expression" "plex_source_context" {
   name              = "Homelab - Verified Plex Source Context"
   execution_logging = false
-  expression = templatefile("${path.module}/policies/plex_source_context.py.tftpl", {
-    deny_unverified = "False"
-  })
+  expression        = <<-PY
+    source = context.get("source")
+    connection = context.get("goauthentik.io/sources/connection")
+    verified = bool(
+        ak_is_sso_flow
+        and source is not None
+        and source.enabled
+        and source.slug == "plex"
+        and connection is not None
+        and connection.source_id == source.pk
+        and connection.identifier
+    )
+    return verified
+  PY
 }
 
 resource "authentik_policy_binding" "plex_source_context" {

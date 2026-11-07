@@ -2,7 +2,6 @@
 
 from datetime import datetime, timedelta, timezone
 import json
-from pathlib import Path
 import sys
 import textwrap
 from types import ModuleType, SimpleNamespace
@@ -10,8 +9,7 @@ import unittest
 from unittest.mock import patch
 from uuid import uuid4
 
-
-POLICIES = Path(__file__).parents[1] / "policies"
+from terraform_policies import read_policy
 
 
 def evaluate(expression, context, sso=False, request=None, modules=None):
@@ -27,7 +25,7 @@ def evaluate(expression, context, sso=False, request=None, modules=None):
 
 class PlexInvitationTests(unittest.TestCase):
     def setUp(self):
-        self.expression = (POLICIES / "plex_enrollment.py").read_text()
+        self.expression = read_policy("plex_invitations.tf", "plex_enrollment_admission")
         self.now = datetime.now(timezone.utc)
         self.invite = SimpleNamespace(
             pk=uuid4(),
@@ -125,8 +123,8 @@ class PlexInvitationTests(unittest.TestCase):
 
 class PlexEmailTests(unittest.TestCase):
     def check(self, email=None, denied=None, sso=True):
-        expression = (POLICIES / "plex_email_access.py.tftpl").read_text()
-        expression = expression.replace("${denied_emails}", json.dumps(denied or []))
+        expression = read_policy("plex_invitations.tf", "plex_email_access")
+        expression = expression.replace("${jsonencode(local.plex_denied_emails)}", json.dumps(denied or []))
         return evaluate(expression, {"prompt_data": {"email": email}}, sso)
 
     def test_invitation_entry_does_not_require_an_email(self):

@@ -3,7 +3,60 @@
 resource "authentik_policy_expression" "plex_enrollment_admission" {
   name              = "Homelab - Plex Invitation Admission"
   execution_logging = false
-  expression        = file("${path.module}/policies/plex_enrollment.py")
+  expression        = <<-PY
+    # Authentik expression policy: validate, but do not consume, the invitation.
+    from uuid import UUID
+
+    from authentik.stages.invitation.models import Invitation
+    from django.utils.timezone import now
+
+    query = http_request.session.get("authentik/flows/get", {})
+    profile = context.get("prompt_data", {})
+    token = query.get("itoken") or query.get("token") or profile.get("token")
+    if not token:
+        return False
+    try:
+        invitation_id = UUID(str(token))
+    except (ValueError, TypeError, AttributeError):
+        return False
+
+    invitation = Invitation.objects.filter(
+        pk=invitation_id,
+        flow__slug="homelab-plex-enrollment",
+        single_use=True,
+        expiring=True,
+    ).first()
+    if (
+        invitation is None
+        or invitation.expires is None
+        or invitation.expires <= now()
+        or invitation.fixed_data
+    ):
+        return False
+
+    if not ak_is_sso_flow:
+        # Only the source-selection stage can run before Plex proves identity.
+        # A separate deny stage blocks any attempt to proceed without that proof.
+        return True
+
+    source = context.get("source")
+    connection = context.get("goauthentik.io/sources/connection")
+    if not (
+        source is not None
+        and source.enabled
+        and source.slug == "plex"
+        and connection is not None
+        and connection.source_id == source.pk
+        and connection.identifier
+    ):
+        return False
+
+    # The Plex callback redirects without the original invitation query string.
+    # Keep its token in the server-side flow plan for the native Invitation stage,
+    # which revalidates and consumes the single-use invitation after Plex login.
+    profile["token"] = str(invitation_id)
+    return True
+  PY
 }
 
 resource "authentik_policy_binding" "plex_enrollment_admission" {
@@ -17,9 +70,18 @@ resource "authentik_policy_binding" "plex_enrollment_admission" {
 resource "authentik_policy_expression" "plex_email_access" {
   name              = "Homelab - Plex Email Access"
   execution_logging = false
-  expression = templatefile("${path.module}/policies/plex_email_access.py.tftpl", {
-    denied_emails = jsonencode(local.plex_denied_emails)
-  })
+  expression        = <<-PY
+    # The initial invitation entry has no Plex profile yet. Both callbacks must
+    # provide an email, checked case-insensitively against the encrypted denylist.
+    if not ak_is_sso_flow:
+        return True
+
+    email = str(context.get("prompt_data", {}).get("email") or "").strip().casefold()
+    denied_emails = ${jsonencode(local.plex_denied_emails)}
+    return bool(email) and email not in {
+        value.strip().casefold() for value in denied_emails
+    }
+  PY
 }
 
 resource "authentik_policy_binding" "plex_email_access" {
@@ -78,9 +140,20 @@ resource "authentik_stage_deny" "plex_unverified" {
 resource "authentik_policy_expression" "plex_require_source" {
   name              = "Homelab - Reject Unverified Plex Enrollment"
   execution_logging = false
-  expression = templatefile("${path.module}/policies/plex_source_context.py.tftpl", {
-    deny_unverified = "True"
-  })
+  expression        = <<-PY
+    source = context.get("source")
+    connection = context.get("goauthentik.io/sources/connection")
+    verified = bool(
+        ak_is_sso_flow
+        and source is not None
+        and source.enabled
+        and source.slug == "plex"
+        and connection is not None
+        and connection.source_id == source.pk
+        and connection.identifier
+    )
+    return not verified
+  PY
 }
 
 resource "authentik_flow_stage_binding" "plex_require_source" {

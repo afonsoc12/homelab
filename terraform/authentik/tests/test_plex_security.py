@@ -1,26 +1,27 @@
 """Exercise the source-flow guard without requiring a running Authentik instance."""
 
-from pathlib import Path
 import textwrap
 from types import SimpleNamespace
 import unittest
 
+from terraform_policies import read_policy
 
 class PlexSourceGuardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        expression = (Path(__file__).parents[1] / "policies/plex_source_context.py.tftpl").read_text()
+        expression = read_policy("plex.tf", "plex_source_context")
         namespace = {}
         exec(
             "def guard(context, ak_is_sso_flow):\n"
-            + textwrap.indent(expression.replace("${deny_unverified}", "False"), "    "),
+            + textwrap.indent(expression, "    "),
             namespace,
         )
         cls.guard = staticmethod(namespace["guard"])
         namespace = {}
+        expression = read_policy("plex_invitations.tf", "plex_require_source")
         exec(
             "def deny(context, ak_is_sso_flow):\n"
-            + textwrap.indent(expression.replace("${deny_unverified}", "True"), "    "),
+            + textwrap.indent(expression, "    "),
             namespace,
         )
         cls.deny = staticmethod(namespace["deny"])
