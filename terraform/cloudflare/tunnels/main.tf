@@ -23,7 +23,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
     ingress = [
       {
         hostname = "auth.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -60,7 +60,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "home.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -76,7 +76,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "seerr.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -92,7 +92,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "calibre.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -108,7 +108,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "rss.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -140,7 +140,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "wallabag.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -180,7 +180,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "split.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -196,7 +196,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "music-assistant-stream.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -212,7 +212,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "music-assistant-alexa-skill.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false

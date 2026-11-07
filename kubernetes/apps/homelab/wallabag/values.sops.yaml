@@ -65,9 +65,10 @@ pvc:
             storage: 500Mi
 ingress:
     enabled: true
-    authelia: true
-    className: nginx
-    annotations: null
+    authelia: false
+    className: contour
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
     # nginx.ingress.kubernetes.io/client-max-body-size: "0"
     # nginx.ingress.kubernetes.io/proxy-body-size: "0"
     tls:
@@ -78,6 +79,9 @@ ingress:
           paths:
             - path: /
               pathType: ImplementationSpecific
+              service:
+                  name: authentik-homelab-proxy
+                  port: 9000
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext: {}

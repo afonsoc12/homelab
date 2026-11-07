@@ -1,5 +1,25 @@
 locals {
   lan_proxy_apps = {
+    "home-assistant" = {
+      name      = "Home Assistant"
+      namespace = "automation"
+      host      = "home"
+      upstream  = "http://home-assistant.automation.svc.cluster.local:8123"
+      # Home Assistant enforces native authentication on API and login endpoints.
+      skip_path_regex = "^/(api|auth)(/|$)"
+    }
+    "calibre-web" = {
+      name      = "Calibre-Web"
+      namespace = "homelab"
+      host      = "calibre"
+      upstream  = "http://calibre-web-external-external-svc.homelab.svc.cluster.local:8083"
+    }
+    "freshrss" = {
+      name      = "FreshRSS"
+      namespace = "homelab"
+      host      = "rss"
+      upstream  = "http://freshrss.homelab.svc.cluster.local:80"
+    }
     "adguard" = {
       name      = "adguard"
       namespace = "homelab"
@@ -114,6 +134,18 @@ locals {
       host      = "music-assistant.local"
       upstream  = "http://music-assistant.automation.svc.cluster.local:8095"
     }
+    "music-assistant-alexa-skill" = {
+      name      = "Music Assistant Alexa Skill"
+      namespace = "automation"
+      host      = "music-assistant-alexa-skill"
+      upstream  = "http://music-assistant-alexa-skill.automation.svc.cluster.local:5000"
+    }
+    "music-assistant-stream" = {
+      name      = "Music Assistant Stream"
+      namespace = "automation"
+      host      = "music-assistant-stream"
+      upstream  = "http://music-assistant.automation.svc.cluster.local:8097"
+    }
     "n8n" = {
       name      = "n8n"
       namespace = "automation"
@@ -186,11 +218,23 @@ locals {
       host      = "scrutiny.local"
       upstream  = "http://scrutiny-external-external-svc.homelab.svc.cluster.local:8084"
     }
+    "seerr" = {
+      name      = "Seerr"
+      namespace = "homelab"
+      host      = "seerr"
+      upstream  = "http://seerr-external-external-svc.homelab.svc.cluster.local:5055"
+    }
     "sonarr" = {
       name      = "sonarr"
       namespace = "homelab"
       host      = "sonarr.local"
       upstream  = "http://sonarr-external-external-svc.homelab.svc.cluster.local:8989"
+    }
+    "spliit" = {
+      name      = "Spliit"
+      namespace = "homelab"
+      host      = "split"
+      upstream  = "http://spliit.homelab.svc.cluster.local:3000"
     }
     "tautulli" = {
       name      = "tautulli"
@@ -234,6 +278,18 @@ locals {
       host      = "wled-kitchen.local"
       upstream  = "http://wled-kitchen-external-external-svc.homelab.svc.cluster.local:80"
     }
+    "unraid" = {
+      name      = "Unraid"
+      namespace = "homelab"
+      host      = "hoarder.srv"
+      upstream  = "http://unraid-external-external-svc.homelab.svc.cluster.local:8080"
+    }
+    "wallabag" = {
+      name      = "Wallabag"
+      namespace = "homelab"
+      host      = "wallabag"
+      upstream  = "http://wallabag.homelab.svc.cluster.local:80"
+    }
   }
 }
 
@@ -248,7 +304,7 @@ resource "authentik_provider_proxy" "lan" {
   authorization_flow           = authentik_flow.provider_consent.uuid
   invalidation_flow            = authentik_flow.provider_logout.uuid
   intercept_header_auth        = false
-  skip_path_regex              = ""
+  skip_path_regex              = try(each.value.skip_path_regex, "")
   access_token_validity        = "hours=1"
   refresh_token_validity       = "hours=8"
   property_mappings = [

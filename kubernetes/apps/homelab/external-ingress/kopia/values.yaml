@@ -19,7 +19,8 @@ server:
 # Ingress configuration
 ingress:
   enabled: true
-  authelia: true
+  # TLS passthrough bypasses HTTP forward auth; verify Kopia's native server auth separately.
+  authelia: false
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"

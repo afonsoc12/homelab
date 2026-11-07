@@ -25,12 +25,12 @@ resource "adguard_rewrite" "mqtt" {
 
 resource "adguard_rewrite" "home" {
   domain = "home.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "calibre" {
   domain = "calibre.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "firefly" {
@@ -45,22 +45,22 @@ resource "adguard_rewrite" "sso" {
 
 resource "adguard_rewrite" "auth" {
   domain = "auth.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "rss" {
   domain = "rss.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "stocks" {
   domain = "stocks.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "seerr" {
   domain = "seerr.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "plex" {
@@ -75,17 +75,17 @@ resource "adguard_rewrite" "status" {
 
 resource "adguard_rewrite" "wallabag" {
   domain = "wallabag.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "music-assistant-alexa-skill" {
   domain = "music-assistant-alexa-skill.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "music-assistant-stream" {
   domain = "music-assistant-stream.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "hoarder" {
@@ -93,14 +93,14 @@ resource "adguard_rewrite" "hoarder" {
   answer = "10.0.10.220"
 }
 
-# Keep existing protected routes and the standalone sandbox outside this cutover.
+# Keep Kopia and UniFi on their current ingress paths until their upstream authentication and TLS behavior is verified.
 data "sops_file" "legacy_ingress" {
   source_file = "../../kubernetes/apps/ingress/ingress-nginx/values.sops.yaml"
   input_type  = "yaml"
 }
 
 resource "adguard_rewrite" "legacy_local" {
-  for_each = toset(["kopia", "unifi", "llm"])
+  for_each = toset(["kopia", "unifi"])
 
   domain = "${each.value}.local.${local.domain}"
   answer = data.sops_file.legacy_ingress.data["controller.service.loadBalancerIP"]
