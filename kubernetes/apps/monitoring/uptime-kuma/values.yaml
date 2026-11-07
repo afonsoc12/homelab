@@ -41,20 +41,9 @@ pvc:
     requests:
       storage: 2Gi
 
+# The dedicated Authentik outpost owns the Contour Ingress and public TLS cert.
 ingress:
-  enabled: true
-  authentik: true
-  className: "nginx"
-  annotations:
-  tls:
-    - secretName: status-cert
-
-  # Will assume the first element in .ports, regardless of service
-  hosts:
-    - host: status.{{ .Values.domain }}
-      paths:
-        - path: /
-          pathType: Prefix
+  enabled: false
 
 resources:
   limits:

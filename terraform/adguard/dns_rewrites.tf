@@ -70,7 +70,7 @@ resource "adguard_rewrite" "plex" {
 
 resource "adguard_rewrite" "status" {
   domain = "status.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "wallabag" {
@@ -90,18 +90,13 @@ resource "adguard_rewrite" "music-assistant-stream" {
 
 resource "adguard_rewrite" "hoarder" {
   domain = "hoarder.srv.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
-# Keep Kopia and UniFi on their current ingress paths until their upstream authentication and TLS behavior is verified.
-data "sops_file" "legacy_ingress" {
-  source_file = "../../kubernetes/apps/ingress/ingress-nginx/values.sops.yaml"
-  input_type  = "yaml"
-}
-
+# Preserve resource addresses while moving the last LAN hosts to Contour.
 resource "adguard_rewrite" "legacy_local" {
   for_each = toset(["kopia", "unifi"])
 
   domain = "${each.value}.local.${local.domain}"
-  answer = data.sops_file.legacy_ingress.data["controller.service.loadBalancerIP"]
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }

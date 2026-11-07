@@ -5,6 +5,8 @@
 labels: {}
 # External server configuration
 server:
+  # Optional PEM trust bundle from encrypted values, rendered as an Opaque Secret.
+  caCertificate: ""
   # ip: 10.0.0.1
   # port: 8080
   protocol: TCP
@@ -12,6 +14,7 @@ server:
 # Ingress configuration
 ingress:
   enabled: false
+  tlsPassthrough: false
   authelia: false
   className: "nginx"
   annotations: {}

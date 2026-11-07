@@ -1,0 +1,11 @@
+{{- with .Values.server.caCertificate }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "external-svc.fullname" $ }}-upstream-ca
+  namespace: {{ $.Release.Namespace }}
+type: Opaque
+stringData:
+  ca.crt: |
+    {{- tpl . $ | nindent 4 }}
+{{- end }}

@@ -15,16 +15,17 @@ labels:
 server:
   ip: "{{ .Values.ips.unifi }}"
   port: 443
+  caCertificate: "{{ .Values.upstream_tls.unifi.ca }}"
 
 # Ingress configuration
 ingress:
   enabled: true
-  authelia: true
+  className: contour
+  authelia: false
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
-    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
-    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    projectcontour.io/websocket-routes: /
+    projectcontour.io/response-timeout: 300s
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -32,3 +33,6 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          service:
+            name: authentik-unifi-proxy
+            port: 9000
