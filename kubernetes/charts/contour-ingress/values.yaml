@@ -1,0 +1,8 @@
+ingress:
+  annotations: {}
+  host: ""
+  path: /
+  pathType: Prefix
+  serviceName: ""
+  servicePort: 9000
+  tlsSecretName: local-wildcard-cert

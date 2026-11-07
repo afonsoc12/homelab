@@ -88,6 +88,11 @@ resource "adguard_rewrite" "music-assistant-stream" {
   answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
+resource "adguard_rewrite" "llm" {
+  domain = "llm.local.${local.domain}"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
+}
+
 resource "adguard_rewrite" "hoarder" {
   domain = "hoarder.srv.${local.domain}"
   answer = "10.0.10.220"
@@ -100,7 +105,7 @@ data "sops_file" "legacy_ingress" {
 }
 
 resource "adguard_rewrite" "legacy_local" {
-  for_each = toset(["kopia", "unifi", "llm"])
+  for_each = toset(["kopia", "unifi"])
 
   domain = "${each.value}.local.${local.domain}"
   answer = data.sops_file.legacy_ingress.data["controller.service.loadBalancerIP"]

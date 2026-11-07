@@ -1,10 +1,11 @@
 locals {
   lan_proxy_apps = {
     "home-assistant" = {
-      name            = "Home Assistant"
-      namespace       = "automation"
-      host            = "home"
-      upstream        = "http://home-assistant.automation.svc.cluster.local:8123"
+      name      = "Home Assistant"
+      namespace = "automation"
+      host      = "home"
+      upstream  = "http://home-assistant.automation.svc.cluster.local:8123"
+      # Home Assistant enforces native authentication on API and login endpoints.
       skip_path_regex = "^/(api|auth)(/|$)"
     }
     "calibre-web" = {
@@ -150,6 +151,12 @@ locals {
       namespace = "automation"
       host      = "n8n.local"
       upstream  = "http://n8n.automation.svc.cluster.local:5678"
+    }
+    "ollama" = {
+      name      = "Ollama Web UI"
+      namespace = "homelab"
+      host      = "llm.local"
+      upstream  = "http://webui-service.sandbox.svc.cluster.local:8080"
     }
     "navidrome" = {
       name      = "navidrome"

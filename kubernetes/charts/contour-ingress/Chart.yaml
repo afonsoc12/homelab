@@ -1,0 +1,5 @@
+apiVersion: v2
+name: contour-ingress
+description: A Contour Ingress route for an existing service
+type: application
+version: 0.1.0
