@@ -8,7 +8,7 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | airflow | addons | Authentik proxy; explicit administrator access |
 | alertmanager | monitoring | Authentik proxy; outpost-owned standard Ingress |
 | argocd | addons | Existing native Authentik OIDC; standard chart Ingress |
-| authelia | ingress | Contour; legacy login portal retained only for Home Assistant |
+| authelia | ingress | Contour; legacy login portal retained temporarily for UniFi |
 | bambuddy | homelab | Authentik proxy; explicit administrator access |
 | bazarr | homelab | Authentik proxy; explicit administrator access |
 | bentopdf | homelab | Authentik proxy; explicit administrator access |
@@ -22,9 +22,9 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | freshrss | homelab | Authentik proxy; explicit administrator access |
 | glance | homelab | Authentik proxy; explicit administrator access |
 | grocy | automation | Authentik proxy; explicit administrator access |
-| home-assistant | automation | Exception: existing Authelia authentication retained |
+| home-assistant | automation | Authentik proxy; native authenticated API paths remain available to integrations |
 | hyperion | homelab | Authentik proxy; explicit administrator access |
-| kopia | homelab | Unchanged: original nginx authentication retained |
+| kopia | homelab | Unchanged: nginx TLS/gRPC passthrough; authentication path needs verification |
 | krusader | homelab | Authentik proxy; explicit administrator access |
 | lidarr | homelab | Authentik proxy; explicit administrator access |
 | lldap | ingress | Authentik proxy; explicit administrator access |
@@ -38,7 +38,7 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | node-red | automation | Authentik proxy; explicit administrator access |
 | ntfy | monitoring | Authentik proxy; outpost-owned standard Ingress |
 | octo-track | monitoring | Authentik proxy; outpost-owned standard Ingress |
-| ollama | sandbox | Unchanged: standalone route has no namespace-local Authentik outpost |
+| ollama | sandbox | Live route is unmanaged by ArgoCD; adoption and Authentik routing are still required |
 | paperless | homelab | Authentik proxy; explicit administrator access |
 | plex | homelab | Unchanged: native Plex authentication and non-tunnel ingress |
 | prometheus | monitoring | Authentik proxy; outpost-owned standard Ingress |
@@ -59,10 +59,12 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | wedding-site | homelab | Authentik proxy; explicit administrator access |
 | wireguard | ingress | Authentik proxy; explicit administrator access |
 | wled-kitchen | homelab | Authentik proxy; explicit administrator access |
-| uptime-kuma | monitoring | Authentik forward auth retained on nginx pending a working monitoring outpost service |
+| uptime-kuma | monitoring | Authentik forward auth retained on nginx; Contour migration needs a per-app route and matching public certificate |
 | wallabag | homelab | Authentik proxy; explicit administrator access |
 
-Kopia remains on its existing protected nginx route because its gRPC/TLS path is not verified through Authentik. UniFi remains on its existing protected nginx route until its self-signed upstream certificate can be validated. Uptime Kuma remains on nginx with Authentik forward auth until a monitoring outpost service is available. The standalone sandbox route remains outside this outpost migration.
+Home Assistant is routed through the automation Authentik outpost. Its native API and login endpoints bypass the proxy so Home Assistant clients can authenticate with Home Assistant credentials; Home Assistant enforces authentication on those endpoints. Browser access requires Authentik.
+
+Kopia remains on nginx for TLS/gRPC passthrough while its supported authentication path is verified; the current Authelia annotation is ineffective with passthrough. UniFi remains on its existing route until its upstream certificate can be validated. Uptime Kuma remains on nginx with Authentik forward auth because its public host needs a distinct Contour route and certificate. The standalone sandbox route remains outside this outpost migration.
 
 The existing local DNS wildcard changes to Contour. Kopia, UniFi, and Ollama retain their existing DNS exceptions.
 

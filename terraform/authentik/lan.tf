@@ -1,5 +1,12 @@
 locals {
   lan_proxy_apps = {
+    "home-assistant" = {
+      name            = "Home Assistant"
+      namespace       = "automation"
+      host            = "home"
+      upstream        = "http://home-assistant.automation.svc.cluster.local:8123"
+      skip_path_regex = "^/(api|auth)(/|$)"
+    }
     "calibre-web" = {
       name      = "Calibre-Web"
       namespace = "homelab"
@@ -296,7 +303,7 @@ resource "authentik_provider_proxy" "lan" {
   authorization_flow           = authentik_flow.provider_consent.uuid
   invalidation_flow            = authentik_flow.provider_logout.uuid
   intercept_header_auth        = false
-  skip_path_regex              = ""
+  skip_path_regex              = try(each.value.skip_path_regex, "")
   access_token_validity        = "hours=1"
   refresh_token_validity       = "hours=8"
   property_mappings = [
