@@ -14,10 +14,10 @@ resource "authentik_source_plex" "plex" {
   promoted   = true
   client_id  = local.plex_client_id
   plex_token = local.plex_token
-  # Account identity only: the scoped server compatibility patch handles this
-  # mode without contacting Plex Media Server or enumerating its resources.
+  # Native Plex owner/friend authentication requires no media server.
+  # New users must also pass the invitation and MFA enrollment flow.
   allowed_servers     = []
-  allow_friends       = false
+  allow_friends       = true
   user_matching_mode  = "identifier"
   group_matching_mode = "identifier"
   user_path_template  = "users/plex"
