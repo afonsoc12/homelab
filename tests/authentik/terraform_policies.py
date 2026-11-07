@@ -6,7 +6,7 @@ import textwrap
 
 
 def read_resource(filename, kind, name):
-    source = (Path(__file__).parents[1] / filename).read_text()
+    source = (Path(__file__).parents[2] / "terraform" / "authentik" / filename).read_text()
     pattern = r'resource "' + re.escape(kind) + r'" "' + re.escape(name) + r'" \{.*?^\}'
     match = re.search(pattern, source, re.S | re.M)
     if match is None:

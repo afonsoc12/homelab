@@ -11,7 +11,7 @@ import unittest
 import yaml
 
 
-ROOT = Path(__file__).parents[3]
+ROOT = Path(__file__).parents[2]
 FIXTURE = Path(__file__).parent / "fixtures/plex_2026_8_5.py"
 
 

@@ -53,7 +53,7 @@ class PlexInvitationRequirementsTests(unittest.TestCase):
     def setUp(self):
         self.expression = read_policy("plex_invitations.tf", "plex_require_source")
         self.invitation = SimpleNamespace(
-            single_use=True, expiring=True, expires=object(), fixed_data={}
+            single_use=True, expiring=True, expires=object(), fixed_data={}, flow_id="plex-enrollment"
         )
         self.context = {
             "source": SimpleNamespace(pk="plex-source", slug="plex", enabled=True),
@@ -65,6 +65,10 @@ class PlexInvitationRequirementsTests(unittest.TestCase):
 
     def denied(self):
         return evaluate(self.expression, self.context, True)
+
+    def test_unbound_invitation_is_denied(self):
+        self.invitation.flow_id = None
+        self.assertTrue(self.denied())
 
     def test_verified_identity_and_native_invitation_can_continue(self):
         self.assertFalse(self.denied())

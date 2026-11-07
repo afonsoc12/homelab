@@ -33,7 +33,7 @@ class PlexSourceGuardTests(unittest.TestCase):
             "source": self.source,
             "goauthentik.io/sources/connection": self.connection,
             "invitation": SimpleNamespace(
-                single_use=True, expiring=True, expires=object(), fixed_data={}
+                single_use=True, expiring=True, expires=object(), fixed_data={}, flow_id="plex-enrollment"
             ),
         }
 

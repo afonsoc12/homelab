@@ -63,8 +63,8 @@ resource "authentik_flow" "plex" {
   layout             = "stacked"
 }
 
-# These flows must only run after Authentik has redeemed a valid Plex token
-# and checked the user's access to our selected Plex server. Direct flow URLs
+# These flows require identity proven by native Plex token redemption.
+# Direct flow URLs
 # must never create users or authenticate a pending user without that proof.
 resource "authentik_policy_expression" "plex_source_context" {
   name              = "Homelab - Verified Plex Source Context"

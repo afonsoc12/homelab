@@ -111,6 +111,7 @@ resource "authentik_policy_expression" "plex_require_source" {
         and connection.source_id == source.pk
         and connection.identifier
         and invitation is not None
+        and invitation.flow_id is not None
         and invitation.single_use
         and invitation.expiring
         and invitation.expires is not None
