@@ -90,7 +90,7 @@ resource "authentik_stage_identification" "login_identification" {
   recovery_flow             = authentik_flow.recovery.uuid
   show_matched_user         = true
   show_source_labels        = false
-  sources                   = []
+  sources                   = [authentik_source_plex.plex.uuid]
   user_fields               = ["email", "username"]
   webauthn_stage            = ""
 }

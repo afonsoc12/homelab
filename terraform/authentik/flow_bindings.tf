@@ -38,15 +38,8 @@ resource "authentik_flow_stage_binding" "login_mfa_validation" {
   target                  = authentik_flow.login.uuid
 }
 
-resource "authentik_flow_stage_binding" "login_password" {
-  evaluate_on_plan        = false
-  invalid_response_action = "retry"
-  order                   = 20
-  policy_engine_mode      = "any"
-  re_evaluate_policies    = true
-  stage                   = authentik_stage_password.login_password.id
-  target                  = authentik_flow.login.uuid
-}
+# The identification stage validates the password on the first screen through
+# password_stage. A separate binding would ask for the password a second time.
 
 resource "authentik_flow_stage_binding" "mfa_static_setup" {
   evaluate_on_plan        = false
