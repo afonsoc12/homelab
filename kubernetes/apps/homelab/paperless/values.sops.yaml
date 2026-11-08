@@ -19,7 +19,7 @@ ports:
       service: true
 additionalContainers:
     - name: gotenberg
-      image: docker.io/gotenberg/gotenberg:8.40.0
+      image: docker.io/gotenberg/gotenberg:9.1.0
       command:
         - gotenberg
         - --chromium-disable-javascript=true
