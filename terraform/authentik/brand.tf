@@ -5,7 +5,7 @@ resource "authentik_brand" "homelab" {
   branding_logo    = data.sops_file.secrets.data["value_038"]
   branding_favicon = data.sops_file.secrets.data["value_039"]
 
-  flow_authentication = authentik_flow.login.uuid
+  flow_authentication = authentik_flow.login_choice.uuid
   flow_invalidation   = authentik_flow.logout.uuid
   flow_recovery       = authentik_flow.recovery.uuid
   flow_user_settings  = authentik_flow.account_settings.uuid

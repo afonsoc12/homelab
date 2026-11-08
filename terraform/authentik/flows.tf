@@ -8,7 +8,7 @@ resource "authentik_flow" "login" {
   name               = "Homelab - Login"
   policy_engine_mode = "any"
   slug               = "homelab-login"
-  title              = "Homelab Login"
+  title              = "Log in with Authentik"
 }
 
 resource "authentik_flow" "mfa_duo_setup" {

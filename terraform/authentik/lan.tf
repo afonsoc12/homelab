@@ -300,7 +300,7 @@ resource "authentik_provider_proxy" "lan" {
   external_host                = "https://${each.value.host}.${local.apps_domain}"
   internal_host                = each.value.upstream
   internal_host_ssl_validation = true
-  authentication_flow          = authentik_flow.login.uuid
+  authentication_flow          = authentik_flow.login_choice.uuid
   authorization_flow           = authentik_flow.provider_consent.uuid
   invalidation_flow            = authentik_flow.provider_logout.uuid
   intercept_header_auth        = false
