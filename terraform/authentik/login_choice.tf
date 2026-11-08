@@ -60,7 +60,7 @@ resource "authentik_flow" "login_choice" {
 resource "authentik_stage_prompt_field" "login_choice" {
   name                     = "Homelab - Login Methods"
   field_key                = "login_methods"
-  label                    = ""
+  label                    = "Sign-in methods"
   type                     = "static"
   order                    = 0
   required                 = false
@@ -71,7 +71,7 @@ resource "authentik_stage_prompt_field" "login_choice" {
     from html import escape
     from urllib.parse import urlencode
 
-    query = urlencode(dict(request.session.get("authentik/flows/get", {}).items()))
+    query = urlencode(dict(http_request.session.get("authentik/flows/get", {}).items()))
     markup = ${jsonencode(local.login_choice_markup)}
     authentik_url = "/if/flow/${authentik_flow.login.slug}/?" + query
     plex_url = "/if/flow/${authentik_flow.plex_entry.slug}/?" + query
@@ -85,6 +85,7 @@ resource "authentik_stage_prompt" "login_choice" {
 }
 
 resource "authentik_flow_stage_binding" "login_choice" {
+  depends_on              = [authentik_flow_stage_binding.login_choice_deny]
   target                  = authentik_flow.login_choice.uuid
   stage                   = authentik_stage_prompt.login_choice.id
   order                   = 10
