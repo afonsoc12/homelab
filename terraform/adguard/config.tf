@@ -45,9 +45,8 @@ resource "adguard_config" "main" {
     protection_enabled = true
   }
 
-  #   lifecycle {
-  #     # Provider bug: tls fields return unknown after apply (gmichels/adguard#<issue>)
-  #     # Without this, every apply taints the resource → next run hits DHCP 400 on replace
-  #     ignore_changes = [tls]
-  #   }
+  lifecycle {
+    # TLS is managed outside this resource; the provider reports unstable computed values.
+    ignore_changes = [tls]
+  }
 }
