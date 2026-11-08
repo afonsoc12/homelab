@@ -14,8 +14,9 @@ resource "mysql_user" "mysqld_exporter" {
 }
 
 resource "mysql_grant" "mysqld_exporter" {
-  user       = mysql_user.mysqld_exporter.user
-  host       = mysql_user.mysqld_exporter.host
-  database   = "*"
-  privileges = ["PROCESS", "REPLICATION CLIENT", "SELECT"]
+  user     = mysql_user.mysqld_exporter.user
+  host     = mysql_user.mysqld_exporter.host
+  database = "*"
+  # MariaDB returns the former REPLICATION CLIENT privilege as BINLOG MONITOR.
+  privileges = ["PROCESS", "BINLOG MONITOR", "SELECT"]
 }

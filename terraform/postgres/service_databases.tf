@@ -30,11 +30,12 @@ resource "random_password" "this" {
 # ----- Roles (users) -----
 
 resource "postgresql_role" "this" {
-  for_each    = local.service_databases
-  name        = each.key
-  login       = true
-  password    = random_password.this[each.key].result
-  valid_until = "9999-12-31"
+  for_each = local.service_databases
+  name     = each.key
+  login    = true
+  password = random_password.this[each.key].result
+  # Match PostgreSQL's canonical timestamp so refresh does not plan the same update.
+  valid_until = "9999-12-31 00:00:00+00"
 }
 
 # ----- Databases -----

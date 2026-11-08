@@ -7,9 +7,10 @@ resource "b2_bucket" "this" {
     days_from_hiding_to_deleting = 30
   }
 
+  # B2 requires encryption for new uploads and no longer accepts "none".
   default_server_side_encryption {
-    mode      = var.encryption ? "SSE-B2" : "none"
-    algorithm = var.encryption ? "AES256" : null
+    mode      = "SSE-B2"
+    algorithm = "AES256"
   }
 
   file_lock_configuration {

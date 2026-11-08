@@ -82,7 +82,7 @@ Manages MariaDB databases, users, and grants via the [`petoju/mysql`](https://re
 | File | Purpose |
 |------|---------|
 | `service_databases.tf` | Service databases, users, and grants — add names to `local.service_databases` |
-| `mysqld_exporter_user.tf` | Monitoring user (`mysqld_exporter`) with `PROCESS`, `REPLICATION CLIENT`, `SELECT` |
+| `mysqld_exporter_user.tf` | Monitoring user (`mysqld_exporter`) with `PROCESS`, `BINLOG MONITOR`, `SELECT` |
 | `providers.tf` | MySQL provider config (reads from SOPS) |
 | `secrets.sops.yaml` | Encrypted: endpoint, terraform credentials, per-user passwords |
 
@@ -123,7 +123,7 @@ terraform init -backend-config=../.decrypted~backend.sops.tfbackend
 | `gmichels/adguard` | `~> 1.7` | AdGuard Home configuration |
 | `cloudflare/cloudflare` | `~> 5.0` | Cloudflare resources |
 | `oracle/oci` | `8.10.0` | Oracle Cloud Infrastructure resources |
-| `Backblaze/b2` | `~> 0.12.1` | Backblaze B2 buckets and application keys |
+| `Backblaze/b2` | `~> 0.14.0` | Backblaze B2 buckets and application keys |
 | `petoju/mysql` | `~> 3.0` | MariaDB databases, users, and grants |
 | `cyrilgdn/postgresql` | `~> 1.25` | PostgreSQL databases, roles, and grants |
 | `hashicorp/random` | `~> 3.0` | Random password generation |
