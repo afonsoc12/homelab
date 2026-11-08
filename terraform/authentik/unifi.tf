@@ -70,8 +70,14 @@ resource "authentik_outpost" "unifi" {
         op   = "add"
         path = "/spec/template/spec/volumes"
         value = [{
-          name   = "unifi-upstream-ca"
-          secret = { secretName = "unifi-external-external-svc-upstream-ca" }
+          name = "unifi-upstream-ca"
+          secret = {
+            secretName = "unifi-external-external-svc-upstream-ca"
+            items = [{
+              key  = "ca.crt"
+              path = "${data.sops_file.kubernetes.data["upstream_tls.unifi.subject_hash"]}.0"
+            }]
+          }
         }]
         }, {
         op   = "add"
