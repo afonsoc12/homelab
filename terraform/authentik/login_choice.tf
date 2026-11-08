@@ -71,7 +71,7 @@ resource "authentik_stage_prompt_field" "login_choice" {
     from html import escape
     from urllib.parse import urlencode
 
-    query = urlencode(dict(request.session.get("authentik/flows/get", {}).items()))
+    query = urlencode(dict(http_request.session.get("authentik/flows/get", {}).items()))
     markup = ${jsonencode(local.login_choice_markup)}
     authentik_url = "/if/flow/${authentik_flow.login.slug}/?" + query
     plex_url = "/if/flow/${authentik_flow.plex_entry.slug}/?" + query
