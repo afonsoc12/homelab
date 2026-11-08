@@ -124,7 +124,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "status.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -164,7 +164,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "git-hook.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false

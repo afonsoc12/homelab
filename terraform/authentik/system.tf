@@ -12,7 +12,7 @@ resource "authentik_outpost" "embedded" {
     kubernetes_disabled_components = ["ingress", "httproute"]
   }))
   name               = "authentik Embedded Outpost"
-  protocol_providers = concat([authentik_provider_proxy.uptime_kuma.id], [for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == "ingress"])
+  protocol_providers = [for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == "ingress"]
   service_connection = authentik_service_connection_kubernetes.cluster.id
   type               = "proxy"
 }

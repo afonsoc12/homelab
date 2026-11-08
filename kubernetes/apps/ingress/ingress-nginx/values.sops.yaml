@@ -5,12 +5,14 @@
 #   - Chart Defaults: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
 # --------------------
 controller:
-    # Must run at least one copy on node k3s-m1 because there is no horizontal distribution
-    # https://metallb.universe.tf/usage/#local-traffic-policy
-    kind: DaemonSet
+    kind: Deployment
+    replicaCount: 0
+    autoscaling:
+        enabled: false
+    admissionWebhooks:
+        enabled: false
     service:
-        externalTrafficPolicy: Local
-        loadBalancerIP: ENC[AES256_GCM,data:Jvh6q3I6e58p+Gw=,iv:1NxbS/K1nKdb+Q1lZUWfCJS6tHhrAKyjNTM7HFvswFU=,tag:hTdtoGKyPC1xqw14cC/u5A==,type:str]
+        enabled: false
     resources:
         limits:
             cpu: 200m
@@ -32,8 +34,8 @@ controller:
         proxy-real-ip-cidr: ENC[AES256_GCM,data:HSsiEW6Zk5qFijX2HylRDfQm0C4gTytajdBDImuwXWbI0Oy0lBvMWBnHrxdXYzpu2DAQvqKO8cudSjKXtvNj8sGrP6NheZBXQKa/O8RxRRAvYHmIaPE0zwW5,iv:ZhYxSs8Gjfmxn+sFAu8Q2rQOwPBziWq/6H/KMD7CHu4=,tag:QZ616zi5WgNljONOIyZZzQ==,type:str]
 sops:
     encrypted_regex: ^(data|stringData|loadBalancerIP|proxy-real-ip-cidr)$
-    lastmodified: "2026-11-03T00:25:15Z"
-    mac: ENC[AES256_GCM,data:JxlwtjkizNjJx3gp5990/o4tmwE8Pc+ofEa3HhUd/JlnJWN3CrjWRQSf6fwlAzHKdEXaji2P0yB3/cSz0qt3O72X/XBgfd9qouDTNJaUSCILWrIDJnTqulAfFKaOaEJumQlV/DVlnhAW+Km0A/rKqW0+GZD7RgBOSZaD2xLb6OI=,iv:G6R8VywzB0WgkrttL/HG8CNLgVYyIOwWBLAjm9qOzAE=,tag:QxtbYl7UxsvLGggfgPAN7A==,type:str]
+    lastmodified: "2026-11-07T23:57:57Z"
+    mac: ENC[AES256_GCM,data:4Bo1anir0TMeLjjLhH/2Wyb19KU3iG2pUAmhzi8ftmExDAI3I3d009ItGZw6GQz6kFtkIWLEKuuE3xgLEjG5tbHkXLfjyHJ0OguAWq0lLE3H6EPt9znl3IESbdVsJGiDhEM1xw6BZIPkQ0pVUF003tZKcI1oHwoIIYIkKn+u8Bs=,iv:UUERXvCjmj1Oi3AwJuULnTPVFhGkvk6wNNMyCTZs2ts=,tag:jXczlSypHCtU+8n8eOKupQ==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-11-02T21:40:46Z"

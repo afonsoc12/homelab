@@ -7,7 +7,7 @@
 labels: {}
 # label_1: abc
 # label_2: def
-replicas: 1
+replicas: 0
 image:
     repository: docker.io/nitnelave/lldap
     tag: v0.6.3
@@ -42,7 +42,7 @@ pvc:
         requests:
             storage: 250Mi
 ingress:
-  enabled: true
+  enabled: false
   authelia: false
   className: contour
   annotations:

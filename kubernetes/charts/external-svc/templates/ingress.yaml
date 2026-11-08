@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled -}}
+{{- if and .Values.ingress.enabled (not .Values.ingress.tlsPassthrough) -}}
 {{- if and .Values.ingress.authelia (ne .Values.ingress.className "nginx") -}}
 {{- fail "nginx forward-auth annotations cannot protect another ingress class; configure a proxy backend" -}}
 {{- end -}}

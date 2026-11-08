@@ -8,7 +8,7 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | airflow | addons | Authentik proxy; explicit administrator access |
 | alertmanager | monitoring | Authentik proxy; outpost-owned standard Ingress |
 | argocd | addons | Existing native Authentik OIDC; standard chart Ingress |
-| authelia | ingress | Contour; legacy login portal retained temporarily for UniFi |
+| authelia | ingress | Contour; legacy portal retained pending identity-service retirement |
 | bambuddy | homelab | Authentik proxy; explicit administrator access |
 | bazarr | homelab | Authentik proxy; explicit administrator access |
 | bentopdf | homelab | Authentik proxy; explicit administrator access |
@@ -24,7 +24,7 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | grocy | automation | Authentik proxy; explicit administrator access |
 | home-assistant | automation | Authentik proxy; native authenticated API paths remain available to integrations |
 | hyperion | homelab | Authentik proxy; explicit administrator access |
-| kopia | homelab | Unchanged: nginx TLS/gRPC passthrough; authentication path needs verification |
+| kopia | homelab | Contour TCP TLS passthrough; native Kopia authentication; upstream currently unreachable |
 | krusader | homelab | Authentik proxy; explicit administrator access |
 | lidarr | homelab | Authentik proxy; explicit administrator access |
 | lldap | ingress | Authentik proxy; explicit administrator access |
@@ -39,7 +39,7 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | ntfy | monitoring | Authentik proxy; outpost-owned standard Ingress |
 | octo-track | monitoring | Authentik proxy; outpost-owned standard Ingress |
 | paperless | homelab | Authentik proxy; explicit administrator access |
-| plex | homelab | Unchanged: native Plex authentication and non-tunnel ingress |
+| plex | homelab | Contour Ingress; native Plex authentication retained for media clients |
 | prometheus | monitoring | Authentik proxy; outpost-owned standard Ingress |
 | prowlarr | homelab | Authentik proxy; explicit administrator access |
 | qbittorrent | homelab | Authentik proxy; explicit administrator access |
@@ -53,18 +53,28 @@ The migration uses standard Ingress resources and Authentik proxy providers wher
 | tdarr | homelab | Authentik proxy; explicit administrator access |
 | tracktor | homelab | Authentik proxy; explicit administrator access |
 | unraid | homelab | Authentik proxy; explicit administrator access |
-| unifi | homelab | Unchanged: original nginx authentication retained |
+| unifi | homelab | Contour and isolated Authentik proxy; explicit upstream CA and hostname verification |
 | wealthfolio | homelab | Authentik proxy; explicit administrator access |
 | wedding-site | homelab | Authentik proxy; explicit administrator access |
 | wireguard | ingress | Authentik proxy; explicit administrator access |
 | wled-kitchen | homelab | Authentik proxy; explicit administrator access |
-| uptime-kuma | monitoring | Authentik forward auth retained on nginx; Contour migration needs a per-app route and matching public certificate |
+| uptime-kuma | monitoring | Dedicated Authentik proxy owns the Contour Ingress with the existing public certificate |
 | wallabag | homelab | Authentik proxy; explicit administrator access |
 
 Home Assistant is routed through the automation Authentik outpost. Its native API and login endpoints bypass the proxy so Home Assistant clients can authenticate with Home Assistant credentials; Home Assistant enforces authentication on those endpoints. Browser access requires Authentik.
 
-Kopia remains on nginx for TLS/gRPC passthrough while its supported authentication path is verified; the current Authelia annotation is ineffective with passthrough. UniFi remains on its existing route until its upstream certificate can be validated. Uptime Kuma remains on nginx with Authentik forward auth because its public host needs a distinct Contour route and certificate.
+Kopia uses Contour TCP TLS passthrough because its native gRPC clients cannot complete browser SSO. Its clients must trust the native Kopia server certificate. The old Nginx controller did not enable TLS passthrough, despite the annotation, so client certificate trust must be checked when the upstream is reachable. Kopia currently times out from the cluster and was not verified end to end. Plex retains native token authentication so media clients continue to work.
 
-The existing local DNS wildcard points to Contour. Kopia and UniFi retain their Nginx DNS exceptions.
+UniFi uses an isolated Authentik outpost with its upstream certificate stored in SOPS and mounted as an explicit trust root. TLS validation remains enabled; an encrypted hostname alias matches the upstream certificate SAN without looping through the public ingress. Certificate changes require updating the encrypted trust certificate. This trust is not added to other app proxies.
+
+Uptime Kuma uses its own Authentik outpost because the monitoring wildcard certificate does not cover its public hostname. Its existing public certificate and administrator access binding are retained. The chart relinquishes Ingress ownership to this outpost.
+
+The Kopia, UniFi, status, and Unraid DNS rewrites target Contour. The previously merged stocks rewrite is also reconciled away from the legacy address. The remaining tunnel origins also target Contour. Apply the reviewed Authentik configuration alongside the ArgoCD cutover, then apply DNS and tunnel plans and verify routes before removing Nginx. These final four route changes are prepared in Git; they are not yet verified in the live cluster.
 
 LAN origin alone does not grant anonymous access. Native app authentication and account links are retained; API bypasses require verification.
+
+## Final controller and legacy identity cutover
+
+Nginx is retained as a Deployment with zero replicas; its external Service and admission webhook are disabled. Contour requests the previous ingress load-balancer address from encrypted values. MetalLB releases the address from the removed Nginx Service before assigning it to Envoy. DNS rewrites that previously pointed to Contour's temporary address must be reconciled after the handoff.
+
+Authelia and LLDAP have zero replicas and disabled portal Ingresses. Their configuration and persistent data are retained. The final consumer audit found only UniFi using Authelia, no configured Authelia OIDC clients, and no Authentik LDAP sources. Retiring them is coupled to UniFi's Authentik migration in this change.

@@ -7,7 +7,7 @@
 labels: {}
 # label_1: abc
 # label_2: def
-replicas: 2
+replicas: 0
 image:
     repository: docker.io/authelia/authelia
     tag: 4.39.28
@@ -27,7 +27,7 @@ volumes:
       configMap:
         name: authelia
 ingress:
-    enabled: true
+    enabled: false
     # Don't enable authelia on itself
     authelia: false
     className: contour

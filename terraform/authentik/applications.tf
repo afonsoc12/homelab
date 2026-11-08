@@ -54,7 +54,7 @@ resource "authentik_application" "uptime_kuma" {
   meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/authentik.png"
   meta_launch_url       = ""
   meta_publisher        = ""
-  name                  = "Homelab Protected Apps"
+  name                  = "Uptime Kuma"
   open_in_new_tab       = false
   policy_engine_mode    = "any"
   protocol_provider     = authentik_provider_proxy.uptime_kuma.id
@@ -136,19 +136,20 @@ resource "authentik_provider_oauth2" "node_red" {
 
 resource "authentik_provider_proxy" "uptime_kuma" {
   access_token_validity         = "hours=24"
+  authentication_flow           = authentik_flow.login.uuid
   authorization_flow            = authentik_flow.provider_consent.uuid
   basic_auth_enabled            = false
   basic_auth_password_attribute = ""
-  cookie_domain                 = data.sops_file.secrets.data["value_019"]
-  external_host                 = data.sops_file.secrets.data["value_020"]
-  intercept_header_auth         = true
-  internal_host                 = data.sops_file.secrets.data["value_021"]
-  internal_host_ssl_validation  = false
+  cookie_domain                 = ""
+  external_host                 = "https://status.${local.apps_domain}"
+  intercept_header_auth         = false
+  internal_host                 = "http://uptime-kuma.monitoring.svc.cluster.local:3001"
+  internal_host_ssl_validation  = true
   invalidation_flow             = authentik_flow.provider_logout.uuid
   jwt_federation_providers      = []
   jwt_federation_sources        = []
-  mode                          = "forward_domain"
-  name                          = "Homelab Forward Auth"
+  mode                          = "proxy"
+  name                          = "Uptime Kuma Proxy"
   property_mappings             = [authentik_property_mapping_provider_scope.proxy_outpost.id, authentik_property_mapping_provider_scope.oidc_entitlements.id, authentik_property_mapping_provider_scope.oidc_openid.id, authentik_property_mapping_provider_scope.oidc_email.id, authentik_property_mapping_provider_scope.oidc_profile.id]
   refresh_token_validity        = "days=30"
   skip_path_regex               = ""
