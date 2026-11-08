@@ -14,11 +14,11 @@ resource "authentik_source_plex" "plex" {
   promoted   = true
   client_id  = local.plex_client_id
   plex_token = local.plex_token
-  # Native Plex owner/friend authentication requires no media server.
-  # New users must also pass the invitation and MFA enrollment flow.
+  # Account-only Plex sign-in is verified by Plex token, then constrained by
+  # the email-deny policy and the existing invitation/MFA enrollment flow.
   allowed_servers     = []
-  allow_friends       = true
-  user_matching_mode  = "identifier"
+  allow_friends       = false
+  user_matching_mode  = "email_link"
   group_matching_mode = "identifier"
   user_path_template  = "users/plex"
   policy_engine_mode  = "all"

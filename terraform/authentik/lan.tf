@@ -303,7 +303,7 @@ resource "authentik_provider_proxy" "lan" {
   authentication_flow          = authentik_flow.login_choice.uuid
   authorization_flow           = authentik_flow.provider_consent.uuid
   invalidation_flow            = authentik_flow.provider_logout.uuid
-  intercept_header_auth        = false
+  intercept_header_auth        = true
   skip_path_regex              = try(each.value.skip_path_regex, "")
   access_token_validity        = "hours=1"
   refresh_token_validity       = "hours=8"
