@@ -20,7 +20,7 @@ Identity provider for single sign-on and multi-factor authentication, with [Plex
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-SSO and 2FA authentication proxy. Still protects services awaiting migration. Keep it running until those consumers and all ingress templates support Authentik.
+Legacy authentication middleware, superseded by Authentik.
 
 [:octicons-book-16: Documentation](https://www.authelia.com/configuration/prologue/introduction/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authelia/values.sops.yaml)
 
@@ -30,7 +30,7 @@ SSO and 2FA authentication proxy. Still protects services awaiting migration. Ke
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Lightweight LDAP server used by the legacy authentication stack. Keep it running until its consumers migrate; Authentik currently uses its built-in source.
+Legacy LDAP directory service, superseded by Authentik’s built-in user directory.
 
 [:octicons-book-16: Documentation](https://github.com/lldap/lldap) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/lldap/values.sops.yaml)
 
