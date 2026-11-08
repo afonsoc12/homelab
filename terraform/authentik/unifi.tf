@@ -21,6 +21,7 @@ resource "authentik_provider_proxy" "unifi" {
 
 resource "authentik_application" "unifi" {
   name               = "UniFi"
+  meta_icon          = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unifi.png"
   slug               = "unifi"
   group              = "homelab"
   protocol_provider  = authentik_provider_proxy.unifi.id

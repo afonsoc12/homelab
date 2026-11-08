@@ -51,7 +51,7 @@ resource "authentik_application" "uptime_kuma" {
   group                 = "ingress"
   meta_description      = ""
   meta_hide             = true
-  meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/authentik.png"
+  meta_icon             = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/uptime-kuma.png"
   meta_launch_url       = ""
   meta_publisher        = ""
   name                  = "Uptime Kuma"

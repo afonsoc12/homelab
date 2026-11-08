@@ -320,6 +320,7 @@ resource "authentik_provider_proxy" "lan" {
 resource "authentik_application" "lan" {
   for_each           = local.lan_proxy_apps
   name               = each.value.name
+  meta_icon          = lookup(local.dashboard_icons, each.key, null)
   slug               = "${each.key}-lan"
   group              = each.value.namespace
   protocol_provider  = authentik_provider_proxy.lan[each.key].id
