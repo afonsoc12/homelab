@@ -84,7 +84,11 @@ resource "authentik_outpost" "unifi" {
         }, {
         op    = "add"
         path  = "/spec/template/spec/containers/0/env/-"
-        value = { name = "SSL_CERT_FILE", value = "/etc/unifi-tls/ca.crt" }
+        value = { name = "SSL_CERT_FILE", value = "/etc/ssl/certs/ca-certificates.crt" }
+        }, {
+        op    = "add"
+        path  = "/spec/template/spec/containers/0/env/-"
+        value = { name = "SSL_CERT_DIR", value = "/etc/unifi-tls" }
       }]
     }
   })

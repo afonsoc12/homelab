@@ -140,7 +140,7 @@ resource "authentik_provider_proxy" "uptime_kuma" {
   authorization_flow            = authentik_flow.provider_consent.uuid
   basic_auth_enabled            = false
   basic_auth_password_attribute = ""
-  cookie_domain                 = ""
+  cookie_domain                 = "status.${local.apps_domain}"
   external_host                 = "https://status.${local.apps_domain}"
   intercept_header_auth         = false
   internal_host                 = "http://uptime-kuma.monitoring.svc.cluster.local:3001"
