@@ -266,7 +266,7 @@ server:
                     - '{{ .Values.global.domain }}'
     service:
         annotations:
-            projectcontour.io/upstream-protocol.h2: '443'
+            projectcontour.io/upstream-protocol.tls: '443'
 
 ## Repo Server
 repoServer:
