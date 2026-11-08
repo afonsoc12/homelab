@@ -20,6 +20,7 @@ import {
 resource "authentik_provider_oauth2" "grafana" {
   name                       = "Grafana OIDC"
   authentication_flow        = authentik_flow.login_choice.uuid
+  depends_on                 = [authentik_flow_stage_binding.login_choice]
   authorization_flow         = authentik_flow.provider_authorization.uuid
   invalidation_flow          = authentik_flow.provider_logout.uuid
   client_id                  = "grafana"

@@ -301,6 +301,7 @@ resource "authentik_provider_proxy" "lan" {
   internal_host                = each.value.upstream
   internal_host_ssl_validation = true
   authentication_flow          = authentik_flow.login_choice.uuid
+  depends_on                   = [authentik_flow_stage_binding.login_choice]
   authorization_flow           = authentik_flow.provider_consent.uuid
   invalidation_flow            = authentik_flow.provider_logout.uuid
   intercept_header_auth        = true

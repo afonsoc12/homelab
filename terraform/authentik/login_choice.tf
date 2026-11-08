@@ -85,6 +85,7 @@ resource "authentik_stage_prompt" "login_choice" {
 }
 
 resource "authentik_flow_stage_binding" "login_choice" {
+  depends_on              = [authentik_flow_stage_binding.login_choice_deny]
   target                  = authentik_flow.login_choice.uuid
   stage                   = authentik_stage_prompt.login_choice.id
   order                   = 10
