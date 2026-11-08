@@ -59,9 +59,9 @@ resource "authentik_policy_binding" "automation_admins" {
 # One shared outpost in the same namespace as the protected applications.
 # App charts own their Ingress resources; the outpost manages no routes.
 resource "authentik_outpost" "automation" {
-  depends_on = [authentik_policy_binding.lan_admins]
+  depends_on = [authentik_policy_binding.lan_admins, authentik_policy_binding.automation_admins]
 
-  name               = "Automation Proxy"
+  name               = "k8s automation LAN Proxy"
   type               = "proxy"
   service_connection = authentik_service_connection_kubernetes.cluster.id
   protocol_providers = concat([for provider in authentik_provider_proxy.automation : provider.id], [for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == "automation"])

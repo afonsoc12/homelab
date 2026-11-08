@@ -111,6 +111,7 @@ certificates:
     - name: status
       dnsNames:
         - status.{{ .Values.domain }}
+        - '*.local.{{ .Values.domain }}'
       reflectNamespaces:
         - monitoring
     - name: sso

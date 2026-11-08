@@ -5,6 +5,8 @@
 #   - Chart Defaults: https://github.com/goauthentik/authentik/blob/main/helm/values.yaml
 # --------------------
 authentik:
+    outposts:
+        disable_embedded_outpost: true
     log_level: info
     # don't change this after the first install
     secret_key: ENC[AES256_GCM,data:xM8bvGJ5Iutxy+yfZ8cvOyKDjkW0a7Klh/8Lw1sERbXcdPzaui2ZNTNtXHoPmpwhT5jymVKVrv1d+gUjXgE8E2seJUs1xe/fk2J8szYR4/w=,iv:qO4QWDZqlepsEmV2kzXasBbny23whR9ptAxgx4FzB7s=,tag:okrDVfoWuYx2WPUV6Vut3w==,type:str]
@@ -68,14 +70,6 @@ server:
             - secretName: sso-cert
               hosts:
                   - ENC[AES256_GCM,data:sp3Jew/EtPIy1Jtv73teAeE=,iv:ilTTSayh0um9Wf/Gf+QCL/RlwF1yguaJKszN0dwBFs4=,tag:mo8k9l+yH8rlhuXtNXCcDg==,type:str]
-        extraPaths:
-            - backend:
-                service:
-                    name: authentik-embedded-outpost
-                    port:
-                        number: 9000
-              path: /outpost.goauthentik.io
-              pathType: Prefix
     resources:
         requests:
             cpu: "1"

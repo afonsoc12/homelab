@@ -56,7 +56,7 @@ ingress:
         - path: /
           pathType: Prefix
           service:
-            name: authentik-embedded-outpost
+            name: authentik-ingress-proxy
             port: 9000
 
 resources:
