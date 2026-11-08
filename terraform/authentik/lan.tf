@@ -22,6 +22,8 @@ locals {
       namespace = "homelab"
       host      = "rss"
       upstream  = "http://freshrss.homelab.svc.cluster.local:80"
+      # Native reader clients authenticate with their FreshRSS API password.
+      skip_path_regex = "^/api/greader\\.php(/|$)"
     }
     "adguard" = {
       name      = "adguard"
