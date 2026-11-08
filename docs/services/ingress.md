@@ -16,25 +16,7 @@ Identity provider for single sign-on and multi-factor authentication, with [Plex
 
 ---
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/authelia.png" class="svc-icon"> Authelia
 
-<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
-
-Legacy authentication middleware, superseded by Authentik.
-
-[:octicons-book-16: Documentation](https://www.authelia.com/configuration/prologue/introduction/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authelia/values.sops.yaml)
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/lldap.png" class="svc-icon"> LLDAP
-
-<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
-
-Legacy LDAP directory service, superseded by Authentik’s built-in user directory.
-
-[:octicons-book-16: Documentation](https://github.com/lldap/lldap) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/lldap/values.sops.yaml)
-
----
 
 ## Ingress & Tunnels
 
@@ -48,15 +30,6 @@ Standard Kubernetes ingress controller, using [Envoy](https://www.envoyproxy.io/
 
 ---
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/nginx.png" class="svc-icon"> ingress-nginx
-
-<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
-
-Temporary ingress controller retained while applications migrate to [Contour](https://projectcontour.io/).
-
-[:octicons-book-16: Documentation](https://kubernetes.github.io/ingress-nginx/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/ingress-nginx/values.sops.yaml)
-
----
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cloudflare.png" class="svc-icon"> Cloudflared
 

@@ -134,13 +134,6 @@ locals {
       host      = "lidarr.local"
       upstream  = "http://lidarr-external-external-svc.homelab.svc.cluster.local:8686"
     }
-    "lldap" = {
-      name      = "lldap"
-      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/lldap.png"
-      namespace = "ingress"
-      host      = "ldap.local"
-      upstream  = "http://lldap.ingress.svc.cluster.local:17170"
-    }
     "longhorn" = {
       name      = "Longhorn"
       icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/longhorn.png"

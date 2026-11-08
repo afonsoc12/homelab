@@ -36,7 +36,6 @@ pvc:
             storage: 10Gi
 ingress:
     enabled: true
-    authelia: false
     className: contour
     annotations:
         ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -136,7 +135,7 @@ prometheusRule:
                 summary: 'Battery sensor stopped reporting: {{ $labels.friendly_name }}'
                 description: '{{ $labels.friendly_name }} has not reported a battery reading in over 48 hours — device may be offline or dead.'
 sops:
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(stringData|loadBalancerIP)$
     lastmodified: "2026-10-10T17:32:02Z"
     mac: ENC[AES256_GCM,data:YfFlx2cFOgjcTzUtwd3LLPbX19hWbFjspXVhscUWO0qWDps2UlJKr4jCTTjukthdiaaWmYQW2TloysdGmzyRTqrGUPNTmi0EwyEBnWTgLY222BYYvzpzJGz1FyGoBpiN8RsHcd+QbnJQzmTNZl85DY5cvcGXAlQADXeOrGIqsQA=,iv:J8h2wb4NIuBavWoAC6Wx2bO/Kpb+vCUhdxLlpfU7ojk=,tag:IVqMkVLPy1J/9uz8Duu94Q==,type:str]
     mac_only_encrypted: true

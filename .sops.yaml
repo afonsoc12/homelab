@@ -2,7 +2,7 @@
 creation_rules:
   # Kubernetes
   - path_regex: "kubernetes/.*.y?ml"
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(stringData|loadBalancerIP)$
     mac_only_encrypted: true
     pgp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
 

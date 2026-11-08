@@ -90,7 +90,7 @@ The **argocd-apps** chart is the root of the tree. It is itself an ArgoCD Applic
 |-------|-----------|
 | Kubernetes distribution | [K3s](https://k3s.io/) |
 | GitOps | [ArgoCD](https://argoproj.github.io/cd/) |
-| Ingress | [ingress-nginx](https://kubernetes.github.io/ingress-nginx/) |
+| Ingress | [Contour](https://projectcontour.io/) |
 | TLS | [cert-manager](https://cert-manager.io/) + Let's Encrypt |
 | Load balancer | [MetalLB](https://metallb.universe.tf/) |
 | Persistent storage | [Longhorn](https://longhorn.io/) |

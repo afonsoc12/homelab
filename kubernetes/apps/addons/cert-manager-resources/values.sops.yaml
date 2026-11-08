@@ -22,11 +22,6 @@ secrets:
       stringData:
         API_TOKEN: ENC[AES256_GCM,data:ekm3kTZpYZvTlX4tX62wqMzp5tnx3dwEKhIRmmG0HYBhbVL/Z1LZSA==,iv:JoNvHvWvVQogV3seMicISUCp3g0EdrAD9uqX8ebL3Yc=,tag:0IrTjvTraTegjW/BXtzlhg==,type:str]
 certificates:
-    - name: auth
-      dnsNames:
-        - auth.{{ .Values.domain }}
-      reflectNamespaces:
-        - ingress
     - name: calibre
       dnsNames:
         - calibre.{{ .Values.domain }}

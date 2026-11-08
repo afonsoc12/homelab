@@ -21,7 +21,6 @@ server:
 ingress:
   enabled: true
   className: contour
-  authelia: false
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "true"
     projectcontour.io/websocket-routes: /

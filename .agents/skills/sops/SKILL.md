@@ -9,7 +9,7 @@ Encryption rules: `@.sops.yaml`
 
 ## Non-encrypted fields need no decryption
 
-Kubernetes `.sops.yaml` files use `encrypted_regex` (only `data`, `stringData`, `loadBalancerIP`, `nginx.ingress.kubernetes.io/auth-signin`) plus `mac_only_encrypted: true` — everything else in the file (e.g. `resources:`, `image:`, `replicas:`) is plaintext YAML on disk. For edits confined to those plaintext fields, just `Read`/`Edit` the `.sops.yaml` file directly like any normal file — no `sops -d`/`sops --encrypt` round-trip needed. `mac_only_encrypted` means the MAC only covers the encrypted values, so editing plaintext fields in place doesn't invalidate it.
+Kubernetes `.sops.yaml` files use per-file `encrypted_regex` settings (commonly `data`, `stringData`, and `loadBalancerIP`) plus `mac_only_encrypted: true` — everything else in the file (e.g. `resources:`, `image:`, `replicas:`) is plaintext YAML on disk. For edits confined to those plaintext fields, just `Read`/`Edit` the `.sops.yaml` file directly like any normal file — no `sops -d`/`sops --encrypt` round-trip needed. `mac_only_encrypted` means the MAC only covers the encrypted values, so editing plaintext fields in place doesn't invalidate it.
 
 Only fall back to decrypt/edit/re-encrypt when the change touches an actually-encrypted key.
 

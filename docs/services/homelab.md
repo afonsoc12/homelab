@@ -110,7 +110,7 @@ Self-hosted document signing platform. Creates, distributes, and collects signat
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
 
-Vehicle tracking and maintenance management. Tracks fuel-ups, service history, and vehicle documents. App login is disabled in favor of Authelia SSO at the ingress.
+Vehicle tracking and maintenance management. Tracks fuel-ups, service history, and vehicle documents.
 
 [:octicons-book-16: Documentation](https://tracktor.bytedge.in) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/tracktor/values.sops.yaml)
 

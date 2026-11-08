@@ -2,9 +2,6 @@
 {{- if ne .Values.ingress.className "contour" }}
 {{- fail "TLS passthrough requires the contour ingress class" }}
 {{- end }}
-{{- if .Values.ingress.authelia }}
-{{- fail "TLS passthrough requires native server authentication; HTTP forward auth is unsupported" }}
-{{- end }}
 {{- if ne (len .Values.ingress.hosts) 1 }}
 {{- fail "TLS passthrough requires exactly one hostname" }}
 {{- end }}

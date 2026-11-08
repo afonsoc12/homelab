@@ -54,7 +54,6 @@ remain disabled, except the user-attribute schema, so
 removed configuration is not recreated. The embedded outpost retains its
 API-enforced system name.
 
-Authelia and LLDAP remain required until their remaining consumers migrate.
 ArgoCD, Mealie, Node-RED, and Uptime Kuma integrations remain. Node-RED uses its
 existing OpenID strategy in persistent settings; its consumer configuration still
 needs reconciliation with Git. Grafana has no configured OAuth consumer, so its

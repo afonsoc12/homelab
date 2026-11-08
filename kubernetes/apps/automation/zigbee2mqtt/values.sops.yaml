@@ -59,7 +59,6 @@ ingress:
         projectcontour.io/websocket-routes: /
 
     enabled: true
-    authelia: false
     className: contour
     tls:
         - secretName: local-wildcard-cert
@@ -121,7 +120,7 @@ startupProbe:
     failureThreshold: 18
     timeoutSeconds: 5
 sops:
-    encrypted_regex: ^(data|stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(data|stringData|loadBalancerIP)$
     lastmodified: "2026-08-17T23:18:51Z"
     mac: ENC[AES256_GCM,data:uJ1CEZAVOGg0Y348lhDDsFT7iKgt7mujQsIA8F/uaZNbx54oVqiafOoXDi8eL/uF84o4jur6n03FpaxQbBP88t8op+MiHRwdEI7ECzisoE5vyGzG7R5jXJbpYW9LA8XYrc+27jX+lxvUx1hT88vstZojwhZ3p+hgJHA4LbH3bcA=,iv:63HxIlaMm/MurV+TIbBQ5t0R9NZvE1d9Rv31+G3tpHw=,tag:4tQ+wckXIKLvO7tHlKvWAw==,type:str]
     mac_only_encrypted: true

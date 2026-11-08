@@ -560,7 +560,7 @@ prometheus:
                   replacement: $1
                   targetLabel: hostname
 sops:
-    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|webhook_url|hosts|externalUrl|dashboard)$
+    encrypted_regex: ^(webhook_url|hosts|externalUrl|dashboard)$
     lastmodified: "2026-11-05T21:52:41Z"
     mac: ENC[AES256_GCM,data:LVL0IiZ9LOMLam4GmTj7N0YqyQp4M9Li8WmiYFsx5Vc5G2Xh93UsTxklETsjxdbO6MYXicaFmKV5IX4ucXJVE1dBgoeJHa7gWay3+VnguER3nR8G5iyMY1MVVssBqip8amAEA+kFRQVeHxcIWTu0DZoTZdfJTr/M1lfqn4iYSgs=,iv:d7BpF5T9dF4dw5X0O1nxxLYYq4f/8B9FFGib8Tm4Lo0=,tag:g4uy1M3suQsiGsjryoBOAA==,type:str]
     mac_only_encrypted: true

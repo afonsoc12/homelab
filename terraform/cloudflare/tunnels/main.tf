@@ -22,22 +22,6 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
     # Order matches Cloudflare state (first match wins)
     ingress = [
       {
-        hostname = "auth.${var.domain}"
-        service  = "https://contour-envoy"
-        origin_request = {
-          connect_timeout          = 30
-          disable_chunked_encoding = false
-          http2_origin             = false
-          keep_alive_connections   = 100
-          keep_alive_timeout       = 90
-          no_happy_eyeballs        = false
-          no_tls_verify            = false
-          origin_server_name       = "auth.${var.domain}"
-          tcp_keep_alive           = 30
-          tls_timeout              = 10
-        }
-      },
-      {
         hostname = "firefly.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
@@ -234,12 +218,10 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
 }
 
 locals {
-  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git-hook", "home", "music-assistant-alexa-skill", "music-assistant-stream", "rss", "seerr", "split", "sso", "status", "wallabag"])
+  k3s_cluster_subdomains = toset(["calibre", "firefly", "git-hook", "home", "music-assistant-alexa-skill", "music-assistant-stream", "rss", "seerr", "split", "sso", "status", "wallabag"])
 }
 
-# Spliit isn't behind Authelia (friends without homelab SSO accounts need
-# access), so gate it with its own Cloudflare Access application instead —
-# email + one-time PIN, restricted to this hostname only.
+# Additional public access policy for Spliit's hostname.
 resource "cloudflare_zero_trust_access_policy" "spliit" {
   account_id = var.account_id
   name       = "Allow Spliit friends"

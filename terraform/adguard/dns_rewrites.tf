@@ -43,11 +43,6 @@ resource "adguard_rewrite" "sso" {
   answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
-resource "adguard_rewrite" "auth" {
-  domain = "auth.${local.domain}"
-  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
-}
-
 resource "adguard_rewrite" "rss" {
   domain = "rss.${local.domain}"
   answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]

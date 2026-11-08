@@ -23,7 +23,7 @@ ingress:
     path: /
     annotations: {}
 sops:
-    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|host)$
+    encrypted_regex: ^(host)$
     lastmodified: "2026-11-05T21:52:41Z"
     mac: ENC[AES256_GCM,data:8dT0NFfdOJm+yjw79xQM3s9Ia9aCxhAqk+KD8tec+z8WQKUUnz1CthFuLLpJUgzts+smL8iHJZhl7LIjWUQ9UimG7j8jr0wIEuF+l77xg/39NDkySivnebGHBXjcQI2nRlJlo9dEtsxyh4fxlPvvLU+GfUtbWHkJD1PN8mKBrkc=,iv:4514piQXJMPpGQSc8lVSVrbvskT/B7nT/STuuAWZRMQ=,tag:R5FaEq7yeZlaukqHooQlug==,type:str]
     mac_only_encrypted: true

@@ -19,7 +19,6 @@ server:
 # Ingress configuration
 ingress:
   enabled: true
-  authelia: false
   tls:
     - secretName: local-wildcard-cert
   hosts:
