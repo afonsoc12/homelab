@@ -10,3 +10,11 @@ resource "authentik_service_connection_kubernetes" "cluster" {
   name       = "Homelab - Cluster"
   verify_ssl = true
 }
+
+# Authentik owns the embedded outpost lifecycle. The Helm disable setting removes it.
+removed {
+  from = authentik_outpost.embedded
+  lifecycle {
+    destroy = false
+  }
+}
