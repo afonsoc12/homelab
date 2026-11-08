@@ -6,7 +6,7 @@
 # --------------------
 image:
   repository: ghcr.io/afonsoc12/airflow
-  tag: 3.3.2-b63
+  tag: 3.4.0-b68
   pullPolicy: Always
 serviceAccount:
   create: true
@@ -107,7 +107,6 @@ ingress:
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
     projectcontour.io/response-timeout: 60s
-
 resources:
   requests:
     cpu: 500m
