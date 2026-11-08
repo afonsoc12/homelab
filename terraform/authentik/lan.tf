@@ -338,14 +338,14 @@ resource "authentik_policy_binding" "lan_admins" {
 # Upstream charts without a proxy-backend setting delegate standard Ingress
 # ownership to the supported Authentik Kubernetes integration.
 resource "authentik_outpost" "lan" {
-  depends_on = [authentik_policy_binding.lan_admins]
+  depends_on = [authentik_policy_binding.lan_admins, authentik_policy_binding.access_uptime_kuma]
 
-  for_each = toset(["addons", "monitoring", "longhorn-system"])
+  for_each = toset(["addons", "ingress", "monitoring", "longhorn-system"])
 
-  name               = "${each.value} LAN Proxy"
+  name               = "k8s ${each.value} LAN Proxy"
   type               = "proxy"
   service_connection = authentik_service_connection_kubernetes.cluster.id
-  protocol_providers = [for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == each.value]
+  protocol_providers = concat([for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == each.value], each.value == "monitoring" ? [authentik_provider_proxy.uptime_kuma.id] : [])
   config = jsonencode({
     authentik_host                 = data.sops_file.secrets.data["url"]
     authentik_host_insecure        = false
@@ -355,7 +355,7 @@ resource "authentik_outpost" "lan" {
     kubernetes_replicas            = 1
     kubernetes_service_type        = "ClusterIP"
     kubernetes_ingress_class_name  = "contour"
-    kubernetes_ingress_secret_name = "local-wildcard-cert"
+    kubernetes_ingress_secret_name = each.value == "monitoring" ? "status-cert" : "local-wildcard-cert"
     kubernetes_ingress_annotations = {
       "ingress.kubernetes.io/force-ssl-redirect" = "true"
       "projectcontour.io/response-timeout"       = "300s"
@@ -363,7 +363,7 @@ resource "authentik_outpost" "lan" {
     }
     kubernetes_disabled_components = concat(
       ["httproute", "traefik middleware", "service-metrics", "prometheus servicemonitor"],
-      each.value == "addons" ? ["ingress"] : []
+      contains(["addons", "ingress"], each.value) ? ["ingress"] : []
     )
     kubernetes_json_patches = {
       deployment = [{

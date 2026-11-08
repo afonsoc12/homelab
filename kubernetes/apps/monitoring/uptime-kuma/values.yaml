@@ -41,7 +41,7 @@ pvc:
     requests:
       storage: 2Gi
 
-# The dedicated Authentik outpost owns the Contour Ingress and public TLS cert.
+# The shared monitoring Authentik outpost owns the Contour Ingress.
 ingress:
   enabled: false
 

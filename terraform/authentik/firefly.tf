@@ -36,12 +36,12 @@ resource "authentik_policy_binding" "firefly_admins" {
 }
 
 resource "authentik_outpost" "homelab" {
-  depends_on = [authentik_policy_binding.lan_admins]
+  depends_on = [authentik_policy_binding.lan_admins, authentik_policy_binding.unifi_admins, authentik_policy_binding.firefly_admins]
 
-  name               = "Homelab Proxy"
+  name               = "k8s homelab LAN Proxy"
   type               = "proxy"
   service_connection = authentik_service_connection_kubernetes.cluster.id
-  protocol_providers = concat([authentik_provider_proxy.firefly.id], [for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == "homelab"])
+  protocol_providers = concat([authentik_provider_proxy.firefly.id, authentik_provider_proxy.unifi.id], [for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == "homelab"])
   config = jsonencode({
     authentik_host                 = data.sops_file.secrets.data["url"]
     authentik_host_insecure        = false
@@ -59,6 +59,42 @@ resource "authentik_outpost" "homelab" {
           requests = { cpu = "25m", memory = "64Mi" }
           limits   = { cpu = "500m", memory = "192Mi" }
         }
+        }, {
+        op   = "add"
+        path = "/spec/template/spec/hostAliases"
+        value = [{
+          ip        = data.sops_file.kubernetes.data["ips.unifi"]
+          hostnames = [data.sops_file.kubernetes.data["upstream_tls.unifi.server_name"]]
+        }]
+        }, {
+        op   = "add"
+        path = "/spec/template/spec/volumes"
+        value = [{
+          name = "unifi-upstream-ca"
+          secret = {
+            secretName = "unifi-external-external-svc-upstream-ca"
+            items = [{
+              key  = "ca.crt"
+              path = "${data.sops_file.kubernetes.data["upstream_tls.unifi.subject_hash"]}.0"
+            }]
+          }
+        }]
+        }, {
+        op   = "add"
+        path = "/spec/template/spec/containers/0/volumeMounts"
+        value = [{
+          name      = "unifi-upstream-ca"
+          mountPath = "/etc/unifi-tls"
+          readOnly  = true
+        }]
+        }, {
+        op    = "add"
+        path  = "/spec/template/spec/containers/0/env/-"
+        value = { name = "SSL_CERT_FILE", value = "/etc/ssl/certs/ca-certificates.crt" }
+        }, {
+        op    = "add"
+        path  = "/spec/template/spec/containers/0/env/-"
+        value = { name = "SSL_CERT_DIR", value = "/etc/unifi-tls" }
       }]
     }
   })

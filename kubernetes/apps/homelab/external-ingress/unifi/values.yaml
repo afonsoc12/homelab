@@ -34,5 +34,5 @@ ingress:
         - path: /
           pathType: Prefix
           service:
-            name: authentik-unifi-proxy
+            name: authentik-homelab-proxy
             port: 9000
