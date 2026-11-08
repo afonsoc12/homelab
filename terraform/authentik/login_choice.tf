@@ -60,7 +60,7 @@ resource "authentik_flow" "login_choice" {
 resource "authentik_stage_prompt_field" "login_choice" {
   name                     = "Homelab - Login Methods"
   field_key                = "login_methods"
-  label                    = ""
+  label                    = "Sign-in methods"
   type                     = "static"
   order                    = 0
   required                 = false
