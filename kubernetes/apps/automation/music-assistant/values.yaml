@@ -117,6 +117,8 @@ extraResources:
       ingressClassName: contour
       tls:
         - secretName: music-assistant-stream-cert
+          hosts:
+            - music-assistant-stream.{{ .Values.domain }}
       rules:
         - host: music-assistant-stream.{{ .Values.domain }}
           http:
