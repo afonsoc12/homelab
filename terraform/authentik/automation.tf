@@ -55,34 +55,3 @@ resource "authentik_policy_binding" "automation_admins" {
   order          = 0
   failure_result = false
 }
-
-# One shared outpost in the same namespace as the protected applications.
-# App charts own their Ingress resources; the outpost manages no routes.
-resource "authentik_outpost" "automation" {
-  depends_on = [authentik_policy_binding.lan_admins, authentik_policy_binding.automation_admins]
-
-  name               = "k8s automation LAN Proxy"
-  type               = "proxy"
-  service_connection = authentik_service_connection_kubernetes.cluster.id
-  protocol_providers = concat([for provider in authentik_provider_proxy.automation : provider.id], [for key, app in local.lan_proxy_apps : authentik_provider_proxy.lan[key].id if app.namespace == "automation"])
-  config = jsonencode({
-    authentik_host                 = data.sops_file.secrets.data["url"]
-    authentik_host_insecure        = false
-    container_image                = "ghcr.io/goauthentik/proxy:2026.8.5"
-    object_naming_template         = "authentik-automation-proxy"
-    kubernetes_namespace           = "automation"
-    kubernetes_replicas            = 1
-    kubernetes_service_type        = "ClusterIP"
-    kubernetes_disabled_components = ["ingress", "httproute", "traefik middleware", "service-metrics", "prometheus servicemonitor"]
-    kubernetes_json_patches = {
-      deployment = [{
-        op   = "add"
-        path = "/spec/template/spec/containers/0/resources"
-        value = {
-          requests = { cpu = "25m", memory = "64Mi" }
-          limits   = { cpu = "500m", memory = "192Mi" }
-        }
-      }]
-    }
-  })
-}

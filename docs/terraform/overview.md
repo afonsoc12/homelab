@@ -25,7 +25,8 @@ account lifecycle flows, access policies, and memberships are retained.
 |------|---------|
 | `applications.tf`, `mappings.tf` | OAuth2 providers, Uptime Kuma proxy, applications, and claims |
 | `flows.tf`, `stages.tf`, `policies.tf`, `policy_bindings.tf` | Login, MFA, account lifecycle, and authorization |
-| `notifications.tf`, `system.tf` | Event rules, certificate, and outpost |
+| `notifications.tf`, `system.tf` | Event rules and certificate |
+| `outposts.tf` | Proxy outpost configuration |
 | `blueprints.tf` | Disable packaged reconciliation except system user attributes |
 | `brand.tf` | Homelab title and login CSS |
 | `secrets.sops.yaml` | Encrypted provider credentials, access-binding IDs, and private configuration with opaque keys |
