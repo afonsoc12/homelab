@@ -15,7 +15,7 @@ strategy:
 
 image:
   repository: ghcr.io/dgtlmoon/changedetection.io
-  tag: 0.60.10
+  tag: 0.70.2
   pullPolicy: Always
 
 #   restartPolicy:
@@ -32,7 +32,7 @@ ports:
 
 additionalContainers:
   - name: playwright
-    image: ghcr.io/browserless/chromium:v2.58.3
+    image: ghcr.io/browserless/chromium:v2.60.0
     resources:
       requests:
         cpu: 25m
