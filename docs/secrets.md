@@ -17,7 +17,7 @@ The `.sops.yaml` at the repo root defines which fields are encrypted per file pa
 
 | Path regex | Encrypted fields |
 |------------|-----------------|
-| `kubernetes/.*.y?ml` | `data`, `stringData`, `loadBalancerIP`, `nginx.ingress.kubernetes.io/auth-signin` |
+| `kubernetes/.*.y?ml` | `stringData`, `loadBalancerIP` |
 | `ansible/inventory/(group\|host)_vars/.*\.sops\.ya?ml` | `token`, `api_endpoint`, `tailscale_authkey`, `ansible_host`, `ansible_user`, `ansible_ssh_private_key_file` |
 | `terraform/cloudflare/dns/.*\.sops\.yaml` | `name`, `content` (DNS record names and IPs) |
 | Everything else | Full file encryption (fallback rule) |

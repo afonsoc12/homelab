@@ -8,8 +8,10 @@ resource "authentik_provider_proxy" "firefly" {
   depends_on                   = [authentik_flow_stage_binding.login_choice]
   authorization_flow           = authentik_flow.provider_consent.uuid
   invalidation_flow            = authentik_flow.provider_logout.uuid
-  access_token_validity        = "hours=1"
-  refresh_token_validity       = "hours=8"
+  # These endpoints enforce Firefly's own credentials; its UI remains behind SSO.
+  skip_path_regex        = join("\n", ["^/api/v1(/|$)", "^/oauth/token$"])
+  access_token_validity  = "hours=1"
+  refresh_token_validity = "hours=8"
   property_mappings = [
     authentik_property_mapping_provider_scope.proxy_outpost.id,
     authentik_property_mapping_provider_scope.oidc_openid.id,

@@ -64,7 +64,6 @@ pvc:
 ingress:
   # The shared Authentik outpost owns the standard Ingress.
   enabled: false
-  authelia: false
   className: contour
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: 'true'
@@ -139,6 +138,6 @@ sops:
             =ct80
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(stringData|loadBalancerIP)$
     mac_only_encrypted: true
     version: 3.12.2

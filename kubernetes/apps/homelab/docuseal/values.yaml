@@ -39,7 +39,6 @@ pvc:
       storage: 1Gi
 ingress:
   enabled: true
-  authelia: false
   className: contour
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: 'true'

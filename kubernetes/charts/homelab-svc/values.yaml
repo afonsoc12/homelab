@@ -16,7 +16,7 @@ strategy:
   type: Recreate
 
 image:
-  # repository: nginx
+  # repository: example/app
   tag: latest
   pullPolicy: Always
 
@@ -112,7 +112,7 @@ volumes: {}
 #   projected:
 #     sources:
 #     - configMap:
-#         name: authelia-config
+#         name: app-config
 #         items:
 #         - key: "configuration.yml"
 #           path: "configuration.yml"
@@ -129,12 +129,8 @@ pvc: {}
 
 ingress:
   enabled: false
-  authelia: false
-  authentik: false
-  className: "nginx"
+  className: "contour"
   annotations: {}
-  # nginx.ingress.kubernetes.io/client-max-body-size: "0"
-  # nginx.ingress.kubernetes.io/proxy-body-size: "0"
   tls: []
   #  - secretName: mydomain-cert
   #    hosts:
@@ -189,8 +185,8 @@ cronjobs: []
 #   successfulJobsHistoryLimit:
 #   suspend:
 #   image:
-#     # repository: nginx
-#     tag: latest
+#     # repository: example/sidecar
+#     tag: REPLACE_WITH_PINNED_TAG
 #     pullPolicy: Always
 #   restartPolicy:
 #   command: {}
@@ -213,7 +209,7 @@ cronjobs: []
 #   #   projected:
 #   #     sources:
 #   #     - configMap:
-#   #         name: authelia-config
+#   #         name: app-config
 #   #         items:
 #   #         - key: "configuration.yml"
 #   #           path: "configuration.yml"

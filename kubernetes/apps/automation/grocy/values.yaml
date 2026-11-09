@@ -33,7 +33,6 @@ pvc:
       storage: 500Mi
 ingress:
   enabled: true
-  authelia: false
   className: contour
   tls:
     - secretName: local-wildcard-cert

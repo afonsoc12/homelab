@@ -22,6 +22,8 @@ locals {
       namespace = "homelab"
       host      = "rss"
       upstream  = "http://freshrss.homelab.svc.cluster.local:80"
+      # Native reader clients authenticate with their FreshRSS API password.
+      skip_path_regex = "^/api/greader\\.php(/|$)"
     }
     "adguard" = {
       name      = "adguard"
@@ -131,13 +133,6 @@ locals {
       namespace = "homelab"
       host      = "lidarr.local"
       upstream  = "http://lidarr-external-external-svc.homelab.svc.cluster.local:8686"
-    }
-    "lldap" = {
-      name      = "lldap"
-      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/lldap.png"
-      namespace = "ingress"
-      host      = "ldap.local"
-      upstream  = "http://lldap.ingress.svc.cluster.local:17170"
     }
     "longhorn" = {
       name      = "Longhorn"

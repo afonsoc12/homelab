@@ -411,18 +411,10 @@ configmap:
                         description: Off-site backups manager
                         icon: di:kopia
                         url: https://kopia.local.{{ .Values.domain }}
-                      - title: lldap
-                        description: LDAP identity provider
-                        icon: di:lldap
-                        url: https://ldap.local.{{ .Values.domain }}
                       - title: Longhorn
                         description: Kubernetes distributed block storage
                         icon: di:longhorn
                         url: https://longhorn.local.{{ .Values.domain }}
-                      - title: Authelia
-                        description: SSO portal
-                        icon: di:authelia
-                        url: https://auth.{{ .Values.domain }}
                       - title: MinIO
                         description: S3 storage
                         icon: di:minio
@@ -448,7 +440,6 @@ volumes:
 
 ingress:
   enabled: true
-  authelia: false
   className: contour
   tls:
     - secretName: local-wildcard-cert

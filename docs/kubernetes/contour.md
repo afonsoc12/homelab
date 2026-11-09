@@ -4,8 +4,6 @@
 standard Kubernetes ingress proxy, providing HTTP/HTTPS routing and TLS termination.
 It supports Kubernetes Ingress and Gateway API.
 
-ingress-nginx is retained temporarily while applications migrate to Contour.
-
 Applications use native OpenID Connect where supported, or
 [Authentik](https://goauthentik.io/) proxy authentication for browser access.
 

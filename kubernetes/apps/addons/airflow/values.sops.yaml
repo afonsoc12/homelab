@@ -92,7 +92,6 @@ volumes:
       secretName: airflow-secrets-backend
 ingress:
   enabled: true
-  authelia: false
   className: contour
   tls:
     - secretName: local-wildcard-cert
@@ -137,7 +136,7 @@ startupProbe:
   failureThreshold: 30
   timeoutSeconds: 5
 sops:
-  encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+  encrypted_regex: ^(stringData|loadBalancerIP)$
   lastmodified: "2026-08-23T14:15:52Z"
   mac: ENC[AES256_GCM,data:O/gr9Pj+TP5GtGyPZ9W4V2q5ecCO4DFL7CRwVrk73qbiqGoYhSQd3EiTPUwSag95ehoN26tgxk6amZfrIkKyabjn1jqD8seyrTx5qWtKLScYkNOQrQwXXLmhHjQkWtLSlVUGlMHS50Ld0xsJKaISR7OAejaFs0WIhz4tXRYkHSI=,iv:gxsd6uT5g5y0qNse5wdtAxnBEBiXHpU5SmkP1/HbTQ4=,tag:4ggcX0CbH0q/XPIzIWsqgg==,type:str]
   mac_only_encrypted: true

@@ -22,7 +22,6 @@ ingress:
   # Keep end-to-end TLS and Kopia's native authentication for gRPC clients.
   className: contour
   tlsPassthrough: true
-  authelia: false
   annotations: {}
   hosts:
     - host: kopia.local.{{ .Values.domain }}

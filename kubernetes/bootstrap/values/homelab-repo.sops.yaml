@@ -37,6 +37,6 @@ sops:
             =5+gI
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(data|stringData|secret|loadBalancerIP)$
     mac_only_encrypted: true
     version: 3.12.2

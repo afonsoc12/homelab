@@ -94,7 +94,6 @@ pvc:
             storage: 10Gi
 ingress:
   enabled: true
-  authelia: false
   className: contour
   tls:
     - secretName: local-wildcard-cert
@@ -153,7 +152,7 @@ startupProbe:
     failureThreshold: 30
     timeoutSeconds: 5
 sops:
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(stringData|loadBalancerIP)$
     lastmodified: "2026-08-20T21:26:58Z"
     mac: ENC[AES256_GCM,data:pbqoj/R0pIVH2fvy5to6IUjaVadZMfHqHTct9B1MtViHCLdCCaAZ2HZ6/gwF7SqLX/MKPpkJ4wNb6dyAMDgYe7RUFZOrvFmrywKbevClkHEdurknbWJOoIFjDFR94KDqKZxcvtKoQ9b4BJdUx6+rxK4Fohx+o9NnuW7V01rO8x4=,iv:t5+9rknWBHloCl8mU4pscWNw98frfDx5AkGezCA93VM=,tag:ZcmSoKpHLT/l60+o+pKQgA==,type:str]
     mac_only_encrypted: true

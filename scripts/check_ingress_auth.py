@@ -1,4 +1,4 @@
-"""Verify standard Ingress proxy backends and reject unsupported forward auth."""
+"""Verify standard Ingress proxy backends and the supported ingress class."""
 
 from copy import deepcopy
 from pathlib import Path
@@ -25,7 +25,7 @@ def main():
             "ports": [{"containerPort": 8080, "service": True}],
             "server": {"port": 8080},
             "ingress": {
-                "enabled": True, "className": "contour", "authelia": False,
+                "enabled": True, "className": "contour",
                 "annotations": {"ingress.kubernetes.io/force-ssl-redirect": "true"},
                 "tls": [{"secretName": "test-certificate"}],
                 "hosts": [{"host": "app.{{ .Values.domain }}", "paths": [{
@@ -45,19 +45,18 @@ def main():
         assert host["http"]["paths"][0]["backend"]["service"] == {
             "name": "authentik-proxy", "port": {"number": 9000},
         }
-        assert not any(k.startswith("nginx.") for k in ingress["metadata"]["annotations"])
+        assert ingress["metadata"]["annotations"] == values["ingress"]["annotations"]
         checks += 1
         invalid = deepcopy(values)
-        invalid["ingress"]["authelia"] = True
+        invalid["ingress"]["className"] = "unsupported"
         result = render(chart, invalid)
-        assert result.returncode != 0 and "nginx forward-auth" in result.stderr
+        assert result.returncode != 0 and "contour" in result.stderr
         checks += 1
-        if chart == "homelab-svc":
-            invalid = deepcopy(values)
-            invalid["ingress"]["authentik"] = True
-            result = render(chart, invalid)
-            assert result.returncode != 0 and "nginx forward-auth" in result.stderr
-            checks += 1
+        invalid = deepcopy(values)
+        invalid["ingress"]["obsoleteAuthenticationFlag"] = True
+        result = render(chart, invalid)
+        assert result.returncode != 0 and "obsoleteAuthenticationFlag" in result.stderr
+        checks += 1
     print(f"Standard Ingress authentication checks: {checks} passed")
 
 

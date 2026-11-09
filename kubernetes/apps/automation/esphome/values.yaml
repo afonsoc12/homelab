@@ -56,7 +56,6 @@ ingress:
     projectcontour.io/websocket-routes: /
 
   enabled: true
-  authelia: false
   className: contour
   tls:
     - secretName: local-wildcard-cert

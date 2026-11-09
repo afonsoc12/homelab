@@ -16,7 +16,7 @@ Core cluster platform components.
 
 Traffic routing, VPN, DNS filtering, identity, and authentication.
 
-→ [Networking & Access](ingress.md) — ingress-nginx, Cloudflared, Wireguard, AdGuard, Authentik, LLDAP, Authelia, UniFi Controller
+→ [Networking & Access](ingress.md) — Contour, Cloudflared, Wireguard, AdGuard, Authentik, UniFi Controller
 
 ---
 

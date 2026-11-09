@@ -48,7 +48,6 @@ pvc:
             storage: 20Mi
 ingress:
     enabled: true
-    authelia: false
     className: contour
     annotations:
         ingress.kubernetes.io/force-ssl-redirect: "true"
@@ -92,7 +91,7 @@ startupProbe:
     failureThreshold: 18
     timeoutSeconds: 5
 sops:
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(stringData|loadBalancerIP)$
     lastmodified: "2026-09-27T13:40:42Z"
     mac: ENC[AES256_GCM,data:GVvq6V9fbd+cDqj6T2Z3mwn8vHHvxkWmeAisL9I/LdkIYuQvSVS0ho6QWtAaMq12ydZ89J8Tsnrn8ypUYapO8f5NHXXMLi04ocu2OC2e9s4s9QFNJydbgab7hOvGPyTt0nfMaid9OpQ+T4pcDi3BVrLceiRtGQGw+sGCJJRCrpU=,iv:3hyW4eVQef5ZSOf3itXyyliNJfodus2wQkHY2yfV5Gc=,tag:9Fl0DMugBW0ssJY464kVqA==,type:str]
     mac_only_encrypted: true

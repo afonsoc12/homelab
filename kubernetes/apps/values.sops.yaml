@@ -4,9 +4,6 @@
 #ENC[AES256_GCM,data:HTXisfshiUArKKeltACvZR2Iz6WF,iv:P3upSvrSSvdzrH0hgbIA+N37WuAGLe75u7nej0KMkNw=,tag:zGPnGrYBVBfMLXmsxCgJbQ==,type:comment]
 domain: ENC[AES256_GCM,data:xD/g+ZFyav2iVGmP3w==,iv:9/CP/lG9QOpxLS2h+ibcrmzfEFNE19pxA8l2zdBeiCs=,tag:pHIDiY2GW2hvqlttX4MBNQ==,type:str]
 domain_ldap: ENC[AES256_GCM,data:F4Lhgz8t/hdVpKYNDQlqWCN3tw==,iv:mAZNjE9tx1s8blTTnu0vg8RHEGU8rvbj8l9U+OcWGlk=,tag:sll3B94tA5ps8+LHhLcX1Q==,type:str]
-authelia:
-    service: ENC[AES256_GCM,data:+cJ5GteGAnCZS81tc1M7n8LoZKrDVaZgkoUvh7aoC5c85A==,iv:gBNKgNZov8Sy+fLlWJm9CrMXgkIuY8dt/DGqatHgP/c=,tag:JDPs5zGtIqzEz6xaeNNcxw==,type:str]
-    url: ENC[AES256_GCM,data:Ry7DW4CbL19Pq+YWffCv+mCc,iv:odX15rpgVrIjfqXU5a84kf4CAgOhA/+Ti5xPlKGqOqk=,tag:pf75XUOsyHG8j4AjMy8kig==,type:str]
 authentik:
     service: ENC[AES256_GCM,data:Tb+dhWzm7cDjMqRuhLawgz7Gd5l1VuwBW/bPozU68uEhghp6BVnSuCBOLdhXkg0g2WGavcxroA4t,iv:QV/1x6qohCpYXg7Q4lHtLyaEbJeOBMZefU/XOkcEqck=,tag:1Yb4tR5eJTw+ib4md7Bmjg==,type:str]
     url: ENC[AES256_GCM,data:AWrjquQcBF3yeF428UwSN6I=,iv:c4ODRn+WV2DlhD02UgiQPODQNNg0wc/C5ZK0LiO8f6c=,tag:S6DVV800YTyAEXx3ZmbjRg==,type:str]
@@ -29,8 +26,8 @@ upstream_tls:
         server_name: ENC[AES256_GCM,data:FjFUBtwyg+Vi+/c=,iv:qgiKdlGtFQ0iDAd2s4rJc0YAJv6TVGAS0vYu1JmrAt0=,tag:AkN6GVZA566QZs0H4XVZiA==,type:str]
         subject_hash: ENC[AES256_GCM,data:Xg9EdyDqBk0=,iv:c+JtgdIoQ1DVE3SqcJbAoUJsaxsZCCIL0ImaicbJQE0=,tag:6kh3zM4xVPTo/yKfjX3l3w==,type:str]
 sops:
-    lastmodified: "2026-11-08T17:15:29Z"
-    mac: ENC[AES256_GCM,data:yja5CYhj5kh2I9QV4tmF2q5J2Pt9XN4PnruyixtxXTUHRU6eK7LWo4uqKAaRQmI2HcruAhWb+4x/OGvCOKtBxwfIPTSNIqAsqzQlYsBNCh45C94MwACOEOesgxyuNJ8JbmYOy3orSH0bOdAbdjwmgxpYk43k3/nee5ClzQNl2d0=,iv:tqEdbFl4Egs4tuSt3EOSpQYczMoG6NfMj85H2fhPaLg=,tag:Y2bqffTiNoSnzSyu83DjWg==,type:str]
+    lastmodified: "2026-11-08T22:25:43Z"
+    mac: ENC[AES256_GCM,data:JHP0MSzQqQb2iY3dJ8rkET9H6I7TGOikXw2QpJntj8jzkwU6XqtXq8LdNyCRe6HrKvjL6WRe0nMz+x89sz94PlmaqH4V83aoNRjwu192cIGe0RDz2I89eqVtTEJdSjsqYqpCsRGemX5fymLq7sk2aSy0hibVv++5Wv5DCKxvxC4=,iv:EzwF5jYsdtbSePpm22TyPLAIRb+hj2FHyZdld1XCiPc=,tag:MqLrysD6wXvgt3h2NZNmag==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-05-05T00:27:42Z"

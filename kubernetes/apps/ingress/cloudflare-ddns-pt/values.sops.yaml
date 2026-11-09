@@ -37,7 +37,7 @@ cronjobs:
             cpu: 200m
             memory: 64Mi
 sops:
-    encrypted_regex: ^(data|stringData|secret|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(data|stringData|secret|loadBalancerIP)$
     lastmodified: "2026-08-17T23:00:03Z"
     mac: ENC[AES256_GCM,data:sKTvfc8yUQqZ6Fa+8SjIilSJ2hkxwBmvV8n3m7pbgR17O2PNLP0+h2BCkqLpy6hiulR9RCbLc7ZvK9oPAmlzwOPgdD/o/6pVHDbY8pA0ViA1/eBmXYzNqa0YcR0h/0f/VYRMfEoXWtwDCEO6mir2djRp4UHFYJ+hY/Ah0nJ41b8=,iv:pfzPr4ZJ6TJls38s7cA4DIUuq67Owsf7SkR4dBBJnTo=,tag:VZPDJ1c/u8yX/HUHq1eqcw==,type:str]
     mac_only_encrypted: true

@@ -1,6 +1,6 @@
 {{- if .Values.ingress.enabled -}}
-{{- if and (or .Values.ingress.authelia .Values.ingress.authentik) (ne .Values.ingress.className "nginx") -}}
-{{- fail "nginx forward-auth annotations cannot protect another ingress class; configure native SSO or a proxy backend" -}}
+{{- if ne .Values.ingress.className "contour" -}}
+{{- fail "Ingress requires the contour class; configure native SSO or a proxy backend for authentication" -}}
 {{- end -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -11,21 +11,6 @@ metadata:
   annotations:
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
-    {{- end }}
-    {{- if .Values.ingress.authelia }}
-    nginx.ingress.kubernetes.io/auth-method: GET
-    nginx.ingress.kubernetes.io/auth-url: http://{{ .Values.authelia.service }}/api/verify
-    nginx.ingress.kubernetes.io/auth-signin: https://{{ .Values.authelia.url }}?rm=$request_method
-    nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-    nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
-    {{- end }}
-    {{- if .Values.ingress.authentik }}
-    nginx.ingress.kubernetes.io/auth-method: GET
-    nginx.ingress.kubernetes.io/auth-response-headers: Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-entitlements,X-authentik-email,X-authentik-name,X-authentik-uid
-    nginx.ingress.kubernetes.io/auth-signin: https://{{ .Values.authentik.url }}/outpost.goauthentik.io/start?rd=$scheme://$http_host$escaped_request_uri
-    nginx.ingress.kubernetes.io/auth-snippet: |
-      proxy_set_header X-Forwarded-Host $http_host;
-    nginx.ingress.kubernetes.io/auth-url: http://{{ .Values.authentik.service }}/outpost.goauthentik.io/auth/nginx
     {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}

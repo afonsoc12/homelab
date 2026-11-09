@@ -46,8 +46,6 @@ For the repository's `homelab-svc` chart, native application authentication norm
 ingress:
   enabled: true
   className: contour
-  authelia: false
-  authentik: false
   annotations:
     ingress.kubernetes.io/force-ssl-redirect: "true"
   tls:
@@ -59,11 +57,11 @@ ingress:
           pathType: Prefix
 ```
 
-Here, `authelia` and `authentik` control nginx forward-auth annotations; they do not control the application's native SSO. Contour does not implement nginx's `auth-url` and `auth-signin` annotations.
+Configure native SSO or select an authentication proxy as the backend. Ingress class selection alone does not authenticate requests.
 
 Check that the generated Ingress has the correct class, backend, and TLS hostname. `homelab-svc` can infer TLS hostnames for Contour; upstream charts may require an explicit `tls[].hosts` list. Preserve the certificate and hostname when possible.
 
-Translate annotations by behavior, not by spelling. Configure WebSockets only for routes that need them and use bounded timeouts appropriate to the application. Remove nginx-specific annotations. Consult [Contour's annotation reference](https://projectcontour.io/docs/main/config/annotations/).
+Translate annotations by behavior, not by spelling. Configure WebSockets only for routes that need them and use bounded timeouts appropriate to the application. Use annotations supported by the selected controller. Consult [Contour's annotation reference](https://projectcontour.io/docs/main/config/annotations/).
 
 ### Applications That Need a Proxy Gate
 
