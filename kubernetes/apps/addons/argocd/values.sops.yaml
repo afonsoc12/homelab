@@ -527,7 +527,7 @@ notifications:
     startupProbe:
         enabled: true
 sops:
-    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP|nginx\.ingress\.kubernetes\.io/auth-signin)$
+    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP)$
     lastmodified: "2026-08-17T23:38:01Z"
     mac: ENC[AES256_GCM,data:cJPoB8NEOKkr779NBIVZ+QXtfKrIXU/coTSYMUIoU7uQ2qtrryjSIaKlc1PpKhCuo5YdoENnW9wxMBWiC1REkbA+9G/GD0YomrjWNg9MpzbBniYalJIr3qWAqziN3X7VzXQsajDG5+0NBfpdPB0pCw9amQfTrcqRhj681CWmiV8=,iv:s70Yk7ODIqaljgVF5MiVkkm2zyKthSzMtKzy6lU5IPg=,tag:toO83dmmiM2sCdxQH9Hfzw==,type:str]
     mac_only_encrypted: true
