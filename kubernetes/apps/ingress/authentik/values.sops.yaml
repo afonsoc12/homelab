@@ -38,18 +38,16 @@ server:
     name: server
     affinity:
         podAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 1
-                  podAffinityTerm:
-                    namespaces:
-                        - databases
-                    labelSelector:
-                        matchExpressions:
-                            - key: app.kubernetes.io/instance
-                              operator: In
-                              values:
-                                - postgres
-                    topologyKey: kubernetes.io/hostname
+            requiredDuringSchedulingIgnoredDuringExecution:
+                - namespaces:
+                    - databases
+                  labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - postgres
+                  topologyKey: kubernetes.io/hostname
     replicas: 1
     env:
         - name: AUTHENTIK_WEB__WORKERS
@@ -72,7 +70,7 @@ server:
                   - ENC[AES256_GCM,data:sp3Jew/EtPIy1Jtv73teAeE=,iv:ilTTSayh0um9Wf/Gf+QCL/RlwF1yguaJKszN0dwBFs4=,tag:mo8k9l+yH8rlhuXtNXCcDg==,type:str]
     resources:
         requests:
-            cpu: "1"
+            cpu: 500m
             memory: 512Mi
         limits:
             cpu: "2"
@@ -86,18 +84,16 @@ worker:
             maxUnavailable: 1
     affinity:
         podAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 1
-                  podAffinityTerm:
-                    namespaces:
-                        - databases
-                    labelSelector:
-                        matchExpressions:
-                            - key: app.kubernetes.io/instance
-                              operator: In
-                              values:
-                                - postgres
-                    topologyKey: kubernetes.io/hostname
+            requiredDuringSchedulingIgnoredDuringExecution:
+                - namespaces:
+                    - databases
+                  labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - postgres
+                  topologyKey: kubernetes.io/hostname
     replicas: 1
     resources:
         requests:
