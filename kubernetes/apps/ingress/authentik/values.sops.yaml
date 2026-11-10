@@ -84,16 +84,18 @@ worker:
             maxUnavailable: 1
     affinity:
         podAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-                - namespaces:
-                    - databases
-                  labelSelector:
-                    matchExpressions:
-                        - key: app.kubernetes.io/instance
-                          operator: In
-                          values:
-                            - postgres
-                  topologyKey: kubernetes.io/hostname
+            preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 1
+                  podAffinityTerm:
+                    namespaces:
+                        - databases
+                    labelSelector:
+                        matchExpressions:
+                            - key: app.kubernetes.io/instance
+                              operator: In
+                              values:
+                                - postgres
+                    topologyKey: kubernetes.io/hostname
     replicas: 1
     resources:
         requests:
