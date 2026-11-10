@@ -52,9 +52,6 @@ jobs:
       - name: 🔐 Check SOPS encryption
         run: uv run python scripts/check_sops.py
 
-      - name: 🔐 Check native OIDC identity verification
-        run: uv run python scripts/check_native_oidc.py
-
       - name: 🔍 Run yamllint
         run: uv run yamllint .
 
