@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "ingress": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "className": {
+          "type": "string",
+          "enum": [
+            "contour"
+          ]
+        },
+        "annotations": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "tls": {
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "hosts": {
+          "type": [
+            "array",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

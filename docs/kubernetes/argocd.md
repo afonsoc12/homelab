@@ -124,3 +124,13 @@ argocd app rollback <app-name>
 - Update container image tags in values files
 
 Renovate is configured to ignore `.decrypted~*.yaml` files so it never touches SOPS intermediaries.
+
+## Deployment tool security
+
+Argo CD verifies the OIDC provider certificate with its system CA trust store. Keep the provider certificate chain valid rather than disabling verification.
+
+CI checks that every field selected by each SOPS file encryption policy is encrypted. GitHub Actions grant write permissions only to jobs that publish an image, update an image tag, deploy Pages or publish a release.
+
+The SOPS private-key volume is read-only. The `secrets`, `secrets+age-import` and `secrets+age-import-kubernetes` downloader schemes are enabled, supporting the current GPG configuration and a future age migration. Configure the age private-key mount or Kubernetes Secret access when migrating. Symlinks are rejected. Absolute values paths remain enabled because Argo CD resolves values files to absolute paths. Parent-directory paths remain enabled because local charts load encrypted values through `secrets://../../apps/...`; disabling them prevents manifest generation. Test changes to these flags through the helm-secrets wrapper, not only with decrypted Helm input.
+
+MetalLB address pools are stored in `kubernetes/apps/addons/metallb-resources/values.sops.yaml` and decrypted by helm-secrets during rendering.

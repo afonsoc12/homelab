@@ -12,11 +12,6 @@ variable "bucket_type" {
   }
 }
 
-variable "encryption" {
-  type    = bool
-  default = false
-}
-
 variable "file_lock" {
   type    = bool
   default = false

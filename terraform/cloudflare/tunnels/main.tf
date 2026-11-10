@@ -22,25 +22,14 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
     # Order matches Cloudflare state (first match wins)
     ingress = [
       {
-        hostname = "auth.${var.domain}"
-        service  = "https://ingress-nginx-controller"
-        origin_request = {
-          connect_timeout          = 30
-          disable_chunked_encoding = false
-          http2_origin             = false
-          keep_alive_connections   = 100
-          keep_alive_timeout       = 90
-          no_happy_eyeballs        = false
-          no_tls_verify            = false
-          origin_server_name       = "auth.${var.domain}"
-          tcp_keep_alive           = 30
-          tls_timeout              = 10
-        }
-      },
-      {
         hostname = "firefly.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.firefly.aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -55,7 +44,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "home.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -71,7 +60,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "seerr.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -87,7 +76,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "calibre.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -103,7 +92,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "rss.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -119,7 +108,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "status.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -135,7 +124,7 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "wallabag.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -151,19 +140,15 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
       },
       {
         hostname = "sso.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
+          no_tls_verify      = false
           origin_server_name = "sso.${var.domain}"
         }
       },
       {
-        # Public entry point solely for GitHub's push webhook to hit Forgejo's
-        # mirror-sync API. Path-scoped to that one endpoint via a second entry
-        # in the Forgejo chart's own ingress.hosts (values.sops.yaml), and
-        # IP-blocked to everyone but GitHub's hook CIDRs by ../zone/waf.tf —
-        # Forgejo itself stays LAN-only (git.local).
         hostname = "git-hook.${var.domain}"
-        service  = "https://ingress-nginx-controller"
+        service  = "https://contour-envoy"
         origin_request = {
           connect_timeout          = 30
           disable_chunked_encoding = false
@@ -178,6 +163,54 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         }
       },
       {
+        hostname = "split.${var.domain}"
+        service  = "https://contour-envoy"
+        origin_request = {
+          connect_timeout          = 30
+          disable_chunked_encoding = false
+          http2_origin             = false
+          keep_alive_connections   = 100
+          keep_alive_timeout       = 90
+          no_happy_eyeballs        = false
+          no_tls_verify            = false
+          origin_server_name       = "split.${var.domain}"
+          tcp_keep_alive           = 30
+          tls_timeout              = 10
+        }
+      },
+      {
+        hostname = "music-assistant-stream.${var.domain}"
+        service  = "https://contour-envoy"
+        origin_request = {
+          connect_timeout          = 30
+          disable_chunked_encoding = false
+          http2_origin             = false
+          keep_alive_connections   = 100
+          keep_alive_timeout       = 90
+          no_happy_eyeballs        = false
+          no_tls_verify            = false
+          origin_server_name       = "music-assistant-stream.${var.domain}"
+          tcp_keep_alive           = 30
+          tls_timeout              = 10
+        }
+      },
+      {
+        hostname = "music-assistant-alexa-skill.${var.domain}"
+        service  = "https://contour-envoy"
+        origin_request = {
+          connect_timeout          = 30
+          disable_chunked_encoding = false
+          http2_origin             = false
+          keep_alive_connections   = 100
+          keep_alive_timeout       = 90
+          no_happy_eyeballs        = false
+          no_tls_verify            = false
+          origin_server_name       = "music-assistant-alexa-skill.${var.domain}"
+          tcp_keep_alive           = 30
+          tls_timeout              = 10
+        }
+      },
+      {
         service = "http_status:404"
       },
     ]
@@ -185,7 +218,35 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
 }
 
 locals {
-  k3s_cluster_subdomains = toset(["auth", "calibre", "firefly", "git-hook", "home", "rss", "seerr", "sso", "status", "wallabag"])
+  k3s_cluster_subdomains = toset(["calibre", "firefly", "git-hook", "home", "music-assistant-alexa-skill", "music-assistant-stream", "rss", "seerr", "split", "sso", "status", "wallabag"])
+}
+
+# Additional public access policy for Spliit's hostname.
+resource "cloudflare_zero_trust_access_policy" "spliit" {
+  account_id = var.account_id
+  name       = "Allow Spliit friends"
+  decision   = "allow"
+  include = [
+    for e in var.spliit_access_emails : {
+      email = {
+        email = e
+      }
+    }
+  ]
+}
+
+resource "cloudflare_zero_trust_access_application" "spliit" {
+  account_id       = var.account_id
+  name             = "Spliit"
+  domain           = "split.${var.domain}"
+  type             = "self_hosted"
+  session_duration = "360h" # 15 days
+  policies = [
+    {
+      id         = cloudflare_zero_trust_access_policy.spliit.id
+      precedence = 1
+    }
+  ]
 }
 
 # Keys use "subdomain|CNAME" format to match import addresses

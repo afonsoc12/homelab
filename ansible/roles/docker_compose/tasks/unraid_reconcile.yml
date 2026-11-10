@@ -1,0 +1,33 @@
+---
+- name: "Unraid | Inspect existing containers before deploying {{ stack.path | basename }}"
+  community.docker.docker_host_info:
+    containers: true
+    containers_all: true
+    verbose_output: true
+  register: docker_compose_unraid_host
+  no_log: true
+
+- name: "Unraid | Remove previous stack ownership and interrupted replacements for {{ stack.path | basename }}"
+  community.docker.docker_container:
+    name: "{{ item.Id }}"
+    state: absent
+    keep_volumes: true
+  vars:
+    service_key: "{{ item.Labels['com.docker.compose.service'] | default('') }}"
+    project: "{{ item.Labels['com.docker.compose.project'] | default('') }}"
+    config_files: "{{ item.Labels['com.docker.compose.project.config_files'] | default('') }}"
+    desired_names: "{{ docker_compose_stack_services.values() | map(attribute='container_name') | list }}"
+    existing_name: "{{ item.Names[0] | regex_replace('^/', '') }}"
+  loop: "{{ docker_compose_unraid_host.containers }}"
+  loop_control:
+    label: "{{ item.Names[0] }}"
+  when:
+    - >-
+      config_files.startswith(docker_compose_base_dir + '/')
+      or (project == '' and item.Labels['net.unraid.docker.managed'] | default('') == 'dockerman')
+    - >-
+      (existing_name in desired_names and project != stack.path | basename)
+      or (project == stack.path | basename and service_key in docker_compose_stack_services
+          and existing_name != docker_compose_stack_services[service_key].container_name
+          and existing_name is match('^[0-9a-f]{12}_') and item.State == 'created')
+  no_log: true

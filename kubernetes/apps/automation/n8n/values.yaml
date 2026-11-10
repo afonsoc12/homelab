@@ -7,7 +7,7 @@
 ---
 image:
   repository: docker.io/n8nio/n8n
-  tag: 2.35.3
+  tag: 3.1.0
   pullPolicy: Always
 
 # hostNetwork: true
@@ -45,8 +45,7 @@ configmap:
 
 ingress:
   enabled: true
-  authelia: true
-  className: "nginx"
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -54,6 +53,12 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          service:
+            name: authentik-automation-proxy
+            port: 9000
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 300s
 
 livenessProbe:
   httpGet:
@@ -86,7 +91,7 @@ resources:
     memory: 256Mi
   limits:
     cpu: 500m
-    memory: 600Mi
+    memory: 750Mi
 
 podSecurityContext:
   fsGroup: 1000

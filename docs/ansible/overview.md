@@ -122,7 +122,58 @@ Installs and manages Hyperion.ng on `rpi-z2w-hyperion`. Installs via `apt`, disa
 
 ## `docker_compose` Role
 
-Deploys Docker Compose stacks to hosts in the `docker` group (`rpi-4b`). Stack definitions live under `docker/<inventory_hostname>/` at the repo root (e.g. `docker/rpi-4b/adguard/`). The role syncs each stack directory to the host, ensures volume directories exist, and manages the compose lifecycle.
+Deploys Docker Compose stacks to hosts in the `docker` group (`rpi-4b`) and `unraid` group (`hoarder`). Stack definitions live under `docker/<inventory_hostname>/` at the repo root (e.g. `docker/rpi-4b/adguard/`, `docker/hoarder/decide/`). The role syncs each stack directory to the host, ensures volume directories exist, and manages the compose lifecycle.
+
+Full guide, including all the Unraid-specific gotchas below: `.agents/skills/unraid-docker/SKILL.md`.
+
+### Unraid DockerMan Templates
+
+For hosts in the `unraid` group, the role additionally renders one DockerMan XML template per compose service into `/boot/config/plugins/dockerMan/templates-user/`, so containers deployed via `docker_compose_v2` show up as native, editable apps in the Unraid GUI (icon, WebUI link, port/volume/env fields) instead of "unmanaged" containers.
+
+Compose stays the single source of truth for the container spec (image, ports, volumes, environment, labels). An optional `unraid.yml` sidecar file per stack supplies fields the compose spec has no equivalent for — icon, WebUI URL, category, overview, per-field descriptions/display-tier, and which env vars to mask as secrets in the GUI:
+
+```yaml
+# docker/hoarder/<stack>/unraid.yml
+<service-name>:                # keyed by compose service name
+  icon: https://example.com/icon.png
+  webui: "http://[IP]:[PORT:8081]/"
+  category: "Tools: Network:Web"
+  overview: "Short description shown in the Unraid GUI."
+  project_url: https://example.com/repo   # optional, -> <Project>
+  support_url: https://example.com/issues # optional, -> <Support>
+  license: MIT                            # optional, -> <License>
+  env_descriptions:
+    SOME_API_KEY: "Shown under the field in the edit form."
+  env_display:
+    SOME_API_KEY: advanced   # 'always' (default) or 'advanced'
+  secret_env:
+    - SOME_API_KEY            # masked in the DockerMan edit form, value never shown
+```
+
+Templates use the resolved runtime configuration and the native `my-<container>.xml` filename. They preserve network mode, privileges, sysctls, healthchecks, restart policy, tmpfs, devices, entrypoint, and command. `network_mode: service:privoxyvpn` renders as `<Network>container:privoxyvpn</Network>` with no second network flag. Duplicate templates for managed apps are removed. This also prevents Unraid from restoring an incompatible extra `none`/bridge network onto a container that shares the VPN namespace.
+
+Variables listed in `secret_env`, and variables interpolated from `.env`, are masked in the edit form. Their current values remain in the root-readable template (mode `0600`) so GUI Apply/Update preserves credentials. These resolved templates stay on the server; Git contains only encrypted secrets and template code.
+
+### Unraid startup and VPN replacement
+
+Unraid's native autostart list starts independent containers before shared-network dependents. `docker_compose_unraid_start_delays` controls native delays after individual containers start; the default gives `privoxyvpn` 30 seconds. No Compose process runs at boot. When testing a Docker service restart over SSH, unset `XDG_RUNTIME_DIR` before invoking `/etc/rc.d/rc.docker restart`; otherwise the daemon can inherit a session directory that disappears on logout and breaks `docker exec`/healthchecks. The previous User Scripts `start-containers` workaround is replaced with a no-op to avoid racing DockerMan.
+
+Docker saves a container ID for `--net=container:privoxyvpn`. Ansible therefore deploys namespace providers first, checks dependents against the current provider ID, and recreates dependents with stale IDs or invalid extra networks. Apps moved between stacks are reconciled by their configured container names and managed ownership. Interrupted Compose replacement containers are removed only for the affected service/project, preserving volumes.
+
+Use Ansible for VPN image/config changes so it can rebind dependents after replacing the VPN container. Restarting an existing VPN container keeps its ID and needs no recreation. A standalone GUI replacement of the VPN cannot repair Docker's saved namespace IDs in other containers; run the Unraid playbook afterwards.
+
+For apps sharing the VPN namespace, use IPv4 loopback for upstream connections when the VPN firewall drops IPv6; resolving `localhost` to IPv6 can otherwise stall application initialization.
+
+Containers with `restart: "no"` are created stopped and omitted from autostart. Global container/network pruning is disabled so manual tools survive.
+
+**Gotchas learned the hard way (full detail in the skill file):**
+
+- Containers need the `net.unraid.docker.managed=dockerman` label to show as *editable* in the GUI — the role injects it automatically into every service on unraid hosts, but a manually-run `docker compose up` outside Ansible won't have it.
+- Fresh Unraid boxes may have **no Python at all** — bootstrap with `un-get install python3` (see skill file) before the first run.
+- Unraid's own management nginx squats `:8080` on every interface — check `ss -tlnp` on the host before picking a host port for a new stack.
+- PUID/PGID convention on Unraid is `99:100` (`nobody:users`), not an arbitrary app-specific UID — match the host's own data ownership.
+
+To add a new native-looking container on Unraid: create `docker/hoarder/<stack>/docker-compose.yaml` (+ optional `secrets.sops.yaml` and `unraid.yml`), then run the `unraid.yml` playbook.
 
 ## Linting
 

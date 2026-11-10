@@ -16,7 +16,7 @@ strategy:
   type: Recreate
 
 image:
-  # repository: nginx
+  # repository: example/app
   tag: latest
   pullPolicy: Always
 
@@ -60,6 +60,17 @@ prometheusRule:
   #       summary: "App alert triggered"
   #       description: "This is an alert from the app"
 
+serviceAccount: {}
+  # create: true
+  # name: ""
+  # annotations: {}
+
+rbac: {}
+  # rules:
+  #   - apiGroups: [""]
+  #     resources: ["pods", "pods/log"]
+  #     verbs: ["get", "list", "watch", "create", "delete"]
+
 secret: {}
   # stringData:
   #   secret_string_1: abc
@@ -77,6 +88,14 @@ secret: {}
 #     data:
 #       key3: dmFsdWUz
 
+extraResources: []
+# - apiVersion: networking.k8s.io/v1
+#   kind: Ingress
+#   metadata:
+#     name: extra-ingress
+#     namespace: my-namespace
+#   spec: {}
+
 configmap: {}
   # mountEnv: false
   # data:
@@ -93,7 +112,7 @@ volumes: {}
 #   projected:
 #     sources:
 #     - configMap:
-#         name: authelia-config
+#         name: app-config
 #         items:
 #         - key: "configuration.yml"
 #           path: "configuration.yml"
@@ -110,12 +129,8 @@ pvc: {}
 
 ingress:
   enabled: false
-  authelia: false
-  authentik: false
-  className: "nginx"
+  className: "contour"
   annotations: {}
-  # nginx.ingress.kubernetes.io/client-max-body-size: "0"
-  # nginx.ingress.kubernetes.io/proxy-body-size: "0"
   tls: []
   #  - secretName: mydomain-cert
   #    hosts:
@@ -127,6 +142,10 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
+          # Optional Service override; otherwise uses the app Service and port.
+          # service:
+          #   name: authentication-proxy
+          #   port: 9000
 
 livenessProbe: {}
 readinessProbe: {}
@@ -166,8 +185,8 @@ cronjobs: []
 #   successfulJobsHistoryLimit:
 #   suspend:
 #   image:
-#     # repository: nginx
-#     tag: latest
+#     # repository: example/sidecar
+#     tag: REPLACE_WITH_PINNED_TAG
 #     pullPolicy: Always
 #   restartPolicy:
 #   command: {}
@@ -190,7 +209,7 @@ cronjobs: []
 #   #   projected:
 #   #     sources:
 #   #     - configMap:
-#   #         name: authelia-config
+#   #         name: app-config
 #   #         items:
 #   #         - key: "configuration.yml"
 #   #           path: "configuration.yml"

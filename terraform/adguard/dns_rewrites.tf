@@ -5,12 +5,12 @@ locals {
 
 resource "adguard_rewrite" "local" {
   domain = "local.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "local-wildcard" {
   domain = "*.local.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "db" {
@@ -25,42 +25,37 @@ resource "adguard_rewrite" "mqtt" {
 
 resource "adguard_rewrite" "home" {
   domain = "home.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "calibre" {
   domain = "calibre.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "firefly" {
   domain = "firefly.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "sso" {
   domain = "sso.${local.domain}"
-  answer = "10.0.10.220"
-}
-
-resource "adguard_rewrite" "auth" {
-  domain = "auth.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "rss" {
   domain = "rss.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "stocks" {
   domain = "stocks.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "seerr" {
   domain = "seerr.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "plex" {
@@ -70,15 +65,33 @@ resource "adguard_rewrite" "plex" {
 
 resource "adguard_rewrite" "status" {
   domain = "status.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "wallabag" {
   domain = "wallabag.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
+}
+
+resource "adguard_rewrite" "music-assistant-alexa-skill" {
+  domain = "music-assistant-alexa-skill.${local.domain}"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
+}
+
+resource "adguard_rewrite" "music-assistant-stream" {
+  domain = "music-assistant-stream.${local.domain}"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }
 
 resource "adguard_rewrite" "hoarder" {
   domain = "hoarder.srv.${local.domain}"
-  answer = "10.0.10.220"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
+}
+
+# Preserve resource addresses while moving the last LAN hosts to Contour.
+resource "adguard_rewrite" "legacy_local" {
+  for_each = toset(["kopia", "unifi"])
+
+  domain = "${each.value}.local.${local.domain}"
+  answer = data.sops_file.contour.data["envoy.service.loadBalancerIP"]
 }

@@ -4,14 +4,15 @@ version = "0.0.1"
 description = "Airflow DAGs and tooling for homelab"
 requires-python = ">=3.14,<3.15"
 dependencies = [
-    "apache-airflow==3.3.1",
-    "apache-airflow-providers-postgres==7.0.1",
+    "apache-airflow==3.4.0",
+    "apache-airflow-providers-postgres==7.1.2",
+    "apache-airflow-providers-cncf-kubernetes==10.25.0",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest==9.1.1",
-    "ruff==0.16.3",
+    "pytest==9.2.0",
+    "ruff==0.17.4",
 ]
 
 [tool.ruff]

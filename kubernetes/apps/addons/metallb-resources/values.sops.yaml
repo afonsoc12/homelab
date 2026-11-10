@@ -1,0 +1,52 @@
+# --------------------
+# MetalLB Resources
+#   - Repo:           https://github.com/afonsoc12/homelab
+#   - Docs:           https://metallb.universe.tf/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/metallb-resources/
+# --------------------
+ipAddressPools:
+    ip-pool-20-lan-uk:
+        - ENC[AES256_GCM,data:OpqFHzkQsdRcn9PKFrpIoV5HiJViG1A=,iv:HWn32XlPevkqJqFHm+FyW5V0QJ02B9i5csrtdt8bGGI=,tag:mjEHifI6DLbJqQGkGNro1g==,type:str]
+    ip-pool-lan-pt:
+        - ENC[AES256_GCM,data:/KwT7NJf2eIEHqU6WXA=,iv:3KVG3CGrn0Hl3WSg0LZpheYRIeRtjyDqZV9nH1QGuEc=,tag:keV4NxLqzVMG5vxK/bHObQ==,type:str]
+l2Advertisements:
+    - name: k3s-m1
+      ipAddressPools:
+        - ENC[AES256_GCM,data:7nySOhF/fX5oY5S89vCJF2Y=,iv:Jk5gjhLq0stQZFPIHuDho8bkX/XWWdk65dpg4ylPQRs=,tag:jwreO87IDW/zgOyJe1fKtA==,type:str]
+      nodeSelectors:
+        - matchLabels:
+            kubernetes.io/hostname: k3s-m1
+    - name: k3s-m2
+      ipAddressPools:
+        - ENC[AES256_GCM,data:WXhSvPYAmLMIEnoCAYE=,iv:1nuftpJVoI3xjCQ4d3jCBQAJLeqG+kfFGjGDhkna4Fk=,tag:u2CFW15ICWh2Dkwbwckhlg==,type:str]
+      nodeSelectors:
+        - matchLabels:
+            kubernetes.io/hostname: k3s-m2
+sops:
+    encrypted_regex: ^ipAddressPools$
+    lastmodified: "2026-10-20T21:09:21Z"
+    mac: ENC[AES256_GCM,data:MPDDXLY/K07nrtklg77ypAynpZsf8/y2gAL9Jzt17Y9UFKpZdKVfa7H59Nr+NuRE4BE3dR7vDBDbSXAUn20YISPktcvLo2JA97pCgStD8iPVmkuuCiTP1mV7Eu4arJ8gWDFxOb77ENxAsmeYaokXxVQpHW1gXd2kNRxpJQuAsjc=,iv:ONpdtUtO9Fmx2JwXcP3DB1htVei6kvum83OmxE4H1+Q=,tag:JlRvlV0ehHfTrpTkgpSKEg==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-10-20T21:09:21Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGARAAq8pr43dXFEMYloTq+jwW6A98z//2s7R3JCfhhcNUyk8l
+            tXUduo5mIDqjK/EE2IIOkuEZ1+lkPXEfRO0sv1ZykFa5srJBdOIh9RW5JOML6b1T
+            sdV5zqiXtSu3224+ao2c7A8Dq40o3ziHwHQ1IxYnA0DJIO8kyH6LqX8aqsMPjTrN
+            /qJ0JaI6yy4tut8s7uhgXHUkvWYxohv/M+b4o9pi+Q8ppISgo+NkHhUiTxU1Zx7n
+            wiluvjsDk/J6JclGc6JpK6mfzyqUkvbR+TYb6CKtJikw8Orcg1KQT6K7uqf2f5R2
+            DrMov/QoKwypU8wGKFvUl52KJvMtqdmXLDepS+DPPtmDN0ZqE6/NPu7fFOnspcHW
+            B8yG+mwow1pAPDvvCPboAyKBL5NplQIZIhXf2naOu+MmJ212DaLgv/3Ewu88LGgO
+            WPJD4w888HW9g6OUPvfBQHWvUT7Hu4RixLelt69XOkOGqlTzDFjQCgK/pe9PMbXr
+            I7zczeTfx9CtQmaZVId1A5X5Vx9M5MBuSLBoY1Avodh53fRA+v00D4VPbJ8c8Ucl
+            s9zWGJE5mShmheUV5lJEoMRvzqL6IYpnJTDjN/HTbHbiiN9PqnA206V1+TVUMzvi
+            QW83L0B2Iq5+nC5GqT0BcTMvEc2X6ivzEIsc2TN+57fgBkcGoisRPpMVDwvzx5jU
+            aAEJAhCDAzB/MctONqa8JsUSSfuzOeckhozpfd79NqfrV43KZG617IwDHcGAYvKt
+            nvXAXvQhthqeQ+H1FZrpP9wBMWb/DN+THyyRsN9tCTcWzlaNc++MJctqeN5Mm8wl
+            BuPp0kT6V+JF
+            =h4pz
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2

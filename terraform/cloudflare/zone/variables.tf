@@ -32,10 +32,25 @@ variable "block_bots" {
   default     = true
 }
 
-variable "allow_aws" {
-  description = "Skip WAF rules for AWS IPs (ASN 16509) — needed for services that call back from AWS"
-  type        = bool
-  default     = false
+variable "aws_callback_endpoints" {
+  description = "Exact subdomain/path pairs whose POST endpoints accept AWS callbacks without custom geo/bot filtering"
+  type        = map(set(string))
+  default     = {}
+
+  validation {
+    condition = alltrue([
+      for host, paths in var.aws_callback_endpoints :
+      can(regex("^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$", host)) &&
+      length(paths) > 0 &&
+      alltrue([for path in paths : can(regex("^/[A-Za-z0-9/_-]*$", path))])
+    ])
+    error_message = "AWS callbacks require individual subdomain labels and nonempty exact paths, without wildcards, queries or encoded characters."
+  }
+
+  validation {
+    condition     = length(var.aws_callback_endpoints) == 0 || length(trimspace(var.domain)) > 0
+    error_message = "A base domain is required when AWS callbacks are configured."
+  }
 }
 
 variable "geo_block_enabled" {
@@ -51,13 +66,16 @@ variable "geo_allowlist" {
 }
 
 variable "domain" {
-  description = "Base domain — only required when allow_github_hooks = true"
+  description = "Base domain — required when AWS callback exceptions are configured"
   type        = string
   default     = ""
 }
 
-variable "allow_github_hooks" {
-  description = "Skip geo-block for GitHub's published webhook IPs, scoped to git-hook.<domain> only — used to let GitHub's push webhook reach the Forgejo mirror-sync API"
-  type        = bool
-  default     = false
+variable "github_webhook_rules" {
+  description = "Paired GitHub webhook source rules supplied from encrypted configuration"
+  type = object({
+    allow_expression = string
+    block_expression = string
+  })
+  default = null
 }

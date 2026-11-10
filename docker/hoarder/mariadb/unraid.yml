@@ -1,0 +1,34 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-mariadb.xml).
+mariadb:
+  icon: https://github.com/mgutt/unraid-docker-templates/raw/main/mgutt/images/mariadb.png
+  category: "Tools:Utilities Other: Network:Other"
+  overview: |
+    Official MariaDB database container. It allows to set a database and username without using the console.
+
+    MariaDB is a community-developed, commercially supported fork of MySQL (RDBMS).
+
+    Root Password:
+    This container creates by default a random root password on initial execution. Open Docker &gt; MariaDB Icon &gt; Logs &gt; Scroll down to "GENERATED ROOT PASSWORD" to find it.
+
+    Creating database dumps
+    docker exec MariaDB-Official sh -c 'exec mysqldump --all-databases -uroot -p"YOUR_ROOT_PASSWORD"' &gt; /mnt/user/Backups/all-databases.sql
+
+    Restoring data from dump files
+    docker exec -i MariaDB-Official sh -c 'exec mysql -uroot -p"YOUR_ROOT_PASSWORD"' &lt; /mnt/user/Backups/all-databases.sql
+  registry: "https://hub.docker.com/_/mariadb"
+  project_url: "https://mariadb.org/"
+  support_url: "https://forums.unraid.net/topic/110019-support-mariadb-official/"
+  volume_descriptions:
+    "/var/lib/mysql": "Recommened: For better performance replace /mnt/user against /mnt/cache. Note: This requires appdata share caching set to Prefer or Only!"
+  env_descriptions:
+    MARIADB_ROOT_PASSWORD: "Generate Random Password must be empty if you like to set your own Root Password!"
+    CA_TS_FALLBACK_DIR: "Fallback container directory for tailscale state information - Added By Community Applications"
+  env_display:
+    CA_TS_FALLBACK_DIR: advanced
+  secret_env:
+    - MARIADB_ROOT_PASSWORD

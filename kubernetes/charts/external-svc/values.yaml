@@ -5,21 +5,18 @@
 labels: {}
 # External server configuration
 server:
-  # ip: 10.0.0.1
+  # Optional PEM trust bundle from encrypted values, rendered as an Opaque Secret.
+  caCertificate: ""
+  # ip: "{{ .Values.ips.example }}"
   # port: 8080
   protocol: TCP
 
 # Ingress configuration
 ingress:
   enabled: false
-  authelia: false
-  className: "nginx"
+  tlsPassthrough: false
+  className: "contour"
   annotations: {}
-  # nginx.ingress.kubernetes.io/rewrite-target: /$2
-  # nginx.ingress.kubernetes.io/proxy-body-size: 10000m
-  # # adds 301 redirect with trailing slash
-  # nginx.ingress.kubernetes.io/configuration-snippet: |
-  #   rewrite ^(/longhorn)$ $1/ permanent;
   # hosts:
   #   - host: chart-example.local
   #     paths:
@@ -29,8 +26,3 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
-# Authelia configuration. Must be set if .Values.ingress.authelia is true
-# authelia: {}
-#   # service: authelia.ingress.svc.cluster.local
-#   # url: authelia.com

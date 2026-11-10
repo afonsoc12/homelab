@@ -10,43 +10,26 @@ Traffic routing, VPN, DNS filtering, identity, and authentication.
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Identity provider (IdP). Handles SSO, OAuth2/OIDC, SAML, and LDAP for all protected services. The primary auth system going forward.
+Identity provider for single sign-on and multi-factor authentication, with [Plex social login](https://docs.goauthentik.io/users-sources/sources/social-logins/plex/) and administrator-issued [invitations](https://docs.goauthentik.io/users-sources/user/invitations/). Supports native application integrations and [proxy protection](https://docs.goauthentik.io/add-secure-apps/providers/proxy/) for applications without built-in login. Supports [machine-to-machine authentication](https://docs.goauthentik.io/add-secure-apps/providers/oauth2/machine_to_machine/) for automation. Provides an [application dashboard](https://docs.goauthentik.io/add-secure-apps/applications/manage_apps/) with visual categories and separate user/group access bindings.
 
 [:octicons-book-16: Documentation](https://docs.goauthentik.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authentik/values.sops.yaml)
 
 ---
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/authelia.png" class="svc-icon"> Authelia
 
-<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
-
-SSO and 2FA authentication proxy. Currently being decommissioned in favour of Authentik.
-
-[:octicons-book-16: Documentation](https://www.authelia.com/configuration/prologue/introduction/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authelia/values.sops.yaml)
-
----
-
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/lldap.png" class="svc-icon"> LLDAP
-
-<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
-
-Lightweight LDAP server. Provides a simple user directory consumed by Authentik and other LDAP-aware services.
-
-[:octicons-book-16: Documentation](https://github.com/lldap/lldap) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/lldap/values.sops.yaml)
-
----
 
 ## Ingress & Tunnels
 
-### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/nginx.png" class="svc-icon"> ingress-nginx
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/contour.png" class="svc-icon"> [Contour](https://projectcontour.io/)
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-Kubernetes ingress controller. Routes external HTTP/HTTPS traffic to the appropriate services based on hostname and path rules.
+Standard Kubernetes ingress controller, using [Envoy](https://www.envoyproxy.io/) for HTTP/HTTPS routing and TLS termination.
 
-[:octicons-book-16: Documentation](https://kubernetes.github.io/ingress-nginx/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/ingress-nginx/values.sops.yaml)
+[:octicons-book-16: Documentation](../kubernetes/contour.md) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/contour/values.sops.yaml)
 
 ---
+
 
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cloudflare.png" class="svc-icon"> Cloudflared
 

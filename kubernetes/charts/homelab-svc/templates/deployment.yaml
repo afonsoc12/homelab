@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "homelab-svc.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicas | default 1 }}
+  replicas: {{ .Values.replicas }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 1 }}
   {{- with .Values.strategy }}
   strategy:
@@ -29,6 +29,9 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       {{- end }}
       enableServiceLinks: {{ .Values.enableServiceLinks }}
+      {{- if or (.Values.serviceAccount).create (.Values.serviceAccount).name }}
+      serviceAccountName: {{ include "homelab-svc.serviceAccountName" . }}
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       restartPolicy:  {{ .Values.restartPolicy }}

@@ -19,7 +19,6 @@ module "buckets" {
 
   bucket_name = data.sops_file.secrets.data["buckets.${each.value}.name"]
   bucket_type = "allPrivate"
-  encryption  = tobool(data.sops_file.secrets.data["buckets.${each.value}.encryption"])
   file_lock   = tobool(data.sops_file.secrets.data["buckets.${each.value}.file_lock"])
 }
 

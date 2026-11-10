@@ -1,0 +1,5 @@
+---
+- name: Deploy Docker Compose stacks + DockerMan templates
+  hosts: hoarder
+  roles:
+    - docker_compose

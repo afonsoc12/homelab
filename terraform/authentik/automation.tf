@@ -1,0 +1,57 @@
+data "sops_file" "apps" {
+  source_file = "../../kubernetes/apps/values.sops.yaml"
+  input_type  = "yaml"
+}
+
+locals {
+  apps_domain = data.sops_file.apps.data["domain"]
+  protected_apps = {
+    esphome     = { name = "ESPHome", host = "esphome.local", upstream = "http://esphome.automation.svc.cluster.local:6052" }
+    zigbee2mqtt = { name = "Zigbee2MQTT", host = "z2m.local", upstream = "http://zigbee2mqtt.automation.svc.cluster.local:8080" }
+  }
+}
+
+# Proxy mode works with ordinary, namespace-local Ingress resources.
+# Each application gets an independent authorization policy.
+resource "authentik_provider_proxy" "automation" {
+  for_each = local.protected_apps
+
+  name                         = "${each.value.name} Proxy"
+  mode                         = "proxy"
+  external_host                = "https://${each.value.host}.${local.apps_domain}"
+  internal_host                = each.value.upstream
+  internal_host_ssl_validation = true
+  authentication_flow          = authentik_flow.login_choice.uuid
+  depends_on                   = [authentik_flow_stage_binding.login_choice]
+  authorization_flow           = authentik_flow.provider_consent.uuid
+  invalidation_flow            = authentik_flow.provider_logout.uuid
+  access_token_validity        = "hours=1"
+  refresh_token_validity       = "hours=8"
+  property_mappings = [
+    authentik_property_mapping_provider_scope.proxy_outpost.id,
+    authentik_property_mapping_provider_scope.oidc_openid.id,
+    authentik_property_mapping_provider_scope.oidc_email.id,
+    authentik_property_mapping_provider_scope.oidc_profile.id,
+    authentik_property_mapping_provider_scope.oidc_entitlements.id,
+  ]
+}
+
+resource "authentik_application" "automation" {
+  for_each = local.protected_apps
+
+  group              = "automation"
+  meta_icon          = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/${each.key}.png"
+  name               = each.value.name
+  slug               = each.key
+  protocol_provider  = authentik_provider_proxy.automation[each.key].id
+  policy_engine_mode = "any"
+}
+
+resource "authentik_policy_binding" "automation_admins" {
+  for_each = local.protected_apps
+
+  target         = authentik_application.automation[each.key].uuid
+  group          = data.sops_file.secrets.data["value_079"]
+  order          = 0
+  failure_result = false
+}

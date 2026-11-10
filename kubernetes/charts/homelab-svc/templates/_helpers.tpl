@@ -45,6 +45,17 @@ app: {{ .Release.Name }}
 
 
 {{/*
+Name of the ServiceAccount to use
+*/}}
+{{- define "homelab-svc.serviceAccountName" -}}
+{{- if (.Values.serviceAccount).create }}
+{{- default (include "homelab-svc.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" (.Values.serviceAccount).name }}
+{{- end }}
+{{- end }}
+
+{{/*
 Selector labels
 */}}
 {{- define "homelab-svc.selectorLabels" -}}

@@ -12,7 +12,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/wealthfolio/wealthfolio
-    tag: 3.6.3
+    tag: 3.12.0
     pullPolicy: Always
 command: {}
 args: {}
@@ -49,16 +49,22 @@ pvc:
         requests:
             storage: 2Gi
 ingress:
-    enabled: true
-    authelia: true
-    className: nginx
-    tls:
-        - secretName: local-wildcard-cert
-    hosts:
-        - host: wealth.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: ImplementationSpecific
+  enabled: true
+  className: contour
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: wealth.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: authentik-homelab-proxy
+            port: 9000
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
+
 livenessProbe:
     httpGet:
         path: /api/v1/healthz
@@ -104,7 +110,7 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 sops:
-    encrypted_regex: ^(stringData|loadBalancerIP|nginx.ingress.kubernetes.io/auth-signin)$
+    encrypted_regex: ^(stringData|loadBalancerIP)$
     lastmodified: "2026-06-29T20:57:01Z"
     mac: ENC[AES256_GCM,data:8c1CsFVM3St8zzOKSh2Mg+EPthkulZtBuUftHQmg8xjfXOc25j5wL1yosqpytsl4q5DvzxoiEv7ZF1heZlJ3V8XMYpdYMFpw+br8hHuKG4M7RFAf3xlbLgPfaRX8lK1b1yOu7D9XCTR5obJksS6GaRPVKC7StlQsjxXPvXtDfiU=,iv:ea/7rbi+RScKg1MQmlU4EBhEVubB8Cef5fhvF0LHJaM=,tag:0qXZaweJ3TYMeUTbRkmF3g==,type:str]
     mac_only_encrypted: true

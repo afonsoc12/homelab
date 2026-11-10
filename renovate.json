@@ -3,7 +3,8 @@
   "extends": ["config:recommended"],
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["after 4am and before 5am"]
+    "schedule": ["after 8pm on friday"],
+    "groupName": "lock file maintenance"
   },
   "labels": ["renovate"],
   "argocd": {
@@ -11,12 +12,6 @@
     "managerFilePatterns": [
       "/^kubernetes\\/apps\\/addons\\/argocd-apps\\/application\\.ya?ml$/",
       "/^kubernetes\\/apps\\/addons\\/argocd-apps\\/templates\\/.+\\.ya?ml$/"
-    ]
-  },
-  "helmv3": {
-    "enabled": true,
-    "managerFilePatterns": [
-      "/^kubernetes\\/bootstrap\\/helmfile\\.ya?ml$/"
     ]
   },
   "helmfile": {
@@ -53,6 +48,12 @@
   },
   "packageRules": [
     {
+      "description": "Keep Python on the supported 3.14 line while Ansible 14.5 and Airflow 3.3.2 do not support Python 3.15",
+      "matchPackageNames": ["python"],
+      "matchFileNames": [".python-version", "pyproject.toml", "airflow/pyproject.toml", "airflow/Dockerfile"],
+      "allowedVersions": "<3.15"
+    },
+    {
       "description": "Ignore git URL picked up natively by ansible manager — handled by custom manager",
       "matchPackageNames": ["https://github.com/k3s-io/k3s-ansible.git"],
       "enabled": false
@@ -69,14 +70,32 @@
       "versioning": "regex:^\\d+\\.\\d+\\.\\d+-b(?<patch>\\d+)$"
     },
     {
+      "description": "Use regex versioning for apache/airflow base image tags (slim-X.Y.Z-pythonA.B) — the default docker versioning can't parse this compound tag shape, so the Dockerfile FROM line was never tracked. compatibility group keeps bumps within the same pinned Python line.",
+      "matchPackageNames": ["apache/airflow"],
+      "versioning": "regex:^slim-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-python(?<compatibility>[\\d.]+)$"
+    },
+    {
+      "description": "Auto-merge apache/airflow base image bumps once CI passes — the build workflow reads the version straight from the Dockerfile and publishes/redeploys automatically on merge to master, so this just lets that pipeline run unattended",
+      "matchPackageNames": ["apache/airflow"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
       "description": "Use regex versioning for fireflyiii/core tags (version-X.Y.Z)",
       "matchPackageNames": ["docker.io/fireflyiii/core"],
       "versioning": "regex:^version-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
-      "description": "Track hotio image by digest",
+      "description": "Track hotio image by digest — explicitly re-enabled since the earlier 'latest' blanket-disable rule matches its currentValue too and would otherwise silently suppress digest updates entirely (pinDigests alone doesn't override enabled)",
       "matchPackageNames": ["ghcr.io/hotio/cloudflareddns"],
-      "pinDigests": true
+      "pinDigests": true,
+      "enabled": true
+    },
+    {
+      "description": "Track Unraid docker-compose images with no published version tags by digest — explicitly re-enabled for the same reason as the hotio rule above",
+      "matchPackageNames": ["ghcr.io/afonsoc12/kopia-temp"],
+      "pinDigests": true,
+      "enabled": true
     },
     {
       "description": "Pin Helm chart versions in ArgoCD (remove range constraints)",
@@ -97,10 +116,15 @@
       "allowedVersions": "<4.0.0"
     },
     {
-      "description": "Group ArgoCD app-of-apps minor/patch updates",
+      "description": "Group ArgoCD app-of-apps minor/patch updates with helm values images — one group for anything that deploys/updates an app's running version, whether declared as a chart in an Application manifest or an image in a values.yaml",
       "matchManagers": ["argocd"],
       "matchFileNames": ["kubernetes/apps/addons/argocd-apps/**"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "groupName": "argocd app definitions"
+    },
+    {
+      "description": "Group ArgoCD init container tool version bumps (custom managers) with argocd app definitions — same file, deployed/tested as one unit",
+      "matchDepNames": ["jkroepke/helm-secrets", "helm/helm", "getsops/sops", "helmfile/vals", "kubernetes/kubernetes"],
       "groupName": "argocd app definitions"
     },
     {
@@ -110,15 +134,21 @@
       "groupName": "helm chart dependencies"
     },
     {
-      "description": "Group Helm values image minor/patch updates",
+      "description": "Group Helm values image minor/patch updates with argocd app definitions",
       "matchManagers": ["helm-values"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
-      "groupName": "helm values images"
+      "groupName": "argocd app definitions"
     },
     {
-      "description": "Group Terraform provider minor/patch updates",
-      "matchManagers": ["terraform"],
+      "description": "Group ArgoCD Application chart version updates with argocd app definitions — a chart bump behaves the same as if it were declared in a values.yaml",
+      "matchManagers": ["argocd"],
+      "matchDepTypes": ["helm"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
+      "groupName": "argocd app definitions"
+    },
+    {
+      "description": "Group all Terraform provider updates, including majors — providers here are pinned to loose ranges on purpose, so a major bump is still low-risk enough to bundle with the rest",
+      "matchManagers": ["terraform"],
       "groupName": "terraform providers"
     },
     {
@@ -143,6 +173,30 @@
       "matchManagers": ["ansible-galaxy"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "ansible"
+    },
+    {
+      "description": "linuxserver.io images carry stale orphaned tags from ~2021 (dev/nightly builds, or unrelated numeric fragments like an embedded Ubuntu base version) that outrank the real current version under naive numeric sort. bazarr/tautulli junk is huge random numbers or a year-stamp, nowhere near a plausible real version, so a generous <1000.0.0 bound leaves headroom for real future majors with no meaningful cap.",
+      "matchPackageNames": ["ghcr.io/linuxserver/bazarr", "ghcr.io/linuxserver/tautulli"],
+      "allowedVersions": "<1000.0.0"
+    },
+    {
+      "description": "calibre-web's junk isn't 1-2 stray tags like lidarr/qbittorrent — it's a whole dead family of 14 tags (5.29.0 through 5.33.2, plus v5.4.2-ls1 through v5.7.2-ls1), all created 2021-12-04, and Renovate has already been observed silently retargeting this package's PR between different tags in that family (5.33.2, then 5.33.1) as it rechecks. Exact-tag exclusion can't keep up with that — back to a numeric bound. Current is 0.x, so if calibre-web ever ships a real v5+, this needs a human to revisit (no numeric bound can tell a real v5 apart from this dead family).",
+      "matchPackageNames": ["ghcr.io/linuxserver/calibre-web"],
+      "allowedVersions": "<5.0.0"
+    },
+    {
+      "description": "lidarr/qbittorrent junk tags (8.1.2135, 20.04.1, 14.3.9) sit too close to a plausible real future major for a range bound — that would cap legitimate future majors instead of just the known junk. Confirmed only these exact one-off tags exist in their respective bad majors (unlike calibre-web), so exact-tag exclusion is safe here.",
+      "matchPackageNames": ["ghcr.io/linuxserver/lidarr"],
+      "allowedVersions": "!/^8\\.1\\.2135$/"
+    },
+    {
+      "matchPackageNames": ["ghcr.io/linuxserver/qbittorrent"],
+      "allowedVersions": "!/^(20\\.04\\.1|14\\.3\\.9)$/"
+    },
+    {
+      "description": "sonarr's stale tag (5.14, created 2021-03-09, no version label) has no dedicated numeric bound above it since Sonarr has genuinely shipped a real v5 — require the real three-segment X.Y.Z shape instead, which the stale tag doesn't match",
+      "matchPackageNames": ["ghcr.io/linuxserver/sonarr"],
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+$/"
     }
   ],
   "customManagers": [

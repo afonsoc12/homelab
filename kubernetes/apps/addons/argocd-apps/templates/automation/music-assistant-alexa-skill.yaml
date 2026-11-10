@@ -1,0 +1,33 @@
+# --------------------
+# Music Assistant Alexa Skill (prototype)
+#   - Docs: https://www.music-assistant.io/player-support/alexa/
+#   - Chart: homelab-svc
+# --------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: music-assistant-alexa-skill
+  namespace: {{ .Release.Namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:afonsoc12/homelab.git
+    targetRevision: HEAD
+    path: kubernetes/charts/homelab-svc
+    helm:
+      valueFiles:
+        - secrets://../../apps/values.sops.yaml
+        - secrets://../../apps/automation/music-assistant-alexa-skill/values.sops.yaml
+  destination:
+    name: {{ .Values.spec.destination.name }}
+    namespace: automation
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

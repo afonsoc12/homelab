@@ -1,7 +1,6 @@
 locals {
   # Add entries here: name = database name (user with same name is created automatically)
   service_databases = toset([
-    "authelia",
     "firefly",
     "wallabag",
     "wedding_site",

@@ -1,4 +1,7 @@
 {{- if .Values.ingress.enabled -}}
+{{- if ne .Values.ingress.className "contour" -}}
+{{- fail "Ingress requires the contour class; configure native SSO or a proxy backend for authentication" -}}
+{{- end -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -8,13 +11,6 @@ metadata:
   annotations:
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
-    {{- end }}
-    {{- if .Values.ingress.authelia }}
-    nginx.ingress.kubernetes.io/auth-method: GET
-    nginx.ingress.kubernetes.io/auth-url: http://{{ .Values.authelia.service }}/api/verify
-    nginx.ingress.kubernetes.io/auth-signin: https://{{ .Values.authelia.url }}?rm=$request_method
-    nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-    nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
     {{- end }}
 spec:
   ingressClassName: {{ .Values.ingress.className }}

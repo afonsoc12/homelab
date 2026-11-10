@@ -1,0 +1,24 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-Kopia.xml).
+kopia:
+  icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/png/kopia.png
+  webui: "http://[IP]:[PORT:51515]"
+  ingress_host: kopia.local
+  category: "Backup: Cloud:"
+  overview: |
+    Kopia is a simple, cross-platform tool for managing encrypted backups in the cloud. It provides fast, incremental backups, secure, client-side end-to-end encryption,
+    compression and data deduplication.
+
+    To run this container, you must create a htpasswd file (either via command line or using a tool such as https://hostingcanada.org/htpasswd-generator/) and place it in
+    the /mnt/user/appdata/kopia/config directory, then adjust the Post Arguments accordingly.
+  registry: "https://hub.docker.com/r/kopia/kopia/"
+  project_url: "https://github.com/kopia/kopia/"
+  support_url: "https://kopia.io/docs/"
+  volume_descriptions:
+    "/app/data": "Enter the Container Path (/app/data) as the Directory Path if creating a Filesystem repository."
+  secret_env:
+    - KOPIA_PASSWORD

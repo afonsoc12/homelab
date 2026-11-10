@@ -29,13 +29,19 @@ module "zone_homelab" {
   min_tls_version  = "1.2"
   always_use_https = true
 
-  block_bots        = true
-  allow_aws         = true
+  block_bots = true
+  aws_callback_endpoints = {
+    music-assistant-alexa-skill = ["/"]
+    home                        = ["/api/alexa/smart_home", "/auth/token"]
+  }
+  github_webhook_rules = {
+    allow_expression = data.sops_file.secrets.data["waf.github_webhook_allow_expression"]
+    block_expression = data.sops_file.secrets.data["waf.github_webhook_block_expression"]
+  }
   geo_block_enabled = true
   geo_allowlist     = ["PT", "GB"]
 
-  domain             = data.sops_file.secrets.data["zones.0.domain"]
-  allow_github_hooks = true
+  domain = data.sops_file.secrets.data["zones.0.domain"]
 }
 
 module "zone_personal" {
@@ -47,7 +53,6 @@ module "zone_personal" {
   always_use_https = true
 
   block_bots        = true
-  allow_aws         = false
   geo_block_enabled = false
 }
 
@@ -57,4 +62,13 @@ module "tunnels" {
   zone_id            = data.sops_file.secrets.data["zones.0.zone_id"]
   domain             = data.sops_file.secrets.data["zones.0.domain"]
   k3s_cluster_secret = data.sops_file.secrets.data["tunnels.k3s_cluster.secret"]
+  authentik_idp_id   = cloudflare_zero_trust_access_identity_provider.authentik.id
+  firefly_access_emails = [
+    data.sops_file.authentik.data["cloudflare_access.email"],
+    data.sops_file.authentik.data["firefly.additional_user_email"],
+  ]
+  access_team_name = trimsuffix(data.sops_file.authentik.data["cloudflare_access.team_domain"], ".cloudflareaccess.com")
+  # sops_file flattens lists to dot-indexed keys — add an index here for each
+  # email added to access.spliit_emails in secrets.sops.yaml
+  spliit_access_emails = [data.sops_file.secrets.data["access.spliit_emails.0"], data.sops_file.secrets.data["access.spliit_emails.1"]]
 }

@@ -1,0 +1,35 @@
+# --------------------
+# decide
+#   - Repo:           https://github.com/hk21x/decide
+#   - Docs:           https://github.com/hk21x/decide#readme
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/external-svc/values.yaml
+# --------------------
+---
+# Default values for external-service.
+
+# Labels applied to all templates
+labels:
+  host: hoarder
+
+# External server configuration
+server:
+  ip: "{{ .Values.ips_tailscale.hoarder }}"
+  port: 8090
+
+# Ingress configuration
+ingress:
+  enabled: true
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: decide.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: authentik-homelab-proxy
+            port: 9000
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s

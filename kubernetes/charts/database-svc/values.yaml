@@ -13,7 +13,7 @@ podAnnotations: {}
 replicas: 1
 
 image:
-  # repository: nginx
+  # repository: example/app
   tag: latest
   pullPolicy: Always
 
@@ -66,11 +66,8 @@ volumeClaimTemplates: {}
 
 ingress:
   enabled: false
-  authelia: false
-  className: "nginx"
+  className: "contour"
   annotations: {}
-  # nginx.ingress.kubernetes.io/client-max-body-size: "0"
-  # nginx.ingress.kubernetes.io/proxy-body-size: "0"
   tls: []
   #  - secretName: mydomain-cert
   #    hosts:
@@ -110,9 +107,12 @@ affinity: {}
 backup:
   enabled: false
   image:
-    repository: tiredofit/db-backup
-    tag: latest
+    repository: ghcr.io/nfrastack/db-backup
+    tag: 5.0.10
   args: ["backup-now"]
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
-  config: {}
+  prometheusRule:
+    enabled: false
+  configmap:
+    data: {}

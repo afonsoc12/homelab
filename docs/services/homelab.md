@@ -16,6 +16,16 @@ Bambu Lab 3D printer management. Monitors print jobs, camera feed, and printer s
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/paperless-ngx.png" class="svc-icon"> Paperless-ngx
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Document management system. OCRs, tags, and indexes scanned documents; uses Gotenberg and Tika sidecars for office-file and email conversion.
+
+[:octicons-book-16: Documentation](https://docs.paperless-ngx.com/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/paperless/values.sops.yaml)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/mealie.png" class="svc-icon"> Mealie
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
@@ -23,6 +33,16 @@ Bambu Lab 3D printer management. Monitors print jobs, camera feed, and printer s
 Recipe manager and meal planner. Supports import from any URL, nutritional data, and shopping list generation.
 
 [:octicons-book-16: Documentation](https://docs.mealie.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/mealie/values.sops.yaml)
+
+---
+
+### <img src="https://raw.githubusercontent.com/afonsoc12/cookistash/master/cookistash/cookidoo/static/cookidoo/img/icon.png" class="svc-icon"> Cookistash
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+🥘 Stash your Cookidoo recipes and sync them to Mealie
+
+[:octicons-book-16: Documentation](https://github.com/afonsoc12/cookistash) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/cookistash/values.sops.yaml)
 
 ---
 
@@ -86,6 +106,16 @@ Self-hosted document signing platform. Creates, distributes, and collects signat
 
 ---
 
+### <img src="https://raw.githubusercontent.com/javedh-dev/tracktor/main/static/logo.svg" class="svc-icon"> Tracktor
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Vehicle tracking and maintenance management. Tracks fuel-ups, service history, and vehicle documents.
+
+[:octicons-book-16: Documentation](https://tracktor.bytedge.in) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/tracktor/values.sops.yaml)
+
+---
+
 ## Finance
 
 ### <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/png/wealthfolio.png" class="svc-icon"> Wealthfolio
@@ -104,7 +134,19 @@ Investment portfolio tracker. Tracks stocks, ETFs, and other assets with a clean
 
 Personal finance manager. Tracks income, expenses, and budgets with full double-entry bookkeeping.
 
+Supports an additional access layer with [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/access-controls/) and [Authentik SSO](https://integrations.goauthentik.io/security/cloudflare-access/).
+
 [:octicons-book-16: Documentation](https://docs.firefly-iii.org/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/firefly/values.sops.yaml)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/selfhst/icons/png/spliit.png" class="svc-icon"> Spliit
+
+<em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
+
+Bill-splitting app for shared expenses among friends and groups. No login required to use a group.
+
+[:octicons-book-16: Documentation](https://spliit.app/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/spliit/values.sops.yaml)
 
 ---
 
@@ -127,6 +169,16 @@ Personal wedding website. Self-hosted static site for RSVP and event information
 Web interface for a Calibre e-book library. Browse, read, and download books from any browser or e-reader.
 
 [:octicons-book-16: Documentation](https://github.com/janeczku/calibre-web) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/calibre-web/values.yaml)
+
+---
+
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/calibre.png" class="svc-icon"> Calibre
+
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
+
+Desktop e-book management server (library editing, format conversion). Manual/on-demand only — not set to auto-start, use alongside Calibre Web for browsing.
+
+[:octicons-book-16: Documentation](https://calibre-ebook.com/)
 
 ---
 
@@ -154,11 +206,21 @@ Operating system and management UI for the `hoarder` NAS. Manages storage arrays
 
 ---
 
+### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/portainer.png" class="svc-icon"> Portainer
+
+<em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
+
+Docker management UI — container/image/volume inspection alongside the Unraid GUI's own Docker tab.
+
+[:octicons-book-16: Documentation](https://docs.portainer.io/)
+
+---
+
 ### <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/kopia.png" class="svc-icon"> Kopia
 
 <em><img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/unraid.png" style="height:1em;vertical-align:middle;margin-right:4px"> hoarder · Docker</em>
 
-Backup and snapshot tool. Creates encrypted, deduplicated backups to Backblaze B2 and local repositories.
+Backup and snapshot tool. Creates encrypted, deduplicated backups to Backblaze B2 and local repositories. Manual/on-demand only — not set to auto-start.
 
 [:octicons-book-16: Documentation](https://kopia.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: ingress](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/external-ingress/kopia/values.yaml)
 

@@ -1,9 +1,3 @@
-# --------------------
-# kube-prometheus-stack
-#   - Repo:           https://github.com/prometheus-community/helm-charts
-#   - Docs:           https://prometheus.io/docs/
-#   - Chart Defaults: https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
-# --------------------
 fullnameOverride: promstack
 crds:
     enabled: true
@@ -164,6 +158,18 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Prometheus timeseries cardinality explosion
                     description: 'The "{{ $labels.name }}" timeseries cardinality is getting very high: {{ $value }} (>10000)'
+    kube-state-metrics:
+        groups:
+            - name: KubeStateMetrics
+              rules:
+                - alert: KubeContainerOOMKilled
+                  expr: (kube_pod_container_status_restarts_total - kube_pod_container_status_restarts_total offset 10m >= 1) and on (namespace, pod, container) kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
+                  for: 0m
+                  labels:
+                    severity: critical
+                  annotations:
+                    summary: Container `{{ $labels.container }}` in `{{ $labels.namespace }}/{{ $labels.pod }}` was OOMKilled
+                    description: Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} was OOMKilled and restarted.
     node-exporter:
         groups:
             - name: NodeExporter
@@ -176,7 +182,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` is out of memory
                     description: Memory is at {{ $value | humanizePercentage }} (< 10% left)
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:ktkUhX6V8T14kNgN/PpbQHjThhuDUCFi0vw6VmsAwmYvjdV0tRjTMN28oNG/RO3HmzQ18+vPF7X4EGLfpcczCmJDk4ublQq/QJlf8NjrqtP+8kfH0nDAuilQho2BxDvSPQ==,iv:AbGs5R8YkFmBF2y1LpqMRXtkSaqkJaOQW7kRsiqCk3M=,tag:swRRaCdiNXTv+HinLB20KA==,type:str]
                 - alert: HostMemoryUnderMemoryPressure
                   expr: sum by (hostname) (rate(node_vmstat_pgmajfault[5m]) > 500)
                   for: 0m
@@ -185,7 +191,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` under memory pressure
                     description: Heavy memory pressure, rate of loading memory pages from disk is at {{ $value | humanize }} (pgmajfault > 500/s)
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:B97r1pDAgHk1EXQ6/l4dMp77eKxUJXtHjqoIKDuy6KxLkK8rGk0fHYohBC9oUHDr+eTGs4GtfMDwOxDyBP8b5p4yWEfevUMTbOxUtPnQRjvWfz99oX4jKvMqYSQOcMqcDg==,iv:iS4Bylko6U05HhjUc0UZYPipWeZ6MteIhmDL8SaGQmg=,tag:SwPk9lgAza1u3+xG3kMgrQ==,type:str]
                 - alert: HostUnusualNetworkThroughputIn
                   expr: sum by (hostname, device) (rate(node_network_receive_bytes_total[5m]) / node_network_speed_bytes) > .80
                   for: 0m
@@ -194,7 +200,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` unusual network Ingress throughput
                     description: Ingress bandwidth is high at {{ $value | humanizePercentage }} (>80%) on interface {{ $labels.device }}
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:KmOkiRWSwR4vCPrE8Uk73yG5STbVgUn1Xpfn2KqkgbYNKnok4JkW2rx5DG5ltiJdVrEALfGFHv7JqPCRhr8qB1qcziMm8AfI6N0zfFlz2d3AGktqruz1wvNxxdztQxry+A==,iv:frHknty1AzOfnwPs8788wXUkQY160qfAtCXRpf7AdQ8=,tag:OoDFiPrBNBInwdc0p+1BqA==,type:str]
                 - alert: HostUnusualNetworkThroughputOut
                   expr: (sum by (hostname, device) (rate(node_network_transmit_bytes_total[5m]) / node_network_speed_bytes)) > .80
                   for: 0m
@@ -203,7 +209,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` unusual network Egress throughput
                     description: Egress bandwidth is high at {{ $value | humanizePercentage }} (>80%) on interface {{ $labels.device }}
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:1jFFZycS9Yp7yaWA+VC8I74d788PuK7/6JIMWLPTgDeAMx4fm9xLel4jJVDRF+zjs0rThLBi+hC4bWcQ+OvR2Il0PL7GyrouPqf8eCB5A97Cy5XlEAA63QJ9mGvGE0w18A==,iv:VUhKTfNbQOkfJyYZemDtqFvokLfY6ROFz2WmJ6yCY28=,tag:xQ3XfMiTK+2Zvb65wYoeig==,type:str]
                 - alert: HostUnusualDiskReadRate
                   expr: sum by (hostname, device) (rate(node_disk_io_time_seconds_total[5m])) > .80
                   for: 0m
@@ -212,10 +218,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     description: Host `{{ $labels.hostname }}` disk is too busy
                     summary: Disk read rate is at {{ $value | humanizePercentage }} (IO wait > 80%) on device {{ $labels.device }}
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
-                    # Please add ignored mountpoints in node_exporter parameters like
-                    # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
-                    # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+                    dashboard: ENC[AES256_GCM,data:Xy7andcQ9ahbnCkfTIIDIQbLW0j5EMTma/HmWIXkYLQ7SN7Aw7DdvwWZ+l51UImGUTLBnFlIJ2c65OzHZuPqI8OEfY7jxdQHsCXi94Jk7802LrQNrF7Jkrur80U3vMLurA==,iv:dsrXDSGpcreveWPbAGLiLpsISXLiPKJz3c0UBXWS5Is=,tag:zs8Vczx6C4WCrwGMvJ1a3A==,type:str]
                 - alert: HostOutOfDiskSpace
                   expr: sum by (hostname, mountpoint)(node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"} / node_filesystem_size_bytes < 0.15 and on (hostname, mountpoint) node_filesystem_readonly)
                   for: 2m
@@ -224,7 +227,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` out of disk space
                     description: Disk {{ $labels.mountpoint }} is almost full at {{ $value | humanizePercentage }} (< 15% left)
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:LlmX0OmU/Cr0lKFwEmzKpgXJLgI03ukKFvTUunLsfHTVU+dpIF60pVrGMA+b8rJ+DWHtr8+lwY+49S+M5XZPH9rxqM8pvRv3STU8eAgI1jUH5yIkAVn3rloc3xjgKAMZMg==,iv:d52aC0PGF8LFjxY/WrVkrTSMp9NBN5eT8aYKF5jJm38=,tag:rrwmtCLYbkhUpOZjIpP+DA==,type:str]
                 - alert: HostFilesystemDeviceError
                   expr: sum by(hostname, device, mountpoint) (node_filesystem_device_error{fstype!~"^(fuse.*|tmpfs|cifs|nfs)", device!="none"}) > 0
                   for: 2m
@@ -233,7 +236,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` has filesystem device error
                     description: Error stat-ing device {{ $labels.device }}, {{ $labels.mountpoint }} filesystem
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:obtDYlo2kX6DOooF1If5zMI4cNLjHZ55ScMTfhVXEAGf/kI5mzt4ZyD2at44A2ddR+uiASCgaLZEEAC5Vo9rBb9Yx8Z4rgAeDwEPnJpLkZMLhmKuN1j+bm9Dy8wDNFBkuQ==,iv:7ABARvWRJ6iInKUeq8tap4QmOnybI2tB4CQopGW5+Yk=,tag:8lesMInC/ODGd9y5njmI8Q==,type:str]
                 - alert: HostHighCpuLoad
                   expr: sum by (hostname) (1 - (avg without (cpu) (rate(node_cpu_seconds_total{mode="idle"}[5m])))) > .80
                   for: 10m
@@ -242,7 +245,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` high CPU load
                     description: CPU load is {{ $value | humanizePercentage }} (>80%)
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:YCjFg4kRc7VOnzjD4Zo3LQCvEWyx3+PgYSwVYVDeo9dyb3+CRL281B+UhMBqCsjwc8CNh6S1a+2j/ttUIYPgusqQvTU855UOJdyiV9fm6elrU8kg4YA5ZqwfYDm16CQR6w==,iv:3Gm8SOfDlufe8LVegb5DzUXWK0vEa+VsvDTdTGeA3pI=,tag:1kBgI/hXxG4oL7/MGzGR4Q==,type:str]
                 - alert: HostCpuStealNoisyNeighbor
                   expr: avg by (hostname) (rate(node_cpu_seconds_total{mode="steal"}[5m])) > .1
                   for: 0m
@@ -251,7 +254,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` CPU steal noisy neighbor
                     description: CPU steal is at {{ $value | humanizePercentage }} (>10%). A noisy neighbor is killing VM performances or a spot instance may be out of credit
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:QHyRsIHZSJH6JU2a13dn9HMSM5//YVF5SNsCPKbNxh7qz8XRkxCRubL1Bsbe7h8BhGKLCCNPUodf3fqmOgIy2W9WETawzeIIXbXm1kVS6IT5Rt/SE4/w25qRrLOwsCOhqQ==,iv:TPsW+xZ0s6kFT4J6dqX/5ps70NC9N4w58jC0L1Yy9hc=,tag:bFwI9w1HU6ptEhW8JLsynA==,type:str]
                 - alert: HostCpuHighIowait
                   expr: avg by (hostname) (rate(node_cpu_seconds_total{mode="iowait"}[5m])) > .10
                   for: 0m
@@ -260,7 +263,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` CPU high iowait
                     description: CPU iowait is at {{ $value | humanizePercentage }} (>10%). Your CPU is idling waiting for storage to respond.
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:kMCjUjGeAWGmQ8EIf4JGUUuRk12QsZ6kv61rpi+1jOSHJXgJy6gXZ2+Yza3rVzIiDdv3zKapendM0fK1eyo6+AHul7BuGSexalsANjv74RGw2A9YuPmhUNn4oiK9J+pJzg==,iv:gLX9BkwD6SC42I6sfKERhP2FS6+CRKx11AOwPSLxXN0=,tag:17ebn/A0eSzl8560ssEKhg==,type:str]
                 - alert: HostContextSwitchingHigh
                   expr: (rate(node_context_switches_total[15m])/count without(mode,cpu) (node_cpu_seconds_total{mode="idle"})) / (rate(node_context_switches_total[1d])/count without(mode,cpu) (node_cpu_seconds_total{mode="idle"})) > 2
                   for: 2m
@@ -269,7 +272,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host {{ $labels.hostname }} context switching high
                     description: Context switching is high (twice the daily average during the last 15m)
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:TNFt1+WlEssA+9aQCUPvr0aJP9/XfevbDrv/ZNs5gQBupPuzhyrwDZGf5aaYbWZ1/WdEseL+N2BejqeTCwT3NBBDHF9xtWwxx9Zu/BdXexdtfaGfm+ZnnqzakXFu1CxthA==,iv:fiB+oTT+O9f44RvFRQvNGsPfkWv6wsYDq2I16qkv8FU=,tag:fLyo68DbsdeKKpFFfRkzSQ==,type:str]
                 - alert: HostSwapIsFillingUp
                   expr: sum by (hostname) (1 - (node_memory_SwapFree_bytes / node_memory_SwapTotal_bytes)) > .80
                   for: 2m
@@ -278,7 +281,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` swap is filling up
                     description: Swap is filling up at {{ $value | humanizePercentage }} (>80%)
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:+qqpXSuKhxIWy0W+fW78OKaug3MILOi+UvxXZEHADInbon1W+Cs1nTtFSUj3BGwkKAdCxrpUC1w9dWsfiPWG/3tEGOWUUQfWjkoPKuLsinTm0e/xmmRS45MFdN/emzP5fQ==,iv:1YffpxPqE8XUuVIG/i15Bb9oOnLEzy1LgBUAiONlpCY=,tag:JQnplGsmK2bwdLrIpX1UWw==,type:str]
                 - alert: HostPhysicalComponentTooHot
                   expr: sum by (hostname, chip) (node_hwmon_temp_celsius > node_hwmon_temp_max_celsius)
                   for: 5m
@@ -287,7 +290,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` physical component too hot
                     description: Physical hardware chip {{ $labels.chip }} too hot
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:RPW/rXxAGqtzocYOnQ7M/G338psOEPXZGfrRZL8ZSkUKwWkYh/B3+whIUmUxqVFQbm2lZXNg66F7b2SesaE/aGqbEV8mfilggHdaOiOG0d3a6++7QD5MX3Y5aZ/d5x7toA==,iv:V5qzpJx+rzgMcswdjetoas+GoYSYh8W8SRq4u3zhBKs=,tag:7n+YmmiS3KlRTE1KdDfY2A==,type:str]
                 - alert: HostNodeOvertemperatureAlarm
                   expr: sum by (hostname, chip) ((node_hwmon_temp_crit_alarm_celsius > 0) or (node_hwmon_temp_alarm > 0))
                   for: 0m
@@ -296,7 +299,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` node overtemperature alarm
                     description: Physical node temperature alarm triggered for chip {{ $labels.chip }}
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:AHd3tKW8EslaD2Zfr3Nl4RYsG0Qf/PZfLl25u3G3/yKOyEiBilrub3gx6Bh6K9X30vCrbZRAJYfh5T/6p15EkPx3CaBY6sUqE+JqH+XQqslmLla++cJfvvvZDBVDeSGDmg==,iv:yWW2SK2EFilTPz1qAu2nwaisqKzx4bHPeoB8FCDb1Uc=,tag:AW4rqoe8Aa1Xpw7EK0bUZQ==,type:str]
                 - alert: HostOomKillDetected
                   expr: sum by (hostname) (increase(node_vmstat_oom_kill[1m]) > 0)
                   for: 0m
@@ -305,7 +308,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` OOM kill detected
                     description: OOM kill detected
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:qHtAw45qfpoOLya+7Re07uBBDAss2f562HqPWEiRgIPI42NYhlHn2R+4+PGQ8d5AZiIiQ+pG3yIWz1hu9QMXtDKydN1Z2h/49HxanX6JOxnpqCORFrc6f9sOq2Wp/gWjEw==,iv:RyVY/W5OhMAdT/r1lwO/vEB8ssyVpu6DGNMa+Dy/pfQ=,tag:8E9nXyp4iCpfgzQR9r/OtA==,type:str]
                 - alert: HostNetworkReceiveErrors
                   expr: sum by (hostname, device) (rate(node_network_receive_errs_total[2m]) / rate(node_network_receive_packets_total[2m])) > 0.01
                   for: 2m
@@ -314,7 +317,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` Network Receive Errors
                     description: Interface {{ $labels.device }} has encountered {{ $value | humanizePercentage }} (>1%) receive errors in the last 2 minutes
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:wOfECbxpf5qSNx5R39rTXvoXn6mAhQ8Fgh8boETmxnuBhIMXaivq/L+2KrKxPNtd4YInvujpX7yZs29LXdz3bnpbNAOqWNPuL/8b3DTyqfOtBaLyJYWgmtwKu0I9iyxX1g==,iv:/BDlqLd+m+yl44rbqgqeuINAAm2f+KgUSqlgdl2ow1Q=,tag:oF5sZuMW9/RMT2EiUb+2qQ==,type:str]
                 - alert: HostNetworkTransmitErrors
                   expr: sum by (hostname, device) (rate(node_network_transmit_errs_total[2m]) / rate(node_network_transmit_packets_total[2m])) > 0.01
                   for: 2m
@@ -323,7 +326,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` Network Transmit Errors
                     description: Interface {{ $labels.device }} has encountered {{ $value | humanizePercentage }} (>1%) transmit errors in the last 2 minutes
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:eeaopw+g6X63Fs1wcG72CUoU1f+FKjTNmUIxx+3BpYAaWhNr07/41bnQcFp9ntr/uKbBWRYLRcjTSYdBCDf288qXStI6FpdM5czapDjCDhh0y2vSCsTsnQAZrrsJPPdJxg==,iv:k78lRXbDkXzKQ+e6zFGGpSla2kXm7r3r4sosSTZNUrg=,tag:wuZLnElKtXiREWJAQKVnxw==,type:str]
                 - alert: HostClockSkew
                   expr: ((node_timex_offset_seconds > 0.05 and deriv(node_timex_offset_seconds[5m]) >= 0) or (node_timex_offset_seconds < -0.05 and deriv(node_timex_offset_seconds[5m]) <= 0))
                   for: 10m
@@ -332,7 +335,7 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` clock skew
                     description: Clock skew detected. Clock is out of sync. Ensure NTP is configured correctly on this host.
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:Cin8p9Ij5MJbeIMpPkxF9lsY1ergW1Rd0KljJcsdTahkGvkFLYATUemJKpqYEXTvXl/iQ9Pfo1RKON/sY7TWzZK4+BnFw0lKN1Dp3nvEFfbqJ5pCwexDoPkilZbiRrfpRA==,iv:bjqxHHrlLiiW9ZZxTHXLIEZVho7/Pet8SH+y/R2PwaM=,tag:QetzvFH6Pnnn5kGeopm3/g==,type:str]
                 - alert: HostClockNotSynchronising
                   expr: (min_over_time(node_timex_sync_status[1m]) == 0 and node_timex_maxerror_seconds >= 16)
                   for: 2m
@@ -341,24 +344,38 @@ additionalPrometheusRulesMap:
                   annotations:
                     summary: Host `{{ $labels.hostname }}` clock not synchronising
                     description: Clock not synchronising. Ensure NTP is configured on this host.
-                    dashboard: ENC[AES256_GCM,data:oaT6xF5WWIOsh9RXAl2TV3n12DTKnHDo1ApKsiLARsyvu23TxpfupsLIDY49SGQ5RWI45dSZIcLTcW0tCwVqvZVnYsWlJt1QmrcxmJpFzvJ7U0CEjESD9JF/qwWq6SuYUA==,iv:RR27iGjvYh77B3p2TWEfzZp0O3oZv+i6rNUhXCfHmgA=,tag:uJfkhaJj8+kQ617I2bbiLw==,type:str]
+                    dashboard: ENC[AES256_GCM,data:NcTf2CRhpbxDO0SiWLoEdY9cs5CDzRccc3F6FLK0IrmCoVcvxwgXc1zZDP1T1XUXihXhOVcupLEp04z+7P4UXg2EK8WJRV3/JawJMkgSwrltr2PR/zEStqEorVJWS8wyBw==,iv:fh1zDBydRQShFRb7csOlrpZvmeCMMry4eMI/5OY6Ph4=,tag:fzU9SBCAYg1wsutWyMoqEA==,type:str]
 alertmanager:
     enabled: true
     config:
         global:
             resolve_timeout: 2m
+        time_intervals:
+            - name: daily-9am
+              time_intervals:
+                - times:
+                    - start_time: "09:00"
+                      end_time: "09:10"
         route:
             group_by:
                 - alertname
                 - hostname
             receiver: discord
             group_wait: 30s
-            group_interval: 30m
-            repeat_interval: 30m
+            group_interval: 5m
+            repeat_interval: 4h
             routes:
                 - matchers:
-                    - severity =~ "major|critical"
-                  receiver: discord-critical
+                    - alertname = "PrometheusAlertmanagerE2eDeadManSwitch"
+                  receiver: discord
+                  active_time_intervals:
+                    - daily-9am
+                  group_wait: 0s
+                  repeat_interval: 24h
+                - matchers:
+                    - alertname = "PrometheusTargetMissing"
+                    - hostname = "hoarder"
+                  repeat_interval: 48h
         inhibit_rules:
             - source_matchers:
                 - severity = critical
@@ -385,35 +402,20 @@ alertmanager:
         receivers:
             - name: discord
               discord_configs:
-                - webhook_url: ENC[AES256_GCM,data:SYP5gnb0bX/dWW56L0BewvZHeq67zrBfRUP7A10OO3j9DDAmWmUjk/rhktU687wblFGc6jO/WqjZzcdqS4e45n2Hi3dqApLCt/GvRWR+hkbX7GyfpwLJj+XpSfR3Nme/giI/oAic0HGYperWL5dSavqO7aK9ZkEZBQ==,iv:UUhavfFwlAWkXq9N/07KmR3DSgyG/RsJlp1tuRUzo4I=,tag:x4ZQLgV3gbyZqXi6rYL8QA==,type:str]
+                - webhook_url: ENC[AES256_GCM,data:mz5I1M/zX1eWVu5BEtHyHwVZLVqrJ0ZRHedqGUc4cZuca/uuTp7C9foolV6gwPW7XSPzACcCc1tlmJ1083csUZQzJxPNil1hg886Sp5Klq8WAa0RleXe0VErYCfToYHTQ/HMTPufVBphpg7+BUBUxxv+Qzx69NYBPg==,iv:4LX3lYfc5Zup5ZM8EWgIur/ZeFGaYcKrXP9qwcTf0/I=,tag:AJ575QXV1JLmlBX+3Ji32Q==,type:str]
                   send_resolved: true
                   username: Alertmanager
                   avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
-                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} ({{ .GroupLabels.hostname }}){{ end }}"
-                  message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n{{ if .Labels.hostname }}**Hostname:** `{{ .Labels.hostname }}`\n{{ endif }}**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
-            - name: discord-critical
-              discord_configs:
-                - webhook_url: ENC[AES256_GCM,data:kWqnwCHIOYP++PMhIQbrZ+00JJ8BzYhNjlADhQ0JcxufTs6UpeuM71vNs3UIXiLHgtnaz5DQIPYaQXtObgVReHbHA8qrJ4F+jo/cMdk2w0IWX8KATBkkZ9fFIwla2xR/Abtnu3FrkEV8A11QUJuxqtnWcD0bvOP6jw==,iv:POMiKpQLZWgQdovutLjVQGWPn1xDF38TDaxLhqUX4Hg=,tag:h8wMTyPg2LKf8Rj0xNOiHw==,type:str]
-                  send_resolved: true
-                  username: Alertmanager
-                  avatar_url: https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/alertmanager.png
-                  title: "{{ if eq .Status \"firing\" }}\U0001F6A8({{ .Alerts.Firing | len }}){{ else }}✅{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} ({{ .GroupLabels.hostname }}){{ end }}"
-                  message: "{{ range .Alerts }}\n### {{ .Annotations.summary }}\n**Description:** {{ .Annotations.description }}\n**Severity:** {{ if eq .Labels.severity \"critical\" }}\U0001F6A8{{ else if eq .Labels.severity \"warning\" }}⚠️{{ else }}ℹ️{{ end }} {{ .Labels.severity }}\n**Hostname:** `{{ .Labels.hostname }}`\n**Fired At:** {{ .StartsAt.Format \"2006-01-02 15:04:05 UTC\" }}\n— — — — — — — — — —\n{{- end }}\n[:mag: Query]({{ (index .Alerts 0).GeneratorURL }}) [:bar_chart: Dashboard]({{ (index .Alerts 0).Annotations.dashboard }}) [:no_bell: Silence]({{ template \"__alertmanagerURL\" . }})"
+                  title: "{{ if eq .Status \"firing\" }}\U0001F534{{ else }}\U0001F7E2{{ end }} {{ .GroupLabels.alertname }}{{ if .GroupLabels.hostname }} · `{{ .GroupLabels.hostname }}`{{ end }}{{ if gt (len .Alerts) 1 }} ({{ .Alerts | len }}){{ end }}"
+                  message: "{{ $root := . }}{{ range .Alerts }}> **{{ .Annotations.summary }}**\n> {{ .Annotations.description }}\n> {{ if .Labels.hostname }}\U0001F5A5️ `{{ .Labels.hostname }}` · {{ end }}\U0001F552 {{ .StartsAt.Format \"2006-01-02 15:04 UTC\" }}\n> [\U0001F50D Query]({{ .GeneratorURL }}) · [\U0001F515 Silence]({{ $root.ExternalURL }}/#/silences/new?filter=%7Balertname%3D%22{{ .Labels.alertname }}%22{{ if .Labels.container }}%2Ccontainer%3D%22{{ .Labels.container }}%22%2Cpod%3D%22{{ .Labels.pod }}%22%2Cnamespace%3D%22{{ .Labels.namespace }}%22{{ else if .Labels.hostname }}%2Chostname%3D%22{{ .Labels.hostname }}%22{{ end }}%7D)\n\n{{ end }}{{ with (index .Alerts 0).Annotations.dashboard }}[\U0001F4CA Dashboard]({{ . }}){{ end }}"
     ingress:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-            nginx.ingress.kubernetes.io/auth-method: GET
-            nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
-            nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:ukeiZQP2tcm6n8LKP73oUf6a5Hx2gh/SGXXAgTYs43gI1vZrnSN9MnLuU1SL,iv:4S7z/6rXKZ7M9WGWL7L4w6OWt1koyUDeg14fHYB0e5s=,tag:yWV/nxwOf1CKD9a9g+Bx7A==,type:str]
-            nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-            nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+        enabled: false
+        ingressClassName: contour
+        annotations: {}
         hosts:
-            - ENC[AES256_GCM,data:knPxrncurTYmauIVsUjv70FR8zMYsQNL61wwudPwY4I=,iv:MuFtWcV36V7ivI14MYBt5zI4YeHWNmVNtut0KMPFuow=,tag:pTdIzmywnimR9Pieb6u3nw==,type:str]
+            - ENC[AES256_GCM,data:IkytsbUo2wYv1Z31mRg5MQJos1Nbm5m76N7Fg/Sm/Sg=,iv:CUeXgCT+iszNIdvkkJTJ3JM84/n7rGsztH73vC6+Bvc=,tag:gb9A+XaiAsPaUG1WsNy01Q==,type:str]
         tls:
             - secretName: local-wildcard-cert
-    ## Configuration for creating a ServiceMonitor for AlertManager
-    #
     serviceMonitor:
         selfMonitor: true
     alertmanagerSpec:
@@ -421,19 +423,8 @@ alertmanager:
         logLevel: info
         replicas: 1
         retention: 120h
-        ## Storage is the definition of how storage will be used by the Alertmanager instances.
-        ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/platform/storage.md
-        ##
         storage: {}
-        # volumeClaimTemplate:
-        #   spec:
-        #     storageClassName: gluster
-        #     accessModes: ["ReadWriteOnce"]
-        #     resources:
-        #       requests:
-        #         storage: 50Gi
-        #     selector: {}
-        externalUrl: ENC[AES256_GCM,data:ZiU5BBz9bt459q4xWcwCH5JNHdfTw3kkXww5n2JeKcP0q8QmDLXx9Q==,iv:Hjh8GolETKg1eypROi5u+0djj9cnnkXv1idmp7Z+0P8=,tag:sA5bSXydOvEHv+y+fJu+Lg==,type:str]
+        externalUrl: ENC[AES256_GCM,data:ROGO0xx6+blhQQnOceg5WUzaL+JRPCBLR1pFp7xa4mnFt48orHJyhg==,iv:TqlKJmpJ2IMyCxx2Si63VlolpaX2HsHYnEXLfQScEZQ=,tag:diSd/Sk+sv0pgQyhrxfuxg==,type:str]
         resources:
             requests:
                 cpu: 10m
@@ -445,41 +436,29 @@ grafana:
     enabled: false
 kubernetesServiceMonitors:
     enabled: true
-## Component scraping the kube api server
-##
 kubeApiServer:
     enabled: true
-## Component scraping the kubelet and kubelet-hosted cAdvisor
-##
+    serviceMonitor:
+        metricRelabelings:
+            - action: drop
+              sourceLabels:
+                - __name__
+              regex: (apiserver_request_body_size_bytes_bucket|apiserver_request_duration_seconds_bucket|apiserver_request_sli_duration_seconds_bucket|apiserver_response_sizes_bucket|etcd_request_duration_seconds_bucket)
 kubelet:
     enabled: true
-## Component scraping the kube controller manager
-##
 kubeControllerManager:
     enabled: false
-## Component scraping coreDns. Use either this or kubeDns
-##
 coreDns:
     enabled: true
-## Component scraping etcd
-##
 kubeEtcd:
     enabled: false
     endpoints: []
-## Component scraping kube scheduler
-##
 kubeScheduler:
     enabled: false
-## Component scraping kube proxy
-##
 kubeProxy:
     enabled: false
-## Component scraping kube state metrics
-##
 kubeStateMetrics:
     enabled: true
-## Deploy node exporter as a daemonset to all nodes
-##
 nodeExporter:
     enabled: true
 prometheus-node-exporter:
@@ -502,8 +481,6 @@ kube-state-metrics:
         limits:
             cpu: 50m
             memory: 192Mi
-## Manages Prometheus and Alertmanager components
-##
 prometheusOperator:
     enabled: true
     kubeletEndpointsEnabled: false
@@ -532,21 +509,14 @@ prometheusOperator:
             limits:
                 cpu: 10m
                 memory: 32Mi
-## Deploy a Prometheus instance
-##
 prometheus:
     enabled: true
     ingress:
-        enabled: true
-        ingressClassName: nginx
-        annotations:
-            nginx.ingress.kubernetes.io/auth-method: GET
-            nginx.ingress.kubernetes.io/auth-url: http://authelia.ingress.svc.cluster.local/api/verify
-            nginx.ingress.kubernetes.io/auth-signin: ENC[AES256_GCM,data:AnuEDt3oOWMsu0IZ8/Y8tw6OW9ec18y9Rt8zEimTTBvAL2fHJ+lLBT7kc0L2,iv:Tv73rnWXgocxKnz/XivAmZKuK+SuJpMUXmJAO3Als9I=,tag:SBvZaXZJcu0jGd0cMTVqAg==,type:str]
-            nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
-            nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+        enabled: false
+        ingressClassName: contour
+        annotations: {}
         hosts:
-            - ENC[AES256_GCM,data:fCdUcGk/6mMmgHO405U/wlBmutMSdOhxSifKDE2K,iv:WbJ2PjR/6PVd4KqmAmPlOWYU1anLUBXfC4Zo1QQUzoc=,tag:SIJzvd0q1zu3aslf+DWTmw==,type:str]
+            - ENC[AES256_GCM,data:pynjiq4aw2IQJd+AxgDKV45BeBZW3/ODtQ7v/NaY,iv:2Bgx8Ay5stq6LfiWBzFX2apTx1dF31WDMtYx+P3MIIU=,tag:Vy/Rk7gLIAkriIj+XD4A6A==,type:str]
         tls:
             - secretName: local-wildcard-cert
     prometheusSpec:
@@ -570,9 +540,6 @@ prometheus:
                     resources:
                         requests:
                             storage: 25Gi
-        ## List of scrape classes to expose to scraping objects such as
-        ## PodMonitors, ServiceMonitors, Probes and ScrapeConfigs.
-        ##
         scrapeClasses:
             - name: cluster-relabeling
               default: true
@@ -584,7 +551,6 @@ prometheus:
                   sourceLabels:
                     - __meta_kubernetes_pod_node_name
                   targetLabel: hostname
-                # 2. Fallback to endpoint node name if hostname is still empty
                 - action: replace
                   sourceLabels:
                     - hostname
@@ -594,30 +560,30 @@ prometheus:
                   replacement: $1
                   targetLabel: hostname
 sops:
-    encrypted_regex: ^(nginx.ingress.kubernetes.io/auth-signin|webhook_url|hosts|externalUrl|dashboard)$
-    lastmodified: "2026-08-17T23:00:03Z"
-    mac: ENC[AES256_GCM,data:Vuivh9n/EcotCF/viXl8XcrGwrgHojKpOtM/xvpaexkhMPq0MDC6O/+ZbmUQGdt9m8g4RlQT8W9FihID8BKg+EzHa1XcjqiifdFgEQ/wW/v9pIo6/O3WS6T3YUOh0eDixXcxedNIUlBvQNkgu192pld7DH+LcrTu4O1W/Z53j5w=,iv:B7/y6B0hwKaigmOv/m/PzRU/zfnuDj6E/GWsDO6ieRg=,tag:iVIdHhUqefUEz6w2tV2c5w==,type:str]
+    encrypted_regex: ^(webhook_url|hosts|externalUrl|dashboard)$
+    lastmodified: "2026-11-05T21:52:41Z"
+    mac: ENC[AES256_GCM,data:LVL0IiZ9LOMLam4GmTj7N0YqyQp4M9Li8WmiYFsx5Vc5G2Xh93UsTxklETsjxdbO6MYXicaFmKV5IX4ucXJVE1dBgoeJHa7gWay3+VnguER3nR8G5iyMY1MVVssBqip8amAEA+kFRQVeHxcIWTu0DZoTZdfJTr/M1lfqn4iYSgs=,iv:d7BpF5T9dF4dw5X0O1nxxLYYq4f/8B9FFGib8Tm4Lo0=,tag:g4uy1M3suQsiGsjryoBOAA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-04-13T20:28:45Z"
+        - created_at: "2026-11-05T21:52:41Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/+ORbg39lfY6uoAWEGZOu8/QysI5Yg9VwoLta3t7cFkWAh
-            0zG5KsGCGeGZs6mOqPgqCdD7YgjizwbLrP/YR6LjUeHBOTx3Yw5t2DLaVSpn7jli
-            wrdoXS1fuPJX/vIa9e9X/KyLvXGsSBH9o/nEIElbimq+KmBrjMt5tB4LeC/u08oQ
-            7zqOPosoq6Y6NIS4x78zDvYRaSiUHO9Gntj2l9v3+s7xEL6JVpdPVRhTpJs50wKP
-            C1U4LeBbnEOVhsXLW/tRfbO+NeonqX08mhMpJpFr7fIH0xhbhsu5V7WIUOQjAMtf
-            rsozeqS/Bsz9aEV4ARrh0Y1j6HwkT9bwbQZSQSUSpuDr71UtCDLTFiSYTwyNEmDZ
-            lq+/UUq87oxFGIcnQnAWSv8Tbym7sxgnxHUUBpY2HInyXjBNuEzuZDU7PqRd4WHA
-            Co4Xt01AIWa8CiVY7E9/Pe041rSVWoqP9Fg9+85ZwLMKeJ/xKk146hKmpv2N11A1
-            p82eyxPhFP1URDzrYh39ZvaokQ+Zfh6vkm4ZWZ/+Ibf+Q+tAk1kdh8YYyD5+WoFI
-            z4W/Lc17Yvu02FkTzvkjWGUFHWSGETOi030a4k9LdqlnJ1Q7TnapjU+0fFpozfKz
-            cwrO8++/PQKuz/LhHTZkR3U5vtSvwCqgvHmClifdP+4mhqeZ82UV4lQ5VHtAjQjU
-            aAEJAhDWxZcKL3x9mg8qap1ohj19ugjLnX6IxnV2P4qCQEEqBMTVnYQeWg3DTl+q
-            5HPL+1tTjM2rdHRp5JgRpSHN5+MBuFdkKCD4JXn7ipnTexCmxqww0VMDnmyYpF2X
-            qtPd4qR8eCjP
-            =pSfn
+            hQIMA5NT/LvuRqeGARAAiYmYS3CWoepKF2Z2wyPlbPODoyrF5WXQtMCIP728CUo2
+            rtwuyt18tzKLM5zrkDbpWnPSo3k4Qv2ufxyoE8J/ZHasK59xPJhYUm+BWI7AGYRn
+            wRVi/lg6V5Z6n8MF3pnPff1kFiJnf0xbWcF8c7PzzRIwN6cWGSLiYH32x709O6vO
+            szYluPAnsVy7A3P/U6JiAsvD7dYy4+iOsijScKwUHLRskdGltsNQ+dbH3xrKQE3O
+            xNz9NImqkXQuWK1Om6a94gM0NHO0eW6DTnTh9g354jzTT2nMesgYzWPux/OEvwhQ
+            Ntg3wr1g4IFh7oKiK3cuTA4t2XWWfPnQ/gKu7VjasOuShYAlFRd6OQNpVCPQ4aMW
+            EjELvo4WHeGSedXY0to/XdzF2xH8LILDm01ZixVW/FMRqfsq0xCFyxGRmnxqjctp
+            YXwOYt45tiUgOhZ16Nakg5fEfaqflkKye0eXraWlCU0cq57sGce69o2CqqgvJ9PU
+            VUX1ze/M0xoYD1DMNiBeMLt2uKK2jna9cyjf4hJjr7ut7J+fYFdd2ZMUZRD0ItC6
+            DoYsTdHTmu5B7MPdHr3gTEm0jrvxELdTDYX8/HLO/ozHv+5cvn+lKPziQbKKx205
+            ip3mCTtSPCGLJSu3KNnc1Ac5ayzheRhZpeTcuOr+gEQmr92VWdP+64VnpDeFaNLU
+            aAEJAhCLPI1w/3tL32uKHSs0xi1pbpLLac3Gg877DMr6gveIF9SN2OiScULOaZP8
+            mP9pGz7UruitQnrwOWfHmZgKy8rKhCWC3phZdCM1z2Xt5TLI5GXuKAfL7NWnNzNk
+            W1EcVVc2rrdz
+            =XDSG
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.12.2
+    version: 3.13.2

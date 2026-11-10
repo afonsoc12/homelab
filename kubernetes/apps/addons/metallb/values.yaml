@@ -20,7 +20,7 @@ controller:
       memory: 32Mi
     limits:
       cpu: 50m
-      memory: 128Mi
+      memory: 256Mi
 # speaker contains configuration specific to the MetalLB speaker
 # daemonset.
 speaker:

@@ -1,0 +1,131 @@
+# --------------------
+# Music Assistant
+#   - Repo:           https://github.com/music-assistant/server
+#   - Docs:           https://www.music-assistant.io/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+
+image:
+  repository: ghcr.io/music-assistant/server
+  tag: "2.10.9"
+  pullPolicy: Always
+
+hostNetwork: true
+
+ports:
+  - containerPort: 8095
+    name: ui
+    protocol: TCP
+    service: true
+  - containerPort: 8097
+    name: streamserver
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+securityContext:
+  privileged: true
+  capabilities:
+    add: ["SYS_ADMIN", "DAC_READ_SEARCH"]
+
+volumeMounts:
+  - name: data
+    mountPath: /data
+
+volumes:
+  - name: data
+    mountPvc: true
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+ingress:
+  enabled: true
+  className: contour
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: music-assistant.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: authentik-automation-proxy
+            port: 9000
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
+
+nodeSelector:
+  kubernetes.io/hostname: k3s-m1
+tolerations: []
+affinity: {}
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 100m
+    memory: 384Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 8095
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  tcpSocket:
+    port: 8095
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  tcpSocket:
+    port: 8095
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
+extraResources:
+  - apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: music-assistant-stream
+      namespace: automation
+      annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+    spec:
+      ingressClassName: contour
+      tls:
+        - secretName: music-assistant-stream-cert
+          hosts:
+            - music-assistant-stream.{{ .Values.domain }}
+      rules:
+        - host: music-assistant-stream.{{ .Values.domain }}
+          http:
+            paths:
+              - path: /
+                pathType: ImplementationSpecific
+                backend:
+                  service:
+                    name: authentik-automation-proxy
+                    port:
+                      number: 9000

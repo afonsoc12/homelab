@@ -49,5 +49,13 @@ spec:
     metricRelabelings:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- with .bearerTokenSecret }}
+    bearerTokenSecret:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .authorization }}
+    authorization:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
   {{- end }}
 {{- end }}

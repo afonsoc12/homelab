@@ -1,0 +1,78 @@
+---
+# Renders one DockerMan XML template per service in a stack's docker-compose.yaml,
+# so containers deployed via docker_compose_v2 show up as native apps in the
+# Unraid GUI (icon, WebUI link, editable fields) instead of "unmanaged" containers.
+# Included per-stack from tasks/main.yml when the host is in the `unraid` group.
+
+- name: "Unraid | Load docker-compose.yaml for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_stack_compose: "{{ lookup('ansible.builtin.file', stack.path + '/docker-compose.yaml') | from_yaml }}"
+  delegate_to: localhost
+
+- name: "Unraid | Check for template metadata for {{ stack.path | basename }}"
+  ansible.builtin.stat:
+    path: "{{ stack.path }}/unraid.yml"
+  delegate_to: localhost
+  register: docker_compose_unraid_meta_stat
+
+- name: "Unraid | Load template metadata for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_stack_meta: "{{ lookup('ansible.builtin.file', stack.path + '/unraid.yml') | from_yaml }}"
+  delegate_to: localhost
+  when: docker_compose_unraid_meta_stat.stat.exists
+
+- name: "Unraid | Default empty template metadata for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_stack_meta: {}
+  when: not docker_compose_unraid_meta_stat.stat.exists
+
+- name: "Unraid | Resolve runtime configuration for {{ stack.path | basename }}"
+  ansible.builtin.command:
+    argv: [docker, compose, config, --format, json]
+    chdir: "{{ docker_compose_base_dir }}/{{ stack.path | basename }}"
+  register: docker_compose_unraid_config
+  changed_when: false
+  no_log: true
+
+- name: "Unraid | Read resolved services for {{ stack.path | basename }}"
+  ansible.builtin.set_fact:
+    docker_compose_unraid_resolved: "{{ docker_compose_unraid_config.stdout | from_json }}"
+    docker_compose_unraid_stack_domain: >-
+      {{ ((docker_compose_env_contents.results
+           | selectattr('item.item.path', 'equalto', stack.path)
+           | map(attribute='stdout') | list | first | default(''))
+           | regex_findall('(?m)^DOMAIN=[\'\"]?([^\'\"\n]*)') | first) | default('') }}
+  no_log: true
+
+- name: "Unraid | Render native DockerMan templates for {{ stack.path | basename }}"
+  ansible.builtin.template:
+    src: unraid-template.xml.j2
+    dest: "{{ docker_compose_unraid_templates_dir }}/my-{{ item.value.container_name }}.xml"
+    mode: "0600"
+  vars:
+    service: "{{ item.value }}"
+    source_service: "{{ docker_compose_unraid_stack_compose.services[item.key] }}"
+    meta: "{{ docker_compose_unraid_stack_meta[item.key] | default({}) }}"
+    domain: "{{ docker_compose_unraid_stack_domain }}"
+  loop: "{{ docker_compose_unraid_resolved.services | dict2items }}"
+  no_log: true
+
+- name: "Unraid | Find duplicate DockerMan templates for {{ stack.path | basename }}"
+  ansible.builtin.find:
+    paths: "{{ docker_compose_unraid_templates_dir }}"
+    patterns: "(?i)^(my-)?{{ item.value.container_name | regex_escape }}\\.xml$"
+    use_regex: true
+  loop: "{{ docker_compose_unraid_stack_compose.services | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}"
+  register: docker_compose_unraid_template_files
+
+- name: "Unraid | Remove superseded duplicate DockerMan templates"
+  ansible.builtin.file:
+    path: "{{ item.1.path }}"
+    state: absent
+  loop: "{{ docker_compose_unraid_template_files.results | subelements('files') }}"
+  loop_control:
+    label: "{{ item.1.path | basename }}"
+  # Unraid's flash is case-insensitive; my-Kopia.xml can be the file just rendered.
+  when: item.1.path | lower != (docker_compose_unraid_templates_dir + '/my-' + item.0.item.value.container_name + '.xml') | lower

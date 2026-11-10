@@ -11,7 +11,7 @@ strategy:
   type: Recreate
 image:
   repository: ghcr.io/wg-easy/wg-easy
-  tag: 15.4.0
+  tag: 15.5.0
   pullPolicy: Always
 #   restartPolicy:
 command: {}
@@ -55,17 +55,22 @@ pvc:
       storage: 10Mi
 ingress:
   enabled: true
-  authelia: true
-  className: nginx
-  annotations: null
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
   tls:
     - secretName: local-wildcard-cert
-  # Will assume the first element in .ports, regardless of service
   hosts:
     - host: wg.local.{{ .Values.domain }}
       paths:
         - path: /
-          pathType: ImplementationSpecific
+          pathType: Prefix
+          service:
+            name: authentik-ingress-proxy
+            port: 9000
+
 livenessProbe:
   tcpSocket:
     port: 51821

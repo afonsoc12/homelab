@@ -15,6 +15,97 @@
         tailscale_package: "tailscale={{ tailscale_version }}"
         state: present
 
+- name: Stop OCI VCN DHCP from leaking its DNS search domain to pods
+  hosts: k3s-oci-m3
+  become: true
+  tasks:
+    - name: Discover the OCI VCN interface (default route device)
+      ansible.builtin.command: ip -4 -o route show default
+      register: k3s_oci_m3_default_route
+      changed_when: false
+
+    - name: Set OCI VCN interface name fact
+      ansible.builtin.set_fact:
+        k3s_oci_m3_vcn_iface: "{{ k3s_oci_m3_default_route.stdout.split()[4] }}"
+
+    - name: Disable use of DHCP-provided search domains on the OCI VCN interface
+      ansible.builtin.copy:
+        dest: /etc/netplan/99-oci-vcn-no-dhcp-domains.yaml
+        mode: "0600"
+        content: |
+          network:
+            version: 2
+            ethernets:
+              {{ k3s_oci_m3_vcn_iface }}:
+                dhcp4: true
+                dhcp4-overrides:
+                  use-domains: false
+      notify: Apply netplan
+  handlers:
+    - name: Apply netplan
+      ansible.builtin.command: netplan apply
+      changed_when: true
+
+- name: Manage UFW on k3s-oci-m3
+  hosts: k3s-oci-m3
+  become: true
+  vars:
+    # Mirrors the rules already active on this node (captured via `ufw status numbered`)
+    # so bringing UFW under Ansible management doesn't change existing behavior.
+    k3s_oci_m3_ufw_allow_in_ports:
+      - { port: "32400", proto: "tcp" }
+      - { port: "32400", proto: "udp" }
+      - { port: "6443", proto: "tcp" }
+      - { port: "2379:2381", proto: "tcp" }
+      - { port: "5001", proto: "tcp" }
+      - { port: "8472", proto: "udp" }
+      - { port: "10250", proto: "tcp" }
+      - { port: "51820", proto: "udp" }
+      - { port: "51821", proto: "udp" }
+    k3s_oci_m3_ufw_allow_in_from:
+      - "10.42.0.0/16" # k3s pod CIDR
+      - "10.43.0.0/16" # k3s service CIDR
+  tasks:
+    - name: Allow all traffic on tailscale0
+      community.general.ufw:
+        rule: allow
+        interface: tailscale0
+        direction: in
+
+    - name: Allow inbound ports required by k3s / longhorn / plex / wireguard
+      community.general.ufw:
+        rule: allow
+        port: "{{ item.port }}"
+        proto: "{{ item.proto }}"
+      loop: "{{ k3s_oci_m3_ufw_allow_in_ports }}"
+
+    - name: Allow inbound traffic from the pod and service CIDRs
+      community.general.ufw:
+        rule: allow
+        src: "{{ item }}"
+      loop: "{{ k3s_oci_m3_ufw_allow_in_from }}"
+
+    # Root cause of the pod egress flakiness: UFW's default policy for the FORWARD chain
+    # is `deny (routed)`. kube-router explicitly ACCEPTs marked CNI traffic before it
+    # reaches UFW's forward chain, but that mark isn't guaranteed to be set for every new
+    # connection (observed dropping fresh SYNs and cross-node pod DNS queries in
+    # /var/log/ufw.log: `IN=cni0 OUT=enp0s6/flannel.1 ... [UFW BLOCK]`). Explicitly
+    # allowing routed traffic to/from the pod CIDR closes that race instead of relying on
+    # kube-router's mark always landing first.
+    - name: Allow routed (forwarded) traffic to/from the pod CIDR
+      community.general.ufw:
+        rule: allow
+        route: true
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+      loop:
+        - { src: "10.42.0.0/16", dest: "0.0.0.0/0" }
+        - { src: "0.0.0.0/0", dest: "10.42.0.0/16" }
+
+    - name: Ensure UFW is enabled
+      community.general.ufw:
+        state: enabled
+
 - name: K3s cluster prerequisites
   hosts: k3s_cluster
   become: true
@@ -51,6 +142,49 @@
   any_errors_fatal: true
   roles:
     - k3s.orchestration.k3s_server
+
+- name: Pin one CoreDNS replica per master and keep DNS traffic node-local
+  hosts: masters
+  become: true
+  gather_facts: false
+  tags: [coredns]
+  vars:
+    # Patches the manifest k3s itself writes here (embedded in the k3s binary)
+    # instead of checking in our own copy, so it stays in sync with whatever
+    # CoreDNS ships with the pinned k3s_version. See k3s-io/k3s-ansible#305.
+    k3s_coredns_manifest: /var/lib/rancher/k3s/server/manifests/coredns.yaml
+  tasks:
+    - name: Set CoreDNS replica count in the k3s addon manifest
+      ansible.builtin.lineinfile:
+        path: "{{ k3s_coredns_manifest }}"
+        insertafter: "^  revisionHistoryLimit: 0$"
+        line: "  replicas: 3"
+        regexp: "^  replicas: \\d+$"
+      notify: Wait for CoreDNS replicas to reconcile
+
+    - name: Set kube-dns Service to node-local traffic policy
+      ansible.builtin.lineinfile:
+        path: "{{ k3s_coredns_manifest }}"
+        insertafter: "^  ipFamilyPolicy: SingleStack$"
+        line: "  internalTrafficPolicy: Local"
+        regexp: "^  internalTrafficPolicy: \\w+$"
+      notify: Wait for kube-dns traffic policy to reconcile
+  handlers:
+    - name: Wait for CoreDNS replicas to reconcile
+      ansible.builtin.command: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml -n kube-system get deploy coredns -o jsonpath='{.spec.replicas}'
+      register: k3s_coredns_replicas_live
+      until: k3s_coredns_replicas_live.stdout == "3"
+      retries: 12
+      delay: 5
+      changed_when: false
+
+    - name: Wait for kube-dns traffic policy to reconcile
+      ansible.builtin.command: kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml -n kube-system get svc kube-dns -o jsonpath='{.spec.internalTrafficPolicy}'
+      register: k3s_coredns_traffic_policy_live
+      until: k3s_coredns_traffic_policy_live.stdout == "Local"
+      retries: 12
+      delay: 5
+      changed_when: false
 
 - name: Setup K3s nodes
   hosts: nodes

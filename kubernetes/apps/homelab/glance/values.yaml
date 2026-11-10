@@ -6,7 +6,7 @@
 # --------------------
 image:
   repository: docker.io/glanceapp/glance
-  tag: v0.8.5
+  tag: v0.8.8
   pullPolicy: Always
 
 restartPolicy: Always
@@ -235,10 +235,18 @@ configmap:
                         description: Expense management
                         icon: di:firefly
                         url: https://firefly.{{ .Values.domain }}
+                      - title: Spliit
+                        description: Bill splitting
+                        icon: sh:spliit
+                        url: https://split.{{ .Values.domain }}
                       - title: Mealie
                         description: Recipes management
                         icon: di:mealie
                         url: https://mealie.local.{{ .Values.domain }}
+                      - title: Cookistash
+                        description: Cookidoo recipe scraper
+                        icon: https://raw.githubusercontent.com/afonsoc12/cookistash/master/cookistash/cookidoo/static/cookidoo/img/icon.png
+                        url: https://cookistash.local.{{ .Values.domain }}
                       - title: FreshRSS
                         description: RSS news aggregator
                         icon: di:freshrss
@@ -259,6 +267,10 @@ configmap:
                         description: Site stock monitor
                         icon: di:changedetection
                         url: https://changedetection.local.{{ .Values.domain }}
+                      - title: Tracktor
+                        description: Vehicle tracking management
+                        icon: https://raw.githubusercontent.com/javedh-dev/tracktor/main/static/logo.svg
+                        url: https://tracktor.local.{{ .Values.domain }}
                       - title: DocuSeal
                         description: Document Signing
                         icon: di:docuseal
@@ -271,6 +283,10 @@ configmap:
                         description: Bambu printer management
                         icon: si:bambulab
                         url: https://bambu.local.{{ .Values.domain }}
+                      - title: Paperless-ngx
+                        description: Document management
+                        icon: di:paperless-ngx
+                        url: https://paperless.local.{{ .Values.domain }}
                   - title: Home Automation
                     links:
                       - title: Home Assistant
@@ -289,6 +305,10 @@ configmap:
                         description: Controller for ESP8266 devices
                         icon: di:esphome
                         url: https://esphome.local.{{ .Values.domain }}
+                      - title: Music Assistant
+                        description: Multi-room music player hub
+                        icon: di:music-assistant
+                        url: https://music-assistant.local.{{ .Values.domain }}
                   - title: Media
                     links:
                       - title: Plex
@@ -379,10 +399,6 @@ configmap:
                         description: Alerts manager
                         icon: di:alertmanager
                         url: https://alertmanager.local.{{ .Values.domain }}
-                      - title: InfluxDB
-                        description: TSDB with nice UI
-                        icon: di:influxdb
-                        url: https://influxdb.local.{{ .Values.domain }}
                       - title: ntfy
                         description: Notifications manager
                         icon: di:ntfy
@@ -395,18 +411,10 @@ configmap:
                         description: Off-site backups manager
                         icon: di:kopia
                         url: https://kopia.local.{{ .Values.domain }}
-                      - title: lldap
-                        description: LDAP identity provider
-                        icon: di:lldap
-                        url: https://ldap.local.{{ .Values.domain }}
                       - title: Longhorn
                         description: Kubernetes distributed block storage
                         icon: di:longhorn
                         url: https://longhorn.local.{{ .Values.domain }}
-                      - title: Authelia
-                        description: SSO portal
-                        icon: di:authelia
-                        url: https://auth.{{ .Values.domain }}
                       - title: MinIO
                         description: S3 storage
                         icon: di:minio
@@ -432,8 +440,7 @@ volumes:
 
 ingress:
   enabled: true
-  authelia: true
-  className: nginx
+  className: contour
   tls:
     - secretName: local-wildcard-cert
   hosts:
@@ -441,6 +448,12 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+          service:
+            name: authentik-homelab-proxy
+            port: 9000
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
 
 livenessProbe:
   httpGet:

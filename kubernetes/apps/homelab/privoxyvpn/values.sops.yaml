@@ -18,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/binhex/arch-privoxyvpn
-    tag: 4.1.0-1-02
+    tag: 4.2.0-1-02
     pullPolicy: Always
 #   restartPolicy:
 command: {}

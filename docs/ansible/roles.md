@@ -6,14 +6,17 @@ Local roles live in `ansible/roles/`. External roles and collections are declare
 
 ### `docker_compose`
 
-Deploys Docker Compose stacks on `rpi-4b`. Stack sources live in `docker/<hostname>/` — one subdirectory per stack. The role:
+Deploys Docker Compose stacks on `rpi-4b` and Unraid. Stack sources live in `docker/<hostname>/` — one subdirectory per stack. The role:
 
 1. Finds all stack directories for the target host under `docker/{{ inventory_hostname }}/`
 2. Syncs stack files to `~/homelab/docker/<stack>/` on the host (excluding secrets)
 3. Decrypts `secrets.sops.yaml` → `.env` on the host (mode `0600`)
 4. Creates any required Docker networks
-5. Deploys stacks via `community.docker.docker_compose_v2` (always pulls latest image)
-6. Prunes unused containers, images, and networks
+5. Fetches missing pinned images before reconciling containers moved between Unraid stacks
+6. Deploys independent services first, then repairs stale or invalid shared network namespaces before starting dependents
+7. Creates tools with `restart: "no"` without starting them
+8. Prunes unused images, preserving images referenced by stopped containers
+9. On Unraid, writes native `my-<container>.xml` templates and an ordered autostart list; retires the legacy Compose boot script
 
 **Stack layout:**
 
@@ -41,6 +44,10 @@ Docker itself is installed separately by the `geerlingguy.docker` external role 
 ### `hyperion`
 
 Installs and configures [Hyperion](https://hyperion-project.org/) (ambient LED controller) on `rpi-z2w-hyperion`.
+
+Hyperion rejects non-local (cross-VLAN) connections while its password is still the
+factory default, with no config flag to disable this. Fixed by changing the password
+via Hyperion's websocket API, not by this role.
 
 ### `k3s`
 

@@ -1,0 +1,40 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-Krusader.xml).
+krusader:
+  icon: https://raw.githubusercontent.com/binhex/arch-krusader/master/icon.png
+  webui: "http://[IP]:[PORT:8088]/"
+  ingress_host: krusader.local
+  category: "Productivity: Tools:Utilities"
+  overview: |
+    Krusader is an advanced orthodox file manager for KDE and other desktops in the Unix world. It is similar to the console-based GNU Midnight Commander, GNOME Commander
+    for the GNOME desktop environment, or Total Commander for Windows, all of which can trace their paradigmatic features to the original Norton Commander for DOS. It
+    supports extensive archive handling, mounted filesystem support, FTP, advanced search, viewer/editor, directory synchronisation, file content comparisons, batch
+    renaming, etc.
+
+    ATTENTION: Wronge usage of this tool can lead to data loss, be carefull when using Krusader with Unraid.
+    You can delete your whole Array with a single button press if you don't be carefull!!!
+  registry: "https://github.com/binhex/arch-krusader/pkgs/container/arch-krusader"
+  project_url: "https://krusader.org/"
+  support_url: "https://github.com/binhex/arch-krusader/issues"
+  port_descriptions:
+    "6080": "noVNC web UI port"
+  volume_descriptions:
+    "/config": "Krusader app config/state."
+    "/mnt": >-
+      Main data path to your unRAID shares (if you want to get access to a disk mounted through UnassignedDevices change the Host Path to '/mnt', if you want to get
+      system level access change the Host Path to '/', you will then find the mounted path in Kruser in '/mnt/user').
+  env_descriptions:
+    VNC_PASSWORD: "Password required to access the noVNC web UI (minimum 6 characters)."
+    PUID: "User ID to run as (99 = nobody on Unraid)."
+    PGID: "Group ID to run as (100 = users on Unraid)."
+    UMASK: "Umask for files created by the container."
+  env_display:
+    PUID: advanced
+    PGID: advanced
+    UMASK: advanced
+  secret_env:
+    - VNC_PASSWORD

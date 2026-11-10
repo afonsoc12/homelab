@@ -1,0 +1,27 @@
+{{- with .Values.rbac }}
+{{- if .rules }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "homelab-svc.fullname" $ }}
+  labels:
+    {{- include "homelab-svc.labels" $ | nindent 4 }}
+rules:
+  {{- toYaml .rules | nindent 2 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "homelab-svc.fullname" $ }}
+  labels:
+    {{- include "homelab-svc.labels" $ | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "homelab-svc.fullname" $ }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "homelab-svc.serviceAccountName" $ }}
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}

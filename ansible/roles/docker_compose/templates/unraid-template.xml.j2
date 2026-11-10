@@ -1,0 +1,1 @@
+{{ service | unraid_template(source_service, docker_compose_unraid_resolved.services, docker_compose_unraid_resolved.networks | default({}), meta, domain) }}

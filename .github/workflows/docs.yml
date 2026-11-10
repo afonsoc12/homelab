@@ -19,9 +19,7 @@ on: # yamllint disable-line rule:truthy
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 jobs:
   build:
@@ -39,7 +37,7 @@ jobs:
           python-version-file: .python-version
 
       - name: ⚡ Setup uv
-        uses: astral-sh/setup-uv@v10.0.1
+        uses: astral-sh/setup-uv@v10.3.3
         with:
           activate-environment: true
 
@@ -73,6 +71,9 @@ jobs:
           path: homelab-docs-v${{ steps.version.outputs.version }}.zip
 
   deploy:
+    permissions:
+      pages: write
+      id-token: write
     name: 🌐 Deploy to GitHub Pages
     needs: build
     runs-on: ubuntu-latest
@@ -86,6 +87,8 @@ jobs:
         uses: actions/deploy-pages@v5
 
   publish:
+    permissions:
+      contents: write
     name: 📦 GitHub Release
     needs: build
     runs-on: ubuntu-latest

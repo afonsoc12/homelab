@@ -18,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/wallabag/wallabag
-    tag: 2.6.14
+    tag: 2.6.15
     pullPolicy: Always
 #   restartPolicy:
 command: {}
@@ -65,11 +65,9 @@ pvc:
             storage: 500Mi
 ingress:
     enabled: true
-    authelia: true
-    className: nginx
-    annotations: null
-    # nginx.ingress.kubernetes.io/client-max-body-size: "0"
-    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    className: contour
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
     tls:
         - secretName: wallabag-cert
     # Will assume the first element in .ports, regardless of service
@@ -78,6 +76,9 @@ ingress:
           paths:
             - path: /
               pathType: ImplementationSpecific
+              service:
+                  name: authentik-homelab-proxy
+                  port: 9000
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext: {}

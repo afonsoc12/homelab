@@ -19,7 +19,7 @@ spec:
       chart: grafana
       helm:
         valueFiles:
-        # - $values/kubernetes/apps/values.sops.yaml
+          - $values/kubernetes/apps/values.sops.yaml
           - $values/kubernetes/apps/monitoring/grafana/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD

@@ -5,10 +5,13 @@ locals {
     "airflow_data",
     "authentik",
     "bambuddy",
+    "cookistash",
     "forgejo",
     "ghostfolio",
     "mealie",
     "octo_track",
+    "paperless",
+    "spliit",
   ])
 }
 
@@ -31,6 +34,8 @@ resource "postgresql_role" "this" {
   name     = each.key
   login    = true
   password = random_password.this[each.key].result
+  # Match PostgreSQL's canonical timestamp so refresh does not plan the same update.
+  valid_until = "9999-12-31 00:00:00+00"
 }
 
 # ----- Databases -----

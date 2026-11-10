@@ -6,13 +6,19 @@ Adding a new app to the cluster is a two-step process: create the values file, t
 
 Create a directory for your app under the appropriate namespace:
 
+Create **exactly one** values file per app — never both:
+
 ```
 kubernetes/apps/<namespace>/<app>/
-├── values.yaml          # plain Helm values
-└── values.sops.yaml     # encrypted secrets (if needed)
+└── values.yaml          # plain Helm values — use this if the app needs no secrets
 ```
 
-**Example:** adding `myapp` to the `homelab` namespace:
+```
+kubernetes/apps/<namespace>/<app>/
+└── values.sops.yaml     # ALL values (config + secrets) — use this if the app needs any secrets
+```
+
+**Example:** adding `myapp` (no secrets) to the `homelab` namespace:
 
 ```bash
 mkdir -p kubernetes/apps/homelab/myapp
@@ -32,10 +38,9 @@ ingress:
         - path: /
 ```
 
-If the app needs secrets:
+If the app needs secrets, put **everything** — plain config and secrets alike — in `values.sops.yaml` instead of `values.yaml`. The `.sops.yaml` regex rules only encrypt sensitive fields (e.g. `data`/`stringData`), so the rest of the file stays readable plaintext in the diff:
 
 ```bash
-# Create and encrypt the secrets file
 sops kubernetes/apps/homelab/myapp/values.sops.yaml
 ```
 
@@ -70,7 +75,8 @@ spec:
       helm:
         valueFiles:
           - $values/kubernetes/apps/homelab/myapp/values.yaml
-          # - $values/kubernetes/apps/homelab/myapp/values.sops.yaml  # uncomment if secrets exist
+          # or, if the app has secrets, ONLY this line instead of the one above:
+          # - $values/kubernetes/apps/homelab/myapp/values.sops.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values
@@ -79,11 +85,23 @@ spec:
     namespace: homelab
 ```
 
-## Step 3 — Commit and Push
+## Step 3 — Add a Glance Bookmark
+
+Add a link to the dashboard in `kubernetes/apps/homelab/glance/values.yaml` (`configmap.data."home.yml"`), under the relevant bookmarks group on the Homelab page:
+
+```yaml
+- title: My App
+  description: What it does
+  icon: di:myapp   # dashboard-icons slug, same one used in docs/services/*.md
+  url: https://myapp.local.{{ .Values.domain }}
+```
+
+## Step 4 — Commit and Push
 
 ```bash
 git add kubernetes/apps/homelab/myapp/ \
-        kubernetes/apps/addons/argocd-apps/templates/homelab/myapp.yaml
+        kubernetes/apps/addons/argocd-apps/templates/homelab/myapp.yaml \
+        kubernetes/apps/homelab/glance/values.yaml
 git commit -m "feat: add myapp to homelab namespace"
 git push
 ```

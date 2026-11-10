@@ -19,12 +19,10 @@ server:
 # Ingress configuration
 ingress:
   enabled: true
-  authelia: true
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "GRPCS"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-  tls:
-    - secretName: local-wildcard-cert
+  # Keep end-to-end TLS and Kopia's native authentication for gRPC clients.
+  className: contour
+  tlsPassthrough: true
+  annotations: {}
   hosts:
     - host: kopia.local.{{ .Values.domain }}
       paths:

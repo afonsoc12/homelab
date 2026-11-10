@@ -1,0 +1,23 @@
+{{- if and .Values.ingress.enabled .Values.ingress.tlsPassthrough }}
+{{- if ne .Values.ingress.className "contour" }}
+{{- fail "TLS passthrough requires the contour ingress class" }}
+{{- end }}
+{{- if ne (len .Values.ingress.hosts) 1 }}
+{{- fail "TLS passthrough requires exactly one hostname" }}
+{{- end }}
+apiVersion: projectcontour.io/v1
+kind: HTTPProxy
+metadata:
+  name: {{ include "external-svc.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  ingressClassName: contour
+  virtualhost:
+    fqdn: {{ tpl (first .Values.ingress.hosts).host . | quote }}
+    tls:
+      passthrough: true
+  tcpproxy:
+    services:
+      - name: {{ include "external-svc.fullname" . }}
+        port: {{ .Values.server.port }}
+{{- end }}

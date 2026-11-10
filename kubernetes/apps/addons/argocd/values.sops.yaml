@@ -38,10 +38,10 @@ configs:
     cm:
         # -- Create the argocd-cm configmap for [declarative setup]
         create: true
-        helm.valuesFileSchemes: secrets+gpg-import, secrets+gpg-import-kubernetes, secrets+age-import, secrets+age-import-kubernetes, secrets,secrets+literal, https
+        helm.valuesFileSchemes: secrets,secrets+age-import,secrets+age-import-kubernetes
         admin.enabled: "false"
         oidc.config: ENC[AES256_GCM,data:5YTeHr0sY0B8/GdM90gjISmAEiJZBhVw7NohuyzF+1UTF1PcgyWDs6t6gZvUmahTcLpww6PaKZvvQ2BnLJ0epmzSfG6XZWyAoZkO2jquw5f+p9ouV7FTZyOGck+k4sdSQoEfZEuSN4TAb4p8ibqYV9VQ4eWh+lFks/1Ju2XkfmfUmYdyriynk1Zzod4WWbZ+8SIz34XgzOnX+VDoKVTy5/YKTn6HFmuas7akWS+Vm3E2pBhy2mCqc8KoC/n2bWhPOy3Lans5JRdHHztHOpKUFuhVmVcxyIClF6AE0b61lK/+kcES6KO2Tes=,iv:6Kz7OtuA3mx4IGSoCoSDW4W5OgVKgDrCXu7VXor74Q8=,tag:S7Unp6M/E5Gm8OlJ1PrmRg==,type:str]
-        oidc.tls.insecure.skip.verify: "true"
+        oidc.tls.insecure.skip.verify: "false"
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
             jqPathExpressions:
@@ -148,6 +148,7 @@ configs:
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 extraObjects: []
+
 # - apiVersion: secrets-store.csi.x-k8s.io/v1
 #   kind: SecretProviderClass
 #   metadata:
@@ -252,15 +253,21 @@ server:
     ingress:
         enabled: true
         annotations:
-            nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-            nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-        ingressClassName: nginx
+            ingress.kubernetes.io/force-ssl-redirect: 'true'
+            projectcontour.io/websocket-routes: /
+            projectcontour.io/response-timeout: 300s
+        ingressClassName: contour
         path: /
         pathType: Prefix
         tls: false
         extraTls:
-            - secretName: local-wildcard-cert
+            -   secretName: local-wildcard-cert
+                hosts:
+                    - '{{ .Values.global.domain }}'
+    service:
+        annotations:
+            projectcontour.io/upstream-protocol.tls: '443'
+
 ## Repo Server
 repoServer:
     # -- Repo server name
@@ -312,8 +319,10 @@ repoServer:
         # https://github.com/jkroepke/helm-secrets/wiki/Security-in-shared-environments
         - name: HELM_SECRETS_VALUES_ALLOW_SYMLINKS
           value: "false"
+        # Argo CD resolves values files to absolute paths; required by its wrapper.
         - name: HELM_SECRETS_VALUES_ALLOW_ABSOLUTE_PATH
           value: "true"
+        # Local charts load encrypted values from ../../apps within this repository.
         - name: HELM_SECRETS_VALUES_ALLOW_PATH_TRAVERSAL
           value: "true"
         - name: HELM_SECRETS_WRAPPER_ENABLED
@@ -333,20 +342,20 @@ repoServer:
     # -- Init containers to add to the repo server pods
     initContainers:
         - name: download-tools
-          image: docker.io/alpine:3.24.1
+          image: docker.io/alpine:3.24.4
           imagePullPolicy: IfNotPresent
           command:
             - sh
             - -ec
           env:
             - name: HELM_SECRETS_VERSION
-              value: 4.7.7
+              value: 4.7.10
             - name: HELM3_VERSION
-              value: 3.21.4
+              value: 3.22.1
             - name: KUBECTL_VERSION
-              value: 1.36.3
+              value: 1.37.2
             - name: VALS_VERSION
-              value: 0.46.0
+              value: 0.51.0
             - name: SOPS_VERSION
               value: 3.13.3
           args:
@@ -380,6 +389,7 @@ repoServer:
           name: gitops-tools
         - mountPath: /homelab-sops-gpg/
           name: homelab-sops-gpg
+          readOnly: true
     # -- Additional volumes to the repo server pod
     volumes:
         - name: gitops-tools
@@ -433,6 +443,10 @@ notifications:
               - name: Content-Type
                 value: application/json
     templates:
+        # Message layout mirrors the Prometheus Alertmanager Discord notifier
+        # (kubernetes/apps/monitoring/prometheus-stack): status emoji + event
+        # name title, quote-block body with a bold summary line, cluster/
+        # namespace/timestamp context line, then markdown links.
         template.app-deployed: |
             webhook:
               discord:
@@ -440,21 +454,23 @@ notifications:
                 body: |
                   {
                     "embeds": [{
-                      "title": "✅ {{.app.metadata.name}} deployed",
-                      "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                      "title": "🟢 AppDeployed · `{{.app.spec.destination.name}}`",
                       "color": 3066993,
-                      "fields": [
-                        {"name": "Application", "value": "[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})", "inline": false},
-                        {"name": "Cluster", "value": "{{.app.spec.destination.name}}", "inline": false},
-                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": false},
-                        {"name": "Author", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}", "inline": false},
-                        {"name": "Revision", "value": "[{{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}})", "inline": false},
-                        {"name": "Last Updated", "value": "{{.app.status.operationState.finishedAt}}", "inline": false},
-                        {"name": "Commit", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}", "inline": false}
-                      ]
+                      "description": "> **{{.app.metadata.name}} synced successfully**\n> {{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.operationState.finishedAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [📝 {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
                     }]
                   }
-        template.app-health-degraded: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 {{.app.metadata.name}} health degraded\",\n          \"url\": \"{{.context.argocdUrl}}/applications/{{.app.metadata.name}}\",\n          \"color\": 15158332,\n          \"fields\": [\n            {\"name\": \"Application\", \"value\": \"[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})\", \"inline\": false},\n            {\"name\": \"Cluster\", \"value\": \"{{.app.spec.destination.name}}\", \"inline\": false},\n            {\"name\": \"Namespace\", \"value\": \"{{.app.spec.destination.namespace}}\", \"inline\": false},\n            {\"name\": \"Health\", \"value\": \"{{.app.status.health.status}}\", \"inline\": false},\n            {\"name\": \"Last Updated\", \"value\": \"{{.app.status.reconciledAt}}\", \"inline\": false}\n          ]\n        }]\n      }\n"
+        template.app-health-degraded: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "🔴 AppHealthDegraded · `{{.app.spec.destination.name}}`",
+                      "color": 15158332,
+                      "description": "> **{{.app.metadata.name}} health degraded**\n> Health status: `{{.app.status.health.status}}`\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.reconciledAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})"
+                    }]
+                  }
         template.app-sync-failed: |
             webhook:
               discord:
@@ -462,18 +478,21 @@ notifications:
                 body: |
                   {
                     "embeds": [{
-                      "title": "❌ {{.app.metadata.name}} sync failed",
-                      "url": "{{.context.argocdUrl}}/applications/{{.app.metadata.name}}",
+                      "title": "🔴 AppSyncFailed · `{{.app.spec.destination.name}}`",
                       "color": 15158332,
-                      "fields": [
-                        {"name": "Application", "value": "[{{.app.metadata.name}}]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})", "inline": false},
-                        {"name": "Cluster", "value": "{{.app.spec.destination.name}}", "inline": false},
-                        {"name": "Namespace", "value": "{{.app.spec.destination.namespace}}", "inline": false},
-                        {"name": "Author", "value": "{{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}", "inline": false},
-                        {"name": "Revision", "value": "[{{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}})", "inline": false},
-                        {"name": "Last Updated", "value": "{{.app.status.operationState.finishedAt}}", "inline": false},
-                        {"name": "Error", "value": "{{.app.status.operationState.message | default "N/A"}}", "inline": false}
-                      ]
+                      "description": "> **{{.app.metadata.name}} sync failed**\n> {{.app.status.operationState.message | default \"No error message\"}}\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.operationState.finishedAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [📝 {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
+                    }]
+                  }
+        template.app-sync-status-unknown: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "🟡 AppSyncStatusUnknown · `{{.app.spec.destination.name}}`",
+                      "color": 15105570,
+                      "description": "> **{{.app.metadata.name}} sync status unknown**\n> ArgoCD could not determine whether the live state matches Git — check for CRD issues or repo access errors.\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.reconciledAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})"
                     }]
                   }
     triggers:
@@ -489,6 +508,10 @@ notifications:
             - when: app.status.operationState.phase in ['Error', 'Failed']
               oncePer: app.status.sync.revision
               send: [app-sync-failed]
+        trigger.on-sync-status-unknown: |
+            - when: app.status.sync.status == 'Unknown'
+              oncePer: app.status.reconciledAt
+              send: [app-sync-status-unknown]
     subscriptions:
         - recipients:
             - discord
@@ -496,6 +519,7 @@ notifications:
             - on-deployed
             - on-health-degraded
             - on-sync-failed
+            - on-sync-status-unknown
     readinessProbe:
         enabled: true
     livenessProbe:
@@ -503,7 +527,7 @@ notifications:
     startupProbe:
         enabled: true
 sops:
-    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP|nginx\.ingress\.kubernetes\.io/auth-signin)$
+    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP)$
     lastmodified: "2026-08-17T23:38:01Z"
     mac: ENC[AES256_GCM,data:cJPoB8NEOKkr779NBIVZ+QXtfKrIXU/coTSYMUIoU7uQ2qtrryjSIaKlc1PpKhCuo5YdoENnW9wxMBWiC1REkbA+9G/GD0YomrjWNg9MpzbBniYalJIr3qWAqziN3X7VzXQsajDG5+0NBfpdPB0pCw9amQfTrcqRhj681CWmiV8=,iv:s70Yk7ODIqaljgVF5MiVkkm2zyKthSzMtKzy6lU5IPg=,tag:toO83dmmiM2sCdxQH9Hfzw==,type:str]
     mac_only_encrypted: true

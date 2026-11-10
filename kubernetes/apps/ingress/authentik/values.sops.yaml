@@ -5,71 +5,105 @@
 #   - Chart Defaults: https://github.com/goauthentik/authentik/blob/main/helm/values.yaml
 # --------------------
 authentik:
+    outposts:
+        disable_embedded_outpost: true
     log_level: info
     # don't change this after the first install
-    secret_key: ENC[AES256_GCM,data:55V+ok8jQNVnGdOV8gepybc18saq7iLwxz9nMuIwjHtsN3KuHnFPCg4rRzzGqKvBFkv+zwIiRRpr9KEOgql2t0YgtgE7dcWfVzadJ8n3wgQ=,iv:Q6lKHmnD2qIOYkTPJzqcro6vt2sXLL6mbPb7wfNexvk=,tag:ZeqwUkaVOd1tUBIwiuvmAg==,type:str]
+    secret_key: ENC[AES256_GCM,data:xM8bvGJ5Iutxy+yfZ8cvOyKDjkW0a7Klh/8Lw1sERbXcdPzaui2ZNTNtXHoPmpwhT5jymVKVrv1d+gUjXgE8E2seJUs1xe/fk2J8szYR4/w=,iv:qO4QWDZqlepsEmV2kzXasBbny23whR9ptAxgx4FzB7s=,tag:okrDVfoWuYx2WPUV6Vut3w==,type:str]
     email:
         # -- SMTP Server emails are sent from, fully optional
-        host: ENC[AES256_GCM,data:ZH7ygXU7QI3AQesHQmZJ9ak=,iv:r0is2T+kjuw1DsiaWmPPAhdXLoZ6eK+9K+flyQiLi2Y=,tag:aJjYWbMiiVaknTmmI6hYVQ==,type:str]
+        host: ENC[AES256_GCM,data:pDRtAgFuSGH15m0t/thSUNU=,iv:8j/1poT6iPf84ToH/d9dDdlSDEuSp9HSDoy9HztME4g=,tag:bgEjGPFzxZdei4DM/RZYMg==,type:str]
         # -- SMTP server port
         port: 587
         # -- SMTP credentials, when left empty, no authentication will be done
-        username: ENC[AES256_GCM,data:bWuitbwQoaqbUMn/vzmxbsBdjcYe697keirkGH+y0eM=,iv:8Dm23J4DNAp5akZVU2409/8p9HJeN7L/PJBnfW9+ZlA=,tag:a0oBHNQps27Zk1mhwK083g==,type:str]
+        username: ENC[AES256_GCM,data:Z8myPmmikKhPPAz927ruNFZs9My4ed9be4G42j20+bY=,iv:wrICyFG1yD7SC6jfDisPywc5KO2LIEB5T8uX9kOOXF0=,tag:ZI0FFCjFBwnn/zUn2MPPkw==,type:str]
         # -- SMTP credentials, when left empty, no authentication will be done
-        password: ENC[AES256_GCM,data:OXtxqpNeeIl0oY8NKTVGF4zoC0FAstneNgbsQvw/uS0=,iv:DN+5kmVhunaAFFJVNZdcGeDjDE18SEHHc4ZIkbQJqRY=,tag:pUvbTdZdsUHV8bTquEXXyQ==,type:str]
+        password: ENC[AES256_GCM,data:WLUHMUXEeDTf3OjS77jG33a/J/vN88FWQFsAlwmCuiE=,iv:4u6UZ+Z/lo9899ZG4eepULM7t0f2h5b6NvjFt8yOMhc=,tag:8bjThNKEw3WlrQefapdQ2A==,type:str]
         use_tls: true
         timeout: 10
-        from: ENC[AES256_GCM,data:FBF8yUjJgUVQx18330tHLQBqDfOLmROzqjwhjzw75Ttd,iv:mn7peAtBXdTz7DJaR09DsMuvn0lgaSdZPccClU1vdW0=,tag:gKJiSbq5CE/be8g8oXFaNA==,type:str]
+        from: ENC[AES256_GCM,data:WUgiZ1Rxxx2BsdaLeYq5WaBArfl0bLEuel2kayPfkSQV,iv:feZzTXM8eimsyMWyurAEnog44s+bcERMz4XeyzFg2jE=,tag:7LkacaAPdMhzPGX49145RQ==,type:str]
     error_reporting:
         enabled: false
         send_pii: false
     postgresql:
-        host: ENC[AES256_GCM,data:5GkFsRl053hZdwg/eUnohtRN,iv:0p/qu5cfWbLyipmNpXO43TcVPDjKZE9WENphx+MSOt4=,tag:Vw5b8cKpic/nO+yn28Ay5Q==,type:str]
+        host: ENC[AES256_GCM,data:S89StR2FMTKGVQPH7Dnyk0rL,iv:n5eaVrAnaU/cEV16LNWQhanYrMhIHgJiVPSgM09M2Zc=,tag:DdmTnpxlwM97+4MCBC6t5A==,type:str]
         name: authentik
-        user: ENC[AES256_GCM,data:jQzoD+3Q5009,iv:apZp5ICdaHi3iZgnk6GOTPl49fxBWoKlq8pSIdvp4/M=,tag:dntQbybhq+gXnpWXhNqfcg==,type:str]
-        password: ENC[AES256_GCM,data:OsH79vEpmi8T9Excs1LNWLWh9EM=,iv:OTT2OFUmFlghk+n0bqcl/sGbqUrEzwZa/hIWAsUo/nA=,tag:kXCLlzMzDfb3SYnDwxsqUw==,type:str]
+        user: ENC[AES256_GCM,data:Rl0soLMXz3YN,iv:l+X7SSY+YsZ0o2p7FUNPCPC0+0cVDA8JW5RIpxuzjxc=,tag:8DX+oWSsc0SihdcGFZjvQQ==,type:str]
+        password: ENC[AES256_GCM,data:99Ea+Mz/WjuLcRF26vd3zt3+TDs=,iv:TTQU96Ywo+FtBULpII6fGpqMlW7xxZqFG7MYHuMZFl4=,tag:jl9j4ftE0WLcYBBw6Q9oUw==,type:str]
         port: 5432
     redis:
-        host: ENC[AES256_GCM,data:n/wlfMBjeFrWBTHHyGl4,iv:2bMBzaWqorDqkFv9L+FRIsSfc8MnHoPJV5ZissINzLY=,tag:5j6vkk/rVyHtU79G3S79kQ==,type:str]
+        host: ENC[AES256_GCM,data:/zpx3Gt2QSrwz1vNj68o,iv:MCwdCZfj4QeaKRihEUqcJmUgbp8YZ7m5/gV9w6Dc03A=,tag:A8mbpQSvJOOoqli1LqMpyg==,type:str]
 ## authentik server
 server:
     name: server
+    affinity:
+        podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+                - namespaces:
+                    - databases
+                  labelSelector:
+                    matchExpressions:
+                        - key: app.kubernetes.io/instance
+                          operator: In
+                          values:
+                            - postgres
+                  topologyKey: kubernetes.io/hostname
     replicas: 1
+    env:
+        - name: AUTHENTIK_WEB__WORKERS
+          value: "2"
     ingress:
         enabled: true
-        ingressClassName: nginx
+        annotations:
+            ingress.kubernetes.io/force-ssl-redirect: "true"
+            projectcontour.io/websocket-routes: /
+            projectcontour.io/response-timeout: 60s
+        ingressClassName: contour
         hosts:
-            - ENC[AES256_GCM,data:ztVKubsoWYA/lWPNfcsSkh4=,iv:8AUzHd3pxzhNdEMs3VXV3ULVja3QxoccYNh1oiRUXpA=,tag:ysKtrC4yznEciYWUbSY3PA==,type:str]
+            - ENC[AES256_GCM,data:sC3oZZWufV6CepEjdsqbgi0=,iv:UCdviQkdvggdiDz6GUKa8VW3zwRlr7Anq7U0a8kj6Qc=,tag:cgRKFYpwuhvjUQxcJUcuyQ==,type:str]
         paths:
             - /
         pathType: Prefix
         tls:
             - secretName: sso-cert
-        extraPaths:
-            - backend:
-                service:
-                    name: authentik-embedded-outpost
-                    port:
-                        number: 9000
-              path: /outpost.goauthentik.io
-              pathType: Prefix
+              hosts:
+                  - ENC[AES256_GCM,data:sp3Jew/EtPIy1Jtv73teAeE=,iv:ilTTSayh0um9Wf/Gf+QCL/RlwF1yguaJKszN0dwBFs4=,tag:mo8k9l+yH8rlhuXtNXCcDg==,type:str]
     resources:
         requests:
-            cpu: 100m
+            cpu: 500m
             memory: 512Mi
         limits:
-            cpu: 500m
-            memory: 1Gi
+            cpu: "2"
+            memory: 2Gi
 worker:
     name: worker
+    deploymentStrategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxSurge: 0
+            maxUnavailable: 1
+    affinity:
+        podAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 1
+                  podAffinityTerm:
+                    namespaces:
+                        - databases
+                    labelSelector:
+                        matchExpressions:
+                            - key: app.kubernetes.io/instance
+                              operator: In
+                              values:
+                                - postgres
+                    topologyKey: kubernetes.io/hostname
     replicas: 1
     resources:
         requests:
-            cpu: 50m
-            memory: 256Mi
-        limits:
-            cpu: 500m
+            cpu: 200m
             memory: 512Mi
+        limits:
+            cpu: "2"
+            memory: 2Gi
 serviceAccount:
     create: true
 prometheus:
@@ -88,31 +122,198 @@ postgresql:
     enabled: false
 redis:
     enabled: false
+additionalObjects:
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: authentik-outposts
+    namespace: automation
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    - services
+    verbs:
+    - get
+    - create
+    - delete
+    - list
+    - patch
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    verbs:
+    - get
+    - create
+    - delete
+    - list
+    - patch
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: authentik-outposts
+    namespace: automation
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: authentik-outposts
+  subjects:
+  - kind: ServiceAccount
+    name: authentik
+    namespace: ingress
+
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: authentik-outposts
+    namespace: homelab
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    - services
+    verbs:
+    - get
+    - create
+    - delete
+    - list
+    - patch
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    verbs:
+    - get
+    - create
+    - delete
+    - list
+    - patch
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: authentik-outposts
+    namespace: homelab
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: authentik-outposts
+  subjects:
+  - kind: ServiceAccount
+    name: authentik
+    namespace: ingress
+
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: authentik-outposts
+    namespace: monitoring
+  rules:
+  - apiGroups: ['']
+    resources: [secrets, services]
+    verbs: [get, create, delete, list, patch]
+  - apiGroups: [apps]
+    resources: [deployments]
+    verbs: [get, create, delete, list, patch]
+  - apiGroups: [networking.k8s.io]
+    resources: [ingresses]
+    verbs: [get, create, delete, list, patch]
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: authentik-outposts
+    namespace: monitoring
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: authentik-outposts
+  subjects:
+  - kind: ServiceAccount
+    name: authentik
+    namespace: ingress
+
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: authentik-outposts
+    namespace: addons
+  rules:
+  - apiGroups: ['']
+    resources: [secrets, services]
+    verbs: [get, create, delete, list, patch]
+  - apiGroups: [apps]
+    resources: [deployments]
+    verbs: [get, create, delete, list, patch]
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: authentik-outposts
+    namespace: addons
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: authentik-outposts
+  subjects:
+  - kind: ServiceAccount
+    name: authentik
+    namespace: ingress
+
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: authentik-outposts
+    namespace: longhorn-system
+  rules:
+  - apiGroups: ['']
+    resources: [secrets, services]
+    verbs: [get, create, delete, list, patch]
+  - apiGroups: [apps]
+    resources: [deployments]
+    verbs: [get, create, delete, list, patch]
+  - apiGroups: [networking.k8s.io]
+    resources: [ingresses]
+    verbs: [get, create, delete, list, patch]
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: authentik-outposts
+    namespace: longhorn-system
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: authentik-outposts
+  subjects:
+  - kind: ServiceAccount
+    name: authentik
+    namespace: ingress
+
 sops:
-    lastmodified: "2026-04-29T20:01:45Z"
-    mac: ENC[AES256_GCM,data:D3u/tKOy5zACUW6OvmqZy3L77EHdMtdvkA6UjfFvY6Djgbnm74Vt2Y3gHWArxI0krvp0UNWfFYVwLQ03NGQMAqWO9y7FRV7ULq7kUzyD6oKjifC0Uz7UsWng4dGeG4MNGN/hn9LjpJstf05cGsxNgGsNXuY99T3039WCRmJ+68o=,iv:FPBIjFS01zaA5MATncczmBT1oTMxX5xagWWT6qERpk4=,tag:ZXyFQlpK7wFmz2WvHEZsPw==,type:str]
+    encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
+    lastmodified: "2026-11-01T01:20:19Z"
+    mac: ENC[AES256_GCM,data:E+ET/flBbj0BiI4f5WbOnti7lseEWz4Hqej3W+eWM1RiTCI0sonI6/ujQM/nS2vDd1mGtFcw2LVo8oraC8VD3UmZyK9AtQslFCuGjOVUY4c4pdphVKxuiJnR7z80aFEwAvaREtdj9romz893gitGiw2Goz/deW3p2rgx2B23iK8=,iv:my5zdnT16ByxFeYJKGSHus5EDfQWrq/w/f2DQKqRi4Q=,tag:5KomSqqoeWLg2tiequ9N+Q==,type:str]
+    mac_only_encrypted: true
     pgp:
-        - created_at: "2026-04-13T20:28:43Z"
+        - created_at: "2026-10-21T23:23:06Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//Y4tXQfbtOQGSm1cwZSfpcJ5HKBucjPJ9MhElG7zgIdjZ
-            eBMOMDJmXDNDGpDjRxW27zgOKDX4RCv9ckug85eK3ODtdKKWZ343j7Zgm5XBsPHs
-            p6F6jmm0dJM7m0z2mp+nVtHrHvmMMFGcE8bCjm4AcCZo6FAKYMCymUhTphLgX0nY
-            LIMvdzclEzYCG+DsWBbCBiI+28AWx2igqXuZuTh8HDYUvQE8pxC5JtKr3K9a3Vxt
-            fY5o10ZtUvy+uci4Bj6FcUU2pwiOAN/ErLcr/WgIBOCmVKcLc1+UBYTn10vSYMed
-            I2PLFYogcsJlMieew5Ql6TqNbo7lEH9LapcB3mA0m8McAarM5QENKMcGvLbFv2X5
-            +zPD3gnQEzqdY+ZPpEqSU+hkE2v1xlnjjo5vpSE9G9Iy3PvfMejJaMynceWKad36
-            XeOEGR/5vwo2215zPtOJUqDUt28kz6fJ2+9OcQNFBwCQVKlld7v111CRzhvsruM9
-            AvCuq+4SBQgC9hqrblzow/UW4Lfuxv2wVFkzRN6XsI2VN5jiv4gi6YrwiLoI7WZZ
-            mbg2/Ol/KE+w4Csr8fYQtVMqdPrmXRW4E6G0rTiqlDO3QmkXlMHtDzGoiRu182YW
-            1hCF4CJyLGjhSXCKF6YkR+U13ZQcVG1pVcgzfTyiPn693eJQi7mTI/Icm8Blz/DU
-            aAEJAhBr2XTEIOxu7tIcuMO2WkpnUz8m3+rlihJesKm0kvGsHsjnAozakPUz9y6N
-            PmdKy4nFis+Ps1KTVWMTShNlv5O4i9UhAAvjjE94slxy2eGwoDPKLwRmp5keeRFE
-            /78PQDnWhIm1
-            =6Bef
+            hQIMA5NT/LvuRqeGAQ/9EDw/xxEkjLOzGRjscjPase6tXpY7MBd6EruDqzfgyriU
+            +wvKkHxRLdqWRTmBCnHLdeWl794P5gaFVLA5XMivg98KBc9QM6Obprd9cZc8zd55
+            ikzJSlcOg23EkqCULvbl+/zImAtp3X93I2r0DNIf0Gmr/jWKFOdHfnCqjp/PsDFq
+            811+TCCmQdSVv/ygVtSeqzBhV/YB8myy9C5KXFINxJI+f9qZwdh/orlh/3JELikN
+            c5Rpqan8XBUighUiDG2n5vKG/nvbDu3KSa9rLuKawZQ67TtiiQzBbbXAnRpGSsOd
+            2sDGrUtdYdyFt+7TkSM5e2W5v2D9UnQN1eDpymqT8npiOUCrQ2iw40OZWgBWizK+
+            n+g1MBaAP/qYKHzAiQJufqxoS+TIGnMIvJN4PiIFVjYIQuYdEwDEVJGA46gt8sUi
+            ND4LP+SWqGN2O9Wg5iVDsylByWURSjpUigOH2ENDpg/TUbpVDcbd6KBrtSkFyNJQ
+            MRwRNSsL4xtCFOwkO5ZqgQHGqcx8sdhaHCKku7MFaZBK5bpSKUlcn/sF5LQ/UXGd
+            6lE8PGd6WLyvaW/tvaLOKvxZmiGarYArmvv+z1y14zEMOCmiRnfZobyLvvy6dUbv
+            emBnIYkJvsi9a0O9YTTfY35nulzRieTtZJKfRZVR5cWZ5nDvQG1xaW01B4RoYurU
+            ZgEJAhC7OU4hA4pnP9WBUswAWrM3D/TKZ243I09XwiMquo3Fg3P8+ngpKtxphoQb
+            57A42Z2xOVvPKi7uXvqryyiYe7DlDmbPe6U2DSIZdONSLwZDcB7acwtkr06YDrmo
+            RRdBPBi24Q==
+            =2Yu5
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(data|stringData|password|secret_key|username|host|hosts|user|from)$
-    mac_only_encrypted: true
-    version: 3.12.2
+    version: 3.13.2

@@ -7,7 +7,7 @@ External requests reach self-hosted apps through two paths:
 ```
 Internet
     │
-    ├─── Cloudflare Tunnel (cloudflared) ──► ingress-nginx ──► app
+    ├─── Cloudflare Tunnel (cloudflared) ──► ingress ──► app
     │         └─ Zero-trust, no open ports
     │
     └─── Wireguard VPN ──► direct cluster access
@@ -24,15 +24,6 @@ All public-facing services are routed through Cloudflare. The Terraform `cloudfl
 | Tunnel | Cloudflared tunnel from k3s-cluster → Cloudflare edge |
 | WAF / Zone settings | SSL strict mode, TLS 1.2+, bot blocking, geo-allowlist |
 
-### Geo Allowlist
-
-The homelab zone restricts traffic to Portugal and UK only:
-
-```hcl
-geo_block_enabled = true
-geo_allowlist     = ["PT", "GB"]
-```
-
 ### Zones
 
 Two Cloudflare zones are managed:
@@ -40,9 +31,9 @@ Two Cloudflare zones are managed:
 - **homelab zone** — self-hosted services, geo-restricted, bot blocking enabled
 - **personal zone** — personal site/domain, no geo restriction
 
-## Internal Ingress (MetalLB + ingress-nginx)
+## Internal Ingress
 
-[MetalLB](https://metallb.universe.tf/) provides `LoadBalancer` services on bare-metal by announcing IPs via ARP on the LAN. ingress-nginx uses a MetalLB-assigned IP as its external address.
+[Contour](https://projectcontour.io/) is the standard ingress controller, using [Envoy](https://www.envoyproxy.io/) for routing and TLS termination. [MetalLB](https://metallb.universe.tf/) provides `LoadBalancer` services on bare-metal by announcing IPs via ARP on the LAN.
 
 All apps get their TLS certificates from **cert-manager** using Let's Encrypt (via Cloudflare DNS-01 challenge).
 

@@ -1,0 +1,21 @@
+---
+# --------------------
+# krusader
+#   - Project: https://krusader.org/
+# --------------------
+services:
+  krusader:
+    image: ghcr.io/binhex/arch-krusader:2.9
+    container_name: krusader
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - "8088:6080/tcp"
+    environment:
+      VNC_PASSWORD: "${VNC_PASSWORD}"
+      PUID: "99"
+      PGID: "100"
+      UMASK: "022"
+    volumes:
+      - "/mnt/cache/appdata/krusader:/config"
+      - "/mnt:/mnt"

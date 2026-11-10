@@ -10,7 +10,7 @@ All services run on the **k3s-cluster** (`monitoring` namespace).
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>monitoring</code></em>
 
-Dashboards and visualisation. Connects to Prometheus, Loki, and InfluxDB to provide unified monitoring views across the whole stack.
+Dashboards and visualisation. Connects to Prometheus and Loki to provide unified monitoring views across the whole stack.
 
 [:octicons-book-16: Documentation](https://grafana.com/docs/grafana/latest/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/monitoring/grafana/values.sops.yaml)
 

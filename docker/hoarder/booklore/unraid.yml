@@ -1,0 +1,29 @@
+# Optional per-service metadata for the DockerMan XML template that has no
+# equivalent in the compose spec (icon, WebUI link, category, per-field
+# descriptions, which env vars to mask as secrets in the GUI). Keyed by
+# compose service name.
+#
+# Migrated from the pre-existing DockerMan template (my-booklore.xml).
+booklore:
+  icon: https://raw.githubusercontent.com/JmzTaylor/unraid_templates/master/booklore.png
+  webui: "http://[IP]:[PORT:6060]"
+  ingress_host: booklore.local
+  category: "MediaServer:"
+  overview: |
+    BookLore is a self-hosted web app for organizing and managing your personal book collection. It provides an intuitive interface to browse, read, and track your
+    progress across PDFs and eBooks. With robust metadata management, multi-user support, and a sleek, modern UI, BookLore makes it easy to build and explore your
+    personal library.
+  registry: "https://ghcr.io/booklore-app/booklore"
+  project_url: "https://github.com/adityachandelgit/BookLore"
+  support_url: "https://forums.unraid.net/topic/190366-booklore-template-support-thread"
+  env_descriptions:
+    DATABASE_URL: "Database URL"
+    DATABASE_USERNAME: "Database Username"
+    DATABASE_PASSWORD: "Database Password"
+    CA_TS_FALLBACK_DIR: "Fallback container directory for tailscale state information - Added By Community Applications"
+  env_display:
+    CA_TS_FALLBACK_DIR: advanced
+  secret_env:
+    - DATABASE_URL
+    - DATABASE_PASSWORD
+    - DATABASE_USERNAME
