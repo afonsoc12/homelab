@@ -1,0 +1,153 @@
+# --------------------
+# WireGuard (wg-easy)
+#   - Repo:           https://github.com/wg-easy/wg-easy
+#   - Docs:           https://github.com/wg-easy/wg-easy
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+---
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+image:
+  repository: ghcr.io/wg-easy/wg-easy
+  tag: 15.5.0
+  pullPolicy: Always
+#   restartPolicy:
+command: {}
+args: {}
+ports:
+  - containerPort: 51821
+    name: ui
+    protocol: TCP
+    service: true
+  - containerPort: 51820
+    name: vpn
+    protocol: UDP
+    service: true
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+  type: LoadBalancer
+  annotations:
+    metallb.io/address-pool: ip-pool-lan-pt
+# configmap:
+#     mountEnv: true
+#     data:
+volumeMounts:
+  - mountPath: /etc/wireguard
+    name: config
+  - mountPath: /lib/modules
+    name: lib
+    readOnly: true
+volumes:
+  - name: config
+    mountPvc: "yes"
+  - name: lib
+    hostPath:
+      path: /lib/modules
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Mi
+ingress:
+  enabled: true
+  className: contour
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: wg.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: authentik-ingress-proxy
+            port: 9000
+
+livenessProbe:
+  tcpSocket:
+    port: 51821
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  tcpSocket:
+    port: 51821
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+startupProbe:
+  tcpSocket:
+    port: 51821
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 5
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 128Mi
+  requests:
+    cpu: 25m
+    memory: 64Mi
+podSecurityContext: {}
+# fsGroup: 2000
+securityContext:
+  privileged: true
+  capabilities:
+    add:
+      - NET_ADMIN
+      - SYS_MODULE
+nodeSelector:
+  kubernetes.io/hostname: k3s-m2
+tolerations: []
+affinity: {}
+
+secret:
+    mountEnv: true
+    stringData:
+        OAUTH_PROVIDERS: ENC[AES256_GCM,data:mPwE/A==,iv:OncNe58zIbiiwopMxsWVXYWkTOEYrgEf1TDRL3pRgqM=,tag:mb7PmzATNt2Ng0RQfNYiCw==,type:str]
+        OAUTH_AUTO_REGISTER: ENC[AES256_GCM,data:yWQp1yo=,iv:oYNKDzgOtJ0NE7998z/H8XkP7wWYcGYCBldryGj4zWE=,tag:DSCTeWtOaE2u30TUNg98XA==,type:str]
+        DISABLE_PASSWORD_AUTH: ENC[AES256_GCM,data:UEyeC5k=,iv:QqwBuFKwM/+C0sk7XGex2+NevsDRC6EVqRhPpkUghiU=,tag:E9bGghDbeK4KJHQ7xoAukQ==,type:str]
+        OAUTH_OIDC_NAME: ENC[AES256_GCM,data:eiZ939BeJYP9,iv:TP3E14a1sA7A0toyWZoqS/YwtkpEfMhRxJxWrPXz5uc=,tag:hvhxld/EjjV9Ke91uHk7QA==,type:str]
+        OAUTH_OIDC_CLIENT_ID: ENC[AES256_GCM,data:ytXRP6y1BMGX,iv:zhLmBvXTLjSrs2c/OOYyB+1QJVGcZiAbNIQ/r8yh3t0=,tag:d6dmhJuiAQvc2n/cCHD7Ow==,type:str]
+        OAUTH_OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:ou3/mXjR3OBywrSWIz1iusN2i+zOpMoChblXyU4GTNO7iseBTr41QFvN/UIsGKY+Fc8DSfv6FxkKLaFrZOh7iQ==,iv:l/GcMyifkfTOvIr2953gxHQqc9VICh6MimM56uXKkNw=,tag:nkZGxD3x+nw18iOKqRzAAw==,type:str]
+        OAUTH_OIDC_SERVER: ENC[AES256_GCM,data:sPgdb3YFGrVRyscmyJ6uq+8JsmGh3k/1Z0nGYNTRWHj2nxeQGuyC/+jdALL2UeTpuQU=,iv:9/6RnFT50jNjwGreVBec6dzw2rKH5PRig9WFCdzhCoA=,tag:eGcfMkCXOzhS6/RieMXGIg==,type:str]
+sops:
+    encrypted_regex: ^(stringData)$
+    lastmodified: "2026-11-10T01:03:50Z"
+    mac: ENC[AES256_GCM,data:/THvoSh0MJANjFfh9UDiMT++LlvPLubF2TLsX0IW9mwgyJYJxi/PLvljCUkaBeArMU8JAcCz3EjT4bxzx0emKN9LU5ZzQdIlCnzwHQSvybEboeT9RY6OvrWlSJ157pUe4m/C1QP7M7A0GVDUFJL6L83eXiYZZLAZi8E2jOzZ2wE=,iv:OK4Q2X8xkNiN1aq2yAsirY3rfVCD2QlWnXYFQphAz3k=,tag:9e6KZ8SqLwwp8448B/LQjA==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-11-10T01:03:50Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/+IsCrOJVvq3EOmsBSyycH/U+sy9IISr9RMWWqxQm0u4yR
+            kpYKIfTs7kVXfNC+1vfPjiBHYZkmW4c8LyBHiTn7ob8IvmfNV74kPaehsELasHv7
+            dmsHPEXNbXgofxz14YGmRfhqG3xIGcDHTa8DKV7gKe2yRzbjhaMZ2xxJwzezPxvc
+            3MCo9RXpmKBs2uvF8FPNSwJJjiF1UrgPR7wTeoEfMLWyx88wr5psmzog4erdf6G9
+            rWzYuL3H64NTWj5KUwAx30q+CuQ/fOqUAqFxYP+sg0AKrhZS62R1/B15gcbBP7zy
+            kVcmbmuOtdszJaBys0WhBVTEXP0BOSVym0JqBpM3zTwzzmGqNxyhLpFmQz156TyA
+            /YLYofPc+zvVoD2FfW7ukTX4ijJSAW3jg8k/bK7a0ck5gMSnOs5vy0Xghqhm5T3Z
+            nRW/VE/rTDQZ6AlxL4nBfg8LvixQzPBNU1Fvbdl5WHdnLQpycSIaTrBstbAy+G6J
+            YGdskyEXoV81jyYeFKfd47kX8jDWP/7rBr90kY/2dbgRKghkW+bMbcVBVTLXz1Gt
+            FFizXozxwu2GRuZQ8o98fde4uzCQKmDD//IYV5J5941GbR6PTgms5aWLnLk7CvGK
+            QBMFeAG5n+veceOVOA68DePkjjn/MHUAQT8RuLRizGQzJsJ1I99m7bkn460P/NXU
+            aAEJAhBY5QcSKV1FjBoXIUweCRpwv1KkcUZuBbkmM4tY7JtOVwGndELBh7c2qYiL
+            R3vhMfRdvIz3YEwrhXluaFNCBS3sD0uzKt7b08B2SdUeE41zblmDvmdAZsIRSTyV
+            4q/FdjP+mb7L
+            =wA12
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2
