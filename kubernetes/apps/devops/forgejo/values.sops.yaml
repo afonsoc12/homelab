@@ -1,8 +1,8 @@
 gitea:
     admin:
-        username: ENC[AES256_GCM,data:aaojU63FBZQg,iv:oSre2GhtUQLnGiTOG/Adz7HtTBU30mGzlgVbUYZI+Yw=,tag:7NhU6kdfyLhMlDigdedrgA==,type:str]
-        password: ENC[AES256_GCM,data:Bof6EF6p0Tt63vG7Lw55+Ok8MZpGFHnshuiGoQ==,iv:s99jdujp0PzJCgTLMSPBnvxHIOWv1W8ECc5m0dJYFXA=,tag:A5XQzQp8fYN+UZ+Pf/wqYQ==,type:str]
-        email: ENC[AES256_GCM,data:I4b6NDRYwGagj7VSylZK+e6e5bTQfMWtnx2SKdw=,iv:cZpooW6I8nHSybdB4AWOO9wISacytF+lUps0jdronus=,tag:KL7IJW7HWQ5MvyU1cR3IxQ==,type:str]
+        username: ENC[AES256_GCM,data:itGUzsGFA3gB,iv:ZweFimzXXmlDOg4/kLa8zjikzYhMFmo/o9ZoVihhmgk=,tag:jLPE9fofowHZ1mirmZG2hw==,type:str]
+        password: ENC[AES256_GCM,data:C6p6/2Tstyk4W/jZH0uRCt/kwC3Rhj+NvIISzg==,iv:DcqlDjC8vQG8TjxORplKY5KztYmV+fDjaKSRfEdfn2A=,tag:xEAizcS83qwWhaV/O5PU3w==,type:str]
+        email: ENC[AES256_GCM,data:iCck2V9WZmcFUiHGo3kqIuUSdMgkPg+TUh4Lh/I=,iv:c20QP65IKs//6lgO1Y4gdI5ZU9PtFTJlyLI+om1Y8yg=,tag:vm17HlTRJwrRS2sbV51w7Q==,type:str]
         passwordMode: keepUpdated
     metrics:
         enabled: false
@@ -10,8 +10,8 @@ gitea:
         APP_NAME: Forgejo
         RUN_MODE: prod
         server:
-            DOMAIN: ENC[AES256_GCM,data:lALxSRmK5a0zPApSWvYjGE47pTzp5AE=,iv:EDKdgYubSo/pLzI+Sp1r0VJ2OHRn+Cyih56KYjG9N7g=,tag:p2oliB1fnxTRJ95V56W2jw==,type:str]
-            ROOT_URL: ENC[AES256_GCM,data:239kTAdXa6NtxhKOMVZbZS0UH5tXTTKcW6dPBr56PQU=,iv:rTjBxehFysE4SGUV+t0VXCt3X2BDuh/aHEKy/lBC6Rg=,tag:tuXGa0y2YGl4eCPTaHVTOg==,type:str]
+            DOMAIN: ENC[AES256_GCM,data:3cFWJa65xZSZdn3+F34jZOEODJTDrWo=,iv:w/D4IhcZK4Cft0aVp4/smW1nntj3I4IBie35nMWn08M=,tag:7VeJDFx65PsmlxCn0SmsdA==,type:str]
+            ROOT_URL: ENC[AES256_GCM,data:DQAS36BFIMF3f3y59+wWrNGJ9/xM+wDYynGEKQ3wDd4=,iv:jJIkUI2L1V+Q62bBmFso2S92X9XafzPGJmGm1RZgIis=,tag:nLibyZZiTxJsLV/RSPTXNQ==,type:str]
             SSH_PORT: 22
             SSH_LISTEN_PORT: 2222
         database:
@@ -19,29 +19,38 @@ gitea:
             HOST: postgres.databases.svc.cluster.local:5432
             NAME: forgejo
             USER: forgejo
-            PASSWD: ENC[AES256_GCM,data:bI8VX1pzSZ6PUnhg3305690C4Ns=,iv:lpFfVqLZtxuz4euNlm94swmUN6+wh3l9m210cu/Xwp8=,tag:0KvXVkXKO1jXKHohJHUw8g==,type:str]
+            PASSWD: ENC[AES256_GCM,data:Cy3YcymS2Tw5ssHfHcZrtjUGy6s=,iv:1z0aiWVNjPkXy771uhOEdmSmq6f05S+/iJYx/D8Bigs=,tag:LdiU95jE0G5ao5o/BevqpQ==,type:str]
         actions:
             ENABLED: true
             DEFAULT_ACTIONS_URL: github
+        oauth2_client:
+            ENABLE_AUTO_REGISTRATION: false
+            ACCOUNT_LINKING: login
+    oauth:
+        - name: authentik
+          provider: openidConnect
+          key: ENC[AES256_GCM,data:YV/GAX8bvA==,iv:+DR/NElxygVXk24wZ73Q0KQke1t9mP9CNr/1Cbr06UQ=,tag:7CC/lV93zBugpZynz2beSg==,type:str]
+          secret: ENC[AES256_GCM,data:TkvKJEEpD9oNxRkEl7Fq0E5rAwsmrGnI9JkFdYWLf59dhz05OUrD4EG4Dh3X2+eYEj9yABB2XhWaxDAXEdusKg==,iv:+NeS5ZmrwdX0T3aF8YW6NYF8W7HWJvTzrQZ9eP4tnNg=,tag:TIXbtoYzeXd4L/kbC4WVKA==,type:str]
+          autoDiscoverUrl: ENC[AES256_GCM,data:K/S4G/1WrkEpWuRzi/fVknrift2quSNowEHGWhUynJJ8y69cpIxO0UU55D9FqYyx/uRW3Wi6UV7i7JbFQtuigXxbJvRJTBDScq1XYkWJHXU=,iv:Z5frlOOL2oG48oWcKcRSF8EWrugeKzTMXoB+a5lBQH8=,tag:+h0EeyKrM6HDSt1JoSFnhg==,type:str]
+          scopes: email profile
 persistence:
     enabled: true
     size: 10Gi
 ingress:
-  enabled: true
-  className: contour
-  annotations:
-    ingress.kubernetes.io/force-ssl-redirect: 'true'
-  hosts:
-    - host: ENC[AES256_GCM,data:Tnb1PmaAfzcsjHYpKUGmeBRXg3+tURE=,iv:JFoi9vOT4AzBoqztQCgxHz50a+P00znYSN0H4PVB9S8=,tag:b4h9R5oiL4Kb6qSV4+vmaw==,type:str]
-      paths:
-        - path: /
-          pathType: Prefix
-          port: http
-  tls:
-    - secretName: local-wildcard-cert
-      hosts:
-        - '{{ (first .Values.ingress.hosts).host }}'
-
+    enabled: true
+    className: contour
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+    hosts:
+        - host: ENC[AES256_GCM,data:EXNRuHMw40iHl627auiUt86UGdGXOWU=,iv:UnU6Q6tv3ja/lOS/JT5gfjhedVTqA/SIzxXmawInSUg=,tag:E7yg+RcAF1mzbjsjdj5mzg==,type:str]
+          paths:
+            - path: /
+              pathType: Prefix
+              port: http
+    tls:
+        - secretName: local-wildcard-cert
+          hosts:
+            - '{{ (first .Values.ingress.hosts).host }}'
 resources:
     requests:
         cpu: 100m
@@ -50,30 +59,30 @@ resources:
         cpu: 1000m
         memory: 1Gi
 sops:
-    encrypted_regex: ^(password|PASSWD|DOMAIN|ROOT_URL|host|username|email)$
-    lastmodified: "2026-10-20T20:56:35Z"
-    mac: ENC[AES256_GCM,data:tSWyBIlm+UUmt2xGRiWyMqjMhn2My041K9mW+iX3Fs4560kVjQmqoRqyZbswNNNlPrmLVW1WxOMQ/0+shfyKMXrItZ8KgDObWsOjP2bIisMGqiEw7qJDnLJiMtBt9C16qY3qtqS7Acg5Ow/bASI2khlsZqbPzon8raLpUzIiDWw=,iv:i16bOQQDRMDUdYwnNyDF2j4gjrxllbm8/daqt0SYf0Q=,tag:DFPfG/uTb/Yc2PTAQdCing==,type:str]
+    encrypted_regex: ^(password|PASSWD|DOMAIN|ROOT_URL|host|username|email|key|secret|autoDiscoverUrl)$
+    lastmodified: "2026-11-10T01:03:50Z"
+    mac: ENC[AES256_GCM,data:4J2qLNKPhPid9nSfBWXGeGPxy3ltIJzH8MDr9koIQFsuC5EQ69hnb1HeZO/BJvb4tiU/hxhxliMs5B9L8mkCzXjJeAnUXVPIGkWDK5dRJohUYZT27rr5hMpeGT6AeB8FNV7yR8wNtML/rXKQvQCWNE1P9bNUkc/RBmxaomMCNHg=,iv:VcVNI+NomRcw8lmBJWdzVl2rOHEYjMkUqrZToYQtHu0=,tag:dZxSRLqq/dbOpzPMsNfeJA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-18T21:27:56Z"
+        - created_at: "2026-11-10T01:03:50Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//RnRcA6ykzKyTg6LJnH8DgtEg2EjcvsdUr0rVlIKSoMjC
-            QHxjrncP+eA529sv5oIU5vhabC4G4we8W/5eg7V2qqomFTexV1g4bI+feVZqB739
-            a0GDNpHeGHkHM2JYd6jxHWV28DNUdEyU7Z729/1ONGApiLI2Rzi4/dDBBWWDwpM/
-            Rh2RjHthxH2JHV1iUseqMVm3JtsVGL3sS5ztbrxKeZIui/+LluU6DD0y+XI57RPF
-            McpnSwfDtpjVMr9PrrgILSiuT/Kg8H/joe4FlL6/tK9QYpD4dFsKDnzwfCHLboBu
-            553Bm7ZcB90n3459SeFqZBKQo9XOsP35qhBCjJU9eqn/my2/wVCzyXw40aCaoo9T
-            4RuSlSQ1gRZLsLrPuJTV+PGzf9P8zcq8gWNBCOeoLucpNvBRNsZ9ek11tpBZLuLu
-            BJSDE57wLDIqIA14Elj+vRDYNmFoa28x/h0XHL1w73Pt6Q43CsrPrzxuTTQKMHP5
-            TYv9QfvDfIeU+zxl5iwcBFEe4FXhx2UJdoQT3ImVkU2l/jMyYCTgghhGvz6M2hM2
-            KfpyzSY7WGED1QCWi1cACDld8UeBe97BHSheSnTwthLWXyrcizUsOn4ZHv1HeogT
-            LEQqST4mZhg3Q3fU0xymmhsAMZwrLlYtYDmNM4xet7EJdfcm5N2zvdnwJXI8VyLU
-            ZgEJAhALxEI6Km72nNiFbkRRnxZSaebqpoO/zItIXiknG9m2/Kd7eUexqMIl6/pa
-            zfoSBwmiztyguW5xE2GDXRbsJe6CbKpZ/uye6eTknnolkgvceGTURBsAUZ3XA9V/
-            ZZ449XGmIA==
-            =iAmb
+            hQIMA5NT/LvuRqeGAQ/8CBXCjEdfkO3pSw3mlsC3+ilhL+o1UtVXs9ACf7KHrGk8
+            I+LDFFtRbDBAFYKrpkFRl7V9j0DZTbvgNyI08B/obt8FO0EO58PKN2Gy59mn0ZmP
+            DuZTMvo3KFusjPEtCGBzNNQ2sSGuG9mBkNWKlpmB8XROhLsaN7be0T/76gaBktAd
+            TSg8l7LovfHfVeBSNsGk5Oxs2i0bmaAHG9UEtoy9YBRgfmD9JShaaeluzx9FzCrm
+            9W381QR7J9RTI3tNtvZ5BExLmAYqfuvqqLsaL94RCHn6OsvOxhY+8Uy1KN1Bz90v
+            SK7mHUO++OZ5NDioelHlDEs7FLNlhcKieXv87pcfr0mAHTjQU7+dKW05ypgJSqb2
+            rMTL9ugHf846e7Oz83v+QeC5ICCOunxmrBZpF4Ob2fY+vfDXQ0S+ewjYCSY9gUN+
+            8MeXhlP9tAKjra03pxlOrtrJGBnV3e892cusHY1+AS6e22XWhqMjEHcrHQgeGp3q
+            UJt5jX04ECMTIj3446P7swdJw/P5YXB8I3jkBc0bgO0pU1KhwBwW/hsAW3C0e9Aa
+            Iw9/h54fXdQMlQyAUZSr55WJATsJhJUGw5ocPd6phulNE+vbm3G033uMlIw579LS
+            x8xcJ3Z00xup/6gLkGOt4HiX53N3cD8jGuzL1xseqJT9aQLdOLR79qQEVYe6MOvU
+            aAEJAhCnWME/STsekPydG5nGMWDqxqHXAwTQ9tWNpQIUK7pSvGaDHMG/mUE90G+l
+            fGKDfuguqA4DUxawcUTNKdZWdvJBTXssQmlhelKpPVccXpFrIlPsOWQbylsu33QG
+            LjG/MlB82KiN
+            =MZcw
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2

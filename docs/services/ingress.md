@@ -45,7 +45,7 @@ Cloudflare Tunnel daemon. Establishes an outbound-only connection from the clust
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>ingress</code></em>
 
-VPN server. Provides direct, encrypted network-level access to the cluster for trusted devices.
+VPN server. Provides direct, encrypted network-level access to the cluster for trusted devices. Its management interface supports native OpenID Connect single sign-on.
 
 [:octicons-book-16: Documentation](https://www.wireguard.com/quickstart/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/wireguard/values.yaml)
 
