@@ -47,7 +47,7 @@ Cloudflare Tunnel daemon. Establishes an outbound-only connection from the clust
 
 VPN server. Provides direct, encrypted network-level access to the cluster for trusted devices. Its management interface supports native OpenID Connect single sign-on.
 
-[:octicons-book-16: Documentation](https://www.wireguard.com/quickstart/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/wireguard/values.yaml)
+[:octicons-book-16: Documentation](https://www.wireguard.com/quickstart/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/wireguard/values.sops.yaml)
 
 ---
 
