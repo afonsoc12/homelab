@@ -44,6 +44,7 @@ grafana.ini:
     auth:
         signout_redirect_url: https://sso.{{ .Values.domain }}/application/o/grafana/end-session/
         disable_login_form: true
+        oauth_allow_insecure_email_lookup: false
     auth.anonymous:
         enabled: false
     auth.proxy:
