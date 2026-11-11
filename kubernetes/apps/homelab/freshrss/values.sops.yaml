@@ -71,7 +71,9 @@ oidc:
         repository: ENC[AES256_GCM,data:zvNizwxCFXvfWUOhYDU+vxtFPdW3i2nHkoM=,iv:loA9OSMxRAvLt+O2pKuwzREHXx2cqgn/V++89GNcK1A=,tag:l7WyD2Ut36B0bElrIStHLg==,type:str]
         tag: ENC[AES256_GCM,data:WwxcG/RiJ3MW3LR6,iv:zxMGMykz+bEhhMQcLr+Jck+HbrgqN+HKLkrPAgpa4NU=,tag:YKNMqopcA9KZJh1V5VaqAQ==,type:str]
     redirect_url: ENC[AES256_GCM,data:0XLg2wYcLjOfDVp9DoR5MELeuBljCILrVqTGAqERxP3OKyz4nQ==,iv:YeLIxCT7CQIrEHK0LdNMQ5WFR0zoMmHKhKjs0zECeG0=,tag:rrHUkuNSCCFXHlV3v8YLHQ==,type:str]
-    verified_accounts: {}
+    verified_accounts:
+        "4":
+            username: ENC[AES256_GCM,data:sNXRi4WY,iv:jedpd0uhw/+fEYoQnr6KLOMt02gmR2mXcs2DLBFEyFY=,tag:xxGgfkY/gWzhV2rOVIFdRw==,type:str]
     env:
         OIDC_ENABLED: ENC[AES256_GCM,data:Jg==,iv:u12HYNsuUEThStJtYL905eTMKsyGKzBBzBrcD2jV5v0=,tag:GrucEYJ3oVdjhm67ZDFdlQ==,type:str]
         OIDC_PROVIDER_METADATA_URL: ENC[AES256_GCM,data:sprEdynJF15px3oIO8YAmOxkxhpJrZxZpHin9OSqHZ6oTBr/nuuvzZMKWnr/yKKatqcUHaABlME6aQ6bb52aZnMikolZlw4mzlAEkvr12U5n,iv:8PiUyiqyb5e1xgZXqK6Vqs/Ci2Uur2rNGu8hhmXSFsQ=,tag:QRM5VNF7vSWmVbygR+PnDA==,type:str]
@@ -85,7 +87,7 @@ oidc:
         CRON_MIN: ENC[AES256_GCM,data:q0KMyg==,iv:FLAOSgdy/w1GRhgZ/GmXTlt3EXuP9hJ9UxUOkJRdlAE=,tag:rZHszqV8PLuu/MfLWWofjA==,type:str]
         TRUSTED_PROXY: ENC[AES256_GCM,data:gw==,iv:/JWkFy6N3n/Q1KcqTaNyY/EMNIzIZTeXhMpVMfW78sU=,tag:rvA8h+HTTJUIQRiw86lDIw==,type:str]
     volume_mounts:
-        - name: ENC[AES256_GCM,data:g86q6YjQ,iv:W0wm9dW1eqmVLLJ3YVOxEh7PejsQ8E45uAy4uPckaYQ=,tag:zcmq/9SwBMGAuRwhCEMGkw==,type:str]
+        - name: ENC[AES256_GCM,data:hOVyqh1n,iv:b4GlvuSvMaCPrvE3LZR29NnB+trj15+p6IPPqk7RVKg=,tag:nAMaDFOMqJLTZsoB5z9mPQ==,type:str]
           mountPath: ENC[AES256_GCM,data:OZZdHJ0Deg==,iv:TsFhI5YaoHEtZj3Xsg2l9yq34Z7UGFrOTW6jPhwhIc8=,tag:Z23ecibhOwYYnnQxgcX5Ew==,type:str]
         - name: ENC[AES256_GCM,data:hOVyqh1n,iv:b4GlvuSvMaCPrvE3LZR29NnB+trj15+p6IPPqk7RVKg=,tag:nAMaDFOMqJLTZsoB5z9mPQ==,type:str]
           mountPath: ENC[AES256_GCM,data:PnJynrQmvs+zX3H2riCH29Z0xhA1HimH2gq2Uw==,iv:qZZl3hYpj3FeSEe2gU2MzFyQsmTR7fEAxeVP9k/DrWI=,tag:AJB8Z5U9NvUpt1fWjBH7Nw==,type:str]
@@ -97,8 +99,8 @@ oidc:
         allow_anonymous_refresh: ENC[AES256_GCM,data:qN1QMyo=,iv:HD7aTNyswprpSBSe8mhyFrCoO1h4wkaljsFG5y5RNoQ=,tag:Zvj10f+JkSJlUBjeC34DVw==,type:bool]
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP|oidc)$
-    lastmodified: "2026-11-11T12:21:55Z"
-    mac: ENC[AES256_GCM,data:6Gn1saQobtDc0Wgu1QkXj2jE5PvWpw6o85ZDQOp4IDlZWT9UK5EVEcgOradKeXbDZXJSF9li0sMvTNsxFCEOK+6FyTUZE3b6UoYvXbUMcPBzbK90nbc7kGav12F6aPPrEn3pFcad9pTxl8gMWfSH1D3roiJpzMBBpfEUpEQPHVY=,iv:ZagPJO+cyJpydMhNQC6JS2AxgVZFnyxkYiemwp2Dc6I=,tag:TR4ge5aJkQa9Nkaig6J7Xw==,type:str]
+    lastmodified: "2026-11-11T21:37:44Z"
+    mac: ENC[AES256_GCM,data:tapuyQuhATO9uR54yYATBggtL4CTZMNlHWmZtXW6NAkj1cCggvVY9kQ8PVxTzl3NHTwr8XFHSWo13m0HLO+iZJU1N+0+uJhz5Eo+NUU9zDwuWTFyO5NdNIrlwxKwISDfTG8xMrSa2sM6NfNl5A7nwzfU3a07dYONx2FTHGrDmwI=,iv:7kIZ/rpRu8v3PVo0wWkZQ24rXiMFSbjDlHg1B/j3nFg=,tag:h/2wuv5/jVYwnjGUUIZJjw==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-11-11T12:21:55Z"
