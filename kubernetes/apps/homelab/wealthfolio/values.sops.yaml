@@ -1,10 +1,3 @@
-# --------------------
-# Wealthfolio
-#   - Repo:           https://github.com/afadil/wealthfolio
-#   - Docs:           https://wealthfolio.app/docs/self-hosting/
-#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
-#   - Notes:          SQLite-only (no Postgres). DB persisted on a Longhorn PVC at /data.
-# --------------------
 replicas: 1
 revisionHistoryLimit: 0
 enableServiceLinks: false
@@ -26,8 +19,8 @@ service:
 secret:
     mountEnv: true
     stringData:
-        WF_SECRET_KEY: ENC[AES256_GCM,data:uOuiZUZcor+QSVEGHrCnw+rkCg8caOISyMtfoBm5/LcDohHh2maDZT2Wet8=,iv:3UFMJxynCtfPkrWlBAewOSZ9Yanjf81YfKDzniDNU2A=,tag:iVuSVW3PGgLk79mvmkLiEQ==,type:str]
-        WF_AUTH_PASSWORD_HASH: ENC[AES256_GCM,data:9WRKecmvaIEYCQn/zdAjvM1l7fQw8Pv11ZqH2FITRcYu6M/n4Z1P8efXKg/wdC9FOj/qHmSxxcdalutjK2/k9TysVaSussD40QEbEo1MLM+/kqBNJd2JAS9vcN9fAqe2AQ==,iv:bxIsNNYjrg0/AE4blfDh3Yekpa7FtWst0DEP7nVJyDc=,tag:5Eijakcl3P/znMQwEWXJBA==,type:str]
+        WF_SECRET_KEY: ENC[AES256_GCM,data:bhBrYE1tTU8lqatjs2ApNyp8BwJ1PAZEEj/XIl7sN72+yEm6s0rqrRPB6ek=,iv:KY3qXgJFsLOV52yWyXCFC1jXv9Rqs/inByUCgGX+2cQ=,tag:SRhNayfS/vrbyfExhfR6NA==,type:str]
+        WF_AUTH_PASSWORD_HASH: ENC[AES256_GCM,data:9RfpDHS7BnY6zkXKl/1GaTRKfD1V59DQIlDEdFRe3rh+N3cxyASjp8y2AkELIGDqoKk0bWyFFCYfWsxinirPyUoie/iVAtSnCwdOVLj4Kkr+upZ1svmY49Bw2uXaJuq1cQ==,iv:L6VJCwn1mSZNUonP0JHfZYSLBGcejeADMswgrIJNUZM=,tag:Mm2iIgddCpY5O8k+FXli2g==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -49,22 +42,21 @@ pvc:
         requests:
             storage: 2Gi
 ingress:
-  enabled: true
-  className: contour
-  tls:
-    - secretName: local-wildcard-cert
-  hosts:
-    - host: wealth.local.{{ .Values.domain }}
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: authentik-homelab-proxy
-            port: 9000
-  annotations:
-    ingress.kubernetes.io/force-ssl-redirect: 'true'
-    projectcontour.io/response-timeout: 60s
-
+    enabled: true
+    className: contour
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: wealth.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: authentik-homelab-proxy
+                port: 9000
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/response-timeout: 60s
 livenessProbe:
     httpGet:
         path: /api/v1/healthz
@@ -109,31 +101,37 @@ securityContext:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+oidc:
+    issuer_url: ENC[AES256_GCM,data:Qknvef39NZaS/FgAEb3qhld3IrpjmovZM0nBf+LqGfZ56TjYUCBGzKftuDD+cI+m7kAByw==,iv:CH3oLJwLtUpt6ac5YF2O5o1gIGIQ06tKF8C4QKRtSFg=,tag:/uyEuSygHd7LFsRVJTFPhw==,type:str]
+    client_id: ENC[AES256_GCM,data:vA6TgraSludpKrc=,iv:gg0W24zVjs0C9c6yYS0kn2zHxX+rifYxschegzM4Utw=,tag:s4ys3Y8fVwuxF5jXOn0kVg==,type:str]
+    client_secret: ENC[AES256_GCM,data:kaqlt/uQUiTWHGzA9GU9X8zVpRBxhW0chXBWG+It7JvEZo5FLWjYJQEV2AcKndyrmAA4IjlZywUIhT4p+wpmtg==,iv:g1ylNpwe4aqSTvaQcVCLMtmCWBVYwHS+yFgI1YnMPL0=,tag:1u+W+PBSLSpMAVfxvTdmcg==,type:str]
+    redirect_url: ENC[AES256_GCM,data:CHiw6UTZfT0tPbQUAna8DSfSWxN5ThuCHJgxggwmEeIGSNj8HOjsNYjg1Cgr7JgmwTkp67QFtSKyI8Ru,iv:f4u2881Z9Bvm/cIT6CuMz7uqdR6sH6iF6e9KU+ipQCs=,tag:w2oQgw+IHjpGyrX4R42asA==,type:str]
+    allowed_subs: []
 sops:
-    encrypted_regex: ^(stringData|loadBalancerIP)$
-    lastmodified: "2026-06-29T20:57:01Z"
-    mac: ENC[AES256_GCM,data:8c1CsFVM3St8zzOKSh2Mg+EPthkulZtBuUftHQmg8xjfXOc25j5wL1yosqpytsl4q5DvzxoiEv7ZF1heZlJ3V8XMYpdYMFpw+br8hHuKG4M7RFAf3xlbLgPfaRX8lK1b1yOu7D9XCTR5obJksS6GaRPVKC7StlQsjxXPvXtDfiU=,iv:ea/7rbi+RScKg1MQmlU4EBhEVubB8Cef5fhvF0LHJaM=,tag:0qXZaweJ3TYMeUTbRkmF3g==,type:str]
+    encrypted_regex: ^(stringData|loadBalancerIP|oidc)$
+    lastmodified: "2026-11-11T11:27:09Z"
+    mac: ENC[AES256_GCM,data:QRmol/MljU+xbDoqFN9A8m6P1D4N0cH9Dtavr0iI8uERm7NdFRCgem4Prj9IKQIB3ADhY8b9VyDeOV0aAl3w6D2L45hYxTp692xXOpt0dVh00QFVb95u/i90jNoJwMDHLjaH7xj//zm3lXrGoazhpafg0klUkw+Lim9bM1De3v4=,iv:CuL5OVWugfWxBeFIjH/XJwVj9qrG15ur17T7Sk5Ja6U=,tag:vBGYFhy8IKzfIqNwUytNoA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-06-29T20:57:01Z"
+        - created_at: "2026-11-11T11:27:09Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/7BEQb10BOMOK5u1xLN6m9rowaAK/uD4Yt/DfwxrICqzSK
-            QCEbG3igii5N/o4BY88c83MiwKzBHX6UQuldP2xIlqT4QO+a3bfjyfIuVWohyoJx
-            fjHVtX3ITzWVEpe/dDaKlKbE/wQY0our/TsnUPGB5NKPmoC/YcimuYa8aAK5psRt
-            1zil3FHEXKsrqIT3sCNvpP6afvsfrtit77hfzXzjnHI/UJ6C8/n6VQWVRZ+fr+m7
-            tT8Ef40TuduutQ409QRlqhdXRI3Gp+h9mjHczEOIFpXFVacRX46SBD/AJojd2/CR
-            znWAWEtwrq+402B+SHKo/JhhveYZTOlwvQIXN7Okwpgu+w08xn6ZsPs4whdG9aEb
-            6FQ3mGp4K4y1/XfhFZy/bZX/YXe/4+oneMX69YbF6ey1WyMTbHcG1n+1uTH2dAaR
-            BMf2pl7h1dqMb1Qr0nMNL0k9ctqO620kbmbB00sAHfeKyEAt7A1s/ae/Vi8/P3C8
-            0fk/zrQEYq/iiMt94HBf2jdvbpQALSMHRyFlp4EJIHtnhvVDdXDscjrrPc2PfnPy
-            cO6c45q12+1HG9TABDtVixpGRTz9XPHNVG8F4jd/0lzdT3w1lSrYKt3K6oPmDuFN
-            eXjVKLsCFx+FOK+xXh+yUGn4WD7BqSI+nwtYJWMY3QYEhyInafR3XjwMQ07XiDXU
-            ZgEJAhA42pt3PvsFwLWfL0t6GS+Pe5ZzLB60GtoVLGfWm9m064ZEgggXmeiJtCRP
-            Pv1EmXN8ylttffHBFVRXz3xPNvFBH8+hctb5R5VxzO69KkO0jV0SGI6fwuLfnsI+
-            /6+O6P/Krg==
-            =SGXY
+            hQIMA5NT/LvuRqeGAQ/8DRZEFksSS4Ja+Rtpf7t2gADJACVJKdP35V+NeOubTCip
+            bv265W1KzwMXwr2udqAgn6Rqro4II9XYzf2jbdPlLNVuBUMZKkm1wXZjcWKUxmFU
+            dHVcBO51IM0sSIKwMbiTPINj9XhZZRanqRKoRlGk3eBclJB7p8ce4IIQ5PpGAN33
+            V1Zkg+ftkjqCZs4LGneBdw04xMKxhAaD/G6v1rwhfCyiC23n4+qm+DqCUpnpocW7
+            vzRkopwJMotKkmiBB2GzS2NcbEAUQgv9d7P0pO/6qIYWHFLxKgWt9Z0o49QVfKn0
+            JuVrjMPYYdDHTnR70+NEYhBa4EjJ2feye+ej0RBTvn9g8E+srjdj9MDjm/Azto9S
+            nWhu4eQJUm4dRc7+k7LLfr+8hnXfLkQL2Lny/jwbGH5Ojyq5Bm4WzHEKFqDsxP4q
+            AtCz3R/GaeXr95YRlCTc1TPaDpENzWRPJtCEOzhoL/VzA6vMBdIhul+5U9phKdfz
+            fD2YMfWehsU+7phyHVYLoz5v398sLZbkYqcqPng0rUy1GZTc54BPAg6RElVC2GqL
+            yuk3KUXTpM2jd3TFo3yDCB6v+sa7MJHYMvvGjFWmOvFpv86ChMnfzIVO1408eBAk
+            ZfvNqcBQQ4XyVCyCyVoQKRH24XflcOcJT1lVVMbop4ZCxPqzlM7Eb/3oqyoeadXU
+            aAEJAhCfCEu4UuAO4LRwIHn0O+9CmoB/PwtEC70hoYEUjdt83Dp4XGYRhf5S8R5E
+            aPGDxKZxxS8OXDbHhknsMOR8NGAqMt1eAGf3KPJK9QLABHn7/4zYOh+IO0oQbuMb
+            Km7z8ZEqLK5l
+            =uzwD
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    version: 3.13.1
+    version: 3.13.2
