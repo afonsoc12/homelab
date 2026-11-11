@@ -1,0 +1,115 @@
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+    type: Recreate
+image:
+    repository: ghcr.io/afonsoc12/node-red-oidc
+    tag: 5.0.9-oidc.1
+    pullPolicy: Always
+hostNetwork: true
+ports:
+    - containerPort: 1880
+      name: http
+      protocol: TCP
+      service: true
+service:
+    enabled: true
+volumeMounts:
+    - name: data
+      mountPath: /data
+volumes:
+    - name: data
+      mountPvc: true
+pvc:
+    storageClassName: longhorn-persistent
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 500Mi
+ingress:
+    enabled: true
+    className: contour
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: node-red.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: authentik-automation-proxy
+                port: 9000
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/response-timeout: 60s
+        projectcontour.io/websocket-routes: /
+podSecurityContext:
+    fsGroup: 1000
+nodeSelector:
+    kubernetes.io/hostname: k3s-m1
+tolerations: []
+affinity: {}
+resources:
+    limits:
+        cpu: 500m
+        memory: 192Mi
+    requests:
+        cpu: 50m
+        memory: 96Mi
+livenessProbe:
+    tcpSocket:
+        port: 1880
+        host: 127.0.0.1
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 5
+readinessProbe:
+    httpGet:
+        path: /
+        host: 127.0.0.1
+        port: 1880
+    periodSeconds: 10
+    failureThreshold: 3
+    timeoutSeconds: 30
+startupProbe:
+    httpGet:
+        path: /
+        host: 127.0.0.1
+        port: 1880
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 18
+    timeoutSeconds: 30
+secret:
+    mountEnv: true
+    stringData:
+        NODE_RED_OIDC_CONFIG: ENC[AES256_GCM,data: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,iv:Sdk9HpxN1kmDK4PTLrz3qL6z41IxfJ41hEeSCKuBzTE=,tag:4YYIss2kjTG4hTCmf81KLg==,type:str]
+sops:
+    encrypted_regex: ^(stringData)$
+    lastmodified: "2026-11-11T12:15:55Z"
+    mac: ENC[AES256_GCM,data:v770+hJCqRxmN6aTKFwop1dHNAyYBswXnEvNmJ8rcHqvEtPF/7f8NTkqh4OzZ1cwydXTEyY2V2dPNq9rgT4ag7d9vpSckBUb8OnTyai0cYPRXa3ic6WTIaNz/4e7lbLSHfyJNT5sfLrNo/PuQuM0f/E3oOJPcPLkAOUTL1zGT1I=,iv:O8XGbWIYCMz8m7JSDlcn5hHirQjQfCjYlR1z6Ezr1ic=,tag:vUyLtEEoJ3PNXxayH0twfg==,type:str]
+    mac_only_encrypted: true
+    pgp:
+        - created_at: "2026-11-11T12:15:55Z"
+          enc: |-
+            -----BEGIN PGP MESSAGE-----
+
+            hQIMA5NT/LvuRqeGAQ/9F58w+mTygeLi3YvRvCgk85pYp7sh2ixNDcWzDRD7qc6W
+            qekMwPYZaWt8W5oJhGHzsOHobKl/LDPp/VvIcqYtq0vMSeAZq0wKYm7ZF2dt6RSa
+            bM/1YbWb2TdbckFYI3w20dAPqL9+sRkY5StRg8BDGmH/hmlYEJ2cwx7fXhimxBhc
+            JgLQEQLK0kzQlFmQgi4MzxHfmk5RoEGE/qJrB4YaCpaX+n0REhxUsCCgyPD4SuFv
+            EU27oEDVNty0t1+u41+UhlG7TLljzt7iwLTw+d9MipPQWSt78MH5Kz+CvQnVWZch
+            r2QatBoQH4hBbH0xaHm8fAYLRy6YP4V3toHCdWwJbeUt1cW3y8uxyAcUHwOv7ktx
+            v2WKdL+/gaOuAC6g1c21ytElfKi+ohB/1sPR8ORB0VVgSjqin1CdQrBRJFQQ/0Mc
+            kXju8PGt4j9xV9sBaqPKFdGjJweFRX9vkcpZF7UVUWCzw5Kv8GwTd5yCsXe2Qv16
+            Mg3+MZCtXt6PApLctS8/nMmHaLJ0FPHbdFWpfpE8hInMq91pDkuGusgx0cwl5vg6
+            1CXn6a6DLjFrTnjioIoo0LbgX3VHoRx1WqhJ/S9d+rWPgBWx5XGkWv9JevMav73w
+            hlbiF0zjttjTrBszj5rw8eqp5FbYAPU3EV3ZQYCFzyidzbuQauNkIfoNAxF9AwHU
+            aAEJAhCWFt4x9+gWszXdhNomIq8N5w9xC8YtGpKqErxCZfb4pNbOocoM7nuI9bGq
+            IJjTI1jJjMSx3OhlGOBDN7estNzGA4ieFQ8GowC6WM6p6sU1Rx9zWoyXwXYLmvco
+            DNloOZ2KD6x8
+            =wu3w
+            -----END PGP MESSAGE-----
+          fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
+    version: 3.13.2
