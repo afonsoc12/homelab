@@ -108,7 +108,9 @@ resource "authentik_policy_binding" "native_oidc_admins" {
 }
 
 resource "authentik_policy_binding" "native_oidc_verified_email" {
-  for_each = toset(["forgejo", "wireguard"])
+  # wg-easy may link accounts by email. Forgejo requires the existing local
+  # account's credentials instead, with registration disabled.
+  for_each = toset(["wireguard"])
 
   target         = authentik_application.native_oidc[each.key].uuid
   policy         = authentik_policy_expression.native_oidc_verified_email.id
