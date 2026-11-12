@@ -43,17 +43,14 @@ resource "authentik_application" "wealthfolio_oidc" {
   policy_engine_mode = "all"
 }
 
-# Membership is added after the current portfolio owners and issuer-scoped
-# subjects have been verified. It is separate from shared administrator access.
+# Household access is explicit and remains separate from administrator groups.
 resource "authentik_group" "wealthfolio_oidc" {
   name         = "wealthfolio-oidc"
   is_superuser = false
   parents      = []
   roles        = []
 
-  lifecycle {
-    ignore_changes = [users]
-  }
+  users = local.homelab_user_mappings.members.wealthfolio
 }
 
 resource "authentik_policy_binding" "wealthfolio_oidc" {

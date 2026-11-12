@@ -44,17 +44,14 @@ resource "authentik_application" "paperless_oidc" {
   policy_engine_mode = "all"
 }
 
-# Start with no members. Add users after verifying their existing Paperless
-# accounts and rehearse the link while the original proxy and local login work.
+# Only identities associated with existing human accounts are admitted.
 resource "authentik_group" "paperless_oidc" {
   name         = "paperless-oidc"
   is_superuser = false
   parents      = []
   roles        = []
 
-  lifecycle {
-    ignore_changes = [users]
-  }
+  users = local.homelab_user_mappings.members.paperless
 }
 
 resource "authentik_policy_binding" "paperless_oidc" {

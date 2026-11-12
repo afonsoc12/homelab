@@ -51,9 +51,7 @@ resource "authentik_group" "bambuddy_oidc" {
   parents      = []
   roles        = []
 
-  lifecycle {
-    ignore_changes = [users]
-  }
+  users = local.homelab_user_mappings.members.bambuddy
 }
 
 resource "authentik_policy_binding" "bambuddy_oidc" {
