@@ -12,6 +12,8 @@ Most services run on the **k3s-cluster** (`automation` namespace). Hyperion.ng r
 
 The central home automation hub. Integrates with hundreds of devices and services, provides dashboards, automations, and the local voice assistant pipeline. See the official [logging documentation](https://www.home-assistant.io/integrations/logger/) for log levels and troubleshooting. Supports the [Amazon Alexa Smart Home skill](https://www.home-assistant.io/integrations/alexa.smart_home/) for voice control.
 
+Supports single sign-on through the community [OpenID Connect integration](https://github.com/christiaangoossens/hass-oidc-auth).
+
 [:octicons-book-16: Documentation](https://www.home-assistant.io/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/home-assistant/values.yaml)
 
 ---
