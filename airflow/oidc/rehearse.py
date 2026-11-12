@@ -104,13 +104,13 @@ with TestClient(create_app(), base_url="https://testserver") as client:
         )
         assert owner is not None
         owner_id = owner.id
-    rename = {"id": owner_id, "from": "admin", "to": "acosta"}
+    rename = {"id": owner_id, "from": "admin", "to": "rehearsal-owner"}
     assert rename_admin(rename) == "ready"
-    assert "admin" in existing_users() and "acosta" not in existing_users()
+    assert "admin" in existing_users() and "rehearsal-owner" not in existing_users()
     assert rename_admin(rename, apply=True) == "renamed"
     assert rename_admin(rename, apply=True) == "already-renamed"
     assert "admin" not in existing_users()
-    assert existing_users()["acosta"] == (owner_id, ("Admin",))
+    assert existing_users()["rehearsal-owner"] == (owner_id, ("Admin",))
     for name, identity in before.items():
         assert existing_users()[name] == identity
     assert browser_login(client, "synthetic-owner")
