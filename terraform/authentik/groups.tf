@@ -39,3 +39,12 @@ resource "authentik_policy_binding" "access_grafana" {
   enabled        = true
   failure_result = false
 }
+
+# New household access is a Viewer role in Grafana, separate from the admin group.
+resource "authentik_policy_binding" "access_grafana_household" {
+  target         = authentik_application.grafana.uuid
+  user           = tonumber(data.sops_file.secrets.data["grafana.oidc_household_user_id"])
+  order          = 1
+  enabled        = true
+  failure_result = false
+}
