@@ -19,7 +19,7 @@ crds:
 global:
     # -- Default domain used by all components
     ## Used for ingresses, certificates, SSO, notifications, etc.
-    domain: ENC[AES256_GCM,data:Dtf19fj3Qo2KcrdugnxOuMdjqOgivvDCyUM=,iv:es5zVtZS5peWarJGlXq9rT9dG2GM0G4kNdi4fU1MIQM=,tag:MpXdDAFHfkLKNabPVP05HQ==,type:str]
+    domain: ENC[AES256_GCM,data:ZxG6YpGPIZv2tst5RRg0bcOa9QGG4ioBHSw=,iv:jWlIEcJmJwTRm584ET24CldM31qrudehJw4u+bACtl8=,tag:7ZLCBIRWtmwbGxONVFFjYA==,type:str]
     # -- Common labels for the all resources
     additionalLabels: {}
     # app: argo-cd
@@ -40,7 +40,7 @@ configs:
         create: true
         helm.valuesFileSchemes: secrets,secrets+age-import,secrets+age-import-kubernetes
         admin.enabled: "false"
-        oidc.config: ENC[AES256_GCM,data:5YTeHr0sY0B8/GdM90gjISmAEiJZBhVw7NohuyzF+1UTF1PcgyWDs6t6gZvUmahTcLpww6PaKZvvQ2BnLJ0epmzSfG6XZWyAoZkO2jquw5f+p9ouV7FTZyOGck+k4sdSQoEfZEuSN4TAb4p8ibqYV9VQ4eWh+lFks/1Ju2XkfmfUmYdyriynk1Zzod4WWbZ+8SIz34XgzOnX+VDoKVTy5/YKTn6HFmuas7akWS+Vm3E2pBhy2mCqc8KoC/n2bWhPOy3Lans5JRdHHztHOpKUFuhVmVcxyIClF6AE0b61lK/+kcES6KO2Tes=,iv:6Kz7OtuA3mx4IGSoCoSDW4W5OgVKgDrCXu7VXor74Q8=,tag:S7Unp6M/E5Gm8OlJ1PrmRg==,type:str]
+        oidc.config: ENC[AES256_GCM,data:T25L4atbEPXw7M3piPvsWp9WvADTrxzbbvhkvfUhCLSjo0FPYQvACEwMgoZ2LIZqqajo9H02J9vIK2BT9NV5rxmEKKpJy8TfvpVXsvBAPyjg9Tiq3B2LE9LQyrLuA0jnV4KKsGExUrO3DGX/jazl0oydStwg+3EIjDHLiGlxOT5sy/p8iVLFUtpSPtIEHAug5XbBD4bJq00E0WbEK2L7jGRUPJRhVxA99DD0XWnB2zvk4HJQnHinVm2M/CRJUTWr7rZt7GHq1tXlt6kS1yFeZhsegHaf6lSThIUklLW3nRWmvafvIlhboEY=,iv:y/aRs+kuDuKbzLeqf7uZjjmjAdKd9BzAqcz/ifJ92d0=,tag:u59rkc2y6zPros7Q+7HFtA==,type:str]
         oidc.tls.insecure.skip.verify: "false"
         # Ignore metallb service changes
         resource.customizations.ignoreDifferences.Service: |
@@ -135,20 +135,18 @@ configs:
         #     command: ["/bin/sh", "-c"]
         #     args: ["cat *.yaml | yq"]
     secret:
-        createSecret: ENC[AES256_GCM,data:LCxTIw==,iv:2f/U2kqp/1iBiq5V5Szzg9EOk9Q0QzEo0inFpo+uPrQ=,tag:6qUoWFETSFZw4c0K+Nc1hA==,type:bool]
-        oidc.authentik.clientId: ENC[AES256_GCM,data:GmsFanNNqczPYMboa0oy2aekNbAod+23X/bli1DchNkznRzGmSWbvQ==,iv:mXnZFnUqertVeR+CY1ODXf25/K5VpIEx/diazHhKSvg=,tag:LC8EouQeVEhC9B7XyIDXvw==,type:str]
-        oidc.authentik.secret: ENC[AES256_GCM,data:fRpI1wbX/vydF+5uLo4i/q9xbkL+QNSRautM3tHT9SR6rN9vIY2/NT1AQkSMAILAOqMwIph5BN9Z3CAxkRYNEYH8nL0GKDhZe7wlnWa/9aJ+pKvRni8M4tjO8s+D5VDT1Fgqf/5ma7Ez+yw/pHf0TuE8nYCk2xMFLKsiISXjToo=,iv:sVRzcnT/YTxDeCFzRaoxfOGTv9lmWbwbSLN0XSooRk4=,tag:2z3L1BajhgRlBg40VP7KGA==,type:str]
+        createSecret: ENC[AES256_GCM,data:uviCBg==,iv:Iot6DYEZwqUg6CSSw5wxHeub2cAkDefhho22Xn9Zcf8=,tag:O6l0WZ7sDH3OGEdx5YHyxQ==,type:bool]
+        oidc.authentik.clientId: ENC[AES256_GCM,data:YQrBJmsFpJoZdsSQ1gUULnchJPqwIBCImHiVAmtesadxQGs2rtZhvg==,iv:BtzTJEFf2qmCOBXcgwMh0gJ9eWEZCkUgQ5+u54roWtg=,tag:gK/31MDBZH4GuTMR/HAOjQ==,type:str]
+        oidc.authentik.secret: ENC[AES256_GCM,data:xUeMhUmVwvmhU4a5VxNCDanaccZ9NxwJPAviiC+LXuSfOs/0bkvdhrdtyT1VbdEuAhAOJaDgmH7c7j+XJjZ3Bwx0iJDqONqWPQuyb4qG2vmiUW3t2ifhNoieuaSUiZi0XDpYdpY0xqStAk9Oyx/qJM/XqrN0+8u28ExBFnKqcms=,iv:D1wJFJuY39Y0HPogQBS3S1x4QaApadZl1Vk4FwJr+DM=,tag:qmrDUBp0+a6dbzyMCkc/hA==,type:str]
     rbac:
         # -- Create the argocd-rbac-cm configmap with ([Argo CD RBAC policy]) definitions.
         # If false, it is expected the configmap will be created by something else.
         # Argo CD will not work if there is no configmap created with the name above.
         create: true
-        policy.csv: |
-            g, authentik_admins, role:admin
+        policy.csv: ENC[AES256_GCM,data:6iqTVNXTXD255j5wtM/ymFp35l0EkPvfn23tzaEctZyEQVGx/pJ5aqXisy48NGHPfdyNd2SZGCZrpdiltmF2AetwFQswwTkw5MWTuhNBxFI4QRpApu7HpSMRD0dlCNcjHRexswu/sy7e12zpVSXCdRWxCh8SurNJwoXc5Ka51PtN6Ed1T+StBtlL9ZA5rbhnlAc1EM8Wp8KkRlzGII0IksfzhZFu0tCDExE7T1Jwfl/yw6FUuVlHEJuwbK2ZLA+XuScJ,iv:DnQrFXPVJJwtM++zfTmrit5KFSVg6q/N6hHl/2/eD5Q=,tag:Nr1QFOLpPEdvKkYlguQYsw==,type:str]
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 extraObjects: []
-
 # - apiVersion: secrets-store.csi.x-k8s.io/v1
 #   kind: SecretProviderClass
 #   metadata:
@@ -253,7 +251,7 @@ server:
     ingress:
         enabled: true
         annotations:
-            ingress.kubernetes.io/force-ssl-redirect: 'true'
+            ingress.kubernetes.io/force-ssl-redirect: "true"
             projectcontour.io/websocket-routes: /
             projectcontour.io/response-timeout: 300s
         ingressClassName: contour
@@ -261,13 +259,12 @@ server:
         pathType: Prefix
         tls: false
         extraTls:
-            -   secretName: local-wildcard-cert
-                hosts:
-                    - '{{ .Values.global.domain }}'
+            - secretName: local-wildcard-cert
+              hosts:
+                - '{{ .Values.global.domain }}'
     service:
         annotations:
-            projectcontour.io/upstream-protocol.tls: '443'
-
+            projectcontour.io/upstream-protocol.tls: "443"
 ## Repo Server
 repoServer:
     # -- Repo server name
@@ -397,7 +394,7 @@ repoServer:
         # kubectl create secret generic homelab-sops-gpg --from-file=sops.asc=assets/gpg/private2.gpg
         - name: homelab-sops-gpg
           secret:
-            secretName: ENC[AES256_GCM,data:dO0krWu0sUY4hfBQk34oLQ==,iv:nn3dxKg9+Lw9Z4dPy1DYuRRh/4jBSZrmZb8++SNXFtg=,tag:v481ntQxZuuvN55CVMa4uA==,type:str]
+            secretName: ENC[AES256_GCM,data:Dp+YOKfaudsXqySBOHb4GQ==,iv:wC9fMMhW6SVPSaKFXf5Ocv6Yt/CiGwuEQT/jAdlwMPw=,tag:NnnVOlVLh56Aq12ySgwwhQ==,type:str]
 ## ApplicationSet controller
 applicationSet:
     # -- Enable ApplicationSet controller
@@ -432,10 +429,10 @@ notifications:
         limits:
             cpu: 500m
             memory: 256Mi
-    argocdUrl: ENC[AES256_GCM,data:BPvH06zcVIbNwExJczi7fdFdg2VfsLLhwOd/tvxYgvwxPg==,iv:v3rs1Z69zOTRImX8yJ70s0W/sAsxVBJ6MdAGTPyorYk=,tag:grlG1+NANHVMeUjS1+6Ung==,type:str]
+    argocdUrl: ENC[AES256_GCM,data:QD3zXQWy/CHDnDLmZ3IyPprIOg06jEIGTfLJ9xyRwkCnZg==,iv:pcHNnu2oN+zMLmIK9qLaCSet+2GSqD/siBsXEuc47rU=,tag:pF0ziGvOfA5k7uu/e2/ANw==,type:str]
     secret:
         items:
-            discord-webhook: ENC[AES256_GCM,data:juNBNlXhLOTo9InwVdm4jl3D+awpetQt7o3JMI2IhxuPvtR12vkVYHT4vmEIQn8u/1I65bAc4r0ypSisx3R/V4BrdYf3Q3wESLjLZMxZulUKtb/FY0LTym2KKByFOo/eN/e75KefEjdJhqXGhZ6xZvQGf16wNgq9qA==,iv:E3jRl3jvkwZyPfMHkloSQcS8JUlGeMpp1NFsjjcJ6ws=,tag:wtxaohMZADpTU4+eUm5p/w==,type:str]
+            discord-webhook: ENC[AES256_GCM,data:wLmmJTV/cqAkEcFilMvJaqjbEik7FQpV8LcAY/Z+sIVPgBkqcpQnZ7ILYOjNAUR7e5+qZFDWjO3j4byKgYvRaCtxrZ6ue03mO0RRbSBq0eADOWobvGbHpOygVeXN+5PPjJiIBqgM++JJt0TMDCsVneiBf5YwO7+xfQ==,iv:3f04sX6xkSBbbwztam0pEQpoMVZTgb4hkK16NdF83B8=,tag:6fjqqgJuu9dRnPHrVwkHgQ==,type:str]
     notifiers:
         service.webhook.discord: |
             url: $discord-webhook
@@ -447,54 +444,10 @@ notifications:
         # (kubernetes/apps/monitoring/prometheus-stack): status emoji + event
         # name title, quote-block body with a bold summary line, cluster/
         # namespace/timestamp context line, then markdown links.
-        template.app-deployed: |
-            webhook:
-              discord:
-                method: POST
-                body: |
-                  {
-                    "embeds": [{
-                      "title": "🟢 AppDeployed · `{{.app.spec.destination.name}}`",
-                      "color": 3066993,
-                      "description": "> **{{.app.metadata.name}} synced successfully**\n> {{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.operationState.finishedAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [📝 {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
-                    }]
-                  }
-        template.app-health-degraded: |
-            webhook:
-              discord:
-                method: POST
-                body: |
-                  {
-                    "embeds": [{
-                      "title": "🔴 AppHealthDegraded · `{{.app.spec.destination.name}}`",
-                      "color": 15158332,
-                      "description": "> **{{.app.metadata.name}} health degraded**\n> Health status: `{{.app.status.health.status}}`\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.reconciledAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})"
-                    }]
-                  }
-        template.app-sync-failed: |
-            webhook:
-              discord:
-                method: POST
-                body: |
-                  {
-                    "embeds": [{
-                      "title": "🔴 AppSyncFailed · `{{.app.spec.destination.name}}`",
-                      "color": 15158332,
-                      "description": "> **{{.app.metadata.name}} sync failed**\n> {{.app.status.operationState.message | default \"No error message\"}}\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.operationState.finishedAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [📝 {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
-                    }]
-                  }
-        template.app-sync-status-unknown: |
-            webhook:
-              discord:
-                method: POST
-                body: |
-                  {
-                    "embeds": [{
-                      "title": "🟡 AppSyncStatusUnknown · `{{.app.spec.destination.name}}`",
-                      "color": 15105570,
-                      "description": "> **{{.app.metadata.name}} sync status unknown**\n> ArgoCD could not determine whether the live state matches Git — check for CRD issues or repo access errors.\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.reconciledAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})"
-                    }]
-                  }
+        template.app-deployed: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F7E2 AppDeployed · `{{.app.spec.destination.name}}`\",\n          \"color\": 3066993,\n          \"description\": \"> **{{.app.metadata.name}} synced successfully**\\n> {{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}\\n> \U0001F4E6 `{{.app.spec.destination.namespace}}` · \U0001F552 {{.app.status.operationState.finishedAt}}\\n> [\U0001F50D App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [\U0001F4DD {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}\"\n        }]\n      }\n"
+        template.app-health-degraded: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 AppHealthDegraded · `{{.app.spec.destination.name}}`\",\n          \"color\": 15158332,\n          \"description\": \"> **{{.app.metadata.name}} health degraded**\\n> Health status: `{{.app.status.health.status}}`\\n> \U0001F4E6 `{{.app.spec.destination.namespace}}` · \U0001F552 {{.app.status.reconciledAt}}\\n> [\U0001F50D App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})\"\n        }]\n      }\n"
+        template.app-sync-failed: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 AppSyncFailed · `{{.app.spec.destination.name}}`\",\n          \"color\": 15158332,\n          \"description\": \"> **{{.app.metadata.name}} sync failed**\\n> {{.app.status.operationState.message | default \\\"No error message\\\"}}\\n> \U0001F4E6 `{{.app.spec.destination.namespace}}` · \U0001F552 {{.app.status.operationState.finishedAt}}\\n> [\U0001F50D App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [\U0001F4DD {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}\"\n        }]\n      }\n"
+        template.app-sync-status-unknown: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F7E1 AppSyncStatusUnknown · `{{.app.spec.destination.name}}`\",\n          \"color\": 15105570,\n          \"description\": \"> **{{.app.metadata.name}} sync status unknown**\\n> ArgoCD could not determine whether the live state matches Git — check for CRD issues or repo access errors.\\n> \U0001F4E6 `{{.app.spec.destination.namespace}}` · \U0001F552 {{.app.status.reconciledAt}}\\n> [\U0001F50D App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})\"\n        }]\n      }\n"
     triggers:
         trigger.on-deployed: |
             - when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
@@ -527,30 +480,30 @@ notifications:
     startupProbe:
         enabled: true
 sops:
-    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP)$
-    lastmodified: "2026-08-17T23:38:01Z"
-    mac: ENC[AES256_GCM,data:cJPoB8NEOKkr779NBIVZ+QXtfKrIXU/coTSYMUIoU7uQ2qtrryjSIaKlc1PpKhCuo5YdoENnW9wxMBWiC1REkbA+9G/GD0YomrjWNg9MpzbBniYalJIr3qWAqziN3X7VzXQsajDG5+0NBfpdPB0pCw9amQfTrcqRhj681CWmiV8=,iv:s70Yk7ODIqaljgVF5MiVkkm2zyKthSzMtKzy6lU5IPg=,tag:toO83dmmiM2sCdxQH9Hfzw==,type:str]
+    encrypted_regex: ^(data|stringData|secret|domain|argocdUrl|oidc\.config|loadBalancerIP|policy\.csv)$
+    lastmodified: "2026-11-12T11:12:45Z"
+    mac: ENC[AES256_GCM,data:TgiFmucgaLj97gOFeQbVOpRi1Enb2iJEbJ/acjx266PnCjjWyyHZkCmeRutcWKGFWuzZ+RfvCVuAgU/vD5Q7cnX6BeZwBIaoHBSLH/30tcqAUujVktEGmofhho6hniViBO9bl8tgueaLuLKzcq9MgaeWo5YmK9A9Z2RrXOQ+ySk=,iv:77WwD1cG2/NBH1MQaMBHELOkI5CYXBL5f1eUa830+TE=,tag:+1mpDmKiAV++XR3dHZ/Uog==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-08-12T20:22:04Z"
+        - created_at: "2026-11-12T11:12:45Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAAjYyDmHAeatG9pZpuJR+DVZWAk9weZb9PvtqbSY9nuZTB
-            +PoSYAe5EeDfVltXkZMFdDZnScasdPgx360Dcs/6aKAsmK7hNKcoKwwm0rPXXPtq
-            H2rwEMgcgqGk0fzeFTIukiOQ+OKK5HFVIIULEPceNTk3zZack608OGOT2M5VqCM4
-            +datN7CZb29rA+r4yJWzGjs23ELXgrvj6q9ELYwMGZuWoguQ0gGmVyLGH06uuChb
-            XOoRURq2rukn9UN1C2Rj4ge6A1SZ2cdqxu+VT7vYzzlHg3fwD1X6GWI3l+0h1goB
-            9dwvmQFgrXftVuXdBs4yDLIGrm0Ao2nRFlqoebf+NDNZ6WBeAEiMbR7Y3Q/0W62e
-            hEacu/5ZB8HltiIyFwAKxY0LlEplNO9okPrg4kMPsLnJ9RjMV5PeNenH9VRvFckn
-            muoENWrW70QcImTokAFnczKI3sJ8uUdB/Sm8F5o9RrUsrJyJX/nnwqMmslZ5OxM8
-            A2FThNAOlzM6GZu+iewBzKgVDvUplLPo/MyjtTFnJmYFgaghjN0PwxNyr215/anp
-            0mVsOiAKjaZ15WDFtY6HGj+3wN2DtsHgwTSVc60X/xA7PUnnPkBhdSCe8eF9DWcL
-            pABSbFvlvCHd1T+FBOA0JowkpV8oBRK34wqc4u+YklzaCE2XqdYxw/SttbkWthHU
-            aAEJAhDGUl6D1qmp0KX/aCK0fS12lE2sHQVIU0hgT1eQcFCX9QqYxSW52g1bJam1
-            JrDQovst3YIK2cq3ZnJCYJtujcIyXM2u9CgNVQS2fMZcFI680oRcjKXrU7fKlFaR
-            taa3mnftgn+/
-            =no0X
+            hQIMA5NT/LvuRqeGAQ//WaNarzOvzI6ODiznWSEgPjlnfjikhsSUr+VBIW39G2Ob
+            z6Xwmltt22H/ATBQa1CFwBaHR9AJ2R+2cGpJ+/exPaQDG3xstxMN9VVyO4Jx34up
+            HZQb6sra/I15UmPTynZb+l3d3jm3ZXP3CXcq5kzCfV3fwCg+x3lEnVEU6ozVuJyb
+            mqV/TceZDNY0clS4t8AjFuVZIvL29dPDfGg3V+LEQjueNb57x9w9QxTi/wzXmDxN
+            zCM9zeSWn6AJLWYZuWWhA9LCS86So7OnBPnspB6U8e+Hgi6DeoyeQilmEj++5csQ
+            +2Ri2D9QB8Z+hhmKARAtEbptINESBsLzA1lphRomgYkiqbruDLfl66BMcAvfp+DZ
+            MQiGo1FmBk0Pj6gqm8nfhKvRmlUeHG5+xvlBneQzBG/q7w3E/+BvPJCvDv05WoE+
+            gYgg3X+zJWZ4k1HpdRMacEg1ZhvBdx8KjpWoNojrKe2EUwNaATGSTIn1Oq6Fb+iB
+            N514idCPTd3Ldb20CAY730cl1sttY0tKBafGEfl2WLWOWkR2zc2/LFwJMR9zDwD7
+            K7ehqnEIoLTB+lY02yq5YvYuMYy8vjnVyXnNz9NONxix0DPeYX8k7o0qiQkZ3qKe
+            OXZ2etwAoUpCwPBPkLA/NLoo2UVRX6lRXnSmpdb3m4l8h+POziDR55Uhpdoe1rLU
+            aAEJAhCYH7hY9sUSZyzTHG8SFXT9LyjupFqJZoHPVOIWFUycKLFmgHzSvLABd7WY
+            Xyi44CM1U8fcA2keuySl35tatknMxEwRWQA2BHv5HEj93FGLJkVpHo9kjXrQ1V9M
+            OVGmEnIqPfGP
+            =eQyb
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
