@@ -12,17 +12,6 @@ resource "authentik_policy_expression" "account_authorization" {
   name              = "Homelab - Account Authorization"
 }
 
-resource "authentik_policy_expression" "native_oidc_email_needs_verification" {
-  execution_logging = false
-  name              = "Homelab - Email Needs Verification"
-  expression        = <<-PY
-    user = request.context.get("pending_user")
-    if not user or not user.email:
-        return False
-    return user.attributes.get("email_verified_address") != user.email
-  PY
-}
-
 resource "authentik_policy_expression" "native_oidc_record_verified_email" {
   execution_logging = false
   name              = "Homelab - Record Verified Email Address"
