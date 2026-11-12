@@ -6,6 +6,10 @@ data "sops_file" "freshrss_oidc" {
 locals {
   freshrss_values = yamldecode(data.sops_file.freshrss_oidc.raw)
   freshrss_oidc   = local.freshrss_values.oidc
+  freshrss_accounts = {
+    for account in local.freshrss_oidc.verified_accounts :
+    tostring(account.user_id) => { username = account.username }
+  }
 }
 
 # FreshRSS usernames identify existing user directories and their databases.
@@ -15,7 +19,7 @@ resource "authentik_property_mapping_provider_scope" "freshrss_username" {
   scope_name = "profile"
   expression = <<-EOT
     import json
-    accounts = json.loads(${jsonencode(jsonencode(local.freshrss_oidc.verified_accounts))})
+    accounts = json.loads(${jsonencode(jsonencode(local.freshrss_accounts))})
     return {"freshrss_username": accounts.get(str(request.user.pk), {}).get("username", "")}
   EOT
 }
@@ -24,7 +28,7 @@ resource "authentik_policy_expression" "freshrss_existing_account" {
   name       = "FreshRSS Verified Existing Account"
   expression = <<-EOT
     import json
-    accounts = json.loads(${jsonencode(jsonencode(local.freshrss_oidc.verified_accounts))})
+    accounts = json.loads(${jsonencode(jsonencode(local.freshrss_accounts))})
     username = accounts.get(str(request.user.pk), {}).get("username")
     return bool(username) and sum(1 for account in accounts.values() if account.get("username") == username) == 1
   EOT
