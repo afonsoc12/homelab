@@ -13,6 +13,141 @@ image:
     tag: 2026.11.0
     pullPolicy: Always
 hostNetwork: true
+# Install and configure the pinned OIDC integration before Home Assistant starts.
+initContainers:
+    - name: configure-oidc
+      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+      command: ["python3", "-c"]
+      env:
+          - name: HA_OIDC_CONFIGURATION
+            valueFrom:
+                secretKeyRef:
+                    name: home-assistant
+                    key: auth-oidc.yaml
+          - name: HA_OIDC_CONFIGURATION_SHA256
+            value: '{{ index .Values.secret.stringData "auth-oidc.yaml" | sha256sum }}'
+      volumeMounts:
+          - name: config
+            mountPath: /config
+      args:
+          - |
+              import hashlib
+              import io
+              import json
+              import os
+              from pathlib import Path
+              import shutil
+              import subprocess
+              import sys
+              import tempfile
+              import urllib.request
+              import zipfile
+
+              import yaml
+
+              version = "1.2.1"
+              release_hash = "e5badaaacaa63cfd6fe733924a05e76d75058836190398598fb24de57cd47ccd"
+              config_dir = Path("/config")
+
+
+              def atomic_write(path, data):
+                  descriptor, temporary = tempfile.mkstemp(dir=path.parent)
+                  try:
+                      with os.fdopen(descriptor, "wb") as output:
+                          output.write(data)
+                      os.replace(temporary, path)
+                  finally:
+                      Path(temporary).unlink(missing_ok=True)
+
+
+              cache = config_dir / ".cache" / f"auth_oidc-{version}.zip"
+              cache.parent.mkdir(parents=True, exist_ok=True)
+              archive = cache.read_bytes() if cache.exists() else b""
+              if hashlib.sha256(archive).hexdigest() != release_hash:
+                  request = urllib.request.Request(
+                      f"https://github.com/christiaangoossens/hass-oidc-auth/releases/download/v{version}/hass-oidc-auth.zip",
+                      headers={"User-Agent": "HomeAssistant-OIDC-installer"},
+                  )
+                  with urllib.request.urlopen(request, timeout=30) as response:
+                      archive = response.read()
+                  if hashlib.sha256(archive).hexdigest() != release_hash:
+                      raise RuntimeError("OIDC release checksum mismatch")
+                  atomic_write(cache, archive)
+
+              component = config_dir / "custom_components" / "auth_oidc"
+              component.parent.mkdir(parents=True, exist_ok=True)
+              with zipfile.ZipFile(io.BytesIO(archive)) as bundle:
+                  files = [entry for entry in bundle.infolist() if not entry.is_dir()]
+                  if any(
+                      Path(entry.filename).is_absolute()
+                      or ".." in Path(entry.filename).parts
+                      or any(part.startswith("._") or part == "__MACOSX" for part in Path(entry.filename).parts)
+                      for entry in files
+                  ):
+                      raise RuntimeError("Invalid OIDC release paths")
+                  if json.loads(bundle.read("manifest.json"))["version"] != version:
+                      raise RuntimeError("OIDC release version mismatch")
+                  matches = all(
+                      (component / entry.filename).is_file()
+                      and (component / entry.filename).read_bytes() == bundle.read(entry)
+                      for entry in files
+                  )
+                  if not matches or any(component.rglob("._*")):
+                      staging = Path(tempfile.mkdtemp(prefix=".auth_oidc-", dir=component.parent))
+                      previous = component.with_name(".auth_oidc-previous")
+                      try:
+                          bundle.extractall(staging)
+                          if component.exists():
+                              shutil.rmtree(previous, ignore_errors=True)
+                              component.rename(previous)
+                          try:
+                              staging.rename(component)
+                          except Exception:
+                              if previous.exists():
+                                  previous.rename(component)
+                              raise
+                          shutil.rmtree(previous, ignore_errors=True)
+                      finally:
+                          shutil.rmtree(staging, ignore_errors=True)
+
+              desired = os.environ["HA_OIDC_CONFIGURATION"].encode()
+              if hashlib.sha256(desired).hexdigest() != os.environ["HA_OIDC_CONFIGURATION_SHA256"]:
+                  raise RuntimeError("OIDC configuration checksum mismatch")
+              if not isinstance(yaml.safe_load(desired), dict):
+                  raise RuntimeError("OIDC configuration must be a mapping")
+
+              configuration = config_dir / "configuration.yaml"
+              original = configuration.read_bytes()
+              source = original.decode()
+              root = yaml.compose(source)
+              entries = [(key, value) for key, value in root.value if key.value == "auth_oidc"]
+              if len(entries) > 1:
+                  raise RuntimeError("Duplicate OIDC configuration")
+              include = "auth_oidc: !include auth-oidc.yaml\n"
+              if entries:
+                  key, value = entries[0]
+                  updated = source[:key.start_mark.index] + include + source[value.end_mark.index:].lstrip("\n")
+              else:
+                  updated = source.rstrip() + "\n\n" + include
+
+              managed = config_dir / "auth-oidc.yaml"
+              previous_config = managed.read_bytes() if managed.exists() else None
+              atomic_write(managed, desired)
+              if updated.encode() != original:
+                  atomic_write(configuration, updated.encode())
+              result = subprocess.run(
+                  [sys.executable, "-m", "homeassistant", "--script", "check_config", "-c", str(config_dir)],
+                  stdout=subprocess.PIPE,
+                  stderr=subprocess.STDOUT,
+              )
+              if result.returncode:
+                  atomic_write(configuration, original)
+                  if previous_config is None:
+                      managed.unlink()
+                  else:
+                      atomic_write(managed, previous_config)
+                  raise RuntimeError("Home Assistant configuration validation failed")
+              print(f"OIDC {version} verified and GitOps configuration validated")
 ports:
     - containerPort: 8123
       name: http
@@ -86,10 +221,10 @@ configmap:
     mountEnv: true
     data:
         HA_DISABLE_LOG_FILE: "true"
-
 secret:
     stringData:
         prometheus-token: ENC[AES256_GCM,data:fYESSX4gg115aNAJdCsPjqouKcff6mRarehXwEr2HVYJfocAu4435nnxo2vxWRKXH3/9xjrOgAEI6WDvKtRclV4NyM1Qk+BLqcdt52kjkwk5s5jzX5156WelETiiuhqLUOtP/Yp9EnRArIWVP/UJen2efB9x7Sfns5WJZy7+Zeu+AsXNbnNNqDWCww5JQU1ln8CZQqahfnos7OJLekAwDPPqi3kwlI+Nk53S/k3PHwe4cQuz1W+p,iv:8g2AzzMWU6FKhMRnvZR3c2mk/80Q8beO4LGsKd9Tkek=,tag:2tLzqOH11XA5avubsotAow==,type:str]
+        auth-oidc.yaml: ENC[AES256_GCM,data:8H+8jBCKbmrNUIB251xC2MKS60FpPQLtAYNpzNvIXrbPFZfn8h3tRcwyGYODUUgA1EAZBNqZymGyK0OhwSF6gg6ZbceuRsXV8/SRWZZylI9AmzUPQyHfcCQ6waHm21AzpE5NDPo0tgwOe8Ajhq6t642URTyb0rRmVaujmymN0sTphE2UznvMKJ/2SUqWcar5NNQ4hVDXU1fdeTXPe3CtDOBnkrT1PYaeFU5DFdJ+woaeHZrTajxtkHpjibKzMwlfhdaJ2q3pw5W/qLQBeKPmKDPHqNCXLXjjYoDuw/l4HUJfibLxjSJ+LKFV5G9ZdvcRAO/3+uw5J0Z6FiKsL2Qwd3tr3Vs4GcEe+FTGqf0Bw6AoEsQp/Ii+PIgItzQwWCSx8Z48yvlMSMWWhIhM8pn24A==,iv:f2FPSgKmy37WOYD7ffH5636TqGjMasYo047V+vwD+ng=,tag:N1r0YrB7yQAOGTO9+RJP2A==,type:str]
 serviceMonitor:
     enabled: true
     endpoints:
@@ -133,8 +268,8 @@ prometheusRule:
                 description: '{{ $labels.friendly_name }} has not reported a battery reading in over 48 hours — device may be offline or dead.'
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP)$
-    lastmodified: "2026-10-10T17:32:02Z"
-    mac: ENC[AES256_GCM,data:YfFlx2cFOgjcTzUtwd3LLPbX19hWbFjspXVhscUWO0qWDps2UlJKr4jCTTjukthdiaaWmYQW2TloysdGmzyRTqrGUPNTmi0EwyEBnWTgLY222BYYvzpzJGz1FyGoBpiN8RsHcd+QbnJQzmTNZl85DY5cvcGXAlQADXeOrGIqsQA=,iv:J8h2wb4NIuBavWoAC6Wx2bO/Kpb+vCUhdxLlpfU7ojk=,tag:IVqMkVLPy1J/9uz8Duu94Q==,type:str]
+    lastmodified: "2026-11-12T00:50:50Z"
+    mac: ENC[AES256_GCM,data:t23NV4izKljcUMYZG+r1MojxES4W3dawR+svxhn3suR1Q2mxy2x77/o/oKTBqkie1q8pocNq0yei4UIZdKXsEJmddChNBysf2bfbSh75KUUvE93R9nt6eo1Gn4R+e1D7d1bDBGx3tXyQ3x1dmesk3fCOU0qLme9PyF+MHwkgCGc=,iv:B0La9m6nD/QUxVGFl9kyOPvH6hkso/k6rZH+VfSEupY=,tag:cVBR9ODOpHU28rgcjM1vuA==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-08-23T17:13:43Z"
