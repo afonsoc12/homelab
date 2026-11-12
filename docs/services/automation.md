@@ -54,7 +54,7 @@ MQTT message broker. Central message bus for all IoT devices and automation comp
 
 Visual flow-based programming for automation. Used for complex multi-step automations that would be verbose in Home Assistant YAML.
 
-[:octicons-book-16: Documentation](https://nodered.org/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/node-red/values.yaml)
+[:octicons-book-16: Documentation](https://nodered.org/docs/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/automation/node-red/values.sops.yaml)
 
 ---
 

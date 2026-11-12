@@ -12,6 +12,19 @@ resource "authentik_policy_expression" "account_authorization" {
   name              = "Homelab - Account Authorization"
 }
 
+resource "authentik_policy_expression" "native_oidc_record_verified_email" {
+  execution_logging = false
+  name              = "Homelab - Record Verified Email Address"
+  expression        = <<-PY
+    user = request.context.get("pending_user")
+    token = request.context.get("is_restored")
+    if user and user.pk and user.email and token and token.user_id == user.pk:
+        user.attributes["email_verified_address"] = user.email
+        user.save(update_fields=["attributes"])
+    return True
+  PY
+}
+
 resource "authentik_policy_password" "password_change" {
   amount_digits           = 1
   amount_lowercase        = 1

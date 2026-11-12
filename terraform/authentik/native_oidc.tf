@@ -29,19 +29,18 @@ locals {
   }
 }
 
-# Keep the evidence of verified ownership separate from user-editable profile fields.
-# Populate the encrypted ledger only after independently verifying ownership and
-# rehearsing the existing-account link. Empty means no native OIDC access.
+# Email verification is recorded only after the authenticated email stage sends
+# a confirmation link and the user follows it. A mutable email field alone does
+# not establish verification.
 resource "authentik_property_mapping_provider_scope" "native_oidc_email" {
   name       = "Native OIDC Email"
   scope_name = "email"
   expression = <<-EOT
-    import json
-    approved = json.loads(${jsonencode(data.sops_file.secrets.data["native_oidc.verified_emails"])})
     email = request.user.email
+    verified_address = request.user.attributes.get("email_verified_address")
     return {
         "email": email,
-        "email_verified": bool(email) and approved.get(str(request.user.pk)) == email,
+        "email_verified": bool(email) and verified_address == email,
     }
   EOT
 }
@@ -49,10 +48,9 @@ resource "authentik_property_mapping_provider_scope" "native_oidc_email" {
 resource "authentik_policy_expression" "native_oidc_verified_email" {
   name       = "Native OIDC Verified Email"
   expression = <<-EOT
-    import json
-    approved = json.loads(${jsonencode(data.sops_file.secrets.data["native_oidc.verified_emails"])})
     email = request.user.email
-    return bool(email) and approved.get(str(request.user.pk)) == email
+    verified_address = request.user.attributes.get("email_verified_address")
+    return bool(email) and verified_address == email
   EOT
 }
 
@@ -108,7 +106,9 @@ resource "authentik_policy_binding" "native_oidc_admins" {
 }
 
 resource "authentik_policy_binding" "native_oidc_verified_email" {
-  for_each = toset(["forgejo", "wireguard"])
+  # wg-easy may link accounts by email. Forgejo requires the existing local
+  # account's credentials instead, with registration disabled.
+  for_each = toset(["wireguard"])
 
   target         = authentik_application.native_oidc[each.key].uuid
   policy         = authentik_policy_expression.native_oidc_verified_email.id
