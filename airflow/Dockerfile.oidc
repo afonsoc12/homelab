@@ -3,6 +3,7 @@ FROM ghcr.io/afonsoc12/airflow@sha256:aaa623ba74726de83406a83f24c4a72d2f8bf72161
 COPY --chown=airflow:root oidc/pyproject.toml oidc/uv.lock /opt/airflow/oidc/
 COPY --chown=airflow:root oidc/start.sh /opt/airflow/oidc/start.sh
 COPY --chown=airflow:root libs/homelab_auth /opt/airflow/libs/homelab_auth
+COPY --chown=airflow:root airflow.cfg /opt/airflow/airflow.cfg
 
 WORKDIR /opt/airflow/oidc
 RUN uv export --frozen --no-dev --no-emit-project --format requirements.txt --output-file requirements.txt && \

@@ -14,7 +14,7 @@ export AIRFLOW__FAB__CONFIG_FILE="$directory/../libs/homelab_auth/webserver_conf
 export AIRFLOW_OIDC_ISSUER=https://synthetic-issuer/
 export AIRFLOW_OIDC_CLIENT_ID=synthetic-client
 export AIRFLOW_OIDC_CLIENT_SECRET=synthetic-value
-export AIRFLOW_OIDC_SUBJECT_USERS='{"synthetic-subject":"rehearsal-viewer"}'
+export AIRFLOW_OIDC_SUBJECT_USERS='{"synthetic-subject":"rehearsal-viewer","synthetic-owner":"acosta"}'
 export AIRFLOW_API_SERVICE_USERS='["rehearsal-machine"]'
 
 airflow db migrate

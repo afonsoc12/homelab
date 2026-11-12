@@ -95,4 +95,25 @@ with TestClient(create_app(), base_url="https://testserver") as client:
     assert not browser_login(client, "synthetic-subject", audience="wrong-audience")
     assert existing_users() == before
 
-print("OIDC browser and native API rehearsal passed with unchanged user IDs and roles")
+    from airflow.providers.fab.auth_manager.cli_commands.utils import get_application_builder
+    from homelab_auth.accounts import rename_admin
+
+    with get_application_builder() as builder:
+        owner = builder.sm.add_user(
+            "admin", "Synthetic", "Owner", "owner@synthetic", builder.sm.find_role("Admin"), password="synthetic-value"
+        )
+        assert owner is not None
+        owner_id = owner.id
+    rename = {"id": owner_id, "from": "admin", "to": "acosta"}
+    assert rename_admin(rename) == "ready"
+    assert "admin" in existing_users() and "acosta" not in existing_users()
+    assert rename_admin(rename, apply=True) == "renamed"
+    assert rename_admin(rename, apply=True) == "already-renamed"
+    assert "admin" not in existing_users()
+    assert existing_users()["acosta"] == (owner_id, ("Admin",))
+    for name, identity in before.items():
+        assert existing_users()[name] == identity
+    assert browser_login(client, "synthetic-owner")
+    assert client.post("/api/v2/variables", json={"key": "rehearsal-owner-write", "value": "synthetic"}).status_code == 201
+
+print("OIDC browser/API, owner-admin access and default-admin rename passed with preserved IDs and roles")

@@ -45,10 +45,7 @@ resource "authentik_group" "airflow_oidc" {
   is_superuser = false
   parents      = []
   roles        = []
-
-  lifecycle {
-    ignore_changes = [users]
-  }
+  users        = jsondecode(data.sops_file.secrets.data["airflow.oidc_user_ids"])
 }
 
 resource "authentik_policy_binding" "airflow_oidc" {

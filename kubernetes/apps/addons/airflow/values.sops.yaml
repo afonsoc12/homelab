@@ -150,12 +150,13 @@ oidc:
     AIRFLOW_OIDC_ISSUER: ENC[AES256_GCM,data:orj4bCEUtwFfaDXT+s0OJX7WiUXGd0DI9ECYhWKwxfB7/Gcj0frWOGnUpSW5nQ1S,iv:RTdN9PZlMuGoV4wdbna4OWtAHJ9Aerk4/4vSyY8+9pU=,tag:wOQVGWZWSdE+5lmrJRGYfg==,type:str]
     AIRFLOW_OIDC_CLIENT_ID: ENC[AES256_GCM,data:mXxQnzBFnE3bVY+HS+I=,iv:0KwO/aGbjTnUZtJpL8e+ssy5v1et2rfzMxqY1iQ9qUk=,tag:DBAVnyLUccjrzeXYjjl4eg==,type:str]
     AIRFLOW_OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:v4+Yw9WWY9eyhXxbkf+soh3gtCGTyekpQSSeAE9asglVI7TwDtWGhTMijz3w/ib0qyXnAD1Z1kMIYGvqrF1u+g==,iv:8oXd8oQG0qPIMba8n8L+IatUT4L7ZhHi4aZtfRNBLFg=,tag:mmW+N6lHQzC6C/z8p0el7g==,type:str]
-    AIRFLOW_OIDC_SUBJECT_USERS: ENC[AES256_GCM,data:27I=,iv:Jq1xT1B/YA4n3a4llejQ+NDa/Nv/0PQp5TN4XqlXEoA=,tag:fkJUDZ6eIGSMWUE+3pqmVA==,type:str]
+    AIRFLOW_OIDC_SUBJECT_USERS: ENC[AES256_GCM,data:07kJ45mHe1RfCAMHk0H4LDIygpDw/EjgrilnamBK8PhW4EdIpTkMKKmrw3CPNgxHZuq4Z9BZkuub24duqy9VvU/KFvB7oIuHIlJxAYFz,iv:9RNNF4u54/YpBUIsq2sTkGBPzxMsHcOW79+FMCHe/wM=,tag:41CioQPcEnBHFlb/dhr/ew==,type:str]
+    AIRFLOW_OIDC_ACCOUNT_RENAME: ENC[AES256_GCM,data:OMj0rrpoD+29L9a7Ke1Xqz5HFYNMuBQdz9d2lvclgOoHY1W16C3k8GYS,iv:5/x9v4uZWuU+dEJ75fBVbtI1GW4Uw/UWeEJ842rHSqk=,tag:audnvNAhK2oNRpa2ql96PQ==,type:str]
     AIRFLOW_API_SERVICE_USERS: ENC[AES256_GCM,data:T8k=,iv:Gffs4oMIMrJzxF8LMl+l1uCAB3YZp3EJc6FpxTLiR3E=,tag:Cc90MSFSIGoOQe7MvWrbuw==,type:str]
 sops:
   encrypted_regex: ^(stringData|loadBalancerIP)$
-  lastmodified: "2026-11-11T12:16:06Z"
-  mac: ENC[AES256_GCM,data:x6cvTwKByF+jviA6VF0R/0WtbMHWqw9M3bIQVgJg7+96RwAFpRyyLFjbc7ZgpZa9+RP4fWi8pKMClIYh1U1nutViQydnk/LV0ZnsPAREmsnSiQgqoe9KNhKdoYr3yij3OD3WOnYpRoZxWrslMTClI2yK7f9/ikenNyIQRgjwKMw=,iv:bIlwjEcUVj98P8G3FF+yLD5GiVtmJoovZfDLZjLg5yY=,tag:9HlqUMVXNf1WvMte7XM2rw==,type:str]
+  lastmodified: "2026-11-12T10:56:11Z"
+  mac: ENC[AES256_GCM,data:rdM3EI2k3rT6m7a5nl8F4wF79jPiH4r9htR2fmKF2390W7PbLPUnBH3pR8xUZepw2nLrcXAkaMe2sZJN8R6oP8hYnpfyPziwKXWgtb4uXOLfa4FDSQKQiKa/iRk4McA9SWESFUFgwBHJwd12Gm2wxMB0GzPN0h7+is5jaHfr6Eo=,iv:yDVzOPQ/G362d/6zswCUGEApL3vOnWi52f52WXo1aMY=,tag:qr2mOi5zTXG7qc3xPYr68A==,type:str]
   mac_only_encrypted: true
   pgp:
     - created_at: "2026-08-23T14:15:52Z"
