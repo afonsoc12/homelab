@@ -20,7 +20,7 @@ Bambu Lab 3D printer management. Monitors print jobs, camera feed, and printer s
 
 <em><img src="https://cdn.simpleicons.org/k3s" style="height:1em;vertical-align:middle;margin-right:4px"> k3s-cluster · <code>homelab</code></em>
 
-Document management system. OCRs, tags, and indexes scanned documents; uses Gotenberg and Tika sidecars for office-file and email conversion.
+Document management system. OCRs, tags, and indexes scanned documents. Supports linking existing accounts to an OpenID Connect sign-in.
 
 [:octicons-book-16: Documentation](https://docs.paperless-ngx.com/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/paperless/values.sops.yaml)
 
@@ -52,7 +52,7 @@ Recipe manager and meal planner. Supports import from any URL, nutritional data,
 
 Self-hosted RSS aggregator. Consolidates feeds from blogs, news sites, and podcasts into a single interface.
 
-[:octicons-book-16: Documentation](https://freshrss.github.io/FreshRSS/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/freshrss/values.yaml)
+[:octicons-book-16: Documentation](https://freshrss.github.io/FreshRSS/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/freshrss/values.sops.yaml)
 
 ---
 

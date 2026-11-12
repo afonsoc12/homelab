@@ -52,9 +52,7 @@ secret:
         PAPERLESS_DBUSER: ENC[AES256_GCM,data:DFWydHKEXFc4,iv:XjpzI4HP3HC34xllqeg8lYcM1PRRik/tldS8cn9Gqbo=,tag:2wCQHsyno0VpuGyrZ1wrLA==,type:str]
         PAPERLESS_DBPASS: ENC[AES256_GCM,data:oh6J/tYiDw/11jTa3kl+0Jt2wpE=,iv:SRKNvPOTlFprZZyRaWE8PlQAgRbMMkIaxhHzMWOhb7Q=,tag:5xmp3rYjdQSgmOkiAp9/Cw==,type:str]
         PAPERLESS_SECRET_KEY: ENC[AES256_GCM,data:pAGFdg8mMA116ZLQX53xiEZI2Kks5q2BG8iczwevtDo/qdbYUtRB4tVj2DbMWfuS6T+rddy/hNvQAY6Syx5KYQ==,iv:d7bAnig2FXaRst0Gyc0D4i+iBHluos6HEzXfxt+rq0w=,tag:Lrh+3ct6o7yKKI4jxKljIg==,type:str]
-        PAPERLESS_ADMIN_USER: ENC[AES256_GCM,data:9VL8Z6Oh,iv:fFTMC3+RrY3fi/IjIXg0G0DOsPifa4YIKYvvUUJeQ4M=,tag:rUUOXwKv8aWY6qm1DgMHPA==,type:str]
-        PAPERLESS_ADMIN_PASSWORD: ENC[AES256_GCM,data:JmAr24jAlM4CfjS81OfOIaILuYY1FWFf,iv:qSgTDBB2Hk8DyVHK1wAfl0uKcrDIAXnsUF+d0vw3rGI=,tag:Ub4UcVh4h5vL/XiW3bQSpA==,type:str]
-        PAPERLESS_ADMIN_MAIL: ENC[AES256_GCM,data:ale4O+LXAJw4WmRCgdK//C0pmyiGH9RJ81c=,iv:Iq7Z7oeqXdOnx1U3dchFnuXEC7HyGD6Xx6kjZdgRsWw=,tag:mzPtXddnGbULIOGJyVPNBA==,type:str]
+        PAPERLESS_SOCIALACCOUNT_PROVIDERS: ENC[AES256_GCM,data:YPERhR0JvV7FzCXlHnX4ZoBi/ynmZEa4yDjG4pb0Cto/Y3klvNZG+GgB594HBwbsCB137NCUaIM9kp+mgzpF1rQdOqW2ASLFTPffT723rkjEYh+TAmqBUH9pzcsSsb+DA/NX4Rh9bayQEtsVHykIIl7p+BEkS/glIwDuCAWKIIQB90rVxyJnhyyLC6DJI26/33GYgmzCwGYwGwp6jlyWhbps5KmnJyeaOY95+Rgm6FR1XYgzRZ1CzdBeGKaWF2fhMt9bMkJ6pALN/TrkGf7ysHkXMSSe9cWvw3I3DYkLxbrZl9ygRO6jQv7Br3OcH0w3lycuooaWtp+iUoKpKSYuI23JLPGb0m5YO6FFhrBOTmpw1ExCUU9hJ4Lk+4uXyWZJn5w3bccrHms3lPMv5PlBMS+Xt9b1d4wmIVpya5D1pJ1i/vaFsPHSSfVCFrbzsUFnlxiXDzeW1HwvPiaEvto6/2kHm1PdwV07bhP8iA==,iv:EehADDWCdAN0UgsAbAfrOLQ5LPszZ5AYdbokFBAKz40=,tag:vtsDYpksWOQ9lE3adoQamw==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -69,6 +67,10 @@ configmap:
         PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
         PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
         PAPERLESS_CONSUMER_RECURSIVE: "true"
+        PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
+        PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: "false"
+        PAPERLESS_SOCIAL_AUTO_SIGNUP: "false"
+        PAPERLESS_SOCIAL_ACCOUNT_SYNC_GROUPS: "false"
 volumeMounts:
     - mountPath: /usr/src/paperless/data
       name: paperless
@@ -93,22 +95,21 @@ pvc:
         requests:
             storage: 10Gi
 ingress:
-  enabled: true
-  className: contour
-  tls:
-    - secretName: local-wildcard-cert
-  hosts:
-    - host: paperless.local.{{ .Values.domain }}
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: authentik-homelab-proxy
-            port: 9000
-  annotations:
-    ingress.kubernetes.io/force-ssl-redirect: 'true'
-    projectcontour.io/response-timeout: 60s
-
+    enabled: true
+    className: contour
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: paperless.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+              service:
+                name: authentik-homelab-proxy
+                port: 9000
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/response-timeout: 60s
 affinity:
     podAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
@@ -153,8 +154,8 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP)$
-    lastmodified: "2026-08-20T21:26:58Z"
-    mac: ENC[AES256_GCM,data:pbqoj/R0pIVH2fvy5to6IUjaVadZMfHqHTct9B1MtViHCLdCCaAZ2HZ6/gwF7SqLX/MKPpkJ4wNb6dyAMDgYe7RUFZOrvFmrywKbevClkHEdurknbWJOoIFjDFR94KDqKZxcvtKoQ9b4BJdUx6+rxK4Fohx+o9NnuW7V01rO8x4=,iv:t5+9rknWBHloCl8mU4pscWNw98frfDx5AkGezCA93VM=,tag:ZcmSoKpHLT/l60+o+pKQgA==,type:str]
+    lastmodified: "2026-11-12T11:04:39Z"
+    mac: ENC[AES256_GCM,data:hL66Saa7jpo+v1gwlLp6qO2Assg/gviGKfGlqrKqV5XLpk0aLX9WwH/NxdzyH5LR+7N2ofwityFwqRfKSjMgJTlfRpnKWb+scZ/Ap3BX4kXq1lCQq4wKySDhEw5tZt8Y2T49teVTA+lsCioNuM8BYa0ZcZslBWGV1KwS4rJJ8+U=,iv:TMgm0Lkg5IcVs0n3TOunc1BQ6EANcuwFbaKQfmyl5bU=,tag:61mvsEjJSeNUtWwf5a6RZg==,type:str]
     mac_only_encrypted: true
     pgp:
         - created_at: "2026-08-20T21:26:58Z"
