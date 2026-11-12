@@ -166,3 +166,19 @@ resource "authentik_flow" "recovery" {
   slug               = "homelab-recovery"
   title              = "Recovery"
 }
+
+# Verify an existing user's current email after normal password and MFA checks.
+# This flow is separate from normal login so a mail-delivery issue cannot lock
+# users out of their Authentik account.
+resource "authentik_flow" "email_verification" {
+  authentication     = "none"
+  background         = "/static/dist/assets/images/flow_background.jpg"
+  compatibility_mode = false
+  denied_action      = "message_continue"
+  designation        = "authentication"
+  layout             = "stacked"
+  name               = "Homelab - Email Verification"
+  policy_engine_mode = "all"
+  slug               = "homelab-email-verification"
+  title              = "Verify your email address"
+}
