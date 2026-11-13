@@ -1,0 +1,29 @@
+---
+name: Authentik policy checks
+
+on: # yamllint disable-line rule:truthy
+  pull_request:
+    paths:
+      - terraform/authentik/**
+      - tests/test_authentik_security.py
+      - .github/workflows/authentik-security.yaml
+  push:
+    branches:
+      - master
+    paths:
+      - terraform/authentik/**
+      - tests/test_authentik_security.py
+      - .github/workflows/authentik-security.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  policy-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Exercise security policies
+        run: python3 -m unittest discover -s tests -p test_authentik_security.py

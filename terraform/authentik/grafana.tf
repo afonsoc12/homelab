@@ -28,18 +28,26 @@ resource "authentik_provider_oauth2" "grafana" {
   client_type                = "confidential"
   grant_types                = ["authorization_code", "refresh_token"]
   access_code_validity       = "minutes=1"
-  access_token_validity      = "hours=1"
-  refresh_token_validity     = "days=30"
+  access_token_validity      = "minutes=5"
+  refresh_token_validity     = "hours=8"
   include_claims_in_id_token = true
-  allowed_redirect_uris      = jsondecode(data.sops_file.secrets.data["grafana_redirect_uris"])
+  allowed_redirect_uris      = local.oidc_redirect_uris["grafana"]
   signing_key                = data.sops_file.secrets.data["grafana_signing_key"]
   issuer_mode                = "per_provider"
   sub_mode                   = "hashed_user_id"
   property_mappings = [
     authentik_property_mapping_provider_scope.oidc_openid.id,
+    authentik_property_mapping_provider_scope.oidc_offline_access.id,
     authentik_property_mapping_provider_scope.oidc_email.id,
     authentik_property_mapping_provider_scope.oidc_profile.id,
   ]
+
+  lifecycle {
+    precondition {
+      condition     = local.oidc_redirects_safe["grafana"]
+      error_message = "OIDC callbacks must be nonempty, exact HTTPS URLs without wildcards, query strings or fragments."
+    }
+  }
 }
 
 resource "authentik_application" "grafana" {

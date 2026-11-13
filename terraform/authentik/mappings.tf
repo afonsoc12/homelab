@@ -7,7 +7,7 @@ resource "authentik_property_mapping_provider_scope" "oidc_entitlements" {
 
 resource "authentik_property_mapping_provider_scope" "oidc_email" {
   description = "Email address"
-  expression  = data.sops_file.secrets.data["value_033"]
+  expression  = local.oidc_verified_email_expression
   name        = "Homelab - OIDC Email"
   scope_name  = "email"
 }
@@ -35,7 +35,7 @@ resource "authentik_property_mapping_provider_scope" "proxy_outpost" {
 
 resource "authentik_property_mapping_provider_scope" "mealie_email_verified" {
   description = ""
-  expression  = data.sops_file.secrets.data["value_036"]
+  expression  = local.oidc_verified_email_expression
   name        = "Homelab - Mealie Email Verified"
   scope_name  = "email"
 }

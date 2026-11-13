@@ -64,13 +64,14 @@ resource "authentik_application" "uptime_kuma" {
 
 resource "authentik_provider_oauth2" "argo_cd" {
   access_code_validity       = "minutes=1"
-  access_token_validity      = "hours=12"
-  allowed_redirect_uris      = jsondecode(data.sops_file.secrets.data["value_010"])
+  access_token_validity      = "hours=1"
+  allowed_redirect_uris      = local.oidc_redirect_uris["argo_cd"]
+  authentication_flow        = authentik_flow.login_choice.uuid
   authorization_flow         = authentik_flow.provider_authorization.uuid
   client_id                  = data.sops_file.secrets.data["value_011"]
   client_secret              = data.sops_file.secrets.data["value_012"]
   client_type                = "confidential"
-  grant_types                = ["authorization_code", "implicit", "hybrid", "refresh_token", "client_credentials", "password", "urn:ietf:params:oauth:grant-type:device_code"]
+  grant_types                = ["authorization_code", "refresh_token"]
   include_claims_in_id_token = true
   invalidation_flow          = authentik_flow.provider_logout.uuid
   issuer_mode                = "per_provider"
@@ -81,20 +82,28 @@ resource "authentik_provider_oauth2" "argo_cd" {
   name                       = "ArgoCD"
   property_mappings          = [authentik_property_mapping_provider_scope.oidc_openid.id, authentik_property_mapping_provider_scope.oidc_email.id, authentik_property_mapping_provider_scope.oidc_profile.id]
   refresh_token_threshold    = "seconds=0"
-  refresh_token_validity     = "days=30"
+  refresh_token_validity     = "hours=8"
   signing_key                = authentik_certificate_key_pair.signing.id
   sub_mode                   = "hashed_user_id"
+
+  lifecycle {
+    precondition {
+      condition     = local.oidc_redirects_safe["argo_cd"]
+      error_message = "OIDC callbacks must be nonempty, exact HTTPS URLs without wildcards, query strings or fragments."
+    }
+  }
 }
 
 resource "authentik_provider_oauth2" "mealie" {
   access_code_validity       = "minutes=1"
   access_token_validity      = "minutes=5"
-  allowed_redirect_uris      = jsondecode(data.sops_file.secrets.data["value_013"])
+  allowed_redirect_uris      = local.oidc_redirect_uris["mealie"]
+  authentication_flow        = authentik_flow.login_choice.uuid
   authorization_flow         = authentik_flow.provider_authorization.uuid
   client_id                  = data.sops_file.secrets.data["value_014"]
   client_secret              = data.sops_file.secrets.data["value_015"]
   client_type                = "confidential"
-  grant_types                = ["authorization_code", "hybrid", "implicit", "client_credentials", "password", "urn:ietf:params:oauth:grant-type:device_code", "refresh_token"]
+  grant_types                = ["authorization_code", "refresh_token"]
   include_claims_in_id_token = true
   invalidation_flow          = authentik_flow.provider_logout.uuid
   issuer_mode                = "per_provider"
@@ -105,20 +114,28 @@ resource "authentik_provider_oauth2" "mealie" {
   name                       = "Mealie"
   property_mappings          = [authentik_property_mapping_provider_scope.mealie_email_verified.id, authentik_property_mapping_provider_scope.oidc_profile.id]
   refresh_token_threshold    = "seconds=0"
-  refresh_token_validity     = "days=30"
+  refresh_token_validity     = "hours=8"
   signing_key                = authentik_certificate_key_pair.signing.id
   sub_mode                   = "hashed_user_id"
+
+  lifecycle {
+    precondition {
+      condition     = local.oidc_redirects_safe["mealie"]
+      error_message = "OIDC callbacks must be nonempty, exact HTTPS URLs without wildcards, query strings or fragments."
+    }
+  }
 }
 
 resource "authentik_provider_oauth2" "node_red" {
   access_code_validity       = "minutes=1"
   access_token_validity      = "minutes=5"
-  allowed_redirect_uris      = jsondecode(data.sops_file.secrets.data["value_016"])
+  allowed_redirect_uris      = local.oidc_redirect_uris["node_red"]
+  authentication_flow        = authentik_flow.login_choice.uuid
   authorization_flow         = authentik_flow.provider_authorization.uuid
   client_id                  = data.sops_file.secrets.data["value_017"]
   client_secret              = data.sops_file.secrets.data["value_018"]
   client_type                = "confidential"
-  grant_types                = ["authorization_code", "hybrid", "implicit", "client_credentials", "password", "urn:ietf:params:oauth:grant-type:device_code", "refresh_token"]
+  grant_types                = ["authorization_code", "refresh_token"]
   include_claims_in_id_token = true
   invalidation_flow          = authentik_flow.provider_logout.uuid
   issuer_mode                = "per_provider"
@@ -129,9 +146,16 @@ resource "authentik_provider_oauth2" "node_red" {
   name                       = "Node-RED"
   property_mappings          = [authentik_property_mapping_provider_scope.oidc_openid.id, authentik_property_mapping_provider_scope.oidc_email.id, authentik_property_mapping_provider_scope.oidc_profile.id]
   refresh_token_threshold    = "seconds=0"
-  refresh_token_validity     = "days=30"
+  refresh_token_validity     = "hours=8"
   signing_key                = authentik_certificate_key_pair.signing.id
   sub_mode                   = "hashed_user_id"
+
+  lifecycle {
+    precondition {
+      condition     = local.oidc_redirects_safe["node_red"]
+      error_message = "OIDC callbacks must be nonempty, exact HTTPS URLs without wildcards, query strings or fragments."
+    }
+  }
 }
 
 resource "authentik_provider_proxy" "uptime_kuma" {
