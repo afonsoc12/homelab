@@ -8,7 +8,9 @@ locals {
   # Reject unsafe encrypted configuration without printing its values in errors.
   oidc_redirects_safe = { for app, uris in local.oidc_redirect_uris : app => (
     length(uris) > 0 && alltrue([for uri in uris :
-      try(uri.matching_mode == "strict" && startswith(uri.url, "https://") && length(regexall("[*?#@[:space:]]", uri.url)) == 0, false)
+      # Argo CD's local CLI listener is the sole HTTP exception. Match its
+      # complete callback exactly; never permit arbitrary localhost redirects.
+      try(uri.matching_mode == "strict" && (startswith(uri.url, "https://") || (app == "argo_cd" && uri.url == "http://localhost:8085/auth/callback")) && length(regexall("[*?#@[:space:]]", uri.url)) == 0, false)
     ])
   ) }
 

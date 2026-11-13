@@ -89,7 +89,7 @@ resource "authentik_provider_oauth2" "argo_cd" {
   lifecycle {
     precondition {
       condition     = local.oidc_redirects_safe["argo_cd"]
-      error_message = "OIDC callbacks must be nonempty, exact HTTPS URLs without wildcards, query strings or fragments."
+      error_message = "OIDC callbacks must be exact HTTPS URLs or the fixed local CLI callback, without wildcards, query strings or fragments."
     }
   }
 }
