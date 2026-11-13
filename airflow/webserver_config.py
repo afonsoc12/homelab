@@ -20,8 +20,6 @@ OAUTH_PROVIDERS = [
             "client_kwargs": {
                 "scope": "openid profile",
                 "code_challenge_method": "S256",
-                "verify_signature": True,
-                "issuer": ISSUER,
             },
         },
     },

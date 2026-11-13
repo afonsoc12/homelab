@@ -113,11 +113,11 @@ ingress:
         projectcontour.io/response-timeout: 60s
 resources:
     requests:
-        cpu: 100m
-        memory: 256Mi
-    limits:
         cpu: 500m
         memory: 1Gi
+    limits:
+        cpu: "2"
+        memory: 4Gi
 livenessProbe:
     httpGet:
         path: /api/v2/monitor/health
@@ -141,97 +141,21 @@ startupProbe:
     failureThreshold: 30
     timeoutSeconds: 5
 args:
-    - airflow
-    - api-server
-    - --proxy-headers
-initContainers:
-    - name: migrate
-      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-      args:
-        - airflow
-        - db
-        - migrate
-      envFrom:
-        - configMapRef:
-            name: '{{ include "homelab-svc.fullname" . }}'
-        - secretRef:
-            name: '{{ include "homelab-svc.fullname" . }}'
-      volumeMounts:
-        - name: data
-          mountPath: /data
-        - name: secrets
-          mountPath: /var/run/secrets/airflow
-          readOnly: true
-additionalContainers:
-    - name: scheduler
-      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-      args:
-        - airflow
-        - scheduler
-      envFrom:
-        - configMapRef:
-            name: '{{ include "homelab-svc.fullname" . }}'
-        - secretRef:
-            name: '{{ include "homelab-svc.fullname" . }}'
-      volumeMounts:
-        - name: data
-          mountPath: /data
-        - name: secrets
-          mountPath: /var/run/secrets/airflow
-          readOnly: true
-      resources:
-        requests:
-            cpu: 250m
-            memory: 512Mi
-        limits:
-            cpu: "1"
-            memory: 2Gi
-    - name: dag-processor
-      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-      args:
-        - airflow
-        - dag-processor
-      envFrom:
-        - configMapRef:
-            name: '{{ include "homelab-svc.fullname" . }}'
-        - secretRef:
-            name: '{{ include "homelab-svc.fullname" . }}'
-      volumeMounts:
-        - name: data
-          mountPath: /data
-        - name: secrets
-          mountPath: /var/run/secrets/airflow
-          readOnly: true
-      resources:
-        requests:
-            cpu: 100m
-            memory: 128Mi
-        limits:
-            cpu: 250m
-            memory: 768Mi
-    - name: triggerer
-      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-      args:
-        - airflow
-        - triggerer
-      envFrom:
-        - configMapRef:
-            name: '{{ include "homelab-svc.fullname" . }}'
-        - secretRef:
-            name: '{{ include "homelab-svc.fullname" . }}'
-      volumeMounts:
-        - name: data
-          mountPath: /data
-        - name: secrets
-          mountPath: /var/run/secrets/airflow
-          readOnly: true
-      resources:
-        requests:
-            cpu: 50m
-            memory: 128Mi
-        limits:
-            cpu: 250m
-            memory: 256Mi
+    - bash
+    - -euc
+    - |
+        airflow db migrate
+        children=()
+        stop() { kill -TERM "${children[@]}" 2>/dev/null || true; wait || true; }
+        trap stop EXIT
+        trap 'exit 143' TERM
+        trap 'exit 130' INT
+        airflow scheduler & children+=("$!")
+        airflow dag-processor & children+=("$!")
+        airflow triggerer & children+=("$!")
+        airflow api-server --proxy-headers & children+=("$!")
+        wait -n "${children[@]}"
+        exit 1
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP)$
     lastmodified: "2026-11-13T23:12:56Z"

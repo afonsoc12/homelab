@@ -391,7 +391,6 @@ repoServer:
     volumes:
         - name: gitops-tools
           emptyDir: {}
-        # kubectl create secret generic homelab-sops-gpg --from-file=sops.asc=assets/gpg/private2.gpg
         - name: homelab-sops-gpg
           secret:
             secretName: ENC[AES256_GCM,data:Dp+YOKfaudsXqySBOHb4GQ==,iv:wC9fMMhW6SVPSaKFXf5Ocv6Yt/CiGwuEQT/jAdlwMPw=,tag:NnnVOlVLh56Aq12ySgwwhQ==,type:str]

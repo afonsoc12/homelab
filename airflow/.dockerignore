@@ -5,7 +5,6 @@ local-secrets/
 .pytest_cache/
 data/
 .venv/
-**/.venv/
 .git/
 .gitignore
 tests/
