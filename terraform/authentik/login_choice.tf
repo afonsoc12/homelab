@@ -41,6 +41,7 @@ locals {
         <span class="hl-login-copy"><span class="hl-login-name">Log in with Plex</span><span class="hl-login-detail">Continue with your Plex account</span></span>
         <span class="hl-login-arrow" aria-hidden="true">&#8250;</span>
       </a>
+      <a href="/if/flow/${authentik_flow.recovery.slug}/">Forgot your password?</a>
       <span class="hl-login-security"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Protected with two-factor authentication</span>
     </span>
   HTML

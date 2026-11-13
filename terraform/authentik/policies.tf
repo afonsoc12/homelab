@@ -13,21 +13,21 @@ resource "authentik_policy_expression" "account_authorization" {
 }
 
 resource "authentik_policy_password" "password_change" {
-  amount_digits           = 0
-  amount_lowercase        = 0
-  amount_symbols          = 0
-  amount_uppercase        = 0
-  check_have_i_been_pwned = false
+  amount_digits           = 1
+  amount_lowercase        = 1
+  amount_symbols          = 1
+  amount_uppercase        = 1
+  check_have_i_been_pwned = true
   check_static_rules      = true
   check_zxcvbn            = true
-  error_message           = "Password needs to be 8 characters or longer."
+  error_message           = "Use at least 15 characters with uppercase, lowercase, a number and a symbol. Common, predictable and breached passwords are rejected."
   execution_logging       = false
   hibp_allowed_count      = 0
-  length_min              = 8
+  length_min              = 15
   name                    = "Homelab - Password Change"
   password_field          = "password" # Prompt field name. gitleaks:allow
   symbol_charset          = "!\\\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
-  zxcvbn_score_threshold  = 2
+  zxcvbn_score_threshold  = 3
 }
 
 resource "authentik_policy_password" "password_requirements" {
@@ -38,14 +38,14 @@ resource "authentik_policy_password" "password_requirements" {
   check_have_i_been_pwned = true
   check_static_rules      = true
   check_zxcvbn            = true
-  error_message           = ""
+  error_message           = "Use at least 15 characters with uppercase, lowercase, a number and a symbol. Common, predictable and breached passwords are rejected."
   execution_logging       = false
   hibp_allowed_count      = 0
-  length_min              = 12
+  length_min              = 15
   name                    = "Homelab - Password Requirements"
   password_field          = "password" # Prompt field name. gitleaks:allow
   symbol_charset          = "!\\\"#$%&'()*+,-./:;<=>?@[]^_`{|}~"
-  zxcvbn_score_threshold  = 2
+  zxcvbn_score_threshold  = 3
 }
 
 resource "authentik_policy_event_matcher" "event_configuration_error" {

@@ -40,7 +40,7 @@ resource "authentik_stage_authenticator_validate" "login_mfa_validation" {
   totp_otp_throttling_factor    = 1
   webauthn_allowed_device_types = []
   webauthn_hints                = []
-  webauthn_user_verification    = "preferred"
+  webauthn_user_verification    = "required"
 }
 
 resource "authentik_stage_authenticator_webauthn" "mfa_webauthn_setup" {
@@ -51,7 +51,7 @@ resource "authentik_stage_authenticator_webauthn" "mfa_webauthn_setup" {
   max_attempts             = 0
   name                     = "Homelab - MFA WebAuthn Setup"
   resident_key_requirement = "preferred"
-  user_verification        = "preferred"
+  user_verification        = "required"
 }
 
 resource "authentik_stage_consent" "provider_authorization_consent" {
@@ -61,21 +61,32 @@ resource "authentik_stage_consent" "provider_authorization_consent" {
 }
 
 resource "authentik_stage_email" "recovery_email" {
-  activate_user_on_success = true
+  activate_user_on_success = false
   from_address             = data.sops_file.secrets.data["value_055"]
   host                     = "localhost"
-  name                     = "Homelab - Recovery Email"
+  name                     = "Homelab - Verified Recovery Email"
   port                     = 25
   recovery_cache_timeout   = "minutes=30"
   recovery_max_attempts    = 3
   subject                  = "Password Recovery authentik"
   template                 = "email/password_reset.html"
   timeout                  = 10
-  token_expiry             = "minutes=30"
+  token_expiry             = "minutes=15"
   use_global_settings      = true
   use_ssl                  = false
   use_tls                  = false
   username                 = ""
+
+  # Provider 2026.8.2 omits false activate_user_on_success values on update.
+  # Replace legacy stages with activation enabled; create the new stage before
+  # rebinding the flow and deleting the old stage. New stages default to false.
+  lifecycle {
+    create_before_destroy = true
+    postcondition {
+      condition     = self.activate_user_on_success == false
+      error_message = "Recovery email verification must not reactivate disabled accounts."
+    }
+  }
 }
 
 resource "authentik_stage_identification" "login_identification" {
@@ -88,7 +99,7 @@ resource "authentik_stage_identification" "login_identification" {
   passwordless_flow         = ""
   pretend_user_exists       = true
   recovery_flow             = authentik_flow.recovery.uuid
-  show_matched_user         = true
+  show_matched_user         = false
   show_source_labels        = false
   sources                   = []
   user_fields               = ["email", "username"]
@@ -105,7 +116,7 @@ resource "authentik_stage_identification" "recovery_authentication_identificatio
   passwordless_flow         = ""
   pretend_user_exists       = true
   recovery_flow             = ""
-  show_matched_user         = true
+  show_matched_user         = false
   show_source_labels        = false
   sources                   = []
   user_fields               = ["username", "email"]
@@ -119,7 +130,7 @@ resource "authentik_stage_invitation" "invitation_enrollment" {
 
 resource "authentik_stage_password" "login_password" {
   allow_show_password           = false
-  backends                      = ["authentik.core.auth.InbuiltBackend", "authentik.sources.kerberos.auth.KerberosBackend", "authentik.sources.ldap.auth.LDAPBackend", "authentik.core.auth.TokenBackend"]
+  backends                      = ["authentik.core.auth.InbuiltBackend"]
   configure_flow                = authentik_flow.password_change.uuid
   failed_attempts_before_cancel = 5
   name                          = "Homelab - Login Password"
@@ -128,7 +139,7 @@ resource "authentik_stage_password" "login_password" {
 resource "authentik_stage_prompt" "password_change_prompt" {
   fields              = [authentik_stage_prompt_field.password_change_password.id, authentik_stage_prompt_field.password_change_password_repeat.id]
   name                = "Homelab - Password Change Prompt"
-  validation_policies = [authentik_policy_password.password_change.id]
+  validation_policies = [authentik_policy_password.password_change.id, authentik_policy_expression.password_not_current.id]
 }
 
 resource "authentik_stage_prompt" "source_enrollment_prompt" {
@@ -138,7 +149,9 @@ resource "authentik_stage_prompt" "source_enrollment_prompt" {
 }
 
 resource "authentik_stage_prompt" "user_settings" {
-  fields              = [authentik_stage_prompt_field.account_username.id, authentik_stage_prompt_field.account_name.id, authentik_stage_prompt_field.account_locale.id, authentik_stage_prompt_field.account_email.id]
+  # Recovery addresses require administrator review until a dedicated address
+  # change flow verifies the new inbox before persisting it.
+  fields              = [authentik_stage_prompt_field.account_username.id, authentik_stage_prompt_field.account_name.id, authentik_stage_prompt_field.account_locale.id]
   name                = "Homelab - User Settings"
   validation_policies = [authentik_policy_expression.account_authorization.id]
 }
@@ -147,9 +160,9 @@ resource "authentik_stage_user_login" "login_login" {
   geoip_binding            = "no_binding"
   name                     = "Homelab - Login Login"
   network_binding          = "no_binding"
-  remember_device          = "days=30"
+  remember_device          = "seconds=0"
   remember_me_offset       = "seconds=0"
-  session_duration         = "weeks=1"
+  session_duration         = "hours=8"
   terminate_other_sessions = false
 }
 

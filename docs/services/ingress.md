@@ -12,6 +12,8 @@ Traffic routing, VPN, DNS filtering, identity, and authentication.
 
 Identity provider for single sign-on and multi-factor authentication, with [Plex social login](https://docs.goauthentik.io/users-sources/sources/social-logins/plex/) and administrator-issued [invitations](https://docs.goauthentik.io/users-sources/user/invitations/). Supports native application integrations and [proxy protection](https://docs.goauthentik.io/add-secure-apps/providers/proxy/) for applications without built-in login. Supports [machine-to-machine authentication](https://docs.goauthentik.io/add-secure-apps/providers/oauth2/machine_to_machine/) for automation. Provides an [application dashboard](https://docs.goauthentik.io/add-secure-apps/applications/manage_apps/) with visual categories and separate user/group access bindings.
 
+Security reference: [Authentik hardening](https://docs.goauthentik.io/security/security-hardening/) and [OAuth 2.0 Security Best Current Practice](https://www.rfc-editor.org/rfc/rfc9700.html).
+
 [:octicons-book-16: Documentation](https://docs.goauthentik.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authentik/values.sops.yaml)
 
 ---
