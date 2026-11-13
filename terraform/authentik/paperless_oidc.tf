@@ -51,7 +51,7 @@ resource "authentik_group" "paperless_oidc" {
   parents      = []
   roles        = []
 
-  users = local.homelab_user_mappings.members.paperless
+  users = jsondecode(data.sops_file.secrets.data["paperless.oidc_user_ids"])
 }
 
 resource "authentik_policy_binding" "paperless_oidc" {

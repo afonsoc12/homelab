@@ -8,6 +8,17 @@ locals {
   airflow_oidc        = local.airflow_oidc_values.secret.stringData
 }
 
+resource "authentik_property_mapping_provider_scope" "airflow_profile" {
+  name       = "Airflow Existing Account"
+  scope_name = "profile"
+  expression = <<-EOT
+    import json
+    accounts = json.loads(${jsonencode(data.sops_file.secrets.data["airflow.oidc_accounts"])})
+    username = accounts.get(str(request.user.pk), "")
+    return {"nickname": username, "preferred_username": username}
+  EOT
+}
+
 resource "authentik_provider_oauth2" "airflow_oidc" {
   name                       = "Airflow Native OIDC"
   authentication_flow        = authentik_flow.login_choice.uuid
@@ -26,10 +37,13 @@ resource "authentik_provider_oauth2" "airflow_oidc" {
     redirect_uri_type = "authorization"
     url               = "https://airflow.local.${local.apps_domain}/auth/oauth-authorized/authentik"
   }]
-  signing_key       = authentik_certificate_key_pair.signing.id
-  issuer_mode       = "per_provider"
-  sub_mode          = "hashed_user_id"
-  property_mappings = [authentik_property_mapping_provider_scope.oidc_openid.id]
+  signing_key = authentik_certificate_key_pair.signing.id
+  issuer_mode = "per_provider"
+  sub_mode    = "hashed_user_id"
+  property_mappings = [
+    authentik_property_mapping_provider_scope.oidc_openid.id,
+    authentik_property_mapping_provider_scope.airflow_profile.id,
+  ]
 }
 
 resource "authentik_application" "airflow_oidc" {

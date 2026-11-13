@@ -20,7 +20,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - secrets://../../apps/homelab/freshrss/values.sops.yaml
+        - ../../apps/homelab/freshrss/values.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: homelab

@@ -28,18 +28,6 @@ resource "authentik_policy_binding" "access_node_red" {
   timeout        = 30
 }
 
-# The application uses "any" policy evaluation. Keep existing administrators
-# and permit the explicitly mapped household viewer without granting admin.
-resource "authentik_policy_binding" "access_node_red_household" {
-  enabled        = true
-  failure_result = false
-  negate         = false
-  order          = 1
-  target         = authentik_application.node_red.uuid
-  timeout        = 30
-  user           = tonumber(data.sops_file.secrets.data["node_red.oidc_household_user_id"])
-}
-
 resource "authentik_policy_binding" "notification_policy_exception" {
   enabled        = true
   failure_result = false

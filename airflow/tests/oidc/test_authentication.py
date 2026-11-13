@@ -1,4 +1,4 @@
-"""Integration tests for browser login, machine API access and account migration."""
+"""Exercise stock FAB browser login and preserve existing account permissions."""
 
 import json
 import os
@@ -54,7 +54,11 @@ def browser_login(client, subject, issuer=ISSUER, audience=CLIENT_ID, *, nonce=N
             verifier = parse_qs(data)["code_verifier"] if isinstance(data, str) else data["code_verifier"]
             assert verifier
             now = int(time.time())
+            username = {"synthetic-subject": "rehearsal-viewer", "synthetic-owner": "rehearsal-owner"}.get(subject, "")
             claims = {
+                "nickname": username,
+                "preferred_username": username,
+                "groups": ["untrusted-admin-role"],
                 "iss": issuer,
                 "sub": subject,
                 "aud": audience,
@@ -88,31 +92,19 @@ def browser_login(client, subject, issuer=ISSUER, audience=CLIENT_ID, *, nonce=N
         return "/login" not in result.headers["location"]
 
 
-def test_browser_and_machine_auth_preserve_account_identity_and_permissions():
+def test_stock_oidc_preserves_account_identity_and_permissions():
     from airflow.providers.fab.auth_manager.models import User
 
     before = existing_users()
     with TestClient(create_app(), base_url="https://testserver") as client:
         assert client.get("/api/v2/dags").status_code == 401
         assert client.get("/auth/token").status_code in (404, 405)
-        for username, password in (("rehearsal-viewer", "synthetic-value"), ("rehearsal-machine", "wrong-value")):
+        for username, password in (("rehearsal-viewer", "synthetic-value"), ("rehearsal-owner", "wrong-value")):
             assert client.post("/auth/token", json={"username": username, "password": password}).status_code == 401
 
-        # FAB supports email-based password lookup; machine allowlists must not.
-        with patch.dict(os.environ, {"AIRFLOW_API_SERVICE_USERS": '["machine-alias@synthetic"]'}):
-            assert (
-                client.post("/auth/token", json={"username": "machine-alias@synthetic", "password": "synthetic-value"}).status_code == 401
-            )
-
-        machine = client.post("/auth/token", json={"username": "rehearsal-machine", "password": "synthetic-value"})
-        assert machine.status_code == 201
-        headers = {"Authorization": "Bearer " + machine.json()["access_token"]}
-        assert client.get("/api/v2/dags", headers=headers).status_code == 200
-        assert client.post("/api/v2/variables", json={"key": "rehearsal-denied", "value": "synthetic"}, headers=headers).status_code == 403
-
-        with create_session() as session:
-            session.query(User).filter_by(username="rehearsal-machine").one().active = False
-        assert client.post("/auth/token", json={"username": "rehearsal-machine", "password": "synthetic-value"}).status_code == 401
+        # Stock FAB never issues password tokens when AUTH_TYPE is OAuth.
+        for username in ("rehearsal-viewer", "rehearsal-owner", "unknown-user"):
+            assert client.post("/auth/token", json={"username": username, "password": "synthetic-value"}).status_code == 401
 
         assert browser_login(client, "synthetic-subject")
         assert client.get("/api/v2/dags").status_code == 200
@@ -130,23 +122,6 @@ def test_browser_and_machine_auth_preserve_account_identity_and_permissions():
             session.query(User).filter_by(username="rehearsal-viewer").one().active = True
         assert existing_users() == before
 
-        from airflow.providers.fab.auth_manager.cli_commands.utils import get_application_builder
-        from rename_admin import rename_admin
-
-        with get_application_builder() as builder:
-            owner = builder.sm.add_user(
-                "admin", "Synthetic", "Owner", "owner@synthetic", builder.sm.find_role("Admin"), password="synthetic-value"
-            )
-            assert owner is not None
-            owner_id = owner.id
-        rename = {"id": owner_id, "from": "admin", "to": "rehearsal-owner"}
-        assert rename_admin(rename) == "ready"
-        assert "admin" in existing_users() and "rehearsal-owner" not in existing_users()
-        assert rename_admin(rename, apply=True) == "renamed"
-        assert rename_admin(rename, apply=True) == "already-renamed"
-        assert "admin" not in existing_users()
-        assert existing_users()["rehearsal-owner"] == (owner_id, ("Admin",))
-        for name, identity in before.items():
-            assert existing_users()[name] == identity
         assert browser_login(client, "synthetic-owner")
         assert client.post("/api/v2/variables", json={"key": "rehearsal-owner-write", "value": "synthetic"}).status_code == 201
+        assert existing_users() == before

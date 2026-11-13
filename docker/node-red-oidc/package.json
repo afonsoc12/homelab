@@ -1,8 +1,0 @@
-{
-  "name": "homelab-node-red-oidc",
-  "private": true,
-  "version": "1.0.0",
-  "dependencies": {
-    "openid-client": "6.8.2"
-  }
-}

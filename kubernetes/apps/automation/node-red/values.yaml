@@ -1,0 +1,111 @@
+# --------------------
+# Node-RED
+#   - Repo:           https://github.com/node-red/node-red
+#   - Docs:           https://nodered.org/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
+---
+replicas: 1
+revisionHistoryLimit: 0
+strategy:
+  type: Recreate
+
+image:
+  repository: docker.io/nodered/node-red
+  tag: 5.0.9
+  pullPolicy: Always
+
+hostNetwork: true
+
+ports:
+  - containerPort: 1880
+    name: http
+    protocol: TCP
+    service: true
+
+# Uses ports from .ports section, if service is true
+service:
+  enabled: true
+
+volumeMounts:
+  - name: data
+    mountPath: /data
+
+volumes:
+  - name: data
+    mountPvc: true
+# - name: ssh-keys
+#   secret:
+#     defaultMode: 256
+#     secretName: ssh-keys-secret
+
+pvc:
+  storageClassName: longhorn-persistent
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+
+ingress:
+  enabled: true
+  className: contour
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: node-red.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: authentik-automation-proxy
+            port: 9000
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 60s
+    projectcontour.io/websocket-routes: /
+
+podSecurityContext:
+  fsGroup: 1000
+
+nodeSelector:
+  kubernetes.io/hostname: k3s-m1
+
+tolerations: []
+
+affinity: {}
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 192Mi
+  requests:
+    cpu: 50m
+    memory: 96Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 1880
+    host: "127.0.0.1"
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /
+    host: "127.0.0.1"
+    port: 1880
+  periodSeconds: 10
+  failureThreshold: 3
+  timeoutSeconds: 30
+
+startupProbe:
+  httpGet:
+    path: /
+    host: "127.0.0.1"
+    port: 1880
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 18
+  timeoutSeconds: 30

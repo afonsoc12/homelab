@@ -52,7 +52,7 @@ Recipe manager and meal planner. Supports import from any URL, nutritional data,
 
 Self-hosted RSS aggregator. Consolidates feeds from blogs, news sites, and podcasts into a single interface.
 
-[:octicons-book-16: Documentation](https://freshrss.github.io/FreshRSS/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/freshrss/values.sops.yaml)
+[:octicons-book-16: Documentation](https://freshrss.github.io/FreshRSS/) &nbsp;·&nbsp; [:octicons-file-code-16: values.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/homelab/freshrss/values.yaml)
 
 ---
 

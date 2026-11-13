@@ -50,21 +50,18 @@ service:
 secret:
     mountEnv: true
     stringData:
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:QpfLEil4Vfw7kgg+Vtn71CPqcpo97bJ6cZodp7a5P5e9DDIMOHOMucMzd26o1WbFcui7I9Fl7qdqewC4ge7jshTeyo/M3rssP5v3ZUQlBnAIFeFHvds=,iv:x9neKZXe0eLLs7QQFBF3E9O1kf0GR9G86inT/UXPpG4=,tag:tkU+78EXiPLjPuHolA7f3A==,type:str]
-        AIRFLOW__API__SECRET_KEY: ENC[AES256_GCM,data:nUMh07P6bN7+0279tmXVo1Ldfwi1KAVrC+DEVzFRFtP7QLD6AmTxL21nswP6AiP+kNhb+sggAKrVcKBYMoWcAA==,iv:6jK7R44ydgPB33n9g/ZDhKKERC1KkgP8Er5OegyeVUU=,tag:GnZN++eLJYDVEglCf3wJZw==,type:str]
-        AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:DjtxtaRqYdCksj7F2pPZ9MGtc2YluW0b4+udcOTZB1MmoQEDOcI9AfWWRFmXyRaRXbYv6D4qtZodk+qG7AvLIw==,iv:uK7x9E+H2dJFM7WumUQ6a10x6/ZbpKUNKX5m7cU8jVU=,tag:XFxyO72I1RNN+Mneads8sw==,type:str]
-        AIRFLOW__API__BASE_URL: ENC[AES256_GCM,data:HwlfOUUY2zdaaQsEShQL37O1jAIAg51gQ6V4wzyXT+/nqjY=,iv:4QRi2SPpXRacYt93oZv8yc59emu6QBkXFA4oj6eRv4k=,tag:CKFyg2TutYIeWFiTSIW4nw==,type:str]
-        AIRFLOW_OIDC_ISSUER: ENC[AES256_GCM,data:bgb6XNPxQF/jIPyqsLJkfoAeqj0qxu4kAGNGJm6Uy0K48DJEyW6XCzqa4wdDcNT1,iv:iyKoBWG8GLMvU1Cm0eW6hF9DUN9ekPnjW57I2PlqoME=,tag:st59DvppfODv4c21rR4/Ag==,type:str]
-        AIRFLOW_OIDC_CLIENT_ID: ENC[AES256_GCM,data:mEw9gCBoaCDb2CV7KOI=,iv:E44hOqfd9sn8yiYUNWuEqxgpuj66JHxKVZ13ALGeADI=,tag:COc7xBhbBoshXDFtJ2jsDQ==,type:str]
-        AIRFLOW_OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:OY3ZBqOuRCt3Us9rkpUDgi7UdR4yl4c6UTFPJYVonw7jDPQx5ffvmDzhfJoW2LHYvbzT6CSyLPfDz9KUrvReYw==,iv:3UXYoBtWdEUvFgvIyWIivo89h1bMpfOKDZdaW42NeVE=,tag:TojV6m73wCp5Y8gmDJzhIA==,type:str]
-        AIRFLOW_OIDC_SUBJECT_USERS: ENC[AES256_GCM,data:O0hie9biudht3FXq9aMWEtEukEfbABWKyiFoode0R/zJPwyIckHbIxwOIii0co+1X1nmqJYzDdODDFR6yoq9p7accArdvcbpTsXBjjPH,iv:OMgEBSFhEKjrnI+Ubb3cbdT5oodzG5MGwlU1q7d9VWw=,tag:OOtgg8x6fxfm4vvG+UZHtA==,type:str]
-        AIRFLOW_API_SERVICE_USERS: ENC[AES256_GCM,data:4GU=,iv:U5XxqR5ZSk5VfXmro1QFJNaFFwbxKAQ59tBB2P99ar0=,tag:/NycsJpG5vPhT3I83XCebQ==,type:str]
-        AIRFLOW_OIDC_ACCOUNT_RENAME: ENC[AES256_GCM,data:LTpg2WaAdtTkXq/HL2xgiA67qFggoT1FP/Rh/43dp0moFvD0dIqYxeM9,iv:6aJlRBxJ05vES3Pj07aSH1NDRxAGBSxik+6bRFu82oI=,tag:TqY9WGijaaC2RQuCPNDjVw==,type:str]
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:4ig8vwa4Z7v3KMDA5cD1HBr8tXGJ2/pRoFGla3T5Bcj3QXH+of5eTjkdA0Ppd1mzIUOgXwKdES3PBAG3uCzMpFO1MwNrkqOwvQyyR6YZhMi7OZmz36o=,iv:zX+ZonL7EumjLVO65KXMPiLoANbYzKoG6tJtZmFTFiY=,tag:sGLiEez+Vx+z/ln/fItBmg==,type:str]
+        AIRFLOW__API__SECRET_KEY: ENC[AES256_GCM,data:Tdhu/bDEjS3Lytv8ZtuN3kka6kKoRZe3b3RmQuof+RKoPL2QNZ7Z1jUkvDPg1DxCGB789FEFcM17S+L+ow0cSg==,iv:yMLqZZt+dHUWT18l5Sm0zZCQLPjUhVO2MbeecNoVfC8=,tag:4gcVGX3YHyivPq/IiaNuMQ==,type:str]
+        AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:UBV20pvwvRsdJb/k8uXgidWyn7pAMuNFCgvmTz1Rd2zT+Smq0TxRFQANDKN4sbToP+tDoFKPmpo0G7+x0sKMYA==,iv:HTwTck9dYdgoByRhgJ/4sdEdf2dA4lfSBjDzs/ZJFME=,tag:bSD8D/WMvU5LRuU+0B4jjw==,type:str]
+        AIRFLOW__API__BASE_URL: ENC[AES256_GCM,data:gvy88LYP6QvFm/IuS7GK12Tt0KIYvMoal56g3FIosxadUi4=,iv:lsztdxPgmkKXtz292hzlbCrbPjlXLhKQ3pIwQtNVAlM=,tag:4TnMovzKbmEMnlP7QMjZdA==,type:str]
+        AIRFLOW_OIDC_ISSUER: ENC[AES256_GCM,data:b3Tug/sMHr+/LzdXkEw5TXl6EP1Isr0sFzMrkOf9tdWbeFZ3pU6uT1stukIZ93ho,iv:RACf2yZONAWGs21T74hxtfsIVc96Uw5VAyBX95FPDGk=,tag:7YQZHv+9GUhYUewPpO8Jcw==,type:str]
+        AIRFLOW_OIDC_CLIENT_ID: ENC[AES256_GCM,data:j/DEpIAohV0He2AeACo=,iv:iN8INF9StpZHInPUw9vFKyELq022n7famsVq2AMWRJk=,tag:GNCqwks6Yp8Ibna9ihX2eQ==,type:str]
+        AIRFLOW_OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:e0dDMsr2xviLcq7iMA2mJkzuTIPhkMQ9aUVsI09eZqKv5SropK8mN/E9pi4NE2FjVcQfrxNv8Nk6GaBxiqb41g==,iv:6vUg+/J7PpQetFXHKc+Yz3Nb/oWqf051vnl0kskQ0+U=,tag:AtXui1B8HjiHdXkywqO/ig==,type:str]
 extraSecrets:
     - name: airflow-secrets-backend
       stringData:
-        variables.yaml: ENC[AES256_GCM,data:bUND7iFTTih29YmFvs3v9x/so6AJXQonE7TYFe/rKwRoyZ6EzkhQQWbfWIHaBZUF3dSQmEgNbaMMccLthHyL0mCq/Vci/JMTBim43WhFzBKmMsJL02J8vm60QRtGU68iLII63wtaAA35oByiP83qp7womKKHpC+Ne1R46YMlDqr8Le+imw5i9bwCRMulMkxOFgcUXLUguQZg67GIYOOFXtJLTnfZXK8MHGz57ysYFWyOjeFlWunqjE4RezjlaE5fVhve0vGXQ93vyj/aegGgjUa4uNO0nRV4gwCLpCw+AlxwC5OQsiL/j/SEmF46n8rk,iv:2PxD4rP/dBGaGgmbhn+oMDZCprQejyts9EN8rUAlzmE=,tag:56hvAHQCSugUH7XeOB1Zlw==,type:str]
-        connections.yaml: ENC[AES256_GCM,data:jN0Kg2GH0VAMy9alUrGG4kQRkwenu2fGCU5x8ce1tQY6RNN1TyH/nUelipdEtEL5pkjcYA5ZgFqbuTDWamvEiwiQoRNjDrZd+2bE90y/N3adGMxr2ZGRVzm736Sk4RJFKNS4DxnCPn6tnWX1qGPUisC+Cu5PeWcY/Pt3Tz34MUk+I3OJ+VXRpRBQR2ggtq2bp0qB6OBPUHTlLay3,iv:IVuulrSCMP1bghHyjObcYQfprlI5FBXwMf73OtNCGwM=,tag:9pVwttaaBLjN60xEROnHBw==,type:str]
+        variables.yaml: ENC[AES256_GCM,data:sJMdNfo0MNzGa1dYqs/xevfGWRzyFeZO+NhEMHm44zvcagt9r0zDXE7og+VAKYXpXIYbibHRrNAU0MRzRF6fCGbmgcAoalHnB2opafk5Q19DFVGeNrh8IdYdBAi91MqzDexhv/HTqZ7PfJykFXQCVy3sksRSZXPFPs+p+wOc90R2zKxjwCF8XhvYoQ0UDwf4QvMm7nllbfHbJDxsCHOKqrvUIfqQMKEhBeHl8l0juDaw9dDpg+wuoD+8UUpgcNC6azNbXnY3ZIqZIwq5zk5qzL/Y+uzDUPgYnUi52CizeTIPrSEQEj/+KZFSIzV2eovr,iv:aWV+AuLhj7Yy0WxoAZSaB63g4wK1HxyvKEj1QWWCjxA=,tag:dokP7SjVarn0nwHK4Zua2A==,type:str]
+        connections.yaml: ENC[AES256_GCM,data:4evR7XnPK5mF6NJe+BxaA9h6uuVAosaErYKTxXI8L9R+4Ymh1Q7aGFOzS0AXuyD0dRZ107WTjTBH5VTkDtrBTAiVaXFO7MPrK3rR2jRW0EYHRpFaEApyE6oOlckTZpfY4mx5hLkl5NHjAnyzps/77mo3jiu+NkQIzGBhsz6WMzCPyxhhy5LZQGwwLXXQgCwYYA7KNRNCS582na0c,iv:LKbiLSJXhLMWHRkMTXWDV5AT0IRB+Dpkv0ijM1Bc/l0=,tag:b1k33jEPpBrhlXGYHjfnIw==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -72,7 +69,7 @@ configmap:
         AIRFLOW__CORE__PARALLELISM: "8"
         AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: "8"
         AIRFLOW_VAR_KPO_IMAGE: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
-        AIRFLOW__CORE__AUTH_MANAGER: airflow_oidc.OIDCAuthManager
+        AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
         AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "false"
         AIRFLOW__FAB__CONFIG_FILE: /opt/airflow/webserver_config.py
         AIRFLOW__FAB__ENABLE_PROXY_FIX: "true"
@@ -118,11 +115,11 @@ ingress:
         projectcontour.io/response-timeout: 60s
 resources:
     requests:
+        cpu: 100m
+        memory: 256Mi
+    limits:
         cpu: 500m
         memory: 1Gi
-    limits:
-        cpu: "2"
-        memory: 4Gi
 livenessProbe:
     httpGet:
         path: /api/v2/monitor/health
@@ -146,33 +143,122 @@ startupProbe:
     failureThreshold: 30
     timeoutSeconds: 5
 args:
-    - bash
-    - /opt/airflow/start.sh
+    - airflow
+    - api-server
+    - --proxy-headers
+initContainers:
+    - name: migrate
+      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+      args:
+        - airflow
+        - db
+        - migrate
+      envFrom:
+        - configMapRef:
+            name: '{{ include "homelab-svc.fullname" . }}'
+        - secretRef:
+            name: '{{ include "homelab-svc.fullname" . }}'
+      volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: secrets
+          mountPath: /var/run/secrets/airflow
+          readOnly: true
+additionalContainers:
+    - name: scheduler
+      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+      args:
+        - airflow
+        - scheduler
+      envFrom:
+        - configMapRef:
+            name: '{{ include "homelab-svc.fullname" . }}'
+        - secretRef:
+            name: '{{ include "homelab-svc.fullname" . }}'
+      volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: secrets
+          mountPath: /var/run/secrets/airflow
+          readOnly: true
+      resources:
+        requests:
+            cpu: 250m
+            memory: 512Mi
+        limits:
+            cpu: "1"
+            memory: 2Gi
+    - name: dag-processor
+      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+      args:
+        - airflow
+        - dag-processor
+      envFrom:
+        - configMapRef:
+            name: '{{ include "homelab-svc.fullname" . }}'
+        - secretRef:
+            name: '{{ include "homelab-svc.fullname" . }}'
+      volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: secrets
+          mountPath: /var/run/secrets/airflow
+          readOnly: true
+      resources:
+        requests:
+            cpu: 100m
+            memory: 128Mi
+        limits:
+            cpu: 250m
+            memory: 768Mi
+    - name: triggerer
+      image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+      args:
+        - airflow
+        - triggerer
+      envFrom:
+        - configMapRef:
+            name: '{{ include "homelab-svc.fullname" . }}'
+        - secretRef:
+            name: '{{ include "homelab-svc.fullname" . }}'
+      volumeMounts:
+        - name: data
+          mountPath: /data
+        - name: secrets
+          mountPath: /var/run/secrets/airflow
+          readOnly: true
+      resources:
+        requests:
+            cpu: 50m
+            memory: 128Mi
+        limits:
+            cpu: 250m
+            memory: 256Mi
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP)$
-    lastmodified: "2026-11-13T21:06:13Z"
-    mac: ENC[AES256_GCM,data:8OI7ClpQLsSeHpKs86GK8LKSOpV9Px58qMH4G9Vz1cgsgHEYO4EGSumFwT4ilJ91t8GhlsnX/YCDnIEbpJr7lHJok4s6AcLJorJ6w6+Xs21Is3Xcu3T/7/TgLPwO3BtRLKkT7A7IsfuiJORfcciY8fzXwdh2/r5zNpePJxrhUcw=,iv:CE73/cqnJAtAvt23dR6+um90fqrjwPqkWrts7JeTScE=,tag:5+b8H5NmLUh+qq+W+0WyKg==,type:str]
+    lastmodified: "2026-11-13T23:12:56Z"
+    mac: ENC[AES256_GCM,data:xB7hqMQ6I9x40EaxTZyjicgezHB/oJFDp3efiaGth23T9l6vFR57r2nn/sBQvdTied0VlSHlDd0BbHICJX5YbEzX26zpv8N/wvcHTb+CPAuS7vtay8aFzw2BJ48yurLkTt/dR3FaNnOJUnovq61cW/2Y7ZdRIzi1DdioX17M4ME=,iv:E8MU2SFLIiic5826pyg53ASdpqE0qOIwZDvwGqwE8QM=,tag:C6MJkz44uI7E0ZQvaBPWPQ==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-11-13T21:06:13Z"
+        - created_at: "2026-11-13T23:12:56Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGARAApuy1SJZjI0uNJXcRhsz9rig3Tv3MDsSmLLvRfL2eo6vR
-            2rt6pSGDQuirQihr2hvFQjCwYRJcm953jwpBihaDlXqBjpETzlCsoSdxtf58ZIvL
-            2SrheFnGNME5RdT1M9uv05fSHBW+X6dAfgH1APFzOS8jygjyLltN2dumHlnJ+aRp
-            GiPAjSZy6VHZIBLQ+alXk9mgqY4Zjtey/9yOnJm0d8/iEnFjZWaCnBUI5miQzowU
-            wozIji4APvpkdArqj6zDsp4Ho85mWmrLBdVfXRuz7WMsk9OC9KDiAMeBzTT2tNSL
-            RqvA3Ias1VuZTOuIjfR1HlPXjqHlV2OvlzPjhMC9kCav6h7LtADrPCp1DJpGs1KU
-            BegHhPKuRYL3E5Na1c948k9Y+x8t/O8pcTILOWQFI6kCGFUfc3ataBjoOm20mBwy
-            Oy9ye39t34Frp9j/DD9AIW1UcMHu7lJ4kFejCc6seQP8SGFIeSV8wIrskgwyM2b8
-            2tv1tfzD5VYAc+GRXPHrZG2rN4uhPXDLDnUG627s38s8NI5Dv4CfHEMBbkU1SiVs
-            UdgpPZFldRKALiJEgBKB1Y1caR2SsOevnTa3rPdn61zjguAn1nI9AmbdGgUUiEpz
-            DI0xtzaMAMW0n4uZgOdu6/wYvZkbFajek8GmQwu+0yr4RPIM6N+sA1XKceWiVvjU
-            aAEJAhBbIzl3+pLw5BZcEH7C/vELRidAj5uFLn7202z/xP2/OX52mKqiuKSLpxKD
-            3xs8GqIOdPHQyFKbMxrbv8JAh/KdhEXMIzchZc52SUAr7AG4y08vG4g+ftF3JiZK
-            Gfh/ARRo3v82
-            =YKT+
+            hQIMA5NT/LvuRqeGAQ/+OwWXzbSRnZOuZ8VpbG8yiMRm8v+upJAookLOngHGthxY
+            qqqY3TPHl+e9E9IVxE/GgyJGkuX2PVXh7ptK/aZALnRwLh9EoYN+iczPExGUyEN7
+            gaVV+pasoZSRTPM16ZbldqJyB2BusoKBB01xG4vnq809PN51z7++OAL5FZg5GcRo
+            OswSXIqN3XUx3580RD+mj1qeQ/Ogm8pGYDiqrDfefi/xVPCdM4ZYyhddI6GXh2rA
+            QrW1HI0Dd6zUGFI2dg2OUBIHKlfzSofTr6zIU5ikoJtAgTIgtNu4TWaWief7nfRI
+            Zni6/wBmTwcGQoikuCxyz+gjQ2I6VwgmJpGkqmMa71mVWw3QtX+Vp1ICkAZnlyNI
+            4+WnsLD9GooqAxZ+fFIyIjm5RO40MldfabIK0jbgZdd9mEXFS1bbJin+bPoRaBPi
+            cOWsJqo1xRNUBP3G4Ajo/huvPiWxWz3zPIBHKedeM+1Rp2tSCzRvZ0kRfJO62C8m
+            MPkRGKA1jV1kb7Yrz3jIEff/kn00x0/XLB/n+msC78bFSpsqwZUhY1rSXpaW9yMg
+            1U2X1wxpw7uf0tM2Zb0pxwFDfyMPrk6PxZeeF4hJGtzhFX29vKfyYWL5xodg1bpD
+            6rFTv3FLqMml3PqQOtYQ96g3W/07UWVzRYwTWpALXHOx1fvetZ5LLMi3QtoOd3DU
+            aAEJAhDHSioXko9IZL/4JnspT/ay5MANYNoiJ/u4vCvREZaCBHPV+5R1kRVZ9GNN
+            tlnz0rnNiW16TlCWZKm71M52V2bBro8IRVbY8igDA4EYE6MnMSQ30NuACuD04ZWO
+            zXLiUL13/twY
+            =aKLh
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2

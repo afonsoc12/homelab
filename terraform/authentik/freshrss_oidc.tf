@@ -1,11 +1,5 @@
-data "sops_file" "freshrss_oidc" {
-  source_file = "../../kubernetes/apps/homelab/freshrss/values.sops.yaml"
-  input_type  = "yaml"
-}
-
 locals {
-  freshrss_values = yamldecode(data.sops_file.freshrss_oidc.raw)
-  freshrss_oidc   = local.freshrss_values.oidc
+  freshrss_oidc = jsondecode(data.sops_file.secrets.data["freshrss.oidc"])
   freshrss_accounts = {
     for account in local.freshrss_oidc.verified_accounts :
     tostring(account.user_id) => { username = account.username }
@@ -40,8 +34,8 @@ resource "authentik_provider_oauth2" "freshrss_oidc" {
   depends_on                 = [authentik_flow_stage_binding.login_choice]
   authorization_flow         = authentik_flow.provider_authorization.uuid
   invalidation_flow          = authentik_flow.provider_logout.uuid
-  client_id                  = local.freshrss_oidc.env.OIDC_CLIENT_ID
-  client_secret              = local.freshrss_oidc.env.OIDC_CLIENT_SECRET
+  client_id                  = local.freshrss_oidc.client_id
+  client_secret              = local.freshrss_oidc.client_secret
   client_type                = "confidential"
   grant_types                = ["authorization_code"]
   access_code_validity       = "minutes=1"

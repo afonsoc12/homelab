@@ -25,19 +25,16 @@ airflow db migrate
 python -m pytest --confcutdir "$directory" "$directory/test_local_authentication.py" -q
 
 # The deployment selects OIDC through environment variables in its values file.
-export AIRFLOW__CORE__AUTH_MANAGER=airflow_oidc.OIDCAuthManager
+export AIRFLOW__CORE__AUTH_MANAGER=airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
 export AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS=false
 export AIRFLOW__CORE__LOAD_EXAMPLES=false
 export AIRFLOW__FAB__CONFIG_FILE="$directory/../../webserver_config.py"
 export AIRFLOW_OIDC_ISSUER=https://synthetic-issuer/
 export AIRFLOW_OIDC_CLIENT_ID=synthetic-client
 export AIRFLOW_OIDC_CLIENT_SECRET=synthetic-value
-export AIRFLOW_OIDC_SUBJECT_USERS='{"synthetic-subject":"rehearsal-viewer","synthetic-owner":"rehearsal-owner"}'
-export AIRFLOW_API_SERVICE_USERS='["rehearsal-machine"]'
 
 airflow db migrate
 airflow users create --username rehearsal-viewer --firstname Rehearsal --lastname Viewer --role Viewer --email viewer@synthetic --password synthetic-value
-airflow users create --username rehearsal-machine --firstname Rehearsal --lastname Machine --role Viewer --email machine@synthetic --password synthetic-value
-airflow users create --username rehearsal-human --firstname Rehearsal --lastname Human --role Viewer --email machine-alias@synthetic --password synthetic-value
+airflow users create --username rehearsal-owner --firstname Rehearsal --lastname Owner --role Admin --email owner@synthetic --password synthetic-value
 export AIRFLOW_AUTH_TEST_MODE=oidc
 python -m pytest --confcutdir "$directory" "$directory/test_authentication.py" -q

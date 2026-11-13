@@ -1,10 +1,5 @@
-data "sops_file" "booklore_oidc" {
-  source_file = "../../docker/hoarder/booklore/oidc.sops.yaml"
-  input_type  = "yaml"
-}
-
 locals {
-  booklore_oidc = yamldecode(data.sops_file.booklore_oidc.raw)
+  booklore_oidc = jsondecode(data.sops_file.secrets.data["booklore.oidc"])
 }
 
 # Match only independently verified existing accounts. The app must never use a

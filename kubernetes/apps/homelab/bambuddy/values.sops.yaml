@@ -1,3 +1,9 @@
+# --------------------
+# Bambuddy
+#   - Repo:           https://github.com/maziggy/bambuddy
+#   - Docs:           https://wiki.bambuddy.cool/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 nameOverride: ""
 fullnameOverride: ""
 labels: {}
@@ -21,22 +27,8 @@ service:
 secret:
     mountEnv: true
     stringData:
-        DATABASE_URL: ENC[AES256_GCM,data:KN4Vf8rf/j/KulMIlHmBdbIkA3f50Pute/Q8X62KI+zrM6oj2aia70Lcl7N3YLnJZQdiYpdhoky+dJapTgJ80RskvwoYPiv36n8pbzNaqeyiB07rkiJocpDdRw==,iv:1WvkkFMl1jNm235cnkpGNg5mFexIPBhePvTkCz7Sxw8=,tag:ovwvCZ6sTYgbxa+x4wWUfg==,type:str]
-        BAMBUDDY_OIDC_NAME: ENC[AES256_GCM,data:82BSk6Nl2tmg,iv:SzwE/N4SpJxrWTsPuCZa0kuUYpr8CMbDauhqgCc9xRA=,tag:5KLR+YSrju4CvDcWf7Ek9w==,type:str]
-        BAMBUDDY_OIDC_ISSUER_URL: ENC[AES256_GCM,data:67ERsAUFYf/FHFcAo1tlYiXeGEVZFPHI6A7MC31ujeWMIuPUFCTAfMla2oEIbs/6Lw==,iv:CoTrs0mFKl4peK1Kp9jmbkMiwwbteAPKngX06kzEb9M=,tag:82CszEA3Ub7Ao6wN4gJ+dA==,type:str]
-        BAMBUDDY_OIDC_CLIENT_ID: ENC[AES256_GCM,data:o7YMjzflYgY=,iv:2kjiwWJ+FN3+TTTGgMxAESb+GK4FFhTFwnsf3k6Oh88=,tag:GuNPW7C15/dEYCGsZc6T3w==,type:str]
-        BAMBUDDY_OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:kblXeCLEHPXS5maPKxPYj/+2xIYkZ3spE6ER5c3LE/u8LvUcjDbXdcMcYIHgZSWQ/DRuyvC3dwf3JE3LMNm0BA==,iv:9n2IT15sKz4VbA71b3ERUbFknWwFgakDUruCsmSR8mM=,tag:7d77ZdbCmNoMLuJ46r/A+g==,type:str]
-configmap:
-    mountEnv: true
-    data:
-        BAMBUDDY_OIDC_ENABLED: "false"
-        BAMBUDDY_OIDC_SCOPES: openid email profile
-        BAMBUDDY_OIDC_AUTO_CREATE_USERS: "false"
-        BAMBUDDY_OIDC_AUTO_LINK_EXISTING: "false"
-        BAMBUDDY_OIDC_EMAIL_CLAIM: email
-        BAMBUDDY_OIDC_REQUIRE_EMAIL_VERIFIED: "true"
-        BAMBUDDY_OIDC_AUTOLOGIN: "false"
-        BAMBUDDY_OIDC_GROUP_MAPPING: '{}'
+        DATABASE_URL: ENC[AES256_GCM,data:uDKMKEX+8Nnxd31nsYcAJsHlKGLtjJ1XXgEJVMYQk8NNpiwP/qIhijB2nFdGlxo05uMVefkhdVVIVUXSjb0BOg1LHKDuubEcq5mR4e3XdxWjKNRJA2qMwyBREg==,iv:ScYc5vXzCwj9hRy4pPULN/RwEnL1IXPUzIHXpSAnKUM=,tag:KhPSNxYeWKbMSuOZ4wNpiQ==,type:str]
+configmap: {}
 volumeMounts:
     - mountPath: /app/data
       subPath: data
@@ -55,22 +47,23 @@ pvc:
         requests:
             storage: 1Gi
 ingress:
-    enabled: true
-    className: contour
-    tls:
-        - secretName: local-wildcard-cert
-    hosts:
-        - host: bambu.local.{{ .Values.domain }}
-          paths:
-            - path: /
-              pathType: Prefix
-              service:
-                name: authentik-homelab-proxy
-                port: 9000
-    annotations:
-        ingress.kubernetes.io/force-ssl-redirect: "true"
-        projectcontour.io/response-timeout: 300s
-        projectcontour.io/websocket-routes: /
+  enabled: true
+  className: contour
+  tls:
+    - secretName: local-wildcard-cert
+  hosts:
+    - host: bambu.local.{{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: authentik-homelab-proxy
+            port: 9000
+  annotations:
+    ingress.kubernetes.io/force-ssl-redirect: 'true'
+    projectcontour.io/response-timeout: 300s
+    projectcontour.io/websocket-routes: /
+
 podSecurityContext: {}
 securityContext: {}
 nodeSelector: {}
@@ -107,29 +100,29 @@ startupProbe:
     timeoutSeconds: 5
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP)$
-    lastmodified: "2026-11-11T11:26:32Z"
-    mac: ENC[AES256_GCM,data:jGZ/srPT71YfKjK/bvyxzSHnEJ4iOlp/6kWSVfNE7FfuKSUSjjKZWWojk03rYI9vKzLobJa/mT39dTn8CUl0stCI36hk8wGqDJM76byPZTOjREtZMcTjLiP7wFWR5DkaVmYUA+L5YWluTZaCq88m67YmhprSuU/BgJizsneoJls=,iv:oE9Rcw98ZRj/ItjyTWZJ61DBMnbMp/pxc3yosxcfTOI=,tag:NQLsBTV5EMaWB7dIWOeD9w==,type:str]
+    lastmodified: "2026-08-17T23:38:02Z"
+    mac: ENC[AES256_GCM,data:O9do4xq0OAHUShuQ7OgLpqQ3NbKAZnWcqWP5hiFla35Mg7HKvRDOVuCt8CQ9zoJYIUNqX1JN/1396BUBv2HcurA3HOSiHHlGLmmApjvY3Q52tl951P3nZOrzL1pTNabILtWGlZo38cGHZEJLXb6D1A8CQQnDDZWSucgcquWK07w=,iv:wQkWMlJqa5KQaiImtH8AwGT7JcQqdaSRMqof+rb1zsA=,tag:zPop18uB5qANL7eCWDDBVA==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-11-11T11:26:32Z"
+        - created_at: "2026-07-04T17:52:05Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ/+OmM3bpufprlG47OMWGDkQQo/fBWLxprYhu10qv5r8cZv
-            YpqUl0+UiFRaxhakMGTztM3HlEoW7YPdKI4nizx/GLJGobUTOqAJAKabicZ1MudZ
-            ihRaM8uX7p/xRUOWvOZ/lKWQ4Lab2+vME53t8MDS65OpsPMHs0giMd0aMuyFjUSF
-            f7E0lDkp20sO79PLvsf8Sk3y5gse7ePj4aZ9owHIeFCCt0LSCfokJPdWt30/1ykY
-            Qa/NlGnAlzfcqGOthfM8j7l+L0oTBLvjFsxu6F2Xri5u1vXsr2wP8RsM+0GO7FBS
-            hPdZF4VzWdDtp/7+LcLqKwGaxfZfIlexItZQPP3Udl0dybVdiQV9vqQ7Qy3HzCKa
-            iiUZgyGS3ezS2AJbczlkhTOJ3CRx9tMndgiX9OPT7Si2qupVyMA71IpznTnzlDJ4
-            igoRHyzgTNszfvHg+Lq9Nxdv3onWhCbFseh1n7OlcSiHe/JnOTWTet6oDurUKh1Q
-            3+vEqQ2DWH+Djpg5fqNrQH3YSmLqPdy3EK84G2YWqucLb5g7hiBVmEkeLtBQzr9a
-            /xl1b6eRCtqnkUeJXL72AVfzw+akaeqHDBZJucV/cj990uLskjHnbAwcT+az94BG
-            R38WI9IKmPHOnnp4sBRn+dUoDg11pBI0RSPuTn6QWG2AXM2mY4Q2boSgl2O3dArU
-            aAEJAhAlfhELOhCCzkowRA6QJjRB3lkvDuUo5bejg32V67vvWahSO1z5Ooxtovl2
-            bHz01KTLEeGMOb6Q0CUNrwIGYI+AEsL0nv/kJGsnB+lSxNh55Sn5aF80NjtissTu
-            bVJWHhck38sD
-            =yQFR
+            hQIMA5NT/LvuRqeGAQ//b+BXrV4LiwaWddTy4ahRo1lBrDPvO1et/Ekmskg273ER
+            ys5fDCB0muUhYv+D+dkXYW2YGOXZrEFExa+wiNxxAx43U2iu8S9Zyi9qrxxylK9s
+            BR6SjActWALfYA97OWG+/Al3pQc9b+EaRsKe4vEo0GMS2vMbimPsshMYupDunzBr
+            Fh5blQ/1K7NrXN66n07VJVQflC2kj//YsZpo4rv1rJKYqEKYJ4XLuzM3MuOkRAYY
+            SczNoHIC0fA2gPO9BgueUpRBvlJn7yzN0Valhr8jqsZ1vvXaNJ9x2DXIbxuM8cCp
+            4F7DzrwiSUrQ36EBNjN5PiB4rpcoW3mBDn/raexIVzrpYqMqRyNcWl4kDbpMA82V
+            ozFSZ9ZqipBw6Zl4k+ygsrz+baQlR5RpaqQROLXaMGmbdaucbN7EDd0bQQKJN1TX
+            UKWPOSSk0dRqAdpn/ykwApWXLeKzgzNdpFKrjgXjzC35zYkKyFfadikLDjMVSDsL
+            4yyyibJQrXqo2KrX9EyYmI+kLpyV169IC7Vcowp4j8gxBDnUiO5Iu9wz4+uzM+UQ
+            KBVNuiLh8/Ef0K92s+ubK7bzm6y9dC8QXQNAOSFszNOENwLqhrDBjcmp7bVLCEWt
+            ZFZ+vBmzk3HA1YLM6Y4/DcPhkXwMrIpL44NTdZ/g9pnbExycIb2+IxqzGic3Ju7U
+            ZgEJAhDwR6JZ9g2FSufN1s16HU5iU+cIfpiVO3I1J7iTAJ8hy7VkhsUqSBOmOGi7
+            WRZAHFD/QGkxlivwM5KCsuAlU5NzvNxQDd7Up2CiogmywVhKeFapR+UvIa/UaDi3
+            DzizE3XHYQ==
+            =6vUy
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2

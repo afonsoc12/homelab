@@ -20,7 +20,7 @@ spec:
     helm:
       valueFiles:
         - secrets://../../apps/values.sops.yaml
-        - secrets://../../apps/automation/node-red/values.sops.yaml
+        - ../../apps/automation/node-red/values.yaml
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: automation

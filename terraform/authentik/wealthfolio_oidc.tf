@@ -1,11 +1,5 @@
-data "sops_file" "wealthfolio_oidc" {
-  source_file = "../../kubernetes/apps/homelab/wealthfolio/values.sops.yaml"
-  input_type  = "yaml"
-}
-
 locals {
-  wealthfolio_values = yamldecode(data.sops_file.wealthfolio_oidc.raw)
-  wealthfolio_oidc   = local.wealthfolio_values.oidc
+  wealthfolio_oidc = jsondecode(data.sops_file.secrets.data["wealthfolio.oidc"])
 }
 
 resource "authentik_provider_oauth2" "wealthfolio_oidc" {
@@ -50,7 +44,7 @@ resource "authentik_group" "wealthfolio_oidc" {
   parents      = []
   roles        = []
 
-  users = local.homelab_user_mappings.members.wealthfolio
+  users = jsondecode(data.sops_file.secrets.data["wealthfolio.oidc_user_ids"])
 }
 
 resource "authentik_policy_binding" "wealthfolio_oidc" {

@@ -1,11 +1,5 @@
-data "sops_file" "bambuddy_oidc" {
-  source_file = "../../kubernetes/apps/homelab/bambuddy/values.sops.yaml"
-  input_type  = "yaml"
-}
-
 locals {
-  bambuddy_values = yamldecode(data.sops_file.bambuddy_oidc.raw)
-  bambuddy_oidc   = local.bambuddy_values.secret.stringData
+  bambuddy_oidc = jsondecode(data.sops_file.secrets.data["bambuddy.oidc"])
 }
 
 resource "authentik_provider_oauth2" "bambuddy_oidc" {
@@ -51,7 +45,7 @@ resource "authentik_group" "bambuddy_oidc" {
   parents      = []
   roles        = []
 
-  users = local.homelab_user_mappings.members.bambuddy
+  users = jsondecode(data.sops_file.secrets.data["bambuddy.oidc_user_ids"])
 }
 
 resource "authentik_policy_binding" "bambuddy_oidc" {
