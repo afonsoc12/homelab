@@ -14,8 +14,17 @@ trap 'rm -rf "$AIRFLOW_HOME"' EXIT
 # Generate isolated signing keys for this disposable test environment.
 export AIRFLOW__API__SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(32))')"
 export AIRFLOW__API_AUTH__JWT_SECRET="$(python -c 'import secrets; print(secrets.token_urlsafe(32))')"
-export PYTHONPATH="$directory/../../libs:$directory/../../oidc:${PYTHONPATH:-}"
+export PYTHONPATH="$directory/../../libs:${PYTHONPATH:-}"
 export AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="sqlite:///$AIRFLOW_HOME/airflow.db"
+# Verify the shared image's default local configuration without OIDC settings.
+export AIRFLOW__CORE__AUTH_MANAGER=airflow.api_fastapi.auth.managers.simple.simple_auth_manager.SimpleAuthManager
+unset AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS
+export AIRFLOW__CORE__LOAD_EXAMPLES=false
+export AIRFLOW_AUTH_TEST_MODE=local
+airflow db migrate
+python -m pytest --confcutdir "$directory" "$directory/test_local_authentication.py" -q
+
+# The deployment selects OIDC through environment variables in its values file.
 export AIRFLOW__CORE__AUTH_MANAGER=airflow_oidc.OIDCAuthManager
 export AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS=false
 export AIRFLOW__CORE__LOAD_EXAMPLES=false
@@ -30,5 +39,5 @@ airflow db migrate
 airflow users create --username rehearsal-viewer --firstname Rehearsal --lastname Viewer --role Viewer --email viewer@synthetic --password synthetic-value
 airflow users create --username rehearsal-machine --firstname Rehearsal --lastname Machine --role Viewer --email machine@synthetic --password synthetic-value
 airflow users create --username rehearsal-human --firstname Rehearsal --lastname Human --role Viewer --email machine-alias@synthetic --password synthetic-value
-export AIRFLOW_OIDC_TEST_MODE=isolated
+export AIRFLOW_AUTH_TEST_MODE=oidc
 python -m pytest --confcutdir "$directory" "$directory/test_authentication.py" -q

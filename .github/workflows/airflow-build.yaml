@@ -47,6 +47,9 @@ jobs:
       - name: "🧪 Run pytest"
         run: uv run --directory airflow pytest
 
+      - name: "🔐 Test local access and deployment OIDC restrictions"
+        run: uv run --directory airflow bash tests/oidc/run.sh
+
       - name: "🔖 Read Airflow version from Dockerfile"
         if: github.event_name != 'pull_request'
         id: version
@@ -75,30 +78,11 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository_owner }}/airflow:${{ steps.version.outputs.airflow_version }}-b${{ github.run_number }}
 
-  airflow-oidc:
-    permissions:
-      contents: read
-    runs-on: ubuntu-latest
-    steps:
-      - name: "📥 Checkout"
-        uses: actions/checkout@v7
-
-      - name: "🐍 Set up uv"
-        uses: astral-sh/setup-uv@v10.3.3
-        with:
-          working-directory: airflow/oidc
-
-      - name: "📦 Install OIDC dependencies"
-        run: uv sync --project airflow/oidc --frozen
-
-      - name: "🔐 Exercise OIDC login and machine API restrictions"
-        run: uv run --project airflow/oidc bash airflow/tests/oidc/run.sh
-
   bump-tag:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    needs: [airflow, airflow-oidc]
+    needs: airflow
     if: github.event_name != 'pull_request'
 
     steps:

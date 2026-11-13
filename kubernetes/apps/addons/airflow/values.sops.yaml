@@ -1,9 +1,3 @@
-# --------------------
-# Apache Airflow
-#   - Repo:           https://github.com/apache/airflow
-#   - Docs:           https://airflow.apache.org/docs/
-#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
-# --------------------
 image:
     repository: ghcr.io/afonsoc12/airflow
     tag: 3.4.0-b71
@@ -56,14 +50,21 @@ service:
 secret:
     mountEnv: true
     stringData:
-        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:pETSN4Z97yTsY3Osct3Yb3TMKww2x/xj92nkBDr3HDHPr/pHOSp/BZFANxf47L5bMwgat/MglJQBuxOv/r3FRgya/nem55Qkl4MS3OrU2Aul34osf1U=,iv:zuHbvJyhj2sX9NCCWi3c/YMpLhbrnEKj1JkZ50vSDnM=,tag:5TmFQh+laqQrq/rIEtPgkg==,type:str]
-        AIRFLOW__API__SECRET_KEY: ENC[AES256_GCM,data:O+lH27B2hP2+HVSSyBYZri7nVLkMCBnvfXrgnsYcrEzYy5eAOraV4cBYQZEKfnNQz0yHMw4KHXTNHQnpVsnwCw==,iv:No+mUj+Uvgie174sJDewRmq9/2uFudD0iKG0FhliAVw=,tag:xqvcnTtAveaiEDIO/PC2ag==,type:str]
-        AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:4PCbeuSemx4/v1wkOKuGcopezH9+1eD0pu0cSNeLoOIztdghP0vi7o8jgBgYDGNC2Z7jzkvhT4o/3IgNwLBBTw==,iv:fbMTKD71BCQLLt6aID3DVziBvW0KrYqpE5Hl1o5aVDE=,tag:oe30wXnrYSjD0bew42zLDA==,type:str]
+        AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ENC[AES256_GCM,data:QpfLEil4Vfw7kgg+Vtn71CPqcpo97bJ6cZodp7a5P5e9DDIMOHOMucMzd26o1WbFcui7I9Fl7qdqewC4ge7jshTeyo/M3rssP5v3ZUQlBnAIFeFHvds=,iv:x9neKZXe0eLLs7QQFBF3E9O1kf0GR9G86inT/UXPpG4=,tag:tkU+78EXiPLjPuHolA7f3A==,type:str]
+        AIRFLOW__API__SECRET_KEY: ENC[AES256_GCM,data:nUMh07P6bN7+0279tmXVo1Ldfwi1KAVrC+DEVzFRFtP7QLD6AmTxL21nswP6AiP+kNhb+sggAKrVcKBYMoWcAA==,iv:6jK7R44ydgPB33n9g/ZDhKKERC1KkgP8Er5OegyeVUU=,tag:GnZN++eLJYDVEglCf3wJZw==,type:str]
+        AIRFLOW__API_AUTH__JWT_SECRET: ENC[AES256_GCM,data:DjtxtaRqYdCksj7F2pPZ9MGtc2YluW0b4+udcOTZB1MmoQEDOcI9AfWWRFmXyRaRXbYv6D4qtZodk+qG7AvLIw==,iv:uK7x9E+H2dJFM7WumUQ6a10x6/ZbpKUNKX5m7cU8jVU=,tag:XFxyO72I1RNN+Mneads8sw==,type:str]
+        AIRFLOW__API__BASE_URL: ENC[AES256_GCM,data:HwlfOUUY2zdaaQsEShQL37O1jAIAg51gQ6V4wzyXT+/nqjY=,iv:4QRi2SPpXRacYt93oZv8yc59emu6QBkXFA4oj6eRv4k=,tag:CKFyg2TutYIeWFiTSIW4nw==,type:str]
+        AIRFLOW_OIDC_ISSUER: ENC[AES256_GCM,data:bgb6XNPxQF/jIPyqsLJkfoAeqj0qxu4kAGNGJm6Uy0K48DJEyW6XCzqa4wdDcNT1,iv:iyKoBWG8GLMvU1Cm0eW6hF9DUN9ekPnjW57I2PlqoME=,tag:st59DvppfODv4c21rR4/Ag==,type:str]
+        AIRFLOW_OIDC_CLIENT_ID: ENC[AES256_GCM,data:mEw9gCBoaCDb2CV7KOI=,iv:E44hOqfd9sn8yiYUNWuEqxgpuj66JHxKVZ13ALGeADI=,tag:COc7xBhbBoshXDFtJ2jsDQ==,type:str]
+        AIRFLOW_OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:OY3ZBqOuRCt3Us9rkpUDgi7UdR4yl4c6UTFPJYVonw7jDPQx5ffvmDzhfJoW2LHYvbzT6CSyLPfDz9KUrvReYw==,iv:3UXYoBtWdEUvFgvIyWIivo89h1bMpfOKDZdaW42NeVE=,tag:TojV6m73wCp5Y8gmDJzhIA==,type:str]
+        AIRFLOW_OIDC_SUBJECT_USERS: ENC[AES256_GCM,data:O0hie9biudht3FXq9aMWEtEukEfbABWKyiFoode0R/zJPwyIckHbIxwOIii0co+1X1nmqJYzDdODDFR6yoq9p7accArdvcbpTsXBjjPH,iv:OMgEBSFhEKjrnI+Ubb3cbdT5oodzG5MGwlU1q7d9VWw=,tag:OOtgg8x6fxfm4vvG+UZHtA==,type:str]
+        AIRFLOW_API_SERVICE_USERS: ENC[AES256_GCM,data:4GU=,iv:U5XxqR5ZSk5VfXmro1QFJNaFFwbxKAQ59tBB2P99ar0=,tag:/NycsJpG5vPhT3I83XCebQ==,type:str]
+        AIRFLOW_OIDC_ACCOUNT_RENAME: ENC[AES256_GCM,data:LTpg2WaAdtTkXq/HL2xgiA67qFggoT1FP/Rh/43dp0moFvD0dIqYxeM9,iv:6aJlRBxJ05vES3Pj07aSH1NDRxAGBSxik+6bRFu82oI=,tag:TqY9WGijaaC2RQuCPNDjVw==,type:str]
 extraSecrets:
     - name: airflow-secrets-backend
       stringData:
-        variables.yaml: ENC[AES256_GCM,data:GyXSy4v7UNl180z4FKM11l9Rn7idpkX+LgBa4giccKzSuR3ySEoPy8orabiajnXOrgj2Sc6lRUUaCcMWi33zMPs3TUpUB4t/jm90lrQ/PdqvxV/ZLeyH4hRGpROToxXKqozt8GZ6Zkps9LCCHMiPDU8R4uJ4/NXHUnkryZaxvz0fq+5ex2OEh5dX33uFjSi6mgf/bnbv2H76XPDNHBd4u1cpY++O23MmKWHrPUV+nsogf7emMB6RY7EFoqTx+lY1kAjVWcsgQqBeAYqY/Hrzs31nRY/OzS5Qa4W1+4rBz2vD/nOTYv60Wenj7Oktorvz,iv:X8oNWhbFW565IaoaAr4Ff9o9RLqZGMEH4k7IcMnCUEc=,tag:8Nh6ljs2Vpsoyme+zSgE3A==,type:str]
-        connections.yaml: ENC[AES256_GCM,data:rWdqZn41TW7QCGdc23OiMO7XKvhjT2uelZVy+EMwGgBhEwdt97mD+NevTbNeXI9CC+lvEOmtnMuR5DieLFg3Rf+be2dW1vh+nlBiMq+D9OemsAhA+V/HTWPpA/FCbaFVRfmApLtMT98d/mnCyPKpyO8DZ/kiMGgEFu9cGrqfW8/xNWZTsPGDZ1/MaBoq9Fr4ud4Wd+dUcsHlDbch,iv:g9FRxAKcQcZnei0MLx8N5wl2I/TBpCrl00NOD4gsEIg=,tag:kBVbNgNO5aXC6mej2zfNSA==,type:str]
+        variables.yaml: ENC[AES256_GCM,data:bUND7iFTTih29YmFvs3v9x/so6AJXQonE7TYFe/rKwRoyZ6EzkhQQWbfWIHaBZUF3dSQmEgNbaMMccLthHyL0mCq/Vci/JMTBim43WhFzBKmMsJL02J8vm60QRtGU68iLII63wtaAA35oByiP83qp7womKKHpC+Ne1R46YMlDqr8Le+imw5i9bwCRMulMkxOFgcUXLUguQZg67GIYOOFXtJLTnfZXK8MHGz57ysYFWyOjeFlWunqjE4RezjlaE5fVhve0vGXQ93vyj/aegGgjUa4uNO0nRV4gwCLpCw+AlxwC5OQsiL/j/SEmF46n8rk,iv:2PxD4rP/dBGaGgmbhn+oMDZCprQejyts9EN8rUAlzmE=,tag:56hvAHQCSugUH7XeOB1Zlw==,type:str]
+        connections.yaml: ENC[AES256_GCM,data:jN0Kg2GH0VAMy9alUrGG4kQRkwenu2fGCU5x8ce1tQY6RNN1TyH/nUelipdEtEL5pkjcYA5ZgFqbuTDWamvEiwiQoRNjDrZd+2bE90y/N3adGMxr2ZGRVzm736Sk4RJFKNS4DxnCPn6tnWX1qGPUisC+Cu5PeWcY/Pt3Tz34MUk+I3OJ+VXRpRBQR2ggtq2bp0qB6OBPUHTlLay3,iv:IVuulrSCMP1bghHyjObcYQfprlI5FBXwMf73OtNCGwM=,tag:9pVwttaaBLjN60xEROnHBw==,type:str]
 configmap:
     mountEnv: true
     data:
@@ -71,6 +72,15 @@ configmap:
         AIRFLOW__CORE__PARALLELISM: "8"
         AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG: "8"
         AIRFLOW_VAR_KPO_IMAGE: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        AIRFLOW__CORE__AUTH_MANAGER: airflow_oidc.OIDCAuthManager
+        AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "false"
+        AIRFLOW__FAB__CONFIG_FILE: /opt/airflow/webserver_config.py
+        AIRFLOW__FAB__ENABLE_PROXY_FIX: "true"
+        AIRFLOW__FAB__PROXY_FIX_X_FOR: "0"
+        AIRFLOW__FAB__PROXY_FIX_X_PROTO: "1"
+        AIRFLOW__FAB__PROXY_FIX_X_HOST: "0"
+        AIRFLOW__FAB__PROXY_FIX_X_PORT: "0"
+        AIRFLOW__FAB__PROXY_FIX_X_PREFIX: "0"
 pvc:
     storageClassName: longhorn
     accessModes:
@@ -135,49 +145,34 @@ startupProbe:
     periodSeconds: 10
     failureThreshold: 30
     timeoutSeconds: 5
-oidc:
-    stringData:
-        AIRFLOW__CORE__AUTH_MANAGER: ENC[AES256_GCM,data:oj6CQyX0tJROFxGVobhVolP6hr9yeBQ6SappVw==,iv:qCr/KILzqc+rtaepsuKERrbHvT1xnveFJJMAAFG30Zw=,tag:+FHRXp5u5ZfANkoSv3mqqw==,type:str]
-        AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: ENC[AES256_GCM,data:Jzhnqbo=,iv:BPvNFajXk77vYvGEpnKk4ibCz8313+D/D7pihnGNcXU=,tag:zejntAEqGAdhyvE5gVKvzA==,type:str]
-        AIRFLOW__FAB__CONFIG_FILE: ENC[AES256_GCM,data:PHmK56Y020HX8o/zTjkvr+XC6hwkVK2H+MEOAjzgb0E=,iv:LgXRb+Kg0a6ZBOqXXU5Qco8xf4WOzjV6P1aEIonBEIY=,tag:z+y7dckndoJQRGUyygWGZA==,type:str]
-        AIRFLOW__FAB__ENABLE_PROXY_FIX: ENC[AES256_GCM,data:9DX/ew==,iv:xmsHn/AHDUavtpGL+OGdgC1qrtuZ00rIX6i8YDYeu3s=,tag:pomaz36+jLi8HZgkeewn9w==,type:str]
-        AIRFLOW__FAB__PROXY_FIX_X_FOR: ENC[AES256_GCM,data:IQ==,iv:i86FKRm3hKFClSWW/VrYCxAc7GG9UTmfl6IbgXz/Z6k=,tag:Zv43ynopxutfWsp/x3uPnA==,type:str]
-        AIRFLOW__FAB__PROXY_FIX_X_PROTO: ENC[AES256_GCM,data:Og==,iv:mzGMwqb3eWlFZzNJC382jE3s7E9ZHh10K7aYrgB00vk=,tag:qtZN8Vje5JFxXHM5jMsg4w==,type:str]
-        AIRFLOW__FAB__PROXY_FIX_X_HOST: ENC[AES256_GCM,data:UQ==,iv:sLLgoOJGz4800VelpXYq83DRVQVdSU/sVP1AiPYJQN4=,tag:PcH8EAzHNOPRjp9yl68rhA==,type:str]
-        AIRFLOW__FAB__PROXY_FIX_X_PORT: ENC[AES256_GCM,data:tw==,iv:kvM/P8dP6tp570ICVPtQxG6qsyyKR0PFTytrONMP7Sw=,tag:D/VgrVRHswe26H6AAKJC4g==,type:str]
-        AIRFLOW__FAB__PROXY_FIX_X_PREFIX: ENC[AES256_GCM,data:RA==,iv:zdJdf469w10g0sU3xTOh3dR2fg9mWUqVKa6h6tvrgY8=,tag:TyyG1JKtSGIUyUlY/Zo4vA==,type:str]
-        AIRFLOW__API__BASE_URL: ENC[AES256_GCM,data:w7ByVlgThsdkJQerV4i5tGoM2+Duc0haNm0mTEWW1Daq13E=,iv:v/bq6Wy5jcObzo3hiOI84wdrhoZouhnKQP1ovoAHLCk=,tag:mh9BgMEi/SGnna2JWSSxIQ==,type:str]
-        AIRFLOW_OIDC_ISSUER: ENC[AES256_GCM,data:9TsUMZ1Cq0UKzmuu1p40XV3pR6jl2f2NBHuG7ZYRhFyja4CsRkiKern2wo26W2wt,iv:pAs+u9XtmCuz1E+Vqroay/Vv129Dx/65lJv97tbWQnY=,tag:5x12nu5x/1xt5RbOj9+Uyw==,type:str]
-        AIRFLOW_OIDC_CLIENT_ID: ENC[AES256_GCM,data:jB09L9I/zsd5ZKH8tmI=,iv:mvZMnYIcuYH9lBrZQGzSEgELmaIQvj0cmTZJLIduhYI=,tag:vANpyFLqJ25sfJXIuEGExw==,type:str]
-        AIRFLOW_OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:QFASvUEYeurHNcwa+ExWMOmbWXUn38lylzTSSDNtLdcUI3fPzAnX4eGCGk/OhiDavrgfLO5wlDhbpoeRL/JCZA==,iv:FqT8W4nt9lSeCjlbMXj08JZiceZ+F6+DOPgyQcc5A2E=,tag:lrmxl/+tRoiovb7a6De16g==,type:str]
-        AIRFLOW_OIDC_SUBJECT_USERS: ENC[AES256_GCM,data:gXH6G1GDILtPMG9LvbpoLxdImo8K6XQoGS8NSCq7yJLlHnWREzCcrOHJuHU+YimS2u6VG4OjFpi20X/oNZFWw0kFi9zuM3Y6fg5PNShI,iv:Ro8bQ7ISldPsvdZkmJZXI6/oCiis9SyJ/35FXsiuhU8=,tag:64JuQg1cveVYOPIrKANEwA==,type:str]
-        AIRFLOW_API_SERVICE_USERS: ENC[AES256_GCM,data:VeY=,iv:piy/IokQ00R+2IF9wfBpGIYzRcQ94YLymZzKy0iVZ6Y=,tag:s5h/Hz134sCE/CLcvsW4Jg==,type:str]
-        AIRFLOW_OIDC_ACCOUNT_RENAME: ENC[AES256_GCM,data:gJTHXHuBSJTtOMjbXk3bxvvn6e1WTC/6wm9X5yjauyEF5jkRjIufNW95,iv:Ory7Jg2whCSZACfh++8nhYKqczIriNaqlHS3jAu7UKI=,tag:WlmeMcgXC4qbGcOOZCeOUg==,type:str]
+args:
+    - bash
+    - /opt/airflow/start.sh
 sops:
     encrypted_regex: ^(stringData|loadBalancerIP)$
-    lastmodified: "2026-11-13T20:11:54Z"
-    mac: ENC[AES256_GCM,data:D+IpX8BgJqxdMrP13xS7nBXh870XCw2YX6A6SElBSEYsg+4x5Kl2Abb31aMVSnHDXPOJPIk2I4Fzv1Z/cNaJrUG/S4Lbo9C+05BNxogiZCVTjCDlYPToZnfBa/CkMeAQkn7JYGyNRzoCkrDSKpLHwDm9dP53tMHLc/736qsx8Tk=,iv:zdO1vT/NOZyJqq4CJwn4gvPbMun9wZLtzqpr/TAjBiQ=,tag:YZvYj+Mf7NY25xDoo1HMlw==,type:str]
+    lastmodified: "2026-11-13T21:06:13Z"
+    mac: ENC[AES256_GCM,data:8OI7ClpQLsSeHpKs86GK8LKSOpV9Px58qMH4G9Vz1cgsgHEYO4EGSumFwT4ilJ91t8GhlsnX/YCDnIEbpJr7lHJok4s6AcLJorJ6w6+Xs21Is3Xcu3T/7/TgLPwO3BtRLKkT7A7IsfuiJORfcciY8fzXwdh2/r5zNpePJxrhUcw=,iv:CE73/cqnJAtAvt23dR6+um90fqrjwPqkWrts7JeTScE=,tag:5+b8H5NmLUh+qq+W+0WyKg==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-11-13T20:11:54Z"
+        - created_at: "2026-11-13T21:06:13Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//XLnqgIUBGTZW7WvOxu8wI6mA1okfj12W5ljRKI0WVE8k
-            JXXlNHdqgUs4CX3cBTPLp1PSF+J6P1SEYRTfLkhr4ev0+htJxxFIdW9Fio3YcBMU
-            4rNbOMhGvhcU/eDDxRmjFJY4HbHpUFjmDQoFbT6GpidAWzFDwM0mN/J8Oh8MqdaG
-            YPAPAg6BTayjojuSN9+nO+n+VTYG11gKGWAr51t1KpEeazx93mGMPcOnXquMdMMy
-            Vzo5C1AUnbWdOyBje4rnkarOCg7SKQhq6eE9Aa1A0LfJLbmb+Xoyn/kWEmE4fG5v
-            SbP03gQhcWhTyXeb68eBF+oTwWkq8aEUCY1Xg0IIFo/EBlUZL0I5m4Jl34zR2Sg9
-            vauOPCcp6wiyLziDnAK6m82xAEwdFlEm0LbKhvKw6DvxUCwYX3tFKT19VlinUyFn
-            4l9Wl37aXOAb9xTK8KgzMZbyt5RV+jla7egUbKwmm7JFXJOcS80nlOLSulsxoePQ
-            sab3mGjmQFxyHcKiufXaXvL7qGn0eQdROEJbJxebILCGsXHoBc0Pm1+ookZEbi6y
-            M+JMa+xW82iJk4OiL7nkZkLRCUQVZAISPahyqth+U8tXqO/xjeCXSJXSwPFcH/a7
-            zRDosaK5b9zbbj/B3jTVfmccfKKyhzhZ3sbdyqS7eUdGH3fGq7rrQIh7RjIZ+SbU
-            aAEJAhAceKPExBpZPJ4wBW6JCM3XfAlLEuv1HEz85cyw/v/xIY/ili22nXcWFPnd
-            WPSFNvfDJJqDCs3WYwLPAom18mbdEOvfRRTy3TI7G561GV+IFz9ro+lWExdV92sa
-            h9pURsK83nMU
-            =1Ma6
+            hQIMA5NT/LvuRqeGARAApuy1SJZjI0uNJXcRhsz9rig3Tv3MDsSmLLvRfL2eo6vR
+            2rt6pSGDQuirQihr2hvFQjCwYRJcm953jwpBihaDlXqBjpETzlCsoSdxtf58ZIvL
+            2SrheFnGNME5RdT1M9uv05fSHBW+X6dAfgH1APFzOS8jygjyLltN2dumHlnJ+aRp
+            GiPAjSZy6VHZIBLQ+alXk9mgqY4Zjtey/9yOnJm0d8/iEnFjZWaCnBUI5miQzowU
+            wozIji4APvpkdArqj6zDsp4Ho85mWmrLBdVfXRuz7WMsk9OC9KDiAMeBzTT2tNSL
+            RqvA3Ias1VuZTOuIjfR1HlPXjqHlV2OvlzPjhMC9kCav6h7LtADrPCp1DJpGs1KU
+            BegHhPKuRYL3E5Na1c948k9Y+x8t/O8pcTILOWQFI6kCGFUfc3ataBjoOm20mBwy
+            Oy9ye39t34Frp9j/DD9AIW1UcMHu7lJ4kFejCc6seQP8SGFIeSV8wIrskgwyM2b8
+            2tv1tfzD5VYAc+GRXPHrZG2rN4uhPXDLDnUG627s38s8NI5Dv4CfHEMBbkU1SiVs
+            UdgpPZFldRKALiJEgBKB1Y1caR2SsOevnTa3rPdn61zjguAn1nI9AmbdGgUUiEpz
+            DI0xtzaMAMW0n4uZgOdu6/wYvZkbFajek8GmQwu+0yr4RPIM6N+sA1XKceWiVvjU
+            aAEJAhBbIzl3+pLw5BZcEH7C/vELRidAj5uFLn7202z/xP2/OX52mKqiuKSLpxKD
+            3xs8GqIOdPHQyFKbMxrbv8JAh/KdhEXMIzchZc52SUAr7AG4y08vG4g+ftF3JiZK
+            Gfh/ARRo3v82
+            =YKT+
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2

@@ -5,7 +5,7 @@ data "sops_file" "airflow_oidc" {
 
 locals {
   airflow_oidc_values = yamldecode(data.sops_file.airflow_oidc.raw)
-  airflow_oidc        = local.airflow_oidc_values.oidc.stringData
+  airflow_oidc        = local.airflow_oidc_values.secret.stringData
 }
 
 resource "authentik_provider_oauth2" "airflow_oidc" {

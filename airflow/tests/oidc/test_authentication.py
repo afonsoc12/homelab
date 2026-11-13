@@ -15,7 +15,7 @@ from fastapi.testclient import TestClient
 from requests import Response
 
 pytestmark = pytest.mark.skipif(
-    os.environ.get("AIRFLOW_OIDC_TEST_MODE") != "isolated",
+    os.environ.get("AIRFLOW_AUTH_TEST_MODE") != "oidc",
     reason="Use tests/oidc/run.sh to initialize a disposable authentication database",
 )
 
