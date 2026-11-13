@@ -64,7 +64,7 @@ resource "authentik_stage_email" "recovery_email" {
   activate_user_on_success = false
   from_address             = data.sops_file.secrets.data["value_055"]
   host                     = "localhost"
-  name                     = "Homelab - Recovery Email"
+  name                     = "Homelab - Verified Recovery Email"
   port                     = 25
   recovery_cache_timeout   = "minutes=30"
   recovery_max_attempts    = 3
@@ -76,6 +76,17 @@ resource "authentik_stage_email" "recovery_email" {
   use_ssl                  = false
   use_tls                  = false
   username                 = ""
+
+  # Provider 2026.8.2 omits false activate_user_on_success values on update.
+  # Replace legacy stages with activation enabled; create the new stage before
+  # rebinding the flow and deleting the old stage. New stages default to false.
+  lifecycle {
+    create_before_destroy = true
+    postcondition {
+      condition     = self.activate_user_on_success == false
+      error_message = "Recovery email verification must not reactivate disabled accounts."
+    }
+  }
 }
 
 resource "authentik_stage_identification" "login_identification" {
