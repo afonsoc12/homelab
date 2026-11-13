@@ -71,10 +71,8 @@ configmap:
         AIRFLOW_VAR_KPO_IMAGE: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
         AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
         AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "false"
-        AIRFLOW__FAB__CONFIG_FILE: /opt/airflow/webserver_config.py
         AIRFLOW__FAB__ENABLE_PROXY_FIX: "true"
         AIRFLOW__FAB__PROXY_FIX_X_FOR: "0"
-        AIRFLOW__FAB__PROXY_FIX_X_PROTO: "1"
         AIRFLOW__FAB__PROXY_FIX_X_HOST: "0"
         AIRFLOW__FAB__PROXY_FIX_X_PORT: "0"
         AIRFLOW__FAB__PROXY_FIX_X_PREFIX: "0"

@@ -125,3 +125,33 @@ def test_stock_oidc_preserves_account_identity_and_permissions():
         assert browser_login(client, "synthetic-owner")
         assert client.post("/api/v2/variables", json={"key": "rehearsal-owner-write", "value": "synthetic"}).status_code == 201
         assert existing_users() == before
+
+
+def test_oauth_callback_uses_forwarded_https_without_trusting_host_port_or_prefix():
+    def discovery(method, url, **kwargs):
+        assert url.endswith("/.well-known/openid-configuration")
+        response = Response()
+        response.status_code = 200
+        response.headers["content-type"] = "application/json"
+        response._content = json.dumps(METADATA).encode()
+        return response
+
+    with TestClient(create_app(), base_url="http://testserver") as client:
+        with patch("requests.sessions.Session.request", side_effect=discovery):
+            result = client.get(
+                "/auth/login/authentik",
+                headers={
+                    "X-Forwarded-Proto": "https",
+                    "X-Forwarded-For": "synthetic-client",
+                    "X-Forwarded-Host": "untrusted-host",
+                    "X-Forwarded-Port": "81",
+                    "X-Forwarded-Prefix": "/untrusted-prefix",
+                },
+                follow_redirects=False,
+            )
+    assert result.is_redirect
+    params = parse_qs(urlsplit(result.headers["location"]).query)
+    callback = urlsplit(params["redirect_uri"][0])
+    assert callback.scheme == "https"
+    assert callback.netloc == "testserver"
+    assert callback.path == "/auth/oauth-authorized/authentik"

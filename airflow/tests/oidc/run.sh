@@ -5,6 +5,7 @@ directory=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)
 AIRFLOW_HOME=$(mktemp -d)
 export AIRFLOW_HOME
 cp "$directory/../../airflow.cfg" "$AIRFLOW_HOME/airflow.cfg"
+cp "$directory/../../webserver_config.py" "$AIRFLOW_HOME/webserver_config.py"
 export AIRFLOW__LOGGING__BASE_LOG_FOLDER="$AIRFLOW_HOME/logs"
 printf '{}\n' > "$AIRFLOW_HOME/variables.yaml"
 printf '{}\n' > "$AIRFLOW_HOME/connections.yaml"
@@ -28,7 +29,12 @@ python -m pytest --confcutdir "$directory" "$directory/test_local_authentication
 export AIRFLOW__CORE__AUTH_MANAGER=airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
 export AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS=false
 export AIRFLOW__CORE__LOAD_EXAMPLES=false
-export AIRFLOW__FAB__CONFIG_FILE="$directory/../../webserver_config.py"
+unset AIRFLOW__FAB__CONFIG_FILE AIRFLOW__FAB__PROXY_FIX_X_PROTO
+export AIRFLOW__FAB__ENABLE_PROXY_FIX=true
+export AIRFLOW__FAB__PROXY_FIX_X_FOR=0
+export AIRFLOW__FAB__PROXY_FIX_X_HOST=0
+export AIRFLOW__FAB__PROXY_FIX_X_PORT=0
+export AIRFLOW__FAB__PROXY_FIX_X_PREFIX=0
 export AIRFLOW_OIDC_ISSUER=https://synthetic-issuer/
 export AIRFLOW_OIDC_CLIENT_ID=synthetic-client
 export AIRFLOW_OIDC_CLIENT_SECRET=synthetic-value
