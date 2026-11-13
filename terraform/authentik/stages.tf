@@ -89,22 +89,6 @@ resource "authentik_stage_email" "recovery_email" {
   }
 }
 
-resource "authentik_stage_email" "native_oidc_email_verification" {
-  activate_user_on_success = false
-  from_address             = data.sops_file.secrets.data["value_055"]
-  host                     = "localhost"
-  name                     = "Homelab - Verify Email Address"
-  port                     = 25
-  subject                  = "Verify your homelab email address"
-  template                 = "email/account_confirmation.html"
-  timeout                  = 10
-  token_expiry             = "hours=24"
-  use_global_settings      = true
-  use_ssl                  = false
-  use_tls                  = false
-  username                 = ""
-}
-
 resource "authentik_stage_identification" "login_identification" {
   captcha_stage             = ""
   case_insensitive_matching = true

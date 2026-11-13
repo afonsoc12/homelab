@@ -38,48 +38,6 @@ resource "authentik_flow_stage_binding" "login_mfa_validation" {
   target                  = authentik_flow.login.uuid
 }
 
-# The explicit verification flow reuses the existing password and MFA stages.
-# It does not alter the default login flow or enable account registration.
-resource "authentik_flow_stage_binding" "email_verification_identification" {
-  evaluate_on_plan        = false
-  invalid_response_action = "retry"
-  order                   = 10
-  policy_engine_mode      = "any"
-  re_evaluate_policies    = true
-  stage                   = authentik_stage_identification.login_identification.id
-  target                  = authentik_flow.email_verification.uuid
-}
-
-resource "authentik_flow_stage_binding" "email_verification_mfa" {
-  evaluate_on_plan        = false
-  invalid_response_action = "retry"
-  order                   = 30
-  policy_engine_mode      = "any"
-  re_evaluate_policies    = true
-  stage                   = authentik_stage_authenticator_validate.login_mfa_validation.id
-  target                  = authentik_flow.email_verification.uuid
-}
-
-resource "authentik_flow_stage_binding" "email_verification_email" {
-  evaluate_on_plan        = false
-  invalid_response_action = "retry"
-  order                   = 40
-  policy_engine_mode      = "any"
-  re_evaluate_policies    = true
-  stage                   = authentik_stage_email.native_oidc_email_verification.id
-  target                  = authentik_flow.email_verification.uuid
-}
-
-resource "authentik_flow_stage_binding" "email_verification_login" {
-  evaluate_on_plan        = false
-  invalid_response_action = "retry"
-  order                   = 100
-  policy_engine_mode      = "any"
-  re_evaluate_policies    = true
-  stage                   = authentik_stage_user_login.login_login.id
-  target                  = authentik_flow.email_verification.uuid
-}
-
 # The identification stage validates the password on the first screen through
 # password_stage. A separate binding would ask for the password a second time.
 

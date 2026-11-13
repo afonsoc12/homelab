@@ -33,7 +33,7 @@ def existing_users():
         return {user.username: (user.id, tuple(role.name for role in user.roles)) for user in session.query(User).all()}
 
 
-def browser_login(client, subject, issuer=ISSUER, audience=CLIENT_ID):
+def browser_login(client, subject, issuer=ISSUER, audience=CLIENT_ID, *, nonce=None, expires_in=300, signing_key=KEY):
     def provider_request(method, url, **kwargs):
         response = Response()
         response.status_code = 200
@@ -47,11 +47,18 @@ def browser_login(client, subject, issuer=ISSUER, audience=CLIENT_ID):
             verifier = parse_qs(data)["code_verifier"] if isinstance(data, str) else data["code_verifier"]
             assert verifier
             now = int(time.time())
-            claims = {"iss": issuer, "sub": subject, "aud": audience, "iat": now, "exp": now + 300, "nonce": params["nonce"][0]}
+            claims = {
+                "iss": issuer,
+                "sub": subject,
+                "aud": audience,
+                "iat": now,
+                "exp": now + expires_in,
+                "nonce": nonce if nonce is not None else params["nonce"][0],
+            }
             body = {
                 "access_token": "synthetic-access",
                 "token_type": "Bearer",
-                "id_token": jwt.encode(claims, KEY, algorithm="RS256", headers={"kid": "rehearsal"}),
+                "id_token": jwt.encode(claims, signing_key, algorithm="RS256", headers={"kid": "rehearsal"}),
             }
         else:
             raise AssertionError("Unexpected provider request")
@@ -62,6 +69,8 @@ def browser_login(client, subject, issuer=ISSUER, audience=CLIENT_ID):
     with patch("requests.sessions.Session.request", side_effect=provider_request):
         login = client.get("/auth/login/authentik", follow_redirects=False)
         assert login.is_redirect
+        cookies = login.headers.get_list("set-cookie")
+        assert any("secure" in cookie.lower() and "httponly" in cookie.lower() and "samesite=lax" in cookie.lower() for cookie in cookies)
         params = parse_qs(urlsplit(login.headers["location"]).query)
         assert params["code_challenge_method"] == ["S256"]
         assert params["nonce"]
@@ -79,6 +88,10 @@ with TestClient(create_app(), base_url="https://testserver") as client:
     for username, password in (("rehearsal-viewer", "synthetic-value"), ("rehearsal-machine", "wrong-value")):
         assert client.post("/auth/token", json={"username": username, "password": password}).status_code == 401
 
+    # FAB supports email-based password lookup; machine allowlists must not.
+    with patch.dict(os.environ, {"AIRFLOW_API_SERVICE_USERS": '["machine-alias@synthetic"]'}):
+        assert client.post("/auth/token", json={"username": "machine-alias@synthetic", "password": "synthetic-value"}).status_code == 401
+
     machine = client.post("/auth/token", json={"username": "rehearsal-machine", "password": "synthetic-value"})
     assert machine.status_code == 201
     headers = {"Authorization": "Bearer " + machine.json()["access_token"]}
@@ -90,13 +103,23 @@ with TestClient(create_app(), base_url="https://testserver") as client:
     assert client.post("/auth/token", json={"username": "rehearsal-machine", "password": "synthetic-value"}).status_code == 401
 
     assert browser_login(client, "synthetic-subject")
+    assert client.get("/api/v2/dags").status_code == 200
+    assert client.post("/api/v2/variables", json={"key": "rehearsal-viewer-denied", "value": "synthetic"}).status_code == 403
     assert not browser_login(client, "unmapped-subject")
     assert not browser_login(client, "synthetic-subject", issuer="https://wrong-issuer/")
     assert not browser_login(client, "synthetic-subject", audience="wrong-audience")
+    assert not browser_login(client, "synthetic-subject", nonce="wrong-nonce")
+    assert not browser_login(client, "synthetic-subject", expires_in=-3600)
+    assert not browser_login(client, "synthetic-subject", signing_key=rsa.generate_private_key(public_exponent=65537, key_size=2048))
+    with create_session() as session:
+        session.query(User).filter_by(username="rehearsal-viewer").one().active = False
+    assert not browser_login(client, "synthetic-subject")
+    with create_session() as session:
+        session.query(User).filter_by(username="rehearsal-viewer").one().active = True
     assert existing_users() == before
 
     from airflow.providers.fab.auth_manager.cli_commands.utils import get_application_builder
-    from homelab_auth.accounts import rename_admin
+    from rename_admin import rename_admin
 
     with get_application_builder() as builder:
         owner = builder.sm.add_user(

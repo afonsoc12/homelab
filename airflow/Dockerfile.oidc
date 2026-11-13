@@ -2,7 +2,8 @@ FROM ghcr.io/afonsoc12/airflow@sha256:aaa623ba74726de83406a83f24c4a72d2f8bf72161
 
 COPY --chown=airflow:root oidc/pyproject.toml oidc/uv.lock /opt/airflow/oidc/
 COPY --chown=airflow:root oidc/start.sh /opt/airflow/oidc/start.sh
-COPY --chown=airflow:root libs/homelab_auth /opt/airflow/libs/homelab_auth
+COPY --chown=airflow:root libs/airflow_oidc.py /opt/airflow/libs/airflow_oidc.py
+COPY --chown=airflow:root webserver_config.py /opt/airflow/webserver_config.py
 COPY --chown=airflow:root airflow.cfg /opt/airflow/airflow.cfg
 
 WORKDIR /opt/airflow/oidc
@@ -10,9 +11,5 @@ RUN uv export --frozen --no-dev --no-emit-project --format requirements.txt --ou
     uv pip sync --python /home/airflow/.local/bin/python requirements.txt && \
     rm requirements.txt
 WORKDIR /opt/airflow
-
-ENV AIRFLOW__CORE__AUTH_MANAGER=homelab_auth.fab.OIDCAuthManager \
-    AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS=false \
-    AIRFLOW__FAB__CONFIG_FILE=/opt/airflow/libs/homelab_auth/webserver_config.py
 
 CMD ["bash", "/opt/airflow/oidc/start.sh"]

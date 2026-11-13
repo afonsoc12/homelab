@@ -105,13 +105,3 @@ resource "authentik_policy_binding" "login_reputation" {
   enabled        = true
   failure_result = false
 }
-
-resource "authentik_policy_binding" "record_verified_email" {
-  enabled        = true
-  failure_result = false
-  negate         = false
-  order          = 0
-  policy         = authentik_policy_expression.native_oidc_record_verified_email.id
-  target         = authentik_flow_stage_binding.email_verification_login.id
-  timeout        = 30
-}

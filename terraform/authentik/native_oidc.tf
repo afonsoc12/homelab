@@ -29,9 +29,8 @@ locals {
   }
 }
 
-# Email verification is recorded only after the authenticated email stage sends
-# a confirmation link and the user follows it. A mutable email field alone does
-# not establish verification.
+# Consume Authentik's existing verified-address record. Terraform and these
+# OIDC mappings never create or update a user's verification attributes.
 resource "authentik_property_mapping_provider_scope" "native_oidc_email" {
   name       = "Native OIDC Email"
   scope_name = "email"

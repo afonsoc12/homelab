@@ -1,10 +1,13 @@
-"""FAB configuration for the dedicated OIDC image."""
+"""FAB's required OAuth configuration; provider values come from deployment env.
+
+Airflow's [fab] config_file loads these settings. FAB does not expose AUTH_TYPE
+or OAUTH_PROVIDERS through airflow.cfg or AIRFLOW__FAB__ environment variables.
+"""
 
 import os
 
+from airflow_oidc import ExistingAccountSecurityManager, issuer_url, service_users, subject_users
 from flask_appbuilder.const import AUTH_OAUTH
-from homelab_auth.fab import ExistingAccountSecurityManager
-from homelab_auth.settings import issuer_url, service_users, subject_users
 
 ISSUER = issuer_url()
 subject_users()
@@ -14,9 +17,7 @@ AUTH_TYPE = AUTH_OAUTH
 AUTH_USER_REGISTRATION = False
 AUTH_ROLES_SYNC_AT_LOGIN = False
 SECURITY_MANAGER_CLASS = ExistingAccountSecurityManager
-SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = "Lax"
 
 OAUTH_PROVIDERS = [
     {
