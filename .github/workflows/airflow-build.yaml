@@ -92,7 +92,7 @@ jobs:
         run: uv sync --project airflow/oidc --frozen
 
       - name: "🔐 Exercise OIDC login and machine API restrictions"
-        run: uv run --project airflow/oidc bash airflow/oidc/rehearse.sh
+        run: uv run --project airflow/oidc bash airflow/tests/oidc/run.sh
 
   bump-tag:
     permissions:
