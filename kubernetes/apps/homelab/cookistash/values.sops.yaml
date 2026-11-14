@@ -35,6 +35,7 @@ configmap:
     data:
         TZ: '{{ .Values.tz }}'
         DEBUG: "false"
+        AUTO_ADMIN_LOGIN: "false"
         CSRF_TRUSTED_ORIGINS: https://cookistash.local.{{ .Values.domain }}
         DB_HOST: postgres.databases
         DB_USER: cookistash

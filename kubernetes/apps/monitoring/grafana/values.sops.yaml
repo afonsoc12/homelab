@@ -10,11 +10,11 @@ ingress:
     path: /
     pathType: Prefix
     hosts:
-        - ENC[AES256_GCM,data:V3LmtO3N3pl8+NVVrTwa36OMS0EVga4MU06G,iv:VyhDLCCs99iwTBdZzscBMbfWLS96lY747IW5R6QYkJc=,tag:dwjI+odDbhqhQV0AN9CyqA==,type:str]
+        - ENC[AES256_GCM,data:WRSHbTGpPB4mVa4u/p8FLkN2WBtRzMexxoNU,iv:Ml+lloNRdy7H7YtFInxRDHgCvlz6dwSi3JaQJTEtgJU=,tag:NI66op7wNDcLPglLWDcXsQ==,type:str]
     tls:
         - secretName: local-wildcard-cert
           hosts:
-            - ENC[AES256_GCM,data:AFnK4d0TCct2Mj+WxG2IA2jXZxRrN6DWLSQ6,iv:R1NnxHraQui+5UFsW6miLtMm+zEWxe9UdDSohWRXApk=,tag:wIZXPOOEz0B4OUsc+3ktzw==,type:str]
+            - ENC[AES256_GCM,data:ueh4kBOqUBYG3QDKK8dUDBAUa4a2CNsosmD0,iv:Bs41l2vUeOkrHLZF+tjGy/zlwwYHxhS3K0gadCened8=,tag:AlS7fjQComThgWHSjYw/yA==,type:str]
 persistence:
     type: pvc
     enabled: true
@@ -62,7 +62,9 @@ grafana.ini:
         login_attribute_path: preferred_username
         name_attribute_path: name
         email_attribute_path: email
-        role_attribute_path: contains(groups[*], 'authentik_admins') && 'Admin' || 'Viewer'
+        role_attribute_path: ENC[AES256_GCM,data:POCTNPjkWgiIcJVM8x6oWSmrHsYgLEI+V8bp7bVVXDFKta/bFzA0oc7tSAISEeSLUjsdWj8eb8TbPUtHMxTz7e69ozRQlBkrQByTBr43wpjSc3ILpanFNiL4DZK2KQe+kSVD2umPsA==,iv:5Hydk3bHcUihDfpuuVk6iQsfwf0AfPrQMuAthSzxI58=,tag:01UMmjltKRLkYolmaIIp+A==,type:str]
+        allow_assign_grafana_admin: true
+        role_attribute_strict: true
         use_pkce: true
         use_refresh_token: true
         auth_style: InHeader
@@ -106,32 +108,32 @@ startupProbe:
     failureThreshold: 18
     timeoutSeconds: 5
 envRenderSecret:
-    GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ENC[AES256_GCM,data:rAFsl9AfVMEU5QfRDmF7I2H8eo0PsszS7sFmX3xh+Txby173X1GwANW8t1BkV/0h5j5+yKhKM7ZgWUUkzvJoyg==,iv:We0MHMunq22p3l7xvNsB7O4MrOp04ueOpV2X97J3P4U=,tag:XQ4tAYZzBzK5O+SIfNZphw==,type:str]
+    GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: ENC[AES256_GCM,data:fuoYc4BIoC2KnpKinOsnCPvlxfXWbC3E8/eexe9atNnuC5d3cUh/oF5j2ImoYdStyhWxBCzg/HiRaBPuT/d0Rg==,iv:oER13EnkZEBBgTwzAz0DgOq3fpTxo1CxnyOjzS4H0mI=,tag:LmIqwrWkAT+rCc73m95HAw==,type:str]
 sops:
-    encrypted_regex: ^(hosts|hostnames|envRenderSecret)$
-    lastmodified: "2026-10-29T00:34:07Z"
-    mac: ENC[AES256_GCM,data:yfgvIjLRccBb1KCxwca3LXlHF0zUVU4yk9RuzjoXz5nIQUFykgdfIgGii/TmqZPLvYj4Dsf9CBd/pWSXUCkiF7zKvzxN3E5YKaiioAkrWnO0cM6ZVRAtAukVKPhaU+86Il5MsWYVGDMFeHcmsJDPfvEeGHwPZtNJ6GdSe5lpNrE=,iv:WA2MTekhdOZ9IuzjUuAxXjmN8MXRCzSd3d0p29WXrew=,tag:gYz31s95mbYz1Y/QKSIksA==,type:str]
+    encrypted_regex: ^(hosts|hostnames|envRenderSecret|role_attribute_path)$
+    lastmodified: "2026-11-12T11:03:53Z"
+    mac: ENC[AES256_GCM,data:ySbJ8HkoCU99AsnfJPjljtcpLmqtoZ0ccI30VltI3S5tXkcLRNFZhCmwG2PoqVV6W+5Z+BR8P/xgp1sSVwNeb+MJ/O0/Xk1AmrVvmaJA1xx5HMc4O2JRdvBqd5XVR+ZXukHU4gm9pv8PxwZzFO2OhEZURVt33N6ZZ//cqA8izL8=,iv:q1NCLVVhu+nx6pqVYlD2YQyjGuOsMbH9lo/HJKBwcTw=,tag:zxZquuR7NP4ZR7wvMZGRMw==,type:str]
     mac_only_encrypted: true
     pgp:
-        - created_at: "2026-10-24T22:19:37Z"
+        - created_at: "2026-11-12T11:03:53Z"
           enc: |-
             -----BEGIN PGP MESSAGE-----
 
-            hQIMA5NT/LvuRqeGAQ//X/bc0LG61eZ6t87tH/qIa9YtoMiqDMdYdfBvrbQ7Bkw2
-            f7r91cU12iuTT+a2R4H4L+9AeRetAB8e2SPRLe8Ig5b/bTkv0m+3Op3k2lFHME8+
-            dRivXUIllsLSzTpc3BsNLgzcJTrVIVc1htw1NjbwMlGf33vINVmT7AaoFEcCgu1z
-            K5jDCsPA91t7Qw7S58QHdArnHdmsq7ChVMses4CiPOvaVs58VPGHy1hrfPaX8WvZ
-            QmzPg9enRQV63YSPC5PMp2eSOmGkajlP+6HdomAqAZErR3QQb+hWpNjWHxfB10G5
-            cRJtJURpsjMloLBGqDns5AT6ahvcGGf+kFwa30ZX9FMK7j/muz0S/VqBrlEzWxGC
-            Ld15SZyJx3nAvyJxV7t3DpKrSg7KgQ7YvJGfmRRkgB0D5p7bcc1JMyP/3UuS81Fz
-            i9rWH9JwzsuSf9wwnIvfvxJgNseOy/asM7OaLtiFaLFIPm7xc2Nu/z1enhHK9FkU
-            ZW5AiXgNmz55OLv+dR/0PwtwBOXXk5zDW2UpbMqPtH1XKPBPoZ1mo6kQa5qCR9kS
-            1ZPEPguU6sd2YqW9Dzro0Hyh/qw1SZ+wYisKIl6ACD+9gyUjmyA5zcXDm+mw39vT
-            wuu7411XTNVqF5HUKfaXlqQHcOUSsuABckBg1ngXehi4g1Qnglcd/SfPDiLYK4rU
-            aAEJAhBO9aQ0p29t0T3culLNBEd4kXXd9YXVi2gQdjaO+fUy8KA6xu/S8uFj9n7e
-            J2/daExsOEG+6nRvdnGlXsaHH9lD4qM9I8v6ClHtPXQ960nukWMW1TYcVm9HNHaC
-            Q34RZafZG0pg
-            =/KwS
+            hQIMA5NT/LvuRqeGARAAoxgQZ/92EvqwfDM2EJYm6crX5MDAf5UZZjhbwU6dz30T
+            /KXtXKZxL+ed2wHYFzPLJYZHvquEFYnI97e5iz+NKyiTcP8B2PJCeUIVErNS3M44
+            TvUNXgchlxEdAdvJSQJAHb3mcB7PhekxbAkbEBhUppPs4Zr32enIMb4jYg1YnVMH
+            yH7l7RWFn1qebBDspFeD18vprTxOU0yYvuukU4RZzM3+gfqi68X/0Z48oxc3p/OH
+            XP9Rh2mJDoKsONYI1fEbr1TKLbjh4FPjDR2GjM69h6EzgN6v6aOjD6ItAohPKRnx
+            fCfiYHnUUxgDfBjvLRtmgFY66Gh/4MXt+KUMZINd1eIpEfI8SXPZKOjKk4eiKXlO
+            szJfJfc6fuPkiYuxHLSklyUZh4bmvNNSnjEOlhsk7JFtZziPK2zyygrpc5xJp8Xc
+            QbM6fmhPJXiH4ODX5/qhPriYoLinBrFtTeZEumUV7ISrVcTPQlSyKb1GkS7xv8Ls
+            H8I9QW3SyWMLxM1stEdt+N2KusPzjqniM6VlXqL/hnFHYjmYZjQnO6Zj7wSsOLMw
+            zB64C4UbqQLNLYnIWz76pkLNl0kIIts7bfdqV+v9kGmNaRXma0fmQi8SSJYOcP65
+            qi6x76ZCZUL4GmpkI5PfW/67cs2tT5JHIlSP7DwikfyhAwfzvY+KLoBSF1XK8lvU
+            aAEJAhBwdX4aFWXoWD908aJ1moIPnF1Tk8k+zk8CTD11VoEnCbpH9tnnedmUbwga
+            YZJILoYs1M25CZTM2O7CwaMatChKrvBlCTDnSBYsyuu/r8c4JEPXphsRyefwbTWt
+            V9wivVZB64+g
+            =5cJ3
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
     version: 3.13.2
