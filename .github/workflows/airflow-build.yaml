@@ -13,6 +13,10 @@ on: # yamllint disable-line rule:truthy
       - .github/workflows/airflow-build.yaml
   workflow_dispatch:
 
+concurrency:
+  group: airflow-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
 
@@ -21,6 +25,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      security-events: write
     runs-on: ubuntu-latest
     outputs:
       airflow_version: ${{ steps.version.outputs.airflow_version }}
@@ -58,6 +63,30 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: docker/setup-buildx-action@v4
 
+      - name: Set up container security scan
+        if: github.event_name != 'pull_request'
+        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
+        with:
+          version: v0.76.2
+          cache: true
+
+      - name: Validate image before publishing
+        id: image-scan
+        if: github.event_name != 'pull_request'
+        run: |
+          docker build --tag homelab-security:publish airflow > "$RUNNER_TEMP/image-build.log" 2>&1
+          trivy image --config /dev/null --ignorefile /dev/null \
+            --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed \
+            --format sarif --exit-code 1 --output "$RUNNER_TEMP/publish.sarif" \
+            homelab-security:publish > "$RUNNER_TEMP/image-scan.log" 2>&1
+
+      - name: Upload image security findings
+        if: always() && steps.image-scan.outcome != 'skipped' && steps.image-scan.outcome != ''
+        uses: github/codeql-action/upload-sarif@5895b2c9be147bc7f1c75ce72c5cb577febb1907 # v4
+        with:
+          sarif_file: ${{ runner.temp }}/publish.sarif
+          category: trivy-publish
+
       - name: "🔐 Login to GHCR"
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v4
@@ -74,24 +103,3 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository_owner }}/airflow:${{ steps.version.outputs.airflow_version }}-b${{ github.run_number }}
-
-  bump-tag:
-    permissions:
-      contents: write
-    runs-on: ubuntu-latest
-    needs: airflow
-    if: github.event_name != 'pull_request'
-
-    steps:
-      - name: "📥 Checkout"
-        uses: actions/checkout@v7
-
-      - name: "🏷️ Bump image tag"
-        run: |
-          yq -i '.image.tag = "${{ needs.airflow.outputs.airflow_version }}-b${{ github.run_number }}"' kubernetes/apps/addons/airflow/values.sops.yaml
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add kubernetes/apps/addons/airflow/values.sops.yaml
-          git commit -m "chore: bump airflow image to ${{ needs.airflow.outputs.airflow_version }}-b${{ github.run_number }}"
-          git pull --rebase
-          git push
