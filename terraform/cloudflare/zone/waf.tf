@@ -11,6 +11,12 @@ locals {
   aws_callback_expr = length(var.aws_callback_endpoints) > 0 ? "(ip.src.asnum eq 16509 and ssl and http.request.method eq \"POST\" and (${local.aws_callback_paths_expr}))" : "false"
 
   waf_rules = concat(
+    [for host, paths in var.machine_endpoints : {
+      action      = "block"
+      description = "Deny unexpected machine routes and methods"
+      expression  = "(http.host eq ${jsonencode("${host}.${var.domain}")} and (not ssl or http.request.method ne \"POST\" or not raw.http.request.uri.path in {${join(" ", [for path in sort(tolist(paths)) : jsonencode(path)])}}))"
+      enabled     = true
+    }],
     # Keep the source allowlist and its matching deny rule together, before
     # general bot/geo checks. Neither expression is stored in plaintext.
     var.github_webhook_rules != null ? [

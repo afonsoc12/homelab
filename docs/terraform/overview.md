@@ -1,6 +1,6 @@
 # Terraform Overview
 
-Terraform manages Authentik identity configuration, Cloudflare DNS/tunnels, Oracle Cloud compute, Backblaze B2 storage, AdGuard Home configuration, and database user/grant management.
+Terraform manages Authentik identity configuration, Cloudflare DNS/tunnels, Oracle Cloud compute, AWS services, Backblaze B2 storage, AdGuard Home configuration, and database user/grant management.
 
 ## Modules
 
@@ -8,12 +8,21 @@ Terraform manages Authentik identity configuration, Cloudflare DNS/tunnels, Orac
 terraform/
 ├── authentik/     # Identity configuration, flows, providers, policies, and branding
 ├── adguard/       # AdGuard Home DNS rewrites, filters, and config
+├── aws/           # AWS services and supporting identity resources
 ├── cloudflare/    # DNS records, tunnels, WAF, zone settings
 ├── mariadb/       # MariaDB databases, users, and grants
 ├── oci/           # Oracle Cloud instance (k3s-oci-m3) and networking
 ├── postgres/      # PostgreSQL databases, users, and grants
 └── backblaze/     # B2 buckets and scoped application keys
 ```
+
+### `aws`
+
+Uses the shared encrypted remote backend and SOPS provider configuration.
+Service resources live in child modules, with import and move declarations in the
+root module. Deployment settings and provider credentials remain encrypted.
+
+See the [AWS provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
 
 ### `authentik`
 

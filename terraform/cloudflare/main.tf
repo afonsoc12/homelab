@@ -32,8 +32,9 @@ module "zone_homelab" {
   block_bots = true
   aws_callback_endpoints = {
     music-assistant-alexa-skill = ["/"]
-    home                        = ["/api/alexa/smart_home", "/auth/token"]
+    home-alexa                  = ["/api/alexa/smart_home", "/auth/token"]
   }
+  machine_endpoints = { home-alexa = ["/api/alexa/smart_home", "/auth/token"] }
   geo_block_enabled = true
   geo_allowlist     = ["PT", "GB"]
 

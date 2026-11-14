@@ -88,3 +88,20 @@ run "reject_missing_domain" {
   }
   expect_failures = [var.aws_callback_endpoints]
 }
+
+run "machine_endpoint_contract" {
+  command = plan
+  variables {
+    machine_endpoints      = { home-alexa = ["/api/alexa/smart_home", "/auth/token"] }
+    aws_callback_endpoints = { home-alexa = ["/api/alexa/smart_home", "/auth/token"] }
+  }
+  assert {
+    condition = (
+      cloudflare_ruleset.waf[0].rules[0].action == "block" &&
+      strcontains(cloudflare_ruleset.waf[0].rules[0].expression, "raw.http.request.uri.path") &&
+      strcontains(cloudflare_ruleset.waf[0].rules[0].expression, "http.request.method ne \"POST\"") &&
+      alltrue([for rule in cloudflare_ruleset.waf[0].rules : rule.action != "skip"])
+    )
+    error_message = "Machine routing must deny other methods and raw paths without skipping security rules."
+  }
+}
