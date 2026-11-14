@@ -97,7 +97,7 @@ jobs:
               --scanners vuln,misconfig --include-dev-deps \
               --severity HIGH,CRITICAL --format sarif --exit-code 0 \
               --skip-dirs .git --skip-dirs .venv --skip-dirs .cache \
-              --skip-dirs ansible/roles --skip-files '**/*.sops.*' \
+              --skip-dirs ansible/roles \
               --skip-files '**/.decrypted~*' \
               --output "$2" "$1" > "$RUNNER_TEMP/trivy.log" 2>&1
           }
