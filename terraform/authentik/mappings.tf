@@ -26,6 +26,24 @@ resource "authentik_property_mapping_provider_scope" "oidc_profile" {
   scope_name  = "profile"
 }
 
+# Argo CD RBAC uses only this group; do not disclose unrelated memberships.
+resource "authentik_property_mapping_provider_scope" "argo_cd_profile" {
+  name       = "Argo CD - OIDC Profile"
+  scope_name = "profile"
+  expression = replace(
+    data.sops_file.secrets.data["value_034"],
+    "[group.name for group in request.user.groups.all()]",
+    "[group.name for group in request.user.groups.all() if group.name == \"authentik_admins\"]"
+  )
+
+  lifecycle {
+    precondition {
+      condition     = strcontains(data.sops_file.secrets.data["value_034"], "[group.name for group in request.user.groups.all()]")
+      error_message = "The shared profile mapping changed; review the Argo CD group filter."
+    }
+  }
+}
+
 resource "authentik_property_mapping_provider_scope" "proxy_outpost" {
   description = "authentik Proxy - User information"
   expression  = data.sops_file.secrets.data["value_035"]
