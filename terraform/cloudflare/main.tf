@@ -34,10 +34,6 @@ module "zone_homelab" {
     music-assistant-alexa-skill = ["/"]
     home                        = ["/api/alexa/smart_home", "/auth/token"]
   }
-  github_webhook_rules = {
-    allow_expression = data.sops_file.secrets.data["waf.github_webhook_allow_expression"]
-    block_expression = data.sops_file.secrets.data["waf.github_webhook_block_expression"]
-  }
   geo_block_enabled = true
   geo_allowlist     = ["PT", "GB"]
 
