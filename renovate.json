@@ -79,9 +79,10 @@
       "versioning": "regex:^slim-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-python(?<compatibility>[\\d.]+)$"
     },
     {
-      "description": "Propose apache/airflow base image bumps for review; never merge them automatically",
+      "description": "Auto-merge standalone apache/airflow base image update PRs after required checks pass",
       "matchPackageNames": ["apache/airflow"],
-      "automerge": false,
+      "groupName": null,
+      "automerge": true,
       "automergeType": "pr"
     },
     {
@@ -169,6 +170,7 @@
     {
       "description": "Group Python dependency minor/patch updates",
       "matchManagers": ["pep621", "pyenv", "dockerfile"],
+      "matchPackageNames": ["!apache/airflow"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pin", "pinDigest"],
       "groupName": "python"
     },
