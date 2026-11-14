@@ -46,6 +46,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "home.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.interactive["home"].aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -62,6 +67,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "seerr.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.interactive["seerr"].aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -78,6 +88,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "calibre.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.interactive["calibre"].aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -94,6 +109,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "rss.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.interactive["rss"].aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -110,6 +130,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "status.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.interactive["status"].aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -126,6 +151,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "wallabag.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.interactive["wallabag"].aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -150,6 +180,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "split.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.spliit.aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -207,9 +242,11 @@ locals {
 
 # Additional public access policy for Spliit's hostname.
 resource "cloudflare_zero_trust_access_policy" "spliit" {
-  account_id = var.account_id
-  name       = "Allow Spliit friends"
-  decision   = "allow"
+  account_id       = var.account_id
+  name             = "Allow Spliit friends"
+  decision         = "allow"
+  session_duration = "8h"
+  require          = [{ login_method = { id = var.authentik_idp_id } }]
   include = [
     for e in var.spliit_access_emails : {
       email = {
@@ -220,11 +257,13 @@ resource "cloudflare_zero_trust_access_policy" "spliit" {
 }
 
 resource "cloudflare_zero_trust_access_application" "spliit" {
-  account_id       = var.account_id
-  name             = "Spliit"
-  domain           = "split.${var.domain}"
-  type             = "self_hosted"
-  session_duration = "360h" # 15 days
+  account_id                 = var.account_id
+  name                       = "Spliit"
+  domain                     = "split.${var.domain}"
+  type                       = "self_hosted"
+  session_duration           = "8h"
+  allowed_idps               = [var.authentik_idp_id]
+  http_only_cookie_attribute = true
   policies = [
     {
       id         = cloudflare_zero_trust_access_policy.spliit.id

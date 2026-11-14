@@ -32,7 +32,7 @@ module "zone_homelab" {
 
 ## `tunnels` — Cloudflare Tunnel
 
-Creates and configures the Cloudflared tunnel that connects the k3s-cluster to the Cloudflare edge. The tunnel secret is read from SOPS.
+Creates and configures the Cloudflared tunnel that connects the k3s-cluster to the Cloudflare edge. The tunnel secret is read from SOPS. Cloudflare Access adds identity-based protection to supported applications.
 
 ## Public access restrictions
 
