@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = "==3.14.*"
 
 [[package]]
@@ -254,7 +254,7 @@ wheels = [
 
 [[package]]
 name = "apache-airflow-providers-cncf-kubernetes"
-version = "10.25.0"
+version = "11.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiofiles" },
@@ -266,9 +266,9 @@ dependencies = [
     { name = "kubernetes-asyncio" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ef/1e/c3aca665583483cf86c7a5d80f2fe436257846751ba02427d6a9d7fce422/apache_airflow_providers_cncf_kubernetes-10.25.0.tar.gz", hash = "sha256:134809a37537cedf05cd6d60c51b64cd1df430c29e289786214d33307b27accf", size = 546853, upload-time = "2026-10-24T18:48:42.295Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/93/9f/7049d335cf80fff83fa021aae5a48e45ed29ddb782868ff743b075f621f8/apache_airflow_providers_cncf_kubernetes-11.0.0.tar.gz", hash = "sha256:bde2ce27a3b796e1ad74330c9079fbc8992295575b39d50f058aebf2eb6cbf18", size = 554386, upload-time = "2026-11-09T18:25:36.731Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/78/e3/342cf7ca2d35337c2221a13a2084d49714df2880db568e593297235d8bb9/apache_airflow_providers_cncf_kubernetes-10.25.0-py3-none-any.whl", hash = "sha256:6644520fcfec8b16c271602bfe0492848857261a48885e83ae4477e1da662d74", size = 200313, upload-time = "2026-10-24T18:48:11.805Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/55/5316041cfe2649a101288910d82f37d554a3a1dad398accdaa0d2458e017/apache_airflow_providers_cncf_kubernetes-11.0.0-py3-none-any.whl", hash = "sha256:dd127fadfc0c66008a2ae0412ab1900a51a1440564abe347073b5c7e629e2f09", size = 202392, upload-time = "2026-11-09T18:24:58.869Z" },
 ]
 
 [[package]]
@@ -1206,7 +1206,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "apache-airflow", specifier = "==3.4.0" },
-    { name = "apache-airflow-providers-cncf-kubernetes", specifier = "==10.25.0" },
+    { name = "apache-airflow-providers-cncf-kubernetes", specifier = "==11.0.0" },
     { name = "apache-airflow-providers-fab", extras = ["oauth"], specifier = "==3.11.0" },
     { name = "apache-airflow-providers-postgres", specifier = "==7.1.2" },
     { name = "authlib", specifier = "==1.9.5" },
