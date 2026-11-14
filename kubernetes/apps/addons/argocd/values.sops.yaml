@@ -443,10 +443,54 @@ notifications:
         # (kubernetes/apps/monitoring/prometheus-stack): status emoji + event
         # name title, quote-block body with a bold summary line, cluster/
         # namespace/timestamp context line, then markdown links.
-        template.app-deployed: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F7E2 AppDeployed · `{{.app.spec.destination.name}}`\",\n          \"color\": 3066993,\n          \"description\": \"> **{{.app.metadata.name}} synced successfully**\\n> {{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}\\n> \U0001F4E6 `{{.app.spec.destination.namespace}}` · \U0001F552 {{.app.status.operationState.finishedAt}}\\n> [\U0001F50D App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [\U0001F4DD {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}\"\n        }]\n      }\n"
-        template.app-health-degraded: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 AppHealthDegraded · `{{.app.spec.destination.name}}`\",\n          \"color\": 15158332,\n          \"description\": \"> **{{.app.metadata.name}} health degraded**\\n> Health status: `{{.app.status.health.status}}`\\n> \U0001F4E6 `{{.app.spec.destination.namespace}}` · \U0001F552 {{.app.status.reconciledAt}}\\n> [\U0001F50D App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})\"\n        }]\n      }\n"
-        template.app-sync-failed: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F534 AppSyncFailed · `{{.app.spec.destination.name}}`\",\n          \"color\": 15158332,\n          \"description\": \"> **{{.app.metadata.name}} sync failed**\\n> {{.app.status.operationState.message | default \\\"No error message\\\"}}\\n> \U0001F4E6 `{{.app.spec.destination.namespace}}` · \U0001F552 {{.app.status.operationState.finishedAt}}\\n> [\U0001F50D App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [\U0001F4DD {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}\"\n        }]\n      }\n"
-        template.app-sync-status-unknown: "webhook:\n  discord:\n    method: POST\n    body: |\n      {\n        \"embeds\": [{\n          \"title\": \"\U0001F7E1 AppSyncStatusUnknown · `{{.app.spec.destination.name}}`\",\n          \"color\": 15105570,\n          \"description\": \"> **{{.app.metadata.name}} sync status unknown**\\n> ArgoCD could not determine whether the live state matches Git — check for CRD issues or repo access errors.\\n> \U0001F4E6 `{{.app.spec.destination.namespace}}` · \U0001F552 {{.app.status.reconciledAt}}\\n> [\U0001F50D App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})\"\n        }]\n      }\n"
+        template.app-deployed: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "🟢 AppDeployed · `{{.app.spec.destination.name}}`",
+                      "color": 3066993,
+                      "description": "> **{{.app.metadata.name}} synced successfully**\n> {{(call .repo.GetCommitMetadata .app.status.sync.revision).Message | trunc 100}}\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.operationState.finishedAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [📝 {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
+                    }]
+                  }
+        template.app-health-degraded: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "🔴 AppHealthDegraded · `{{.app.spec.destination.name}}`",
+                      "color": 15158332,
+                      "description": "> **{{.app.metadata.name}} health degraded**\n> Health status: `{{.app.status.health.status}}`\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.reconciledAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})"
+                    }]
+                  }
+        template.app-sync-failed: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "🔴 AppSyncFailed · `{{.app.spec.destination.name}}`",
+                      "color": 15158332,
+                      "description": "> **{{.app.metadata.name}} sync failed**\n> {{.app.status.operationState.message | default \"No error message\"}}\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.operationState.finishedAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}}) · [📝 {{.app.status.sync.revision | trunc 7}}]({{call .repo.RepoURLToHTTPS .app.spec.source.repoURL}}/commit/{{.app.status.sync.revision}}) by {{(call .repo.GetCommitMetadata .app.status.sync.revision).Author}}"
+                    }]
+                  }
+        template.app-sync-status-unknown: |
+            webhook:
+              discord:
+                method: POST
+                body: |
+                  {
+                    "embeds": [{
+                      "title": "🟡 AppSyncStatusUnknown · `{{.app.spec.destination.name}}`",
+                      "color": 15105570,
+                      "description": "> **{{.app.metadata.name}} sync status unknown**\n> ArgoCD could not determine whether the live state matches Git — check for CRD issues or repo access errors.\n> 📦 `{{.app.spec.destination.namespace}}` · 🕒 {{.app.status.reconciledAt}}\n> [🔍 App]({{.context.argocdUrl}}/applications/{{.app.metadata.name}})"
+                    }]
+                  }
     triggers:
         trigger.on-deployed: |
             - when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy'
