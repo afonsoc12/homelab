@@ -10,6 +10,8 @@ on: # yamllint disable-line rule:truthy
   push:
     branches:
       - master
+  schedule:
+    - cron: '23 6 * * 1'
   workflow_dispatch:
 permissions:
   contents: read
@@ -95,3 +97,67 @@ jobs:
 
       - name: 🔍 Run Terraform format
         run: terraform fmt -check -recursive terraform/
+
+  security:
+    name: Security scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pull-requests: write
+      security-events: write
+    env:
+      TRIVY_INCLUDE_DEV_DEPS: 'true'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - if: github.event_name == 'pull_request'
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+          comment-summary-in-pr: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' && 'on-failure' || 'never' }}
+          retry-on-snapshot-warnings: true
+          retry-on-snapshot-warnings-timeout: 120
+      - name: Scan dependencies and infrastructure
+        if: ${{ !cancelled() }}
+        id: repository-scan
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
+        with:
+          scan-type: fs
+          scanners: vuln,misconfig
+          format: sarif
+          output: trivy.sarif
+          severity: HIGH,CRITICAL
+          limit-severities-for-sarif: true
+          exit-code: '1'
+          skip-dirs: .git,.venv,.cache,ansible/roles
+          skip-files: '**/.decrypted~*'
+      - name: Upload security findings
+        if: always() && steps.repository-scan.outcome != 'skipped'
+        uses: github/codeql-action/upload-sarif@5895b2c9be147bc7f1c75ce72c5cb577febb1907 # v4
+        with:
+          sarif_file: trivy.sarif
+          category: trivy-repository
+      - name: Build without publishing
+        if: ${{ !cancelled() }}
+        run: docker build --tag homelab-security:scan airflow
+      - name: Scan built image
+        if: ${{ !cancelled() }}
+        id: scan
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
+        with:
+          image-ref: homelab-security:scan
+          scanners: vuln
+          format: sarif
+          output: container.sarif
+          severity: HIGH,CRITICAL
+          limit-severities-for-sarif: true
+          ignore-unfixed: true
+          exit-code: '1'
+      - name: Upload container findings
+        if: always() && steps.scan.outcome != 'skipped'
+        uses: github/codeql-action/upload-sarif@5895b2c9be147bc7f1c75ce72c5cb577febb1907 # v4
+        with:
+          sarif_file: container.sarif
+          category: trivy-container
