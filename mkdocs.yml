@@ -104,6 +104,7 @@ nav:
       - OCI: terraform/oci.md
       - Backblaze: terraform/backblaze.md
   - Secrets (SOPS): secrets.md
+  - Security checks: security.md
   - Runbooks:
       - k3s Upgrade: runbooks/k3s-upgrade.md
       - Adding a Server: runbooks/adding-server.md
