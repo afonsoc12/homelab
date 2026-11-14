@@ -80,7 +80,7 @@ resource "authentik_provider_oauth2" "argo_cd" {
   logout_method              = "backchannel"
   logout_uri                 = ""
   name                       = "ArgoCD"
-  property_mappings          = [authentik_property_mapping_provider_scope.oidc_openid.id, authentik_property_mapping_provider_scope.oidc_email.id, authentik_property_mapping_provider_scope.oidc_profile.id]
+  property_mappings          = [authentik_property_mapping_provider_scope.oidc_openid.id, authentik_property_mapping_provider_scope.oidc_email.id, authentik_property_mapping_provider_scope.argo_cd_profile.id]
   refresh_token_threshold    = "seconds=0"
   refresh_token_validity     = "hours=8"
   signing_key                = authentik_certificate_key_pair.signing.id
