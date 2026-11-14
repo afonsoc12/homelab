@@ -185,7 +185,7 @@ services:
       - "/mnt/user/appdata/sonarr:/config"
 
   seerr:
-    image: ghcr.io/seerr-team/seerr:v3.5.1
+    image: ghcr.io/seerr-team/seerr:v3.5.2
     container_name: seerr
     restart: unless-stopped
     depends_on:
@@ -234,7 +234,7 @@ services:
       - /mnt/user/appdata/decide:/data
 
   kometa:
-    image: kometateam/kometa:v2.5.4
+    image: kometateam/kometa:v2.5.5
     container_name: kometa
     restart: unless-stopped
     environment:
@@ -271,7 +271,7 @@ services:
       - "/mnt/user/appdata/kometa:/config"
 
   tautulli:
-    image: ghcr.io/linuxserver/tautulli:2.18.2
+    image: ghcr.io/linuxserver/tautulli:2.19.1
     container_name: tautulli
     restart: unless-stopped
     ports:
@@ -285,7 +285,7 @@ services:
       - "/mnt/user/appdata/tautulli:/config"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:3.07.00
+    image: ghcr.io/haveagitgat/tdarr:3.08.00
     container_name: tdarr
     restart: unless-stopped
     ports:
