@@ -1,3 +1,9 @@
+# --------------------
+# Apache Airflow
+#   - Repo:           https://github.com/apache/airflow
+#   - Docs:           https://airflow.apache.org/docs/
+#   - Chart Defaults: https://github.com/afonsoc12/homelab/blob/master/kubernetes/charts/homelab-svc/values.yaml
+# --------------------
 image:
     repository: ghcr.io/afonsoc12/airflow
     tag: 3.4.0-b71
