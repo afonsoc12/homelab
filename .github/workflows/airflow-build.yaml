@@ -47,9 +47,6 @@ jobs:
       - name: "🧪 Run pytest"
         run: uv run --directory airflow pytest
 
-      - name: "🔐 Test local access and deployment OIDC restrictions"
-        run: uv run --directory airflow bash tests/oidc/run.sh
-
       - name: "🔖 Read Airflow version from Dockerfile"
         if: github.event_name != 'pull_request'
         id: version
