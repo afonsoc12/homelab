@@ -63,28 +63,29 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: docker/setup-buildx-action@v4
 
-      - name: Set up container security scan
+      - name: Build image for security scan
         if: github.event_name != 'pull_request'
-        uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
-        with:
-          version: v0.76.2
-          cache: true
+        run: docker build --tag homelab-security:publish airflow
 
       - name: Validate image before publishing
         id: image-scan
         if: github.event_name != 'pull_request'
-        run: |
-          docker build --tag homelab-security:publish airflow > "$RUNNER_TEMP/image-build.log" 2>&1
-          trivy image --config /dev/null --ignorefile /dev/null \
-            --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed \
-            --format sarif --exit-code 1 --output "$RUNNER_TEMP/publish.sarif" \
-            homelab-security:publish > "$RUNNER_TEMP/image-scan.log" 2>&1
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
+        with:
+          image-ref: homelab-security:publish
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          limit-severities-for-sarif: true
+          ignore-unfixed: true
+          format: sarif
+          output: publish.sarif
+          exit-code: '1'
 
       - name: Upload image security findings
         if: always() && steps.image-scan.outcome != 'skipped' && steps.image-scan.outcome != ''
         uses: github/codeql-action/upload-sarif@5895b2c9be147bc7f1c75ce72c5cb577febb1907 # v4
         with:
-          sarif_file: ${{ runner.temp }}/publish.sarif
+          sarif_file: publish.sarif
           category: trivy-publish
 
       - name: "🔐 Login to GHCR"

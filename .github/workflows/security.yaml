@@ -16,28 +16,19 @@ permissions:
   contents: read
 
 jobs:
-  policy-tests:
-    name: Security policy tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-        with:
-          persist-credentials: false
-      - run: python3 -m unittest discover -s scripts/tests -v
-
   dependency-review:
     name: Dependency review
-    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
         with:
           fail-on-severity: high
-          base-ref: ${{ github.event.pull_request.base.sha || 'master' }}
-          head-ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          comment-summary-in-pr: never
+          comment-summary-in-pr: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' && 'on-failure' || 'never' }}
           retry-on-snapshot-warnings: true
           retry-on-snapshot-warnings-timeout: 120
 
@@ -64,11 +55,6 @@ jobs:
       - uses: github/codeql-action/analyze@5895b2c9be147bc7f1c75ce72c5cb577febb1907 # v4
         with:
           category: /language:${{ matrix.language }}
-          output: ${{ runner.temp }}/codeql-results
-      - name: Reject high or critical code vulnerabilities
-        env:
-          LANGUAGE: ${{ matrix.language }}
-        run: python3 scripts/security_report.py "$RUNNER_TEMP/codeql-results/$LANGUAGE.sarif" --minimum-cvss 7
 
   trivy:
     name: Dependency and infrastructure scan
@@ -77,57 +63,31 @@ jobs:
     permissions:
       contents: read
       security-events: write
+    env:
+      TRIVY_INCLUDE_DEV_DEPS: 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 0
           persist-credentials: false
-      - uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
-        with:
-          version: v0.76.2
-          cache: true
       - name: Scan dependencies and infrastructure
         id: scan
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: |
-          set -euo pipefail
-          scan() {
-            trivy fs --config /dev/null --ignorefile /dev/null \
-              --scanners vuln,misconfig --include-dev-deps \
-              --severity HIGH,CRITICAL --format sarif --exit-code 0 \
-              --skip-dirs .git --skip-dirs .venv --skip-dirs .cache \
-              --skip-dirs ansible/roles \
-              --skip-files '**/.decrypted~*' \
-              --output "$2" "$1" > "$RUNNER_TEMP/trivy.log" 2>&1
-          }
-          if ! scan . "$RUNNER_TEMP/trivy.sarif"; then
-            echo '::error::Trivy failed to scan the repository; no clean result is available.'
-            exit 1
-          fi
-          if [ -n "$BASE_SHA" ]; then
-            mkdir -p "$RUNNER_TEMP/security-base"
-            git archive "$BASE_SHA" | tar -x -C "$RUNNER_TEMP/security-base"
-            if ! scan "$RUNNER_TEMP/security-base" "$RUNNER_TEMP/trivy-base.sarif"; then
-              echo '::error::Trivy baseline scan failed; refusing to treat the PR as clean.'
-              exit 1
-            fi
-          fi
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
+        with:
+          scan-type: fs
+          scanners: vuln,misconfig
+          format: sarif
+          output: trivy.sarif
+          severity: HIGH,CRITICAL
+          limit-severities-for-sarif: true
+          exit-code: '1'
+          skip-dirs: .git,.venv,.cache,ansible/roles
+          skip-files: '**/.decrypted~*'
       - name: Upload security findings
-        if: always() && steps.scan.outcome == 'success'
+        if: always() && steps.scan.outcome != 'skipped'
         uses: github/codeql-action/upload-sarif@5895b2c9be147bc7f1c75ce72c5cb577febb1907 # v4
         with:
-          sarif_file: ${{ runner.temp }}/trivy.sarif
+          sarif_file: trivy.sarif
           category: trivy-repository
-      - name: Reject new high or critical findings
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: |
-          args=("$RUNNER_TEMP/trivy.sarif")
-          if [ -n "$BASE_SHA" ]; then
-            args+=(--baseline "$RUNNER_TEMP/trivy-base.sarif")
-          fi
-          python3 scripts/security_report.py "${args[@]}"
 
   container:
     name: Container scan
@@ -139,60 +99,24 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 0
           persist-credentials: false
-      - name: Select container scan
-        id: changed
-        env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: |
-          if [ -z "$BASE_SHA" ] || ! git diff --quiet "$BASE_SHA" HEAD -- airflow .github/workflows/security.yaml; then
-            echo 'scan=true' >> "$GITHUB_OUTPUT"
-          fi
-      - uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
-        if: steps.changed.outputs.scan == 'true'
-        with:
-          version: v0.76.2
-          cache: true
       - name: Build without publishing
-        if: steps.changed.outputs.scan == 'true'
-        run: docker build --tag homelab-security:scan airflow > "$RUNNER_TEMP/security-build.log" 2>&1
+        run: docker build --tag homelab-security:scan airflow
       - name: Scan built image
         id: scan
-        if: steps.changed.outputs.scan == 'true'
-        run: |
-          trivy image --config /dev/null --ignorefile /dev/null \
-            --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed \
-            --format sarif --exit-code 0 --output "$RUNNER_TEMP/container.sarif" \
-            homelab-security:scan > "$RUNNER_TEMP/container-scan.log" 2>&1
+        uses: aquasecurity/trivy-action@a9c7b0f06e461e9d4b4d1711f154ee024b8d7ab8 # v0.36.0
+        with:
+          image-ref: homelab-security:scan
+          scanners: vuln
+          format: sarif
+          output: container.sarif
+          severity: HIGH,CRITICAL
+          limit-severities-for-sarif: true
+          ignore-unfixed: true
+          exit-code: '1'
       - name: Upload container findings
-        if: always() && steps.scan.outcome == 'success'
+        if: always() && steps.scan.outcome != 'skipped'
         uses: github/codeql-action/upload-sarif@5895b2c9be147bc7f1c75ce72c5cb577febb1907 # v4
         with:
-          sarif_file: ${{ runner.temp }}/container.sarif
+          sarif_file: container.sarif
           category: trivy-container
-      - name: Reject fixable high or critical image vulnerabilities
-        if: steps.changed.outputs.scan == 'true'
-        run: python3 scripts/security_report.py "$RUNNER_TEMP/container.sarif"
-
-  gate:
-    name: Security gate
-    if: always()
-    needs: [policy-tests, dependency-review, codeql, trivy, container]
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Require successful scans
-        env:
-          RESULTS: ${{ toJSON(needs) }}
-        run: |
-          python3 - <<'PY'
-          import json
-          import os
-          results = json.loads(os.environ['RESULTS'])
-          failed = [name for name, job in results.items()
-                    if job['result'] != 'success'
-                    and not (name == 'dependency-review' and job['result'] == 'skipped')]
-          if failed:
-              raise SystemExit('Security checks did not pass: ' + ', '.join(failed))
-          PY

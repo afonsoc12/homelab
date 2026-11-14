@@ -81,7 +81,6 @@
     {
       "description": "Auto-merge standalone apache/airflow base image update PRs after required checks pass",
       "matchPackageNames": ["apache/airflow"],
-      "groupName": null,
       "automerge": true,
       "automergeType": "pr"
     },

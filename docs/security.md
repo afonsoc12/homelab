@@ -2,8 +2,9 @@
 
 Proposed changes are reviewed using dependency vulnerability checks, CodeQL,
 infrastructure scanning, container scanning, and secret detection. GitHub's
-security views and pull request annotations provide detailed findings; pull
-request comments summarize check results.
+security views and pull request annotations provide detailed findings.
+Dependency Review can also post findings in pull request comments where
+repository permissions allow.
 
 Dependabot proposes dependency security updates through pull requests. Renovate
 proposes routine dependency updates. Security scanning does not automatically
