@@ -1,0 +1,7 @@
+---
+apiVersion: v2
+name: authentik-customizations
+description: Flow usability fixes for the pinned Authentik release
+type: application
+version: 0.1.0
+appVersion: 2026.8.5

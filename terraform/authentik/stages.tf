@@ -143,9 +143,9 @@ resource "authentik_stage_prompt" "password_change_prompt" {
 }
 
 resource "authentik_stage_prompt" "source_enrollment_prompt" {
-  fields              = [authentik_stage_prompt_field.account_email.id, authentik_stage_prompt_field.account_username.id, authentik_stage_prompt_field.invitation_password.id, authentik_stage_prompt_field.account_name.id, authentik_stage_prompt_field.invitation_password_repeat.id]
+  fields              = [authentik_stage_prompt_field.account_email.id, authentik_stage_prompt_field.account_username.id, authentik_stage_prompt_field.invitation_password.id, authentik_stage_prompt_field.invitation_name.id, authentik_stage_prompt_field.invitation_password_repeat.id]
   name                = "Homelab - Source Enrollment Prompt"
-  validation_policies = [authentik_policy_password.password_requirements.id]
+  validation_policies = [authentik_policy_password.password_requirements.id, authentik_policy_expression.invitation_name.id]
 }
 
 resource "authentik_stage_prompt" "user_settings" {

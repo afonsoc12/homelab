@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authentik-flow-customizations
+data:
+  flow.html: |
+{{ .Files.Get "files/flow.html" | indent 4 }}
+  flow.js: |
+{{ .Files.Get "files/flow.js" | indent 4 }}
+  patch_plex.py: |
+{{ .Files.Get "files/patch_plex.py" | indent 4 }}

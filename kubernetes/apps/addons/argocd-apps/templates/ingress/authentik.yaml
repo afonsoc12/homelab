@@ -23,9 +23,13 @@ spec:
         # Was causing issues decrypting second file
           - $values/kubernetes/apps/values.sops.yaml
           - $values/kubernetes/apps/ingress/authentik/values.sops.yaml
+          - $values/kubernetes/apps/ingress/authentik/values.yaml
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values
+    - repoURL: git@github.com:afonsoc12/homelab.git
+      targetRevision: HEAD
+      path: kubernetes/charts/authentik-customizations
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: ingress
