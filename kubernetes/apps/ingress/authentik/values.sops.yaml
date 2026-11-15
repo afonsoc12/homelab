@@ -36,6 +36,60 @@ authentik:
 ## authentik server
 server:
     name: server
+    securityContext:
+      fsGroup: 1000
+    # Bump when mounted customization files change so subPath mounts are refreshed.
+    podAnnotations:
+      homelab/customization-revision: "2"
+    initContainers:
+      - name: prepare-plex-compatibility
+        image: ghcr.io/goauthentik/server:2026.8.5
+        command: [python, /customization-source/patch_plex.py]
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+        volumeMounts:
+          - name: flow-customizations
+            mountPath: /customization-source
+            readOnly: true
+          - name: customization-runtime
+            mountPath: /customization-runtime
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            cpu: 500m
+            memory: 128Mi
+    volumes:
+      - name: dashboard-icons
+        configMap:
+          name: authentik-dashboard-icons
+      - name: flow-customizations
+        configMap:
+          name: authentik-flow-customizations
+          items:
+            - key: flow.html
+              path: if/flow.html
+            - key: flow.js
+              path: homelab/flow.js
+            - key: patch_plex.py
+              path: patch_plex.py
+      - name: customization-runtime
+        emptyDir: {}
+    volumeMounts:
+      - name: dashboard-icons
+        mountPath: /web/dist/assets/homelab
+        readOnly: true
+      - name: flow-customizations
+        mountPath: /templates
+        readOnly: true
+      - name: customization-runtime
+        mountPath: /authentik/sources/plex/plex.py
+        subPath: plex.py
+        readOnly: true
     affinity:
         podAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
