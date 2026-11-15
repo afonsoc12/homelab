@@ -2,7 +2,7 @@
 server:
   # Bump when mounted customization files change so subPath mounts are refreshed.
   podAnnotations:
-    homelab/customization-revision: "1"
+    homelab/customization-revision: "2"
   initContainers:
     - name: prepare-plex-compatibility
       image: ghcr.io/goauthentik/server:2026.8.5
@@ -21,6 +21,9 @@ server:
           cpu: 500m
           memory: 128Mi
   volumes:
+    - name: dashboard-icons
+      configMap:
+        name: authentik-dashboard-icons
     - name: flow-customizations
       configMap:
         name: authentik-flow-customizations
@@ -34,6 +37,9 @@ server:
     - name: customization-runtime
       emptyDir: {}
   volumeMounts:
+    - name: dashboard-icons
+      mountPath: /web/dist/assets/homelab
+      readOnly: true
     - name: flow-customizations
       mountPath: /templates
       readOnly: true

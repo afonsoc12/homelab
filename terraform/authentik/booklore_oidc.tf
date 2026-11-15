@@ -70,7 +70,9 @@ resource "authentik_provider_oauth2" "booklore_oidc" {
 }
 
 resource "authentik_application" "booklore_oidc" {
-  name               = "BookLore OIDC"
+  name               = local.dashboard_service_names.booklore
+  meta_icon          = local.lan_proxy_apps.booklore.icon
+  meta_launch_url    = "https://${local.lan_proxy_apps.booklore.host}.${local.apps_domain}"
   slug               = "booklore"
   group              = "homelab"
   protocol_provider  = authentik_provider_oauth2.booklore_oidc.id

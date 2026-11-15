@@ -47,7 +47,9 @@ resource "authentik_provider_oauth2" "airflow_oidc" {
 }
 
 resource "authentik_application" "airflow_oidc" {
-  name               = "Airflow Native OIDC"
+  name               = local.dashboard_service_names.airflow
+  meta_icon          = local.lan_proxy_apps.airflow.icon
+  meta_launch_url    = "https://${local.lan_proxy_apps.airflow.host}.${local.apps_domain}"
   slug               = "airflow"
   group              = "addons"
   protocol_provider  = authentik_provider_oauth2.airflow_oidc.id

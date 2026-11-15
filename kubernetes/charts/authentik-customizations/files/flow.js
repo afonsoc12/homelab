@@ -52,6 +52,10 @@
                 help.textContent = duoMessage;
                 form.prepend(help);
             }
+            const activation = root.querySelector("a[href^='duo:']");
+            if (activation && activation.textContent !== "Open Duo Mobile on this phone") {
+                activation.textContent = "Open Duo Mobile on this phone";
+            }
         }
     }
 

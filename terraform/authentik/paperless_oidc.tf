@@ -37,7 +37,9 @@ resource "authentik_provider_oauth2" "paperless_oidc" {
 }
 
 resource "authentik_application" "paperless_oidc" {
-  name               = "Paperless OIDC"
+  name               = local.dashboard_service_names.paperless
+  meta_icon          = local.lan_proxy_apps.paperless.icon
+  meta_launch_url    = "https://${local.lan_proxy_apps.paperless.host}.${local.apps_domain}"
   slug               = "paperless"
   group              = "homelab"
   protocol_provider  = authentik_provider_oauth2.paperless_oidc.id

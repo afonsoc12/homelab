@@ -30,7 +30,9 @@ resource "authentik_provider_oauth2" "wealthfolio_oidc" {
 }
 
 resource "authentik_application" "wealthfolio_oidc" {
-  name               = "Wealthfolio OIDC"
+  name               = local.dashboard_service_names.wealthfolio
+  meta_icon          = local.lan_proxy_apps.wealthfolio.icon
+  meta_launch_url    = "https://${local.lan_proxy_apps.wealthfolio.host}.${local.apps_domain}"
   slug               = "wealthfolio"
   group              = "homelab"
   protocol_provider  = authentik_provider_oauth2.wealthfolio_oidc.id

@@ -4,7 +4,7 @@ resource "authentik_stage_authenticator_duo" "mfa_duo_setup" {
   client_id             = data.sops_file.secrets.data["value_023"]
   client_secret         = data.sops_file.secrets.data["value_024"]
   configure_flow        = authentik_flow.mfa_duo_setup.uuid
-  friendly_name         = "Duo Push Notification"
+  friendly_name         = "Duo Mobile (push notifications)"
   name                  = "Homelab - MFA Duo Setup"
 }
 
@@ -19,7 +19,7 @@ resource "authentik_stage_authenticator_static" "mfa_static_setup" {
 resource "authentik_stage_authenticator_totp" "mfa_totp_setup" {
   configure_flow = authentik_flow.mfa_totp_setup.uuid
   digits         = "6"
-  friendly_name  = "TOTP Device"
+  friendly_name  = "Authenticator app (6-digit codes)"
   name           = "Homelab - MFA TOTP Setup"
 }
 
@@ -46,7 +46,7 @@ resource "authentik_stage_authenticator_validate" "login_mfa_validation" {
 resource "authentik_stage_authenticator_webauthn" "mfa_webauthn_setup" {
   configure_flow           = authentik_flow.mfa_webauthn_setup.uuid
   device_type_restrictions = []
-  friendly_name            = "WebAuthn device"
+  friendly_name            = "Passkey or security key"
   hints                    = []
   max_attempts             = 0
   name                     = "Homelab - MFA WebAuthn Setup"

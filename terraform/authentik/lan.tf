@@ -48,6 +48,7 @@ locals {
     }
     "bambuddy" = {
       name      = "bambuddy"
+      icon      = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/bambuddy.png"
       namespace = "homelab"
       host      = "bambu.local"
       upstream  = "http://bambuddy.homelab.svc.cluster.local:8000"
@@ -82,12 +83,14 @@ locals {
     }
     "cookistash" = {
       name      = "cookistash"
+      icon      = "${local.dashboard_custom_icon_base}/cookistash.svg"
       namespace = "homelab"
       host      = "cookistash.local"
       upstream  = "http://cookistash.homelab.svc.cluster.local:8000"
     }
     "decide" = {
       name      = "decide"
+      icon      = "${local.dashboard_custom_icon_base}/decide.svg"
       namespace = "homelab"
       host      = "decide.local"
       upstream  = "http://decide-external-external-svc.homelab.svc.cluster.local:8090"
@@ -192,6 +195,7 @@ locals {
     }
     "octo-track" = {
       name      = "octo-track"
+      icon      = "${local.dashboard_custom_icon_base}/octo-track.svg"
       namespace = "monitoring"
       host      = "electricity.local"
       upstream  = "http://octo-track.monitoring.svc.cluster.local:8501"
@@ -282,18 +286,21 @@ locals {
     }
     "tracktor" = {
       name      = "tracktor"
+      icon      = "${local.dashboard_custom_icon_base}/tracktor.svg"
       namespace = "homelab"
       host      = "tracktor.local"
       upstream  = "http://tracktor.homelab.svc.cluster.local:3000"
     }
     "wealthfolio" = {
       name      = "wealthfolio"
+      icon      = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/wealthfolio.png"
       namespace = "homelab"
       host      = "wealth.local"
       upstream  = "http://wealthfolio.homelab.svc.cluster.local:8088"
     }
     "wedding-site" = {
       name      = "wedding-site"
+      icon      = "${local.dashboard_custom_icon_base}/wedding-site.svg"
       namespace = "homelab"
       host      = "mariana-afonso.local"
       upstream  = "http://wedding-site.homelab.svc.cluster.local:80"
@@ -357,6 +364,7 @@ resource "authentik_application" "lan" {
   for_each           = local.lan_proxy_apps
   name               = each.value.name
   meta_icon          = try(each.value.icon, null)
+  meta_hide          = contains(local.dashboard_native_apps, each.key) || contains(["music-assistant-alexa-skill", "music-assistant-stream"], each.key)
   slug               = "${each.key}-lan"
   group              = each.value.namespace
   protocol_provider  = authentik_provider_proxy.lan[each.key].id

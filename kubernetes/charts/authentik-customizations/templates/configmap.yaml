@@ -10,3 +10,13 @@ data:
 {{ .Files.Get "files/flow.js" | indent 4 }}
   patch_plex.py: |
 {{ .Files.Get "files/patch_plex.py" | indent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authentik-dashboard-icons
+data:
+{{- range $path, $_ := .Files.Glob "files/icons/*.svg" }}
+  {{ base $path }}: |
+{{ $.Files.Get $path | indent 4 }}
+{{- end }}
