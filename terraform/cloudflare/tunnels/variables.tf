@@ -43,3 +43,9 @@ variable "access_team_name" {
   type        = string
   sensitive   = true
 }
+
+variable "owner_access_email" {
+  description = "Owner account allowed to access interactive services"
+  type        = string
+  sensitive   = true
+}

@@ -79,3 +79,9 @@ variable "github_webhook_rules" {
   })
   default = null
 }
+
+variable "machine_endpoints" {
+  description = "Exact POST-only machine paths; other paths keep their existing routing"
+  type        = map(set(string))
+  default     = {}
+}
