@@ -36,6 +36,12 @@ authentik:
 ## authentik server
 server:
     name: server
+    # The database-affinity node has capacity for one server replica.
+    deploymentStrategy:
+        type: RollingUpdate
+        rollingUpdate:
+            maxSurge: 0
+            maxUnavailable: 1
     securityContext:
       fsGroup: 1000
     # Bump when mounted customization files change so subPath mounts are refreshed.
