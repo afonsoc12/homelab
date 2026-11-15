@@ -1,0 +1,47 @@
+/* Custom branding is injected into flow component shadow roots. Set inherited
+   colors there too: the email and MFA stages contain unclassed text nodes. */
+:root,
+:host {
+  --pf-global--Color--100: #e6edf3;
+  --pf-global--Color--200: #b8c4d0;
+  --pf-global--Color--light-100: #e6edf3;
+  --pf-global--Color--light-200: #b8c4d0;
+  --pf-global--link--Color: #7dd3fc;
+  --pf-global--link--Color--hover: #a5edff;
+  --pf-global--link--Color--visited: #c4b5fd;
+  color: #e6edf3;
+  color-scheme: dark;
+}
+
+.pf-c-login__main,
+.pf-c-login__main-body,
+.pf-c-form,
+.pf-c-content,
+.pf-c-form p,
+.pf-c-form label,
+.pf-c-form legend,
+.pf-c-form__helper-text {
+  color: #e6edf3 !important;
+}
+
+a,
+a:link {
+  color: #7dd3fc;
+}
+
+a:visited {
+  color: #c4b5fd;
+}
+
+a:hover,
+a:focus-visible {
+  color: #a5edff;
+}
+
+/* Preserve readability for invitation fields that cannot be edited. */
+.pf-c-form-control[readonly],
+input[readonly] {
+  color: #e6edf3 !important;
+  -webkit-text-fill-color: #e6edf3;
+  opacity: 1;
+}

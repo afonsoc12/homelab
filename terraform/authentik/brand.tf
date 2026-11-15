@@ -4,6 +4,12 @@ resource "authentik_brand" "homelab" {
   branding_title   = "Homelab SSO"
   branding_logo    = data.sops_file.secrets.data["value_038"]
   branding_favicon = data.sops_file.secrets.data["value_039"]
+  attributes = jsonencode({
+    settings = {
+      locale = "en"
+      theme  = { base = "dark" }
+    }
+  })
 
   flow_authentication = authentik_flow.login_choice.uuid
   depends_on          = [authentik_flow_stage_binding.login_choice]
@@ -14,5 +20,5 @@ resource "authentik_brand" "homelab" {
   # authentik is built on PatternFly; these selectors restyle the flow
   # executor (login/recovery/etc.) shell without touching the admin UI.
   # Reuse the documentation palette.
-  branding_custom_css = data.sops_file.secrets.data["value_037"]
+  branding_custom_css = "${data.sops_file.secrets.data["value_037"]}\n${file("${path.module}/flow-contrast.css")}"
 }

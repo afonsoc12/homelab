@@ -31,7 +31,9 @@ resource "authentik_provider_oauth2" "bambuddy_oidc" {
 }
 
 resource "authentik_application" "bambuddy_oidc" {
-  name               = "Bambuddy OIDC"
+  name               = local.dashboard_service_names.bambuddy
+  meta_icon          = local.lan_proxy_apps.bambuddy.icon
+  meta_launch_url    = "https://${local.lan_proxy_apps.bambuddy.host}.${local.apps_domain}"
   slug               = "bambuddy"
   group              = "homelab"
   protocol_provider  = authentik_provider_oauth2.bambuddy_oidc.id

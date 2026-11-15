@@ -14,6 +14,8 @@ Identity provider for single sign-on and multi-factor authentication, with [Plex
 
 Security reference: [Authentik hardening](https://docs.goauthentik.io/security/security-hardening/) and [OAuth 2.0 Security Best Current Practice](https://www.rfc-editor.org/rfc/rfc9700.html).
 
+Invitation enrollment supports administrator-supplied profile names. Sign-in screens provide accessible dark styling and guidance for email confirmation and authenticator setup.
+
 [:octicons-book-16: Documentation](https://docs.goauthentik.io/) &nbsp;·&nbsp; [:octicons-file-code-16: values.sops.yaml](https://github.com/afonsoc12/homelab/blob/master/kubernetes/apps/ingress/authentik/values.sops.yaml)
 
 ---

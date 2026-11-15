@@ -28,7 +28,7 @@ resource "authentik_provider_oauth2" "cloudflare_access" {
 
 resource "authentik_application" "cloudflare_access" {
   group              = "ingress"
-  meta_icon          = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/cloudflare.png"
+  meta_icon          = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/cloudflare.png"
   name               = "Cloudflare Access"
   slug               = "cloudflare-access"
   protocol_provider  = authentik_provider_oauth2.cloudflare_access.id

@@ -48,6 +48,7 @@ locals {
     }
     "bambuddy" = {
       name      = "bambuddy"
+      icon      = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/bambuddy.png"
       namespace = "homelab"
       host      = "bambu.local"
       upstream  = "http://bambuddy.homelab.svc.cluster.local:8000"
@@ -81,13 +82,17 @@ locals {
       upstream  = "http://changedetection.homelab.svc.cluster.local:5000"
     }
     "cookistash" = {
-      name      = "cookistash"
+      name = "cookistash"
+      # Recipe icon from the Dashboard Icons catalog for this custom app.
+      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/nextcloud-cookbook.png"
       namespace = "homelab"
       host      = "cookistash.local"
       upstream  = "http://cookistash.homelab.svc.cluster.local:8000"
     }
     "decide" = {
-      name      = "decide"
+      name = "decide"
+      # Polling icon from the Dashboard Icons catalog for this custom app.
+      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/rallly.png"
       namespace = "homelab"
       host      = "decide.local"
       upstream  = "http://decide-external-external-svc.homelab.svc.cluster.local:8090"
@@ -191,7 +196,9 @@ locals {
       upstream  = "http://ntfy.monitoring.svc.cluster.local:80"
     }
     "octo-track" = {
-      name      = "octo-track"
+      name = "octo-track"
+      # Energy icon from the Dashboard Icons catalog for this custom app.
+      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/victron-energy.png"
       namespace = "monitoring"
       host      = "electricity.local"
       upstream  = "http://octo-track.monitoring.svc.cluster.local:8501"
@@ -282,18 +289,22 @@ locals {
     }
     "tracktor" = {
       name      = "tracktor"
+      icon      = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/tracktor.png"
       namespace = "homelab"
       host      = "tracktor.local"
       upstream  = "http://tracktor.homelab.svc.cluster.local:3000"
     }
     "wealthfolio" = {
       name      = "wealthfolio"
+      icon      = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/wealthfolio.png"
       namespace = "homelab"
       host      = "wealth.local"
       upstream  = "http://wealthfolio.homelab.svc.cluster.local:8088"
     }
     "wedding-site" = {
-      name      = "wedding-site"
+      name = "wedding-site"
+      # Calendar icon from the Dashboard Icons catalog for this custom site.
+      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/proton-calendar.png"
       namespace = "homelab"
       host      = "mariana-afonso.local"
       upstream  = "http://wedding-site.homelab.svc.cluster.local:80"
@@ -357,6 +368,7 @@ resource "authentik_application" "lan" {
   for_each           = local.lan_proxy_apps
   name               = each.value.name
   meta_icon          = try(each.value.icon, null)
+  meta_hide          = contains(local.dashboard_native_apps, each.key) || contains(["music-assistant-alexa-skill", "music-assistant-stream"], each.key)
   slug               = "${each.key}-lan"
   group              = each.value.namespace
   protocol_provider  = authentik_provider_proxy.lan[each.key].id

@@ -56,7 +56,9 @@ resource "authentik_provider_oauth2" "freshrss_oidc" {
 }
 
 resource "authentik_application" "freshrss_oidc" {
-  name               = "FreshRSS OIDC"
+  name               = local.dashboard_service_names.freshrss
+  meta_icon          = local.lan_proxy_apps.freshrss.icon
+  meta_launch_url    = "https://${local.lan_proxy_apps.freshrss.host}.${local.apps_domain}"
   slug               = "freshrss"
   group              = "homelab"
   protocol_provider  = authentik_provider_oauth2.freshrss_oidc.id

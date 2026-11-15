@@ -4,7 +4,7 @@ resource "authentik_stage_authenticator_duo" "mfa_duo_setup" {
   client_id             = data.sops_file.secrets.data["value_023"]
   client_secret         = data.sops_file.secrets.data["value_024"]
   configure_flow        = authentik_flow.mfa_duo_setup.uuid
-  friendly_name         = "Duo Push Notification"
+  friendly_name         = "Duo Mobile (push notifications)"
   name                  = "Homelab - MFA Duo Setup"
 }
 
@@ -19,7 +19,7 @@ resource "authentik_stage_authenticator_static" "mfa_static_setup" {
 resource "authentik_stage_authenticator_totp" "mfa_totp_setup" {
   configure_flow = authentik_flow.mfa_totp_setup.uuid
   digits         = "6"
-  friendly_name  = "TOTP Device"
+  friendly_name  = "Authenticator app (6-digit codes)"
   name           = "Homelab - MFA TOTP Setup"
 }
 
@@ -46,7 +46,7 @@ resource "authentik_stage_authenticator_validate" "login_mfa_validation" {
 resource "authentik_stage_authenticator_webauthn" "mfa_webauthn_setup" {
   configure_flow           = authentik_flow.mfa_webauthn_setup.uuid
   device_type_restrictions = []
-  friendly_name            = "WebAuthn device"
+  friendly_name            = "Passkey or security key"
   hints                    = []
   max_attempts             = 0
   name                     = "Homelab - MFA WebAuthn Setup"
@@ -143,9 +143,9 @@ resource "authentik_stage_prompt" "password_change_prompt" {
 }
 
 resource "authentik_stage_prompt" "source_enrollment_prompt" {
-  fields              = [authentik_stage_prompt_field.account_email.id, authentik_stage_prompt_field.account_username.id, authentik_stage_prompt_field.invitation_password.id, authentik_stage_prompt_field.account_name.id, authentik_stage_prompt_field.invitation_password_repeat.id]
+  fields              = [authentik_stage_prompt_field.account_email.id, authentik_stage_prompt_field.account_username.id, authentik_stage_prompt_field.invitation_password.id, authentik_stage_prompt_field.invitation_name.id, authentik_stage_prompt_field.invitation_password_repeat.id]
   name                = "Homelab - Source Enrollment Prompt"
-  validation_policies = [authentik_policy_password.password_requirements.id]
+  validation_policies = [authentik_policy_password.password_requirements.id, authentik_policy_expression.invitation_name.id]
 }
 
 resource "authentik_stage_prompt" "user_settings" {

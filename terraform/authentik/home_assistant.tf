@@ -27,7 +27,7 @@ resource "authentik_application" "home_assistant" {
   group              = "automation"
   meta_icon          = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/home-assistant.png"
   meta_launch_url    = "https://home.${local.apps_domain}"
-  name               = "Home Assistant OIDC"
+  name               = "Home Assistant"
   slug               = "home-assistant"
   protocol_provider  = authentik_provider_oauth2.home_assistant.id
   policy_engine_mode = "any"

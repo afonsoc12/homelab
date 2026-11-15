@@ -3,7 +3,7 @@ resource "authentik_application" "argo_cd" {
   group                 = "addons"
   meta_description      = ""
   meta_hide             = false
-  meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/argo-cd.png"
+  meta_icon             = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/argo-cd.png"
   meta_launch_url       = ""
   meta_publisher        = ""
   name                  = data.sops_file.secrets.data["value_062"]
@@ -19,7 +19,7 @@ resource "authentik_application" "mealie" {
   group                 = "homelab"
   meta_description      = ""
   meta_hide             = false
-  meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/mealie.png"
+  meta_icon             = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/mealie.png"
   meta_launch_url       = ""
   meta_publisher        = ""
   name                  = data.sops_file.secrets.data["value_066"]
@@ -35,7 +35,7 @@ resource "authentik_application" "node_red" {
   group                 = "automation"
   meta_description      = ""
   meta_hide             = false
-  meta_icon             = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/node-red.png"
+  meta_icon             = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/node-red.png"
   meta_launch_url       = data.sops_file.secrets.data["value_003"]
   meta_publisher        = data.sops_file.secrets.data["value_070"]
   name                  = data.sops_file.secrets.data["value_071"]
