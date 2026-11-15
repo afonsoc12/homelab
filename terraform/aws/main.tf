@@ -3,7 +3,9 @@ data "sops_file" "settings" {
   input_type  = "yaml"
 }
 locals {
-  settings = jsondecode(data.sops_file.settings.data["settings"])
+  settings           = jsondecode(data.sops_file.settings.data["settings"])
+  package_path       = "${path.module}/.build/function.zip"
+  oauth_package_path = "${path.module}/.build/oauth.zip"
 }
 data "sops_file" "credentials" {
   source_file = "terraform-credentials.sops.yaml"
@@ -16,12 +18,6 @@ provider "aws" {
   region     = local.settings.region
   access_key = data.sops_file.credentials.data["access_key_id"]
   secret_key = data.sops_file.credentials.data["secret_access_key"]
-}
-module "alexa" {
-  source             = "./alexa"
-  settings           = local.settings
-  package_path       = "${path.module}/.build/function.zip"
-  oauth_package_path = "${path.module}/.build/oauth.zip"
 }
 
 module "iam" {

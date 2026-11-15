@@ -1,13 +1,13 @@
-data "sops_file" "settings" {
-  source_file = "secrets.sops.yaml"
+data "sops_file" "skills" {
+  source_file = "skills.sops.yaml"
   input_type  = "yaml"
 }
 locals {
-  settings = jsondecode(data.sops_file.settings.data["settings"])
+  skill_settings = jsondecode(data.sops_file.skills.data["settings"])
   paths = {
-    home_assistant_manifest  = "/v1/skills/${local.settings.skills.home_assistant.id}/stages/development/manifest"
-    home_assistant_linking   = "/v1/skills/${local.settings.skills.home_assistant.id}/stages/development/accountLinkingClient"
-    music_assistant_manifest = "/v1/skills/${local.settings.skills.music_assistant.id}/stages/development/manifest"
+    home_assistant_manifest  = "/v1/skills/${local.skill_settings.skills.home_assistant.id}/stages/development/manifest"
+    home_assistant_linking   = "/v1/skills/${local.skill_settings.skills.home_assistant.id}/stages/development/accountLinkingClient"
+    music_assistant_manifest = "/v1/skills/${local.skill_settings.skills.music_assistant.id}/stages/development/manifest"
   }
 }
 
@@ -38,7 +38,7 @@ resource "restapi_object" "home_assistant_manifest" {
   object_id   = "manifest"
   read_path   = local.paths.home_assistant_manifest
   update_path = local.paths.home_assistant_manifest
-  data        = jsonencode(local.settings.skills.home_assistant.manifest)
+  data        = jsonencode(local.skill_settings.skills.home_assistant.manifest)
   debug       = false
   lifecycle { prevent_destroy = true }
 }
@@ -56,12 +56,12 @@ resource "restapi_object" "home_assistant_linking" {
   object_id   = "accountLinkingClient"
   read_path   = local.paths.home_assistant_linking
   update_path = local.paths.home_assistant_linking
-  data        = jsonencode(local.settings.skills.home_assistant.account_linking)
+  data        = jsonencode(local.skill_settings.skills.home_assistant.account_linking)
   # A write-only clientSecret, when required for an update, belongs in the
   # encrypted request override; it cannot be recovered from the read API.
   update_data = jsonencode({ accountLinkingRequest = try(
-    local.settings.skills.home_assistant.account_linking_request,
-    local.settings.skills.home_assistant.account_linking.accountLinkingResponse
+    local.skill_settings.skills.home_assistant.account_linking_request,
+    local.skill_settings.skills.home_assistant.account_linking.accountLinkingResponse
   ) })
   debug = false
   lifecycle { prevent_destroy = true }
@@ -80,7 +80,7 @@ resource "restapi_object" "music_assistant_manifest" {
   object_id   = "manifest"
   read_path   = local.paths.music_assistant_manifest
   update_path = local.paths.music_assistant_manifest
-  data        = jsonencode(local.settings.skills.music_assistant.manifest)
+  data        = jsonencode(local.skill_settings.skills.music_assistant.manifest)
   debug       = false
   lifecycle { prevent_destroy = true }
 }

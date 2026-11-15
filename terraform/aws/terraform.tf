@@ -11,6 +11,10 @@ terraform {
     use_path_style              = true
   }
   required_providers {
+    restapi = {
+      source  = "Mastercard/restapi"
+      version = "~> 3.0"
+    }
     aws = {
       source  = "hashicorp/aws"
       version = "~> 6.0"

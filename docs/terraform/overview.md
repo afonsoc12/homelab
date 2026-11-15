@@ -8,7 +8,6 @@ Terraform manages Authentik identity configuration, Cloudflare DNS/tunnels, Orac
 terraform/
 ├── authentik/     # Identity configuration, flows, providers, policies, and branding
 ├── adguard/       # AdGuard Home DNS rewrites, filters, and config
-├── alexa/         # Existing Alexa skill configuration
 ├── aws/           # AWS services and supporting identity resources
 ├── cloudflare/    # DNS records, tunnels, WAF, zone settings
 ├── mariadb/       # MariaDB databases, users, and grants
@@ -17,20 +16,12 @@ terraform/
 └── backblaze/     # B2 buckets and scoped application keys
 ```
 
-### `alexa`
-
-Manages existing Alexa skill manifests and account-linking configuration with
-encrypted settings. Uses the [REST API provider](https://registry.terraform.io/providers/Mastercard/restapi/latest/docs)
-and the official [ASK CLI](https://developer.amazon.com/en-US/docs/alexa/smapi/ask-cli-intro.html)
-authentication client.
-
 ### `aws`
 
-Uses the shared encrypted remote backend and SOPS provider configuration.
-Service resources live in child modules, with import and move declarations in the
-root module. Deployment settings and provider credentials remain encrypted.
-
-See the [AWS provider documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs).
+Manages AWS services and existing Alexa skill configuration with encrypted settings.
+Uses the [AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs),
+the [REST API provider](https://registry.terraform.io/providers/Mastercard/restapi/latest/docs),
+and the official [ASK CLI](https://developer.amazon.com/en-US/docs/alexa/smapi/ask-cli-intro.html).
 
 ### `authentik`
 

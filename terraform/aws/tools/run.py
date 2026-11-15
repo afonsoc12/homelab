@@ -1,7 +1,7 @@
 """Run from any directory: python3 tools/run.py {init,validate,plan,apply}.
 
 ASK_CLI_ROOT must identify the installed ask-cli 2.30.7 package. Long-lived ASK
-credentials are read only from credentials.sops.yaml, never from a CLI profile.
+credentials are read only from ask-credentials.sops.yaml, never from a CLI profile.
 All subprocess output is captured; only resource addresses/actions are printed.
 """
 import argparse
@@ -83,7 +83,7 @@ class Tokens:
             raise SafeError('ASK CLI version must be 2.30.7')
         env['ASK_CLI_ROOT'] = root
         self.env = env
-        self.profile = json.loads(decrypt(ROOT / 'credentials.sops.yaml')['profile'])
+        self.profile = json.loads(decrypt(ROOT / 'ask-credentials.sops.yaml')['profile'])
         self.lock = threading.Lock()
 
     def __call__(self):
@@ -99,7 +99,7 @@ class Tokens:
                 updated_profile = dict(self.profile, token=refreshed)
                 # Persist only rotated long-lived credentials, directly via SOPS.
                 if refreshed['refresh_token'] != token['refresh_token']:
-                    capture(['sops', 'set', '--value-stdin', str(ROOT / 'credentials.sops.yaml'), '["profile"]'], input=json.dumps(json.dumps(updated_profile)).encode())
+                    capture(['sops', 'set', '--value-stdin', str(ROOT / 'ask-credentials.sops.yaml'), '["profile"]'], input=json.dumps(json.dumps(updated_profile)).encode())
                 self.profile = updated_profile
                 token = refreshed
             return token['access_token']
@@ -107,7 +107,7 @@ class Tokens:
 
 @contextmanager
 def connection(env):
-    settings = json.loads(decrypt(ROOT / 'secrets.sops.yaml')['settings'])
+    settings = json.loads(decrypt(ROOT / 'skills.sops.yaml')['settings'])
     if settings['api_uri'] != ORIGIN:
         raise SafeError('Unexpected SMAPI origin')
     paths = []
@@ -163,6 +163,9 @@ def execute(action, module, env, cleaned_backend):
         capture(['terraform', 'plan', '-input=false', '-out=' + plan], cwd=module, env=env)
         Path(plan).chmod(0o600)
         document = json.loads(capture(['terraform', 'show', '-json', plan], cwd=module, env=env))
+        for resource in document.get('resource_changes', []):
+            if resource.get('previous_address'):
+                print(resource['previous_address'] + ' -> ' + resource['address'])
         changes = [r for r in document.get('resource_changes', []) if r['mode'] == 'managed' and r['change']['actions'] != ['no-op']]
         for change in changes:
             print(change['address'], ','.join(change['change']['actions']))
@@ -178,14 +181,14 @@ def execute(action, module, env, cleaned_backend):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['init', 'validate', 'plan', 'apply'])
-    parser.add_argument('--module', choices=['alexa', 'aws', 'cloudflare'], default='alexa')
+    parser.add_argument('--module', choices=['aws', 'cloudflare'], default='aws')
     args = parser.parse_args()
     os.umask(0o077)
     env = environment()
     cleaned = backend(env)
     module = ROOT.parent / args.module
     secure_cache(module)
-    if args.module == 'alexa' and args.action in ('plan', 'apply'):
+    if args.module == 'aws' and args.action in ('plan', 'apply'):
         with connection(env):
             execute(args.action, module, env, cleaned)
     else:

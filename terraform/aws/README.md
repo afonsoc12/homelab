@@ -1,4 +1,4 @@
-# Alexa Terraform
+# AWS Terraform
 
 Use the runner for this module. It enforces sensitive REST response fields,
 disables debug output, captures subprocess diagnostics, and supplies ephemeral
@@ -22,7 +22,7 @@ resource creation or deletion. Temporary plans are created with restricted
 permissions and removed on completion or failure. Diagnostic output is
 suppressed because upstream failures can contain private configuration.
 
-`credentials.sops.yaml` holds the ASK profile. Only the local adapter decrypts it;
+`ask-credentials.sops.yaml` holds the ASK profile. Only the local adapter decrypts it;
 Terraform never receives the Alexa access or refresh token. The official ASK CLI runs with an environment profile, without reading or
 writing a plaintext CLI profile. Its pinned adapter blocks telemetry and
 profile writes and captures refreshed tokens in memory. Token refreshes
@@ -36,8 +36,8 @@ endpoint and session token are ephemeral Terraform variables.
 
 Backend credentials are passed through environment variables. `init` supplies
 only noncredential backend settings through a pipe and checks the cache contains
-no credentials. The runner also supports `--module aws` and `--module cloudflare`
-for the adjacent modules; this does not change their infrastructure settings.
+no credentials. The runner also supports `--module cloudflare` for the adjacent module.
+AWS resources and Alexa skills share this root and its remote state.
 
 Terraform state still contains decrypted managed settings. Keep the encrypted
 remote backend and its access controls protected. Historical backend versions
