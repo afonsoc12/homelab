@@ -79,3 +79,22 @@ resource "cloudflare_ruleset" "waf" {
     }
   ]
 }
+
+resource "cloudflare_ruleset" "oauth_rate_limit" {
+  count   = length(var.machine_endpoints) > 0 ? 1 : 0
+  zone_id = var.zone_id
+  name    = "OAuth token rate limit"
+  kind    = "zone"
+  phase   = "http_ratelimit"
+  rules = [{
+    description = "Limit OAuth token requests"
+    expression  = "(http.host eq ${jsonencode("home.${var.domain}")} and http.request.uri.path eq \"/auth/token\")"
+    action      = "block"
+    ratelimit = {
+      characteristics     = ["cf.colo.id", "ip.src"]
+      period              = 10
+      requests_per_period = 30
+      mitigation_timeout  = 10
+    }
+  }]
+}

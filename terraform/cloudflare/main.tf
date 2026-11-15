@@ -32,10 +32,10 @@ module "zone_homelab" {
   block_bots = true
   aws_callback_endpoints = {
     music-assistant-alexa-skill = ["/"]
-    home                        = ["/api/alexa/smart_home"]
+    home                        = ["/api/alexa/smart_home", "/auth/token"]
   }
   machine_endpoints = {
-    home = ["/api/alexa/smart_home"]
+    home = ["/api/alexa/smart_home", "/auth/token"]
   }
   geo_block_enabled = true
   geo_allowlist     = ["PT", "GB"]
@@ -56,6 +56,7 @@ module "zone_personal" {
 }
 
 module "tunnels" {
+  depends_on         = [module.zone_homelab]
   source             = "./tunnels"
   account_id         = data.sops_file.secrets.data["account_id"]
   zone_id            = data.sops_file.secrets.data["zones.0.zone_id"]
