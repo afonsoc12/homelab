@@ -52,7 +52,7 @@ resource "authentik_provider_oauth2" "grafana" {
 
 resource "authentik_application" "grafana" {
   group              = "monitoring"
-  meta_icon          = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/grafana.png"
+  meta_icon          = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/grafana.png"
   name               = "Grafana"
   slug               = "grafana"
   protocol_provider  = authentik_provider_oauth2.grafana.id

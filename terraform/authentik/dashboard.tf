@@ -9,5 +9,4 @@ locals {
     paperless   = "Paperless"
     wealthfolio = "Wealthfolio"
   }
-  dashboard_custom_icon_base = "${trimsuffix(data.sops_file.secrets.data["url"], "/")}/static/dist/assets/homelab"
 }

@@ -23,7 +23,7 @@ resource "authentik_provider_proxy" "firefly" {
 
 resource "authentik_application" "firefly" {
   group              = "homelab"
-  meta_icon          = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/firefly-iii.png"
+  meta_icon          = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/firefly-iii.png"
   name               = "Firefly III"
   slug               = "firefly"
   protocol_provider  = authentik_provider_proxy.firefly.id

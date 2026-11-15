@@ -82,15 +82,17 @@ locals {
       upstream  = "http://changedetection.homelab.svc.cluster.local:5000"
     }
     "cookistash" = {
-      name      = "cookistash"
-      icon      = "${local.dashboard_custom_icon_base}/cookistash.svg"
+      name = "cookistash"
+      # Recipe icon from the Dashboard Icons catalog for this custom app.
+      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/nextcloud-cookbook.png"
       namespace = "homelab"
       host      = "cookistash.local"
       upstream  = "http://cookistash.homelab.svc.cluster.local:8000"
     }
     "decide" = {
-      name      = "decide"
-      icon      = "${local.dashboard_custom_icon_base}/decide.svg"
+      name = "decide"
+      # Polling icon from the Dashboard Icons catalog for this custom app.
+      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/rallly.png"
       namespace = "homelab"
       host      = "decide.local"
       upstream  = "http://decide-external-external-svc.homelab.svc.cluster.local:8090"
@@ -194,8 +196,9 @@ locals {
       upstream  = "http://ntfy.monitoring.svc.cluster.local:80"
     }
     "octo-track" = {
-      name      = "octo-track"
-      icon      = "${local.dashboard_custom_icon_base}/octo-track.svg"
+      name = "octo-track"
+      # Energy icon from the Dashboard Icons catalog for this custom app.
+      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/victron-energy.png"
       namespace = "monitoring"
       host      = "electricity.local"
       upstream  = "http://octo-track.monitoring.svc.cluster.local:8501"
@@ -286,7 +289,7 @@ locals {
     }
     "tracktor" = {
       name      = "tracktor"
-      icon      = "${local.dashboard_custom_icon_base}/tracktor.svg"
+      icon      = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/tracktor.png"
       namespace = "homelab"
       host      = "tracktor.local"
       upstream  = "http://tracktor.homelab.svc.cluster.local:3000"
@@ -299,8 +302,9 @@ locals {
       upstream  = "http://wealthfolio.homelab.svc.cluster.local:8088"
     }
     "wedding-site" = {
-      name      = "wedding-site"
-      icon      = "${local.dashboard_custom_icon_base}/wedding-site.svg"
+      name = "wedding-site"
+      # Calendar icon from the Dashboard Icons catalog for this custom site.
+      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/proton-calendar.png"
       namespace = "homelab"
       host      = "mariana-afonso.local"
       upstream  = "http://wedding-site.homelab.svc.cluster.local:80"

@@ -26,9 +26,6 @@ spec:
     - repoURL: git@github.com:afonsoc12/homelab.git
       targetRevision: HEAD
       ref: values
-    - repoURL: git@github.com:afonsoc12/homelab.git
-      targetRevision: HEAD
-      path: kubernetes/charts/authentik-customizations
   destination:
     name: {{ .Values.spec.destination.name }}
     namespace: ingress

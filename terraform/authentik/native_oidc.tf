@@ -88,7 +88,7 @@ resource "authentik_application" "native_oidc" {
   for_each = toset(["forgejo", "wireguard"])
 
   name               = local.native_oidc_apps[each.key].name
-  meta_icon          = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/${each.key}.png"
+  meta_icon          = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/${each.key}.png"
   meta_launch_url    = each.key == "forgejo" ? local.forgejo_oidc_values.gitea.config.server.ROOT_URL : "https://${local.lan_proxy_apps[each.key].host}.${local.apps_domain}"
   slug               = each.key
   group              = local.native_oidc_apps[each.key].group
