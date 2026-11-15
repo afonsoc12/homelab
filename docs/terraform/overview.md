@@ -20,8 +20,7 @@ terraform/
 
 Manages AWS services and existing Alexa skill configuration with encrypted settings.
 Uses the [AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs),
-the [REST API provider](https://registry.terraform.io/providers/Mastercard/restapi/latest/docs),
-and the official [ASK CLI](https://developer.amazon.com/en-US/docs/alexa/smapi/ask-cli-intro.html).
+and the [REST provider](https://registry.terraform.io/providers/magodo/restful/latest/docs).
 
 ### `authentik`
 

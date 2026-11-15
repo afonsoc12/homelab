@@ -1,44 +1,32 @@
-# AWS Terraform
+# AWS
 
-Use the runner for this module. It enforces sensitive REST response fields,
-disables debug output, captures subprocess diagnostics, and supplies ephemeral
-provider configuration. It supports only the existing imported resources.
+One Terraform root and one remote state.
 
-Requirements: Python 3.14, Terraform 1.10 or later, Node.js, SOPS/GPG, and
-`ask-cli` 2.30.7. Set `ASK_CLI_ROOT` to that installed package directory if it is
-not discoverable through the installed `ask` or `ask-smapi` executable.
-
-From this directory:
-
-```sh
-python3 tools/run.py init
-python3 tools/run.py validate
-python3 tools/run.py plan
-python3 tools/run.py apply
+```text
+main.tf                   Providers, encrypted settings, module wiring
+secrets.sops.yaml          Shared encrypted configuration
+home-assistant/main.tf    Lambda, execution role, logs and permission
+home-assistant/src/       Actual Lambda Python source only
+alexa/main.tf             Skill manifests and account linking
+alexa/credentials.sops.yaml Encrypted Alexa account credentials
+iam/main.tf              Account-level IAM resources
 ```
 
-`apply` reviews a freshly saved plan and applies that exact plan. It refuses
-resource creation or deletion. Temporary plans are created with restricted
-permissions and removed on completion or failure. Diagnostic output is
-suppressed because upstream failures can contain private configuration.
+Run native `terraform init`, `terraform validate`, `terraform plan`, and
+`terraform apply` from this directory. Backend credentials belong in the
+standard AWS environment variables, not in backend configuration files.
+Review a saved plan before applying it. State and plan contents are sensitive.
 
-`ask-credentials.sops.yaml` holds the ASK profile. Only the local adapter decrypts it;
-Terraform never receives the Alexa access or refresh token. The official ASK CLI runs with an environment profile, without reading or
-writing a plaintext CLI profile. Its pinned adapter blocks telemetry and
-profile writes and captures refreshed tokens in memory. Token refreshes
-remain in memory; rotated refresh tokens are saved through SOPS.
+Supply `TF_VAR_alexa_session` from an authorized Alexa session. It is an ephemeral
+object containing `access_token` and an `etags` map keyed by `home_assistant`,
+`music_assistant`, and `account_linking`, using the current GET response headers. Do not save this object to a tfvars file. Get a
+fresh access token if needed, but keep the plan's ETags when applying it.
+If an ETag is stale, obtain new headers and create a new plan. Alexa credentials remain outside
+Terraform state; the encrypted account profile is retained for authorized client
+use and is not read by Terraform.
 
-The local adapter restricts methods and paths, requires a random session token,
-rejects upstream redirects, obtains ETags immediately before writes, and waits
-for successful manifest builds and matching configuration before returning.
-It is started only for a Terraform operation and shut down afterward. Its
-endpoint and session token are ephemeral Terraform variables.
-
-Backend credentials are passed through environment variables. `init` supplies
-only noncredential backend settings through a pipe and checks the cache contains
-no credentials. The runner also supports `--module cloudflare` for the adjacent module.
-AWS resources and Alexa skills share this root and its remote state.
-
-Terraform state still contains decrypted managed settings. Keep the encrypted
-remote backend and its access controls protected. Historical backend versions
-may retain older state data; a sensitivity marker does not encrypt state.
+The native REST provider masks responses and polls asynchronous manifest
+updates. Updates require the matching session ETag; missing or stale ETags cause the
+API to reject writes. The archive provider packages only `src/` for Lambda.
+There are no custom wrappers, helper Python files, tests, import blocks or move
+blocks. Dependencies are pinned exactly in Terraform and the lock file.
