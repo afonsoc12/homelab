@@ -13,8 +13,8 @@ locals {
   waf_rules = concat(
     [for host, paths in var.machine_endpoints : {
       action      = "block"
-      description = "Deny unexpected machine routes and methods"
-      expression  = "(http.host eq ${jsonencode("${host}.${var.domain}")} and (not ssl or http.request.method ne \"POST\" or not raw.http.request.uri.path in {${join(" ", [for path in sort(tolist(paths)) : jsonencode(path)])}}))"
+      description = "Restrict machine endpoint methods and raw paths"
+      expression  = "(http.host eq ${jsonencode("${host}.${var.domain}")} and (${join(" or ", [for path in sort(tolist(paths)) : "starts_with(http.request.uri.path, ${jsonencode(path)})"])}) and (not ssl or http.request.method ne \"POST\" or not raw.http.request.uri.path in {${join(" ", [for path in sort(tolist(paths)) : jsonencode(path)])}}))"
       enabled     = true
     }],
     # Keep the source allowlist and its matching deny rule together, before

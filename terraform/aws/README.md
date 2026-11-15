@@ -1,6 +1,8 @@
 # AWS
 
-One Terraform root and one remote state.
+One Terraform root and one remote state. `alexa/` is a child module called by
+the root; applying from `terraform/aws` includes it. The two `secrets.sops.yaml`
+files have separate readers so Alexa account credentials stay out of state.
 
 ```text
 main.tf                   Providers, encrypted settings, module wiring
@@ -8,7 +10,7 @@ secrets.sops.yaml          Shared encrypted configuration
 home-assistant/main.tf    Lambda, execution role, logs and permission
 home-assistant/src/       Actual Lambda Python source only
 alexa/main.tf             Skill manifests and account linking
-alexa/credentials.sops.yaml Encrypted Alexa account credentials
+alexa/secrets.sops.yaml Encrypted Alexa account credentials
 iam/main.tf              Account-level IAM resources
 ```
 

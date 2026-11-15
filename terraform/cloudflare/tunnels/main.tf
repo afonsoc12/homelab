@@ -21,45 +21,24 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
   config = {
     # Order matches Cloudflare state (first match wins)
     ingress = [
-      # Exact machine routes; every other path on this hostname is denied.
+      # Shared hostname: authenticate the exact command route separately.
       {
-        hostname = "home-alexa.${var.domain}"
+        hostname = "home.${var.domain}"
         path     = "^/api/alexa/smart_home$"
         service  = "https://contour-envoy"
         origin_request = {
           access = {
             required  = true
             team_name = var.access_team_name
-            aud_tag   = [cloudflare_zero_trust_access_application.home_assistant_machine.aud]
+            aud_tag   = [cloudflare_zero_trust_access_application.home_assistant_alexa.aud]
           }
-          http_host_header   = "home.${var.domain}"
           origin_server_name = "home.${var.domain}"
           no_tls_verify      = false
           connect_timeout    = 10
           tls_timeout        = 10
         }
       },
-      {
-        hostname = "home-alexa.${var.domain}"
-        path     = "^/auth/token$"
-        service  = "https://contour-envoy"
-        origin_request = {
-          access = {
-            required  = true
-            team_name = var.access_team_name
-            aud_tag   = [cloudflare_zero_trust_access_application.home_assistant_machine.aud]
-          }
-          http_host_header   = "home.${var.domain}"
-          origin_server_name = "home.${var.domain}"
-          no_tls_verify      = false
-          connect_timeout    = 10
-          tls_timeout        = 10
-        }
-      },
-      {
-        hostname = "home-alexa.${var.domain}"
-        service  = "http_status:404"
-      },
+
       {
         hostname = "firefly.${var.domain}"
         service  = "https://contour-envoy"

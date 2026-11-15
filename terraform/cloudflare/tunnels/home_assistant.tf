@@ -13,23 +13,13 @@ resource "cloudflare_zero_trust_access_policy" "home_assistant_machine" {
   } }]
 }
 
-resource "cloudflare_zero_trust_access_application" "home_assistant_machine" {
-  account_id                 = var.account_id
-  name                       = "Home Assistant Alexa bridge"
-  domain                     = "home-alexa.${var.domain}"
-  type                       = "self_hosted"
-  http_only_cookie_attribute = true
+resource "cloudflare_zero_trust_access_application" "home_assistant_alexa" {
+  account_id = var.account_id
+  name       = "Home Assistant Alexa commands"
+  domain     = "home.${var.domain}/api/alexa/smart_home"
+  type       = "self_hosted"
   policies = [{
     id         = cloudflare_zero_trust_access_policy.home_assistant_machine.id
     precedence = 1
   }]
-}
-
-resource "cloudflare_dns_record" "home_assistant_machine" {
-  zone_id = var.zone_id
-  name    = "home-alexa.${var.domain}"
-  type    = "CNAME"
-  content = "${cloudflare_zero_trust_tunnel_cloudflared.k3s_cluster.id}.cfargotunnel.com"
-  proxied = true
-  ttl     = 1
 }
