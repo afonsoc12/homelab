@@ -19,9 +19,5 @@ terraform {
       source  = "carlpett/sops"
       version = "~> 1.1"
     }
-    external = {
-      source  = "hashicorp/external"
-      version = "~> 2.3"
-    }
   }
 }

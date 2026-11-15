@@ -21,7 +21,8 @@ terraform/
 
 Manages existing Alexa skill manifests and account-linking configuration with
 encrypted settings. Uses the [REST API provider](https://registry.terraform.io/providers/Mastercard/restapi/latest/docs)
-and the official [ASK CLI](https://developer.amazon.com/en-US/docs/alexa/smapi/ask-cli-intro.html).
+and the official [ASK CLI](https://developer.amazon.com/en-US/docs/alexa/smapi/ask-cli-intro.html)
+authentication client.
 
 ### `aws`
 

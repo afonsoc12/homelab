@@ -11,24 +11,28 @@ locals {
   }
 }
 
-# Refresh through the official ASK CLI; never print authentication or API bodies.
-data "external" "authentication" {
-  program = ["python3", "${path.module}/tools/authenticate.py"]
-  query = {
-    uri   = local.settings.api_uri
-    paths = jsonencode(local.paths)
-  }
+# Authentication is held by the local adapter, outside Terraform and its state.
+variable "smapi_endpoint" {
+  type      = string
+  sensitive = true
+  ephemeral = true
+}
+variable "smapi_session_token" {
+  type      = string
+  sensitive = true
+  ephemeral = true
 }
 
 provider "restapi" {
   alias        = "home_assistant_manifest"
-  uri          = local.settings.api_uri
-  bearer_token = sensitive(data.external.authentication.result.access_token)
-  headers      = { "If-Match" = sensitive(data.external.authentication.result.home_assistant_manifest) }
+  uri          = var.smapi_endpoint
+  bearer_token = var.smapi_session_token
   debug        = false
 }
 
 resource "restapi_object" "home_assistant_manifest" {
+  # Avoid concurrent mutations to the same skill while a build is running.
+  depends_on  = [restapi_object.home_assistant_linking]
   provider    = restapi.home_assistant_manifest
   path        = trimsuffix(local.paths.home_assistant_manifest, "/manifest")
   object_id   = "manifest"
@@ -41,9 +45,8 @@ resource "restapi_object" "home_assistant_manifest" {
 
 provider "restapi" {
   alias        = "home_assistant_linking"
-  uri          = local.settings.api_uri
-  bearer_token = sensitive(data.external.authentication.result.access_token)
-  headers      = { "If-Match" = sensitive(data.external.authentication.result.home_assistant_linking) }
+  uri          = var.smapi_endpoint
+  bearer_token = var.smapi_session_token
   debug        = false
 }
 
@@ -66,9 +69,8 @@ resource "restapi_object" "home_assistant_linking" {
 
 provider "restapi" {
   alias        = "music_assistant_manifest"
-  uri          = local.settings.api_uri
-  bearer_token = sensitive(data.external.authentication.result.access_token)
-  headers      = { "If-Match" = sensitive(data.external.authentication.result.music_assistant_manifest) }
+  uri          = var.smapi_endpoint
+  bearer_token = var.smapi_session_token
   debug        = false
 }
 
