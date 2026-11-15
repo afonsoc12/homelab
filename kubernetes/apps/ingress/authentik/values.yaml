@@ -1,5 +1,7 @@
 ---
 server:
+  securityContext:
+    fsGroup: 1000
   # Bump when mounted customization files change so subPath mounts are refreshed.
   podAnnotations:
     homelab/customization-revision: "2"
@@ -7,6 +9,11 @@ server:
     - name: prepare-plex-compatibility
       image: ghcr.io/goauthentik/server:2026.8.5
       command: [python, /customization-source/patch_plex.py]
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        allowPrivilegeEscalation: false
       volumeMounts:
         - name: flow-customizations
           mountPath: /customization-source
