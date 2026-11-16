@@ -31,9 +31,9 @@ service:
   enabled: true
 
 securityContext:
-  privileged: true
+  allowPrivilegeEscalation: false
   capabilities:
-    add: ["SYS_ADMIN", "DAC_READ_SEARCH"]
+    drop: [ALL]
 
 volumeMounts:
   - name: data

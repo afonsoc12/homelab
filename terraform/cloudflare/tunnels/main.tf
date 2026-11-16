@@ -21,7 +21,9 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
   config = {
     # Order matches Cloudflare state (first match wins)
     ingress = [
-      # Native OAuth token exchange is authenticated by Home Assistant itself.
+      # Alexa account linking exchanges OAuth credentials with Home Assistant.
+      # The native token endpoint authenticates the request; Alexa cannot send
+      # Cloudflare Access service-token headers for this exchange.
       {
         hostname = "home.${var.domain}"
         path     = "^/auth/token$"
@@ -232,6 +234,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "music-assistant-stream.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.interactive["music-assistant-stream"].aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false
@@ -248,6 +255,11 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "music-assistant-alexa-skill.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
+          access = {
+            required  = true
+            team_name = var.access_team_name
+            aud_tag   = [cloudflare_zero_trust_access_application.interactive["music-assistant-alexa-skill"].aud]
+          }
           connect_timeout          = 30
           disable_chunked_encoding = false
           http2_origin             = false

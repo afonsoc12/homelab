@@ -287,6 +287,26 @@ configmap:
                         description: Document management
                         icon: di:paperless-ngx
                         url: https://paperless.local.{{ .Values.domain }}
+                      - title: Grocy
+                        description: Household inventory
+                        icon: di:grocy
+                        url: https://grocy.local.{{ .Values.domain }}
+                      - title: n8n
+                        description: Workflow automation
+                        icon: di:n8n
+                        url: https://n8n.local.{{ .Values.domain }}
+                      - title: BentoPDF
+                        description: PDF tools
+                        icon: di:bentopdf
+                        url: https://pdf.local.{{ .Values.domain }}
+                      - title: Decide
+                        description: Group decisions
+                        icon: di:rallly
+                        url: https://decide.local.{{ .Values.domain }}
+                      - title: Hoarder
+                        description: Saved links and notes
+                        icon: di:hoarder
+                        url: https://hoarder.{{ .Values.domain }}
                   - title: Home Automation
                     links:
                       - title: Home Assistant
@@ -309,6 +329,14 @@ configmap:
                         description: Multi-room music player hub
                         icon: di:music-assistant
                         url: https://music-assistant.local.{{ .Values.domain }}
+                      - title: Hyperion
+                        description: Ambient lighting
+                        icon: di:hyperion
+                        url: https://hyperion.local.{{ .Values.domain }}
+                      - title: WLED Kitchen
+                        description: Kitchen lighting
+                        icon: di:wled
+                        url: https://wled-kitchen.local.{{ .Values.domain }}
                   - title: Media
                     links:
                       - title: Plex
@@ -371,6 +399,22 @@ configmap:
                         url: https://tdarr.local.{{ .Values.domain }}
                   - title: Admin
                     links:
+                      - title: Authentik
+                        description: Identity management
+                        icon: di:authentik
+                        url: https://sso.{{ .Values.domain }}
+                      - title: Forgejo
+                        description: Git repositories
+                        icon: di:forgejo
+                        url: https://git.local.{{ .Values.domain }}
+                      - title: Airflow
+                        description: Workflow scheduling
+                        icon: di:apache-airflow
+                        url: https://airflow.local.{{ .Values.domain }}
+                      - title: WireGuard
+                        description: VPN management
+                        icon: di:wireguard
+                        url: https://wg.local.{{ .Values.domain }}
                       - title: UniFi OS
                         description: Controller Management
                         icon: di:unifi
