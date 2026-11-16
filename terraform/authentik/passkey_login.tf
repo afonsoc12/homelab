@@ -177,47 +177,6 @@ resource "authentik_policy_expression" "record_local_password_proof" {
   PY
 }
 
-# The ordinary local path already checks a password on every sign-in. Record
-# that proof as well, so changing to the passkey choice does not immediately
-# ask for the same password again.
-resource "authentik_policy_expression" "record_local_login_password_proof" {
-  name              = "Homelab - Record Local Login Password Proof"
-  execution_logging = false
-  expression        = <<-PY
-    from django.utils.timezone import now
-
-    user = context.get("pending_user")
-    plan = context["flow_plan"].context
-    if not user or not user.pk or plan.get("user_backend") != "authentik.core.auth.InbuiltBackend":
-        return True
-    current = ak_user_by(pk=user.pk)
-    if not current or not current.is_active or not current.has_usable_password():
-        return True
-    current.attributes["homelab_last_local_password_proof"] = now().isoformat()
-    current.save(update_fields=["attributes"])
-    return False
-  PY
-}
-
-resource "authentik_flow_stage_binding" "record_local_login_password_proof" {
-  target                  = authentik_flow.login.uuid
-  stage                   = authentik_stage_deny.local_password_proof_incomplete.id
-  order                   = 96
-  evaluate_on_plan        = false
-  re_evaluate_policies    = true
-  policy_engine_mode      = "all"
-  invalid_response_action = "retry"
-}
-
-resource "authentik_policy_binding" "record_local_login_password_proof" {
-  target         = authentik_flow_stage_binding.record_local_login_password_proof.id
-  policy         = authentik_policy_expression.record_local_login_password_proof.id
-  order          = 0
-  enabled        = true
-  failure_result = true
-  timeout        = 0
-}
-
 resource "authentik_stage_deny" "local_password_proof_incomplete" {
   name = "Homelab - Local Password Proof Incomplete"
 }
@@ -307,7 +266,7 @@ resource "authentik_policy_binding" "local_password_proof_incomplete" {
 # The existing Plex path receives the same monthly check in a later rollout
 # stage, after the optional passkey path has been exercised.
 resource "authentik_flow_stage_binding" "plex_local_password_proof" {
-  target                  = authentik_flow.plex["authentication"].uuid
+  target                  = authentik_flow.plex_auth_v2.uuid
   stage                   = authentik_stage_password.login_password.id
   order                   = 60
   evaluate_on_plan        = false
@@ -326,7 +285,7 @@ resource "authentik_policy_binding" "plex_local_password_proof_due" {
 }
 
 resource "authentik_flow_stage_binding" "plex_record_local_password_proof" {
-  target                  = authentik_flow.plex["authentication"].uuid
+  target                  = authentik_flow.plex_auth_v2.uuid
   stage                   = authentik_stage_deny.local_password_proof_incomplete.id
   order                   = 70
   evaluate_on_plan        = false
@@ -345,7 +304,7 @@ resource "authentik_policy_binding" "plex_record_local_password_proof" {
 }
 
 resource "authentik_flow_stage_binding" "plex_local_password_proof_incomplete" {
-  target                  = authentik_flow.plex["authentication"].uuid
+  target                  = authentik_flow.plex_auth_v2.uuid
   stage                   = authentik_stage_deny.local_password_proof_incomplete.id
   order                   = 97
   evaluate_on_plan        = false
