@@ -27,31 +27,6 @@ volumeMounts:
 volumes:
     - name: config
       mountPvc: true
-initContainers:
-    - name: disable-unsafe-oidc-user-linking
-      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-      imagePullPolicy: IfNotPresent
-      command: [python3, -c]
-      args:
-          - |
-            from pathlib import Path
-            import re
-
-            path = Path('/config/configuration.yaml')
-            if path.exists():
-                contents = path.read_text()
-                secured, changes = re.subn(
-                    r'(?m)^(\s*automatic_user_linking:\s*)true(\s*)$',
-                    r'\1false\2',
-                    contents,
-                )
-                if changes > 1:
-                    raise RuntimeError('Multiple OIDC user-linking settings found')
-                if changes:
-                    path.write_text(secured)
-      volumeMounts:
-          - name: config
-            mountPath: /config
 pvc:
     storageClassName: longhorn-persistent
     accessModes:
