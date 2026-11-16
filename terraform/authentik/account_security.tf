@@ -12,8 +12,8 @@ resource "authentik_stage_email" "signin_verification" {
   recovery_cache_timeout   = "minutes=30"
 }
 
-# Email precedes factor enrollment so knowing a password alone cannot register
-# an attacker's authenticator on an account that has no MFA yet.
+# Email precedes factor enrollment for a new or changed address, so knowing a
+# password alone cannot register an authenticator before inbox control is proved.
 resource "authentik_flow_stage_binding" "signin_email" {
   for_each = {
     login      = { flow = authentik_flow.login.uuid, order = 20 }
@@ -28,6 +28,32 @@ resource "authentik_flow_stage_binding" "signin_email" {
   re_evaluate_policies    = true
   policy_engine_mode      = "all"
   invalid_response_action = "retry"
+}
+
+# Once the current address has been verified, subsequent sign-ins only need
+# password and MFA. Enrollment continues to run the Email stage unconditionally.
+resource "authentik_policy_expression" "signin_email_required" {
+  name              = "Homelab - Sign In Email Verification Required"
+  execution_logging = false
+  expression        = <<-PY
+    user = context.get("pending_user")
+    if not user or not user.pk or not user.is_active or not user.email:
+        return True
+    current = ak_user_by(pk=user.pk)
+    return not current or not current.is_active or not current.email or current.attributes.get("email_verified_address") != current.email
+  PY
+}
+
+resource "authentik_policy_binding" "signin_email_required" {
+  for_each = {
+    login      = authentik_flow_stage_binding.signin_email["login"].id
+    plex_login = authentik_flow_stage_binding.signin_email["plex_login"].id
+  }
+  target         = each.value
+  policy         = authentik_policy_expression.signin_email_required.id
+  order          = 0
+  enabled        = true
+  failure_result = true # Evaluation errors require email verification.
 }
 
 # Capture the actual destination in server-side plan context before minting the
@@ -315,8 +341,9 @@ resource "authentik_policy_expression" "password_not_current" {
   PY
 }
 
-# Record inbox control only after a token issued by our mandatory sign-in Email
-# stage is restored for this account. Bind to Deny rather than User Login:
+# Record inbox control only after a token issued by our sign-in Email stage is
+# restored for this account. A previously verified, unchanged address also
+# satisfies this guard. Bind to Deny rather than User Login:
 # policy errors must stop authentication, never skip a required check.
 resource "authentik_policy_expression" "signin_email_incomplete" {
   name              = "Homelab - Sign In Email Must Be Verified"
@@ -326,13 +353,17 @@ resource "authentik_policy_expression" "signin_email_incomplete" {
     token = context.get("is_restored")
     if not user or not user.pk or not user.is_active or not user.email:
         return True
+    current = ak_user_by(pk=user.pk)
+    if not current or not current.is_active or not current.email:
+        return True
+    if current.attributes.get("email_verified_address") == current.email:
+        return False
     if not token or token.user_id != user.pk:
         return True
     if not token.identifier.startswith("ak-email-stage-homelab-sign-in-email-verification-"):
         return True
     address = context["flow_plan"].context.get("signin_email_address")
-    current = ak_user_by(pk=user.pk)
-    if not current or not current.is_active or not address or current.email != address:
+    if not address or current.email != address:
         return True
     current.attributes["email_verified_address"] = address
     current.save(update_fields=["attributes"])
