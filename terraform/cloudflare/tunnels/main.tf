@@ -21,6 +21,21 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
   config = {
     # Order matches Cloudflare state (first match wins)
     ingress = [
+      # Alexa account linking exchanges OAuth credentials with Home Assistant.
+      # The native token endpoint authenticates the request; Alexa cannot send
+      # Cloudflare Access service-token headers for this exchange.
+      {
+        hostname = "home.${var.domain}"
+        path     = "^/auth/token$"
+        service  = "https://contour-envoy"
+        origin_request = {
+          origin_server_name = "home.${var.domain}"
+          no_tls_verify      = false
+          connect_timeout    = 10
+          tls_timeout        = 10
+        }
+      },
+
       # Shared hostname: authenticate the exact command route separately.
       {
         hostname = "home.${var.domain}"
