@@ -1,14 +1,5 @@
 locals {
   lan_proxy_apps = {
-    "home-assistant" = {
-      name      = "Home Assistant"
-      icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/home-assistant.png"
-      namespace = "automation"
-      host      = "home"
-      upstream  = "http://home-assistant.automation.svc.cluster.local:8123"
-      # Home Assistant enforces native authentication on API and login endpoints.
-      skip_path_regex = "^/(api|auth)(/|$)"
-    }
     "calibre-web" = {
       name      = "Calibre-Web"
       icon      = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/png/calibre-web.png"
