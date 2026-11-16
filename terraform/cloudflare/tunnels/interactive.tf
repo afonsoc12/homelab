@@ -2,12 +2,14 @@
 # the Authentik login method. Machine clients must authenticate to Access too.
 locals {
   interactive_apps = {
-    home     = "Home Assistant"
-    seerr    = "Seerr"
-    calibre  = "Calibre-Web"
-    rss      = "FreshRSS"
-    status   = "Uptime Kuma"
-    wallabag = "Wallabag"
+    home                        = "Home Assistant"
+    seerr                       = "Seerr"
+    calibre                     = "Calibre-Web"
+    rss                         = "FreshRSS"
+    status                      = "Uptime Kuma"
+    wallabag                    = "Wallabag"
+    music-assistant-stream      = "Music Assistant stream"
+    music-assistant-alexa-skill = "Music Assistant Alexa skill"
   }
 }
 

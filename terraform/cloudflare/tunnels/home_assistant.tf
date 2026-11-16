@@ -23,21 +23,3 @@ resource "cloudflare_zero_trust_access_application" "home_assistant_alexa" {
     precedence = 1
   }]
 }
-
-resource "cloudflare_zero_trust_access_policy" "home_assistant_token" {
-  account_id = var.account_id
-  name       = "Home Assistant OAuth token endpoint"
-  decision   = "bypass"
-  include    = [{ everyone = {} }]
-}
-
-resource "cloudflare_zero_trust_access_application" "home_assistant_token" {
-  account_id = var.account_id
-  name       = "Home Assistant OAuth token endpoint"
-  domain     = "home.${var.domain}/auth/token"
-  type       = "self_hosted"
-  policies = [{
-    id         = cloudflare_zero_trust_access_policy.home_assistant_token.id
-    precedence = 1
-  }]
-}
