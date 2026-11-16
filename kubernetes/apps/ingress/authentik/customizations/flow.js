@@ -39,7 +39,15 @@
     const emailMessage = 'Open your email and click "Confirm Account" to continue. Check your spam or junk folder if the email is missing. This page will wait until you open the link.';
     const duoMessage = 'Open Duo Mobile, choose Add, then scan this QR code. On the same phone, tap "Duo activation" instead. After activation, click "Check status". Other authenticator apps cannot scan this Duo activation code.';
 
-    function updateCopy(root) {
+    function updateCopy(root, inPlexStage) {
+        if (inPlexStage) {
+            const text = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+            while (text.nextNode()) {
+                if (/^Waiting for authentication(?:\.\.\.|…)?$/i.test(text.currentNode.textContent.trim())) {
+                    text.currentNode.textContent = "";
+                }
+            }
+        }
         if (root.host?.localName === "ak-stage-email") {
             const paragraph = root.querySelector(".pf-c-form__group > p");
             if (paragraph && paragraph.textContent !== emailMessage) paragraph.textContent = emailMessage;
@@ -59,14 +67,15 @@
         }
     }
 
-    function observe(root) {
+    function observe(root, inPlexStage = false) {
+        inPlexStage ||= root.host?.localName === "ak-flow-source-plex";
         if (!observed.has(root)) {
             observed.add(root);
-            new MutationObserver(() => observe(root)).observe(root, { childList: true, subtree: true });
+            new MutationObserver(() => observe(root, inPlexStage)).observe(root, { childList: true, subtree: true });
         }
-        updateCopy(root);
+        updateCopy(root, inPlexStage);
         for (const element of root.querySelectorAll("*")) {
-            if (element.shadowRoot) observe(element.shadowRoot);
+            if (element.shadowRoot) observe(element.shadowRoot, inPlexStage);
         }
     }
 
