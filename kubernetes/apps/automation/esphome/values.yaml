@@ -70,7 +70,9 @@ ingress:
             port: 9000
 
 securityContext:
-  privileged: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: [ALL]
 
 nodeSelector:
   kubernetes.io/hostname: k3s-m1

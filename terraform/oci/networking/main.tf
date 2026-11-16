@@ -33,16 +33,6 @@ resource "oci_core_default_security_list" "main" {
   }
 
   ingress_security_rules {
-    protocol  = "6"
-    source    = "0.0.0.0/0"
-    stateless = false
-    tcp_options {
-      min = 22
-      max = 22
-    }
-  }
-
-  ingress_security_rules {
     protocol  = "1"
     source    = "0.0.0.0/0"
     stateless = false
