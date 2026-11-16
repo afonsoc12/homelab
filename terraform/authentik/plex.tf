@@ -141,7 +141,7 @@ resource "authentik_flow_stage_binding" "plex_mfa" {
 
 resource "authentik_stage_user_login" "plex" {
   name                     = "Homelab - Plex Login"
-  session_duration         = "hours=8"
+  session_duration         = "hours=6"
   remember_me_offset       = "seconds=0"
   remember_device          = "seconds=0"
   network_binding          = "no_binding"

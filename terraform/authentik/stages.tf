@@ -50,7 +50,7 @@ resource "authentik_stage_authenticator_webauthn" "mfa_webauthn_setup" {
   hints                    = []
   max_attempts             = 0
   name                     = "Homelab - MFA WebAuthn Setup"
-  resident_key_requirement = "preferred"
+  resident_key_requirement = "required"
   user_verification        = "required"
 }
 
@@ -162,7 +162,7 @@ resource "authentik_stage_user_login" "login_login" {
   network_binding          = "no_binding"
   remember_device          = "seconds=0"
   remember_me_offset       = "seconds=0"
-  session_duration         = "hours=8"
+  session_duration         = "hours=6"
   terminate_other_sessions = false
 }
 
@@ -170,7 +170,7 @@ resource "authentik_stage_user_login" "source_enrollment_login" {
   geoip_binding            = "no_binding"
   name                     = "Homelab - Source Enrollment Login"
   network_binding          = "no_binding"
-  remember_device          = "days=30"
+  remember_device          = "seconds=0"
   remember_me_offset       = "seconds=0"
   session_duration         = "seconds=0"
   terminate_other_sessions = false

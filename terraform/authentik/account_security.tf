@@ -17,6 +17,7 @@ resource "authentik_stage_email" "signin_verification" {
 resource "authentik_flow_stage_binding" "signin_email" {
   for_each = {
     login      = { flow = authentik_flow.login.uuid, order = 20 }
+    passkey    = { flow = authentik_flow.passkey_login.uuid, order = 15 }
     invitation = { flow = authentik_flow.invitation_enrollment.uuid, order = 32 }
     plex_login = { flow = authentik_flow.plex["authentication"].uuid, order = 15 }
     plex_join  = { flow = authentik_flow.plex["enrollment"].uuid, order = 15 }
@@ -47,12 +48,14 @@ resource "authentik_policy_expression" "signin_email_required" {
 resource "authentik_policy_binding" "signin_email_required" {
   for_each = {
     login      = authentik_flow_stage_binding.signin_email["login"].id
+    passkey    = authentik_flow_stage_binding.signin_email["passkey"].id
     plex_login = authentik_flow_stage_binding.signin_email["plex_login"].id
   }
   target         = each.value
   policy         = authentik_policy_expression.signin_email_required.id
   order          = 0
   enabled        = true
+  timeout        = each.key == "passkey" ? 0 : 30
   failure_result = true # Evaluation errors require email verification.
 }
 
@@ -76,6 +79,7 @@ resource "authentik_policy_expression" "signin_email_destination_invalid" {
 resource "authentik_flow_stage_binding" "signin_email_destination" {
   for_each = {
     login      = { flow = authentik_flow.login.uuid, order = 19 }
+    passkey    = { flow = authentik_flow.passkey_login.uuid, order = 14 }
     invitation = { flow = authentik_flow.invitation_enrollment.uuid, order = 31 }
     plex_login = { flow = authentik_flow.plex["authentication"].uuid, order = 14 }
     plex_join  = { flow = authentik_flow.plex["enrollment"].uuid, order = 14 }
@@ -95,6 +99,7 @@ resource "authentik_policy_binding" "signin_email_destination" {
   policy         = authentik_policy_expression.signin_email_destination_invalid.id
   order          = 0
   enabled        = true
+  timeout        = each.key == "passkey" ? 0 : 30
   failure_result = true
 }
 
@@ -251,80 +256,9 @@ resource "authentik_flow_stage_binding" "recovery_logout" {
   invalid_response_action = "retry"
 }
 
-# Explicit local requirement: rotate local passwords after 365 days. NIST
-# SP 800-63B-4 advises against scheduled changes and composition requirements.
-# Prompt inline after authentication + email + MFA, before issuing a session;
-# an authenticated-only settings flow cannot run safely before User Login.
-resource "authentik_policy_expression" "password_renewal_required" {
-  name              = "Homelab - Password Renewal Required"
-  execution_logging = false
-  expression        = <<-PY
-    from datetime import timedelta
-    from django.utils.timezone import now
-
-    user = context.get("pending_user")
-    if not user or not user.pk or not user.is_active:
-        return True
-    # Source-only accounts have no local password to rotate.
-    if not user.has_usable_password():
-        return False
-    changed = user.password_change_date
-    return changed is None or now() >= changed + timedelta(days=365)
-  PY
-}
-
-resource "authentik_flow_stage_binding" "password_renewal" {
-  for_each = {
-    login_prompt = { flow = authentik_flow.login.uuid, stage = authentik_stage_prompt.password_change_prompt.id, order = 70 }
-    login_write  = { flow = authentik_flow.login.uuid, stage = authentik_stage_user_write.password_change_write.id, order = 80 }
-    plex_prompt  = { flow = authentik_flow.plex["authentication"].uuid, stage = authentik_stage_prompt.password_change_prompt.id, order = 70 }
-    plex_write   = { flow = authentik_flow.plex["authentication"].uuid, stage = authentik_stage_user_write.password_change_write.id, order = 80 }
-  }
-  target                  = each.value.flow
-  stage                   = each.value.stage
-  order                   = each.value.order
-  evaluate_on_plan        = false
-  re_evaluate_policies    = true
-  policy_engine_mode      = "all"
-  invalid_response_action = "retry"
-}
-
-resource "authentik_policy_binding" "password_renewal" {
-  for_each       = authentik_flow_stage_binding.password_renewal
-  target         = each.value.id
-  policy         = authentik_policy_expression.password_renewal_required.id
-  order          = 0
-  enabled        = true
-  failure_result = true # Errors require renewal rather than silently skipping it.
-}
-
-# Recheck immediately before session creation, including restored email plans.
-resource "authentik_stage_deny" "password_expired" {
-  name = "Homelab - Password Renewal Incomplete"
-}
-
-resource "authentik_flow_stage_binding" "password_expired" {
-  for_each = {
-    login = authentik_flow.login.uuid
-    plex  = authentik_flow.plex["authentication"].uuid
-  }
-  target                  = each.value
-  stage                   = authentik_stage_deny.password_expired.id
-  order                   = 90
-  evaluate_on_plan        = false
-  re_evaluate_policies    = true
-  policy_engine_mode      = "all"
-  invalid_response_action = "retry"
-}
-
-resource "authentik_policy_binding" "password_expired" {
-  for_each       = authentik_flow_stage_binding.password_expired
-  target         = each.value.id
-  policy         = authentik_policy_expression.password_renewal_required.id
-  order          = 0
-  enabled        = true
-  failure_result = true
-}
+# Local sign-in already verifies the existing password on every new login.
+# A 30-day proof record is needed before a password-bearing account can use
+# passkey primary sign-in; the old 365-day password-change gate was rotation.
 
 resource "authentik_policy_expression" "password_not_current" {
   name              = "Homelab - Require A Different Password"
@@ -378,6 +312,7 @@ resource "authentik_stage_deny" "signin_email_incomplete" {
 resource "authentik_flow_stage_binding" "signin_email_complete" {
   for_each = {
     login      = { flow = authentik_flow.login.uuid, order = 95 }
+    passkey    = { flow = authentik_flow.passkey_login.uuid, order = 50 }
     invitation = { flow = authentik_flow.invitation_enrollment.uuid, order = 39 }
     plex_login = { flow = authentik_flow.plex["authentication"].uuid, order = 95 }
     plex_join  = { flow = authentik_flow.plex["enrollment"].uuid, order = 95 }
@@ -397,5 +332,6 @@ resource "authentik_policy_binding" "signin_email_complete" {
   policy         = authentik_policy_expression.signin_email_incomplete.id
   order          = 0
   enabled        = true
+  timeout        = each.key == "passkey" ? 0 : 30
   failure_result = true
 }
