@@ -190,11 +190,6 @@ resource "cloudflare_zero_trust_tunnel_cloudflared_config" "k3s_cluster" {
         hostname = "sso.${var.domain}"
         service  = "https://contour-envoy"
         origin_request = {
-          access = {
-            required  = true
-            team_name = var.access_team_name
-            aud_tag   = [cloudflare_zero_trust_access_application.authentik.aud]
-          }
           no_tls_verify      = false
           origin_server_name = "sso.${var.domain}"
         }
