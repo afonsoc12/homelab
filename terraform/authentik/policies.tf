@@ -1,6 +1,8 @@
+# This flow policy runs before identification. Anonymous requests have an
+# empty username, which pools failures from unrelated clients when checked.
 resource "authentik_policy_reputation" "login_reputation" {
   check_ip          = true
-  check_username    = true
+  check_username    = false
   execution_logging = false
   name              = "Homelab - Login Reputation"
   threshold         = -5
