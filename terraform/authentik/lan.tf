@@ -369,7 +369,7 @@ resource "authentik_application" "lan" {
 resource "authentik_policy_binding" "lan_admins" {
   for_each       = local.lan_proxy_apps
   target         = authentik_application.lan[each.key].uuid
-  group          = data.sops_file.secrets.data["value_079"]
+  group          = authentik_group.access["g1"].id
   order          = 0
   failure_result = false
 }

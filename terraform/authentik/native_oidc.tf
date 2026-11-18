@@ -100,7 +100,7 @@ resource "authentik_policy_binding" "native_oidc_admins" {
   for_each = toset(["forgejo", "wireguard"])
 
   target         = authentik_application.native_oidc[each.key].uuid
-  group          = data.sops_file.secrets.data["value_079"]
+  group          = authentik_group.access["g1"].id
   order          = 0
   enabled        = true
   failure_result = false

@@ -51,7 +51,7 @@ resource "authentik_policy_binding" "automation_admins" {
   for_each = local.protected_apps
 
   target         = authentik_application.automation[each.key].uuid
-  group          = data.sops_file.secrets.data["value_079"]
+  group          = authentik_group.access["g1"].id
   order          = 0
   failure_result = false
 }

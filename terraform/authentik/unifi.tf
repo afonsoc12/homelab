@@ -30,7 +30,7 @@ resource "authentik_application" "unifi" {
 
 resource "authentik_policy_binding" "unifi_admins" {
   target         = authentik_application.unifi.uuid
-  group          = data.sops_file.secrets.data["value_079"]
+  group          = authentik_group.access["g1"].id
   order          = 0
   failure_result = false
 }

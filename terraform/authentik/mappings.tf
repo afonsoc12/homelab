@@ -26,14 +26,14 @@ resource "authentik_property_mapping_provider_scope" "oidc_profile" {
   scope_name  = "profile"
 }
 
-# Argo CD RBAC uses only this group; do not disclose unrelated memberships.
+# Argo CD expects the legacy claim; derive it only from the application admin group.
 resource "authentik_property_mapping_provider_scope" "argo_cd_profile" {
   name       = "Argo CD - OIDC Profile"
   scope_name = "profile"
   expression = replace(
     data.sops_file.secrets.data["value_034"],
     "[group.name for group in request.user.groups.all()]",
-    "[group.name for group in request.user.groups.all() if group.name == \"authentik_admins\"]"
+    data.sops_file.secrets.data["group_argo_expression"]
   )
 
   lifecycle {

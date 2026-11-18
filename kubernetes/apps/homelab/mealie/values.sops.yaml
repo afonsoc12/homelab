@@ -36,8 +36,8 @@ secret:
     stringData:
         POSTGRES_USER: ENC[AES256_GCM,data:Hp+v5BAC,iv:ndcw5cbeu/oLhlnTPzdoqyjkkM8EGDmaKBGIojQtRFk=,tag:uHo3bXf/37BcB0l1xeBrog==,type:str]
         POSTGRES_PASSWORD: ENC[AES256_GCM,data:ak94Z4DWrAbNPihiH8Jzjk8W94s=,iv:SjLK0bAWgZCz4AEiJRuaKZOI4n6dy2sJgw6J9v3Xz/4=,tag:qjFaRIOMidrxi5mLu07hdQ==,type:str]
-        OIDC_ADMIN_GROUP: ENC[AES256_GCM,data:QHr+755AMJzK3M3Z,iv:/XMc8LuOVf5hGwrTwTuyaf54deF0+yKicPO7L/X+ab0=,tag:BP99MF9wqfxip/LwTNexMw==,type:str]
-        OIDC_USER_GROUP: ENC[AES256_GCM,data:rTeiPr4mMVogQf0=,iv:CXCerbl6f9zaWkQCiQB79gSV/23dG3PpcPetzMWaWlg=,tag:lxXHBRsGtGUXL+UrOu2jmg==,type:str]
+        OIDC_ADMIN_GROUP: ENC[AES256_GCM,data:GtYaM3M=,iv:Cg+5xR5+0HKhUUQp+EJ459J1Y8hRweP0s9GwjoMqVE4=,tag:qDn/7ZrgjhBus7s0TenUTw==,type:str]
+        OIDC_USER_GROUP: ENC[AES256_GCM,data:VvDHcQ==,iv:Uzhy0FsL3XXroO7QXhxdV1oSeAPHTJKGovGMoTpX5TE=,tag:3w/V35901tIIYwXHpQBWeg==,type:str]
         OIDC_CLIENT_ID: ENC[AES256_GCM,data:P3FVVOLbKdBIZZewCPxq0XIGg3lLplP6K+NF18BPU3zIKLCLH4eV0A==,iv:XfhbBkUDpUWevci0LKVS8Yd9cNwzObdCezw8HIPnIkQ=,tag:/90NG3t/TiGx/Lzb3MUIqA==,type:str]
         OIDC_CLIENT_SECRET: ENC[AES256_GCM,data:Ym+jBcHJRwi0/ZcFvfMhsgwWchCAgm1r6F1GKZJs1A9aRq5emLu5ehjNk3+gLKYo0Y4nyrZJW+oBoP5zfufmMtyrGPP4VEocPGpNyDLItAWXLCgz37YV2AI7Esa4Lh5X9pQ48A6xpUWf8UthGk7K4mII/s/QQJjhde6eg7nO2MY=,iv:ragbnrTYsF0C/PQuhHRpAokSW+xoBGkauWbVltm4vV0=,tag:WJJTGOwsiw/yObVEFBnlIA==,type:str]
         OIDC_CONFIGURATION_URL: ENC[AES256_GCM,data:EPrjKn3cw1b4oRmki5OiM+PD1QP4CFYw7xIKSIr+HHesiha6J6gfpWnk7ewZXOhrMaOXEQg3YX1NzVyBLEqUMePU1QcquCYUiHyp5vDC7Q==,iv:Xzn5OxpieL5LZ+PYMNU5kx+HvEKWKFgT6GtZWsHHVLQ=,tag:5QkKkG9CSBQXcqkU68KyMA==,type:str]
@@ -68,19 +68,18 @@ pvc:
         requests:
             storage: 1Gi
 ingress:
-  enabled: true
-  className: contour
-  tls:
-    - secretName: local-wildcard-cert
-  hosts:
-    - host: mealie.local.{{ .Values.domain }}
-      paths:
-        - path: /
-          pathType: Prefix
-  annotations:
-    ingress.kubernetes.io/force-ssl-redirect: 'true'
-    projectcontour.io/response-timeout: 60s
-
+    enabled: true
+    className: contour
+    tls:
+        - secretName: local-wildcard-cert
+    hosts:
+        - host: mealie.local.{{ .Values.domain }}
+          paths:
+            - path: /
+              pathType: Prefix
+    annotations:
+        ingress.kubernetes.io/force-ssl-redirect: "true"
+        projectcontour.io/response-timeout: 60s
 podSecurityContext: {}
 # fsGroup: 2000
 securityContext: {}
@@ -106,41 +105,39 @@ affinity:
                             - postgres
                 topologyKey: kubernetes.io/hostname
 resources:
-  limits:
-    cpu: 50m
-    memory: 512Mi
-  requests:
-    cpu: 25m
-    memory: 256Mi
-
+    limits:
+        cpu: 50m
+        memory: 512Mi
+    requests:
+        cpu: 25m
+        memory: 256Mi
 livenessProbe:
-  httpGet:
-    path: /api/app/about
-    port: 9000
-  periodSeconds: 30
-  failureThreshold: 3
-  timeoutSeconds: 5
-
+    httpGet:
+        path: /api/app/about
+        port: 9000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
 readinessProbe:
-  httpGet:
-    path: /api/app/about
-    port: 9000
-  periodSeconds: 30
-  failureThreshold: 3
-  timeoutSeconds: 5
-
+    httpGet:
+        path: /api/app/about
+        port: 9000
+    periodSeconds: 30
+    failureThreshold: 3
+    timeoutSeconds: 5
 startupProbe:
-  httpGet:
-    path: /api/app/about
-    port: 9000
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  failureThreshold: 30
-  timeoutSeconds: 5
-
+    httpGet:
+        path: /api/app/about
+        port: 9000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    failureThreshold: 30
+    timeoutSeconds: 5
 sops:
-    lastmodified: "2026-04-29T19:45:43Z"
-    mac: ENC[AES256_GCM,data:TA9FBJuiIYZ1lYEJMX0owqtYAtHphN33BECpj3AFKwVxfclw0kmqCoR2dllRB9/UNPNjO+XjlkuzjcuNtsgeiNy1nNGnmxwa+XWfzIAYNRb3s8gyb1onHhgieHFzMf3xP7U3TZgU8jnXGFKklytoVnznMbLnhdn7vU4w3MDWsDY=,iv:ikjIl3eWKET7TDa+rFYXJyRmQKvFTQZAQXgVRdMCUr8=,tag:IB/ooA0torKDDp6RrPPDCA==,type:str]
+    encrypted_regex: ^(stringData)$
+    lastmodified: "2026-11-18T14:16:31Z"
+    mac: ENC[AES256_GCM,data:aVxB7IqaeXULf7akH8fj8bCzwMOswwk0HolQgjD1oC5qSVifH/I1okadEi7adTtAI+e76+W/2wV9v3ad9ZFK20gFx4jnMqglgxZL0z9dykQnIkxbb4vd4jBjbqJZFPPAEjqBO7U0Xo4nPJhpzdm17IiSRLT51nGpjLzYqinfTVs=,iv:0bqvVuubTZWxhlGgO7sEGlVVaXqZTtnLWLs2bSoS24s=,tag:HpVj8mRXSm0Huue+n/r51A==,type:str]
+    mac_only_encrypted: true
     pgp:
         - created_at: "2026-04-13T20:28:42Z"
           enc: |-
@@ -163,6 +160,4 @@ sops:
             =y/n/
             -----END PGP MESSAGE-----
           fp: 47E4999BED565F9874AA0E7C05DA03D000FC10D1
-    encrypted_regex: ^(stringData)$
-    mac_only_encrypted: true
     version: 3.12.2

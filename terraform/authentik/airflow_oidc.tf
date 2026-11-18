@@ -56,17 +56,9 @@ resource "authentik_application" "airflow_oidc" {
   policy_engine_mode = "all"
 }
 
-resource "authentik_group" "airflow_oidc" {
-  name         = "airflow-oidc"
-  is_superuser = false
-  parents      = []
-  roles        = []
-  users        = jsondecode(data.sops_file.secrets.data["airflow.oidc_user_ids"])
-}
-
 resource "authentik_policy_binding" "airflow_oidc" {
   target         = authentik_application.airflow_oidc.uuid
-  group          = authentik_group.airflow_oidc.id
+  group          = authentik_group.access["g1"].id
   order          = 0
   enabled        = true
   failure_result = false

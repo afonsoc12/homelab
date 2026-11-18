@@ -40,19 +40,9 @@ resource "authentik_application" "bambuddy_oidc" {
   policy_engine_mode = "all"
 }
 
-# Enrollment follows the account bootstrap and verified-identity rehearsal.
-resource "authentik_group" "bambuddy_oidc" {
-  name         = "bambuddy-oidc"
-  is_superuser = false
-  parents      = []
-  roles        = []
-
-  users = jsondecode(data.sops_file.secrets.data["bambuddy.oidc_user_ids"])
-}
-
 resource "authentik_policy_binding" "bambuddy_oidc" {
   target         = authentik_application.bambuddy_oidc.uuid
-  group          = authentik_group.bambuddy_oidc.id
+  policy         = authentik_policy_expression.group_access.id
   order          = 0
   enabled        = true
   failure_result = false
