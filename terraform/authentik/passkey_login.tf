@@ -266,7 +266,7 @@ resource "authentik_policy_binding" "local_password_proof_incomplete" {
 # The existing Plex path receives the same monthly check in a later rollout
 # stage, after the optional passkey path has been exercised.
 resource "authentik_flow_stage_binding" "plex_local_password_proof" {
-  target                  = authentik_flow.plex_auth_v2.uuid
+  target                  = authentik_flow.plex_auth.uuid
   stage                   = authentik_stage_password.login_password.id
   order                   = 60
   evaluate_on_plan        = false
@@ -285,7 +285,7 @@ resource "authentik_policy_binding" "plex_local_password_proof_due" {
 }
 
 resource "authentik_flow_stage_binding" "plex_record_local_password_proof" {
-  target                  = authentik_flow.plex_auth_v2.uuid
+  target                  = authentik_flow.plex_auth.uuid
   stage                   = authentik_stage_deny.local_password_proof_incomplete.id
   order                   = 70
   evaluate_on_plan        = false
@@ -304,7 +304,7 @@ resource "authentik_policy_binding" "plex_record_local_password_proof" {
 }
 
 resource "authentik_flow_stage_binding" "plex_local_password_proof_incomplete" {
-  target                  = authentik_flow.plex_auth_v2.uuid
+  target                  = authentik_flow.plex_auth.uuid
   stage                   = authentik_stage_deny.local_password_proof_incomplete.id
   order                   = 97
   evaluate_on_plan        = false

@@ -16,12 +16,11 @@ resource "authentik_stage_email" "signin_verification" {
 # password alone cannot register an authenticator before inbox control is proved.
 resource "authentik_flow_stage_binding" "signin_email" {
   for_each = {
-    login         = { flow = authentik_flow.login.uuid, order = 20 }
-    passkey       = { flow = authentik_flow.passkey_login.uuid, order = 15 }
-    invitation    = { flow = authentik_flow.invitation_enrollment.uuid, order = 32 }
-    plex_login    = { flow = authentik_flow.plex["authentication"].uuid, order = 15 }
-    plex_login_v2 = { flow = authentik_flow.plex_auth_v2.uuid, order = 15 }
-    plex_join     = { flow = authentik_flow.plex["enrollment"].uuid, order = 15 }
+    login        = { flow = authentik_flow.login.uuid, order = 20 }
+    passkey      = { flow = authentik_flow.passkey_login.uuid, order = 15 }
+    invitation   = { flow = authentik_flow.invitation_enrollment.uuid, order = 32 }
+    plex_primary = { flow = authentik_flow.plex_auth.uuid, order = 15 }
+    plex_join    = { flow = authentik_flow.plex["enrollment"].uuid, order = 15 }
   }
   target                  = each.value.flow
   stage                   = authentik_stage_email.signin_verification.id
@@ -48,16 +47,15 @@ resource "authentik_policy_expression" "signin_email_required" {
 
 resource "authentik_policy_binding" "signin_email_required" {
   for_each = {
-    login         = authentik_flow_stage_binding.signin_email["login"].id
-    passkey       = authentik_flow_stage_binding.signin_email["passkey"].id
-    plex_login    = authentik_flow_stage_binding.signin_email["plex_login"].id
-    plex_login_v2 = authentik_flow_stage_binding.signin_email["plex_login_v2"].id
+    login        = authentik_flow_stage_binding.signin_email["login"].id
+    passkey      = authentik_flow_stage_binding.signin_email["passkey"].id
+    plex_primary = authentik_flow_stage_binding.signin_email["plex_primary"].id
   }
   target         = each.value
   policy         = authentik_policy_expression.signin_email_required.id
   order          = 0
   enabled        = true
-  timeout        = contains(["passkey", "plex_login_v2"], each.key) ? 0 : 30
+  timeout        = contains(["passkey", "plex_primary"], each.key) ? 0 : 30
   failure_result = true # Evaluation errors require email verification.
 }
 
@@ -80,12 +78,11 @@ resource "authentik_policy_expression" "signin_email_destination_invalid" {
 
 resource "authentik_flow_stage_binding" "signin_email_destination" {
   for_each = {
-    login         = { flow = authentik_flow.login.uuid, order = 19 }
-    passkey       = { flow = authentik_flow.passkey_login.uuid, order = 14 }
-    invitation    = { flow = authentik_flow.invitation_enrollment.uuid, order = 31 }
-    plex_login    = { flow = authentik_flow.plex["authentication"].uuid, order = 14 }
-    plex_login_v2 = { flow = authentik_flow.plex_auth_v2.uuid, order = 14 }
-    plex_join     = { flow = authentik_flow.plex["enrollment"].uuid, order = 14 }
+    login        = { flow = authentik_flow.login.uuid, order = 19 }
+    passkey      = { flow = authentik_flow.passkey_login.uuid, order = 14 }
+    invitation   = { flow = authentik_flow.invitation_enrollment.uuid, order = 31 }
+    plex_primary = { flow = authentik_flow.plex_auth.uuid, order = 14 }
+    plex_join    = { flow = authentik_flow.plex["enrollment"].uuid, order = 14 }
   }
   target                  = each.value.flow
   stage                   = authentik_stage_deny.signin_email_incomplete.id
@@ -102,7 +99,7 @@ resource "authentik_policy_binding" "signin_email_destination" {
   policy         = authentik_policy_expression.signin_email_destination_invalid.id
   order          = 0
   enabled        = true
-  timeout        = contains(["passkey", "plex_login_v2"], each.key) ? 0 : 30
+  timeout        = contains(["passkey", "plex_primary"], each.key) ? 0 : 30
   failure_result = true
 }
 
@@ -285,8 +282,6 @@ resource "authentik_flow_stage_binding" "password_renewal" {
   for_each = {
     login_prompt = { flow = authentik_flow.login.uuid, stage = authentik_stage_prompt.password_change_prompt.id, order = 70 }
     login_write  = { flow = authentik_flow.login.uuid, stage = authentik_stage_user_write.password_change_write.id, order = 80 }
-    plex_prompt  = { flow = authentik_flow.plex["authentication"].uuid, stage = authentik_stage_prompt.password_change_prompt.id, order = 70 }
-    plex_write   = { flow = authentik_flow.plex["authentication"].uuid, stage = authentik_stage_user_write.password_change_write.id, order = 80 }
   }
   target                  = each.value.flow
   stage                   = each.value.stage
@@ -314,7 +309,6 @@ resource "authentik_stage_deny" "password_expired" {
 resource "authentik_flow_stage_binding" "password_expired" {
   for_each = {
     login = authentik_flow.login.uuid
-    plex  = authentik_flow.plex["authentication"].uuid
   }
   target                  = each.value
   stage                   = authentik_stage_deny.password_expired.id
@@ -385,12 +379,11 @@ resource "authentik_stage_deny" "signin_email_incomplete" {
 
 resource "authentik_flow_stage_binding" "signin_email_complete" {
   for_each = {
-    login         = { flow = authentik_flow.login.uuid, order = 95 }
-    passkey       = { flow = authentik_flow.passkey_login.uuid, order = 50 }
-    invitation    = { flow = authentik_flow.invitation_enrollment.uuid, order = 39 }
-    plex_login    = { flow = authentik_flow.plex["authentication"].uuid, order = 95 }
-    plex_login_v2 = { flow = authentik_flow.plex_auth_v2.uuid, order = 95 }
-    plex_join     = { flow = authentik_flow.plex["enrollment"].uuid, order = 95 }
+    login        = { flow = authentik_flow.login.uuid, order = 95 }
+    passkey      = { flow = authentik_flow.passkey_login.uuid, order = 50 }
+    invitation   = { flow = authentik_flow.invitation_enrollment.uuid, order = 39 }
+    plex_primary = { flow = authentik_flow.plex_auth.uuid, order = 95 }
+    plex_join    = { flow = authentik_flow.plex["enrollment"].uuid, order = 95 }
   }
   target                  = each.value.flow
   stage                   = authentik_stage_deny.signin_email_incomplete.id
@@ -407,6 +400,6 @@ resource "authentik_policy_binding" "signin_email_complete" {
   policy         = authentik_policy_expression.signin_email_incomplete.id
   order          = 0
   enabled        = true
-  timeout        = contains(["passkey", "plex_login_v2"], each.key) ? 0 : 30
+  timeout        = contains(["passkey", "plex_primary"], each.key) ? 0 : 30
   failure_result = true
 }

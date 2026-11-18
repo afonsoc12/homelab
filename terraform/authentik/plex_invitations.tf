@@ -43,7 +43,7 @@ resource "authentik_policy_expression" "plex_email_access" {
 }
 
 resource "authentik_policy_binding" "plex_email_access" {
-  for_each       = merge(authentik_flow.plex, { authentication_v2 = authentik_flow.plex_auth_v2 })
+  for_each       = merge(authentik_flow.plex, { primary = authentik_flow.plex_auth })
   target         = each.value.uuid
   policy         = authentik_policy_expression.plex_email_access.id
   order          = 5

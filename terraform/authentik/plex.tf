@@ -22,7 +22,7 @@ resource "authentik_source_plex" "plex" {
   group_matching_mode = "identifier"
   user_path_template  = "users/plex"
   policy_engine_mode  = "all"
-  authentication_flow = authentik_flow.plex_auth_v2.uuid
+  authentication_flow = authentik_flow.plex_auth.uuid
   enrollment_flow     = authentik_flow.plex["enrollment"].uuid
 
   # Do not expose the source until app restrictions and every authentication
@@ -30,13 +30,12 @@ resource "authentik_source_plex" "plex" {
   depends_on = [
     authentik_policy_binding.access_mealie,
     authentik_policy_binding.access_grafana,
-    authentik_policy_binding.plex_source_context,
-    authentik_policy_binding.plex_source_context["authentication_v2"],
+    authentik_policy_binding.plex_source_context["primary"],
     authentik_policy_binding.plex_reputation,
-    authentik_policy_binding.plex_reputation["authentication_v2"],
+    authentik_policy_binding.plex_reputation["primary"],
     authentik_policy_binding.plex_enrollment_admission,
     authentik_policy_binding.plex_email_access,
-    authentik_policy_binding.plex_email_access["authentication_v2"],
+    authentik_policy_binding.plex_email_access["primary"],
     authentik_policy_binding.plex_require_source,
     authentik_flow_stage_binding.plex_require_source,
     authentik_flow_stage_binding.plex_invitation,
@@ -44,12 +43,11 @@ resource "authentik_source_plex" "plex" {
     authentik_flow_stage_binding.plex_enrollment_password,
     authentik_flow_stage_binding.plex_enrollment_write,
     authentik_flow_stage_binding.plex_mfa,
-    authentik_flow_stage_binding.plex_mfa["authentication_v2"],
-    authentik_flow_stage_binding.plex_login,
-    authentik_flow_stage_binding.plex_login["authentication_v2"],
-    authentik_policy_binding.signin_email_required["plex_login_v2"],
-    authentik_policy_binding.signin_email_destination["plex_login_v2"],
-    authentik_policy_binding.signin_email_complete["plex_login_v2"],
+    authentik_flow_stage_binding.plex_mfa["primary"],
+    authentik_flow_stage_binding.plex_login["primary"],
+    authentik_policy_binding.signin_email_required["plex_primary"],
+    authentik_policy_binding.signin_email_destination["plex_primary"],
+    authentik_policy_binding.signin_email_complete["plex_primary"],
     authentik_policy_binding.plex_local_password_proof_due,
     authentik_policy_binding.plex_record_local_password_proof,
     authentik_policy_binding.plex_local_password_proof_incomplete,
@@ -64,7 +62,7 @@ resource "authentik_source_plex" "plex" {
 }
 
 resource "authentik_flow" "plex" {
-  for_each           = toset(["authentication", "enrollment"])
+  for_each           = toset(["enrollment"])
   name               = "Homelab - Plex ${title(each.key)}"
   slug               = "homelab-plex-${each.key}"
   title              = "Sign in with Plex"
@@ -75,9 +73,9 @@ resource "authentik_flow" "plex" {
   layout             = "stacked"
 }
 
-resource "authentik_flow" "plex_auth_v2" {
+resource "authentik_flow" "plex_auth" {
   name               = "Homelab - Plex Authentication with Password Proof"
-  slug               = "homelab-plex-authentication-v2"
+  slug               = "homelab-plex-authentication"
   title              = "Sign in with Plex"
   designation        = "authentication"
   authentication     = "require_unauthenticated"
@@ -110,8 +108,7 @@ resource "authentik_policy_expression" "plex_source_context" {
 
 resource "authentik_policy_binding" "plex_source_context" {
   for_each = {
-    authentication    = authentik_flow.plex["authentication"]
-    authentication_v2 = authentik_flow.plex_auth_v2
+    primary = authentik_flow.plex_auth
   }
   target         = each.value.uuid
   policy         = authentik_policy_expression.plex_source_context.id
@@ -122,7 +119,7 @@ resource "authentik_policy_binding" "plex_source_context" {
 
 # Bind reputation to the whole flow: a failed stage policy only skips a stage.
 resource "authentik_policy_binding" "plex_reputation" {
-  for_each       = merge(authentik_flow.plex, { authentication_v2 = authentik_flow.plex_auth_v2 })
+  for_each       = merge(authentik_flow.plex, { primary = authentik_flow.plex_auth })
   target         = each.value.uuid
   policy         = authentik_policy_reputation.login_reputation.id
   negate         = true
@@ -170,7 +167,7 @@ resource "authentik_flow_stage_binding" "plex_enrollment_write" {
 
 # Unconditional MFA before either flow creates an authenticated session.
 resource "authentik_flow_stage_binding" "plex_mfa" {
-  for_each                = merge(authentik_flow.plex, { authentication_v2 = authentik_flow.plex_auth_v2 })
+  for_each                = merge(authentik_flow.plex, { primary = authentik_flow.plex_auth })
   target                  = each.value.uuid
   stage                   = authentik_stage_authenticator_validate.login_mfa_validation.id
   order                   = 20
@@ -191,7 +188,7 @@ resource "authentik_stage_user_login" "plex" {
 }
 
 resource "authentik_flow_stage_binding" "plex_login" {
-  for_each                = merge(authentik_flow.plex, { authentication_v2 = authentik_flow.plex_auth_v2 })
+  for_each                = merge(authentik_flow.plex, { primary = authentik_flow.plex_auth })
   target                  = each.value.uuid
   stage                   = authentik_stage_user_login.plex.id
   order                   = 100
