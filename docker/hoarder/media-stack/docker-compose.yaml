@@ -137,7 +137,7 @@ services:
       - "/mnt/user/appdata/qbittorrent:/config"
 
   radarr:
-    image: ghcr.io/linuxserver/radarr:6.4.4
+    image: ghcr.io/linuxserver/radarr:7.0.3
     container_name: radarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -153,7 +153,7 @@ services:
       - "/mnt/user/appdata/radarr:/config"
 
   radarr-4k:
-    image: ghcr.io/linuxserver/radarr:6.4.4
+    image: ghcr.io/linuxserver/radarr:7.0.3
     container_name: radarr-4k
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
