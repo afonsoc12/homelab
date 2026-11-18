@@ -46,19 +46,9 @@ resource "authentik_application" "paperless_oidc" {
   policy_engine_mode = "all"
 }
 
-# Only identities associated with existing human accounts are admitted.
-resource "authentik_group" "paperless_oidc" {
-  name         = "paperless-oidc"
-  is_superuser = false
-  parents      = []
-  roles        = []
-
-  users = jsondecode(data.sops_file.secrets.data["paperless.oidc_user_ids"])
-}
-
 resource "authentik_policy_binding" "paperless_oidc" {
   target         = authentik_application.paperless_oidc.uuid
-  group          = authentik_group.paperless_oidc.id
+  group          = authentik_group.access["g1"].id
   order          = 0
   enabled        = true
   failure_result = false

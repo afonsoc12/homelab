@@ -32,7 +32,7 @@ resource "authentik_application" "firefly" {
 
 resource "authentik_policy_binding" "firefly_admins" {
   target         = authentik_application.firefly.uuid
-  group          = data.sops_file.secrets.data["value_079"]
+  group          = authentik_group.access["g1"].id
   order          = 0
   failure_result = false
 }

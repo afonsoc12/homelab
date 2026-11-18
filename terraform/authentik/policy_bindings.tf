@@ -21,7 +21,7 @@ resource "authentik_policy_binding" "access_uptime_kuma" {
 resource "authentik_policy_binding" "access_node_red" {
   enabled        = true
   failure_result = false
-  group          = data.sops_file.secrets.data["value_079"]
+  group          = authentik_group.access["g1"].id
   negate         = false
   order          = 0
   target         = authentik_application.node_red.uuid
@@ -41,7 +41,7 @@ resource "authentik_policy_binding" "notification_policy_exception" {
 resource "authentik_policy_binding" "access_argo_cd" {
   enabled        = true
   failure_result = false
-  group          = data.sops_file.secrets.data["value_079"]
+  group          = authentik_group.access["g1"].id
   negate         = false
   order          = 0
   target         = authentik_application.argo_cd.uuid
@@ -78,18 +78,6 @@ resource "authentik_policy_binding" "notification_property_mapping_exception" {
   timeout        = 30
 }
 
-# Reputation must deny the whole login flow. A failed policy on a stage
-# binding only skips that stage, which must never be possible for password/MFA.
-moved {
-  from = authentik_policy_binding.login_identification_reputation
-  to   = authentik_policy_binding.login_reputation
-}
-
-resource "authentik_policy_binding" "login_reputation" {
-  target         = authentik_flow.login.uuid
-  policy         = authentik_policy_reputation.login_reputation.id
-  order          = 0
-  negate         = true
-  enabled        = true
-  failure_result = false
-}
+# The local password stage limits failed attempts per flow. Do not bind the
+# shared IP reputation score to this flow: it denies a valid password and MFA
+# before identification when unrelated failures have lowered the IP score.

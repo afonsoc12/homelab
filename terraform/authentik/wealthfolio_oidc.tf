@@ -39,19 +39,9 @@ resource "authentik_application" "wealthfolio_oidc" {
   policy_engine_mode = "all"
 }
 
-# Household access is explicit and remains separate from administrator groups.
-resource "authentik_group" "wealthfolio_oidc" {
-  name         = "wealthfolio-oidc"
-  is_superuser = false
-  parents      = []
-  roles        = []
-
-  users = jsondecode(data.sops_file.secrets.data["wealthfolio.oidc_user_ids"])
-}
-
 resource "authentik_policy_binding" "wealthfolio_oidc" {
   target         = authentik_application.wealthfolio_oidc.uuid
-  group          = authentik_group.wealthfolio_oidc.id
+  policy         = authentik_policy_expression.group_access.id
   order          = 0
   enabled        = true
   failure_result = false

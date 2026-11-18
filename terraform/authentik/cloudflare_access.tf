@@ -37,7 +37,7 @@ resource "authentik_application" "cloudflare_access" {
 
 resource "authentik_policy_binding" "cloudflare_access_admins" {
   target         = authentik_application.cloudflare_access.uuid
-  group          = data.sops_file.secrets.data["value_079"]
+  group          = authentik_group.access["g1"].id
   order          = 0
   failure_result = false
 }

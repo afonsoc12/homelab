@@ -22,7 +22,7 @@ resource "authentik_source_plex" "plex" {
   group_matching_mode = "identifier"
   user_path_template  = "users/plex"
   policy_engine_mode  = "all"
-  authentication_flow = authentik_flow.plex["authentication"].uuid
+  authentication_flow = authentik_flow.plex_auth.uuid
   enrollment_flow     = authentik_flow.plex["enrollment"].uuid
 
   # Do not expose the source until app restrictions and every authentication
@@ -30,17 +30,27 @@ resource "authentik_source_plex" "plex" {
   depends_on = [
     authentik_policy_binding.access_mealie,
     authentik_policy_binding.access_grafana,
-    authentik_policy_binding.plex_source_context,
+    authentik_policy_binding.plex_source_context["primary"],
     authentik_policy_binding.plex_reputation,
+    authentik_policy_binding.plex_reputation["primary"],
     authentik_policy_binding.plex_enrollment_admission,
     authentik_policy_binding.plex_email_access,
+    authentik_policy_binding.plex_email_access["primary"],
     authentik_policy_binding.plex_require_source,
     authentik_flow_stage_binding.plex_require_source,
     authentik_flow_stage_binding.plex_invitation,
     authentik_policy_binding.plex_invitation_source,
+    authentik_flow_stage_binding.plex_enrollment_password,
     authentik_flow_stage_binding.plex_enrollment_write,
     authentik_flow_stage_binding.plex_mfa,
-    authentik_flow_stage_binding.plex_login,
+    authentik_flow_stage_binding.plex_mfa["primary"],
+    authentik_flow_stage_binding.plex_login["primary"],
+    authentik_policy_binding.signin_email_required["plex_primary"],
+    authentik_policy_binding.signin_email_destination["plex_primary"],
+    authentik_policy_binding.signin_email_complete["plex_primary"],
+    authentik_policy_binding.plex_local_password_proof_due,
+    authentik_policy_binding.plex_record_local_password_proof,
+    authentik_policy_binding.plex_local_password_proof_incomplete,
   ]
 
   lifecycle {
@@ -52,11 +62,22 @@ resource "authentik_source_plex" "plex" {
 }
 
 resource "authentik_flow" "plex" {
-  for_each           = toset(["authentication", "enrollment"])
+  for_each           = toset(["enrollment"])
   name               = "Homelab - Plex ${title(each.key)}"
   slug               = "homelab-plex-${each.key}"
   title              = "Sign in with Plex"
   designation        = each.key
+  authentication     = "require_unauthenticated"
+  policy_engine_mode = "all"
+  denied_action      = "message_continue"
+  layout             = "stacked"
+}
+
+resource "authentik_flow" "plex_auth" {
+  name               = "Homelab - Plex Authentication with Password Proof"
+  slug               = "homelab-plex-authentication"
+  title              = "Sign in with Plex"
+  designation        = "authentication"
   authentication     = "require_unauthenticated"
   policy_engine_mode = "all"
   denied_action      = "message_continue"
@@ -86,7 +107,9 @@ resource "authentik_policy_expression" "plex_source_context" {
 }
 
 resource "authentik_policy_binding" "plex_source_context" {
-  for_each       = { authentication = authentik_flow.plex["authentication"] }
+  for_each = {
+    primary = authentik_flow.plex_auth
+  }
   target         = each.value.uuid
   policy         = authentik_policy_expression.plex_source_context.id
   order          = 0
@@ -96,7 +119,7 @@ resource "authentik_policy_binding" "plex_source_context" {
 
 # Bind reputation to the whole flow: a failed stage policy only skips a stage.
 resource "authentik_policy_binding" "plex_reputation" {
-  for_each       = authentik_flow.plex
+  for_each       = merge(authentik_flow.plex, { primary = authentik_flow.plex_auth })
   target         = each.value.uuid
   policy         = authentik_policy_reputation.login_reputation.id
   negate         = true
@@ -105,9 +128,24 @@ resource "authentik_policy_binding" "plex_reputation" {
   failure_result = false
 }
 
-# No password or automatic group assignment. Invitations may not override
-# the profile supplied by Plex; use an empty invitation custom-attributes field.
-# Plex supplies the profile; administrators manage memberships independently.
+# Plex supplies the profile; the invitee still sets a local password.
+# Administrators manage memberships independently.
+resource "authentik_stage_prompt" "plex_enrollment_password" {
+  name                = "Homelab - Plex Enrollment Password"
+  fields              = [authentik_stage_prompt_field.invitation_password.id, authentik_stage_prompt_field.invitation_password_repeat.id]
+  validation_policies = [authentik_policy_password.password_requirements.id]
+}
+
+resource "authentik_flow_stage_binding" "plex_enrollment_password" {
+  target                  = authentik_flow.plex["enrollment"].uuid
+  stage                   = authentik_stage_prompt.plex_enrollment_password.id
+  order                   = 10
+  evaluate_on_plan        = false
+  re_evaluate_policies    = true
+  policy_engine_mode      = "all"
+  invalid_response_action = "retry"
+}
+
 resource "authentik_stage_user_write" "plex_enrollment" {
   name                     = "Homelab - Plex Enrollment Write"
   user_creation_mode       = "always_create"
@@ -120,7 +158,7 @@ resource "authentik_stage_user_write" "plex_enrollment" {
 resource "authentik_flow_stage_binding" "plex_enrollment_write" {
   target                  = authentik_flow.plex["enrollment"].uuid
   stage                   = authentik_stage_user_write.plex_enrollment.id
-  order                   = 10
+  order                   = 11
   evaluate_on_plan        = false
   re_evaluate_policies    = true
   policy_engine_mode      = "all"
@@ -129,7 +167,7 @@ resource "authentik_flow_stage_binding" "plex_enrollment_write" {
 
 # Unconditional MFA before either flow creates an authenticated session.
 resource "authentik_flow_stage_binding" "plex_mfa" {
-  for_each                = authentik_flow.plex
+  for_each                = merge(authentik_flow.plex, { primary = authentik_flow.plex_auth })
   target                  = each.value.uuid
   stage                   = authentik_stage_authenticator_validate.login_mfa_validation.id
   order                   = 20
@@ -141,7 +179,7 @@ resource "authentik_flow_stage_binding" "plex_mfa" {
 
 resource "authentik_stage_user_login" "plex" {
   name                     = "Homelab - Plex Login"
-  session_duration         = "hours=8"
+  session_duration         = "hours=6"
   remember_me_offset       = "seconds=0"
   remember_device          = "seconds=0"
   network_binding          = "no_binding"
@@ -150,7 +188,7 @@ resource "authentik_stage_user_login" "plex" {
 }
 
 resource "authentik_flow_stage_binding" "plex_login" {
-  for_each                = authentik_flow.plex
+  for_each                = merge(authentik_flow.plex, { primary = authentik_flow.plex_auth })
   target                  = each.value.uuid
   stage                   = authentik_stage_user_login.plex.id
   order                   = 100
