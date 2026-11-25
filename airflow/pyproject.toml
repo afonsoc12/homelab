@@ -6,8 +6,8 @@ requires-python = ">=3.14,<3.15"
 dependencies = [
     "apache-airflow==3.4.0",
     "apache-airflow-providers-postgres==7.1.2",
-    "apache-airflow-providers-cncf-kubernetes==11.0.0",
-    "apache-airflow-providers-fab[oauth]==3.11.0",
+    "apache-airflow-providers-cncf-kubernetes==11.1.0",
+    "apache-airflow-providers-fab[oauth]==3.11.1",
     "authlib==1.9.10",
 ]
 
