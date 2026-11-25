@@ -255,10 +255,6 @@ configmap:
                         description: Electricity usage dashboard
                         icon: si:octopusdeploy
                         url: https://electricity.local.{{ .Values.domain }}
-                      - title: Wealthfolio
-                        description: Investment portfolio tracker
-                        icon: sh:wealthfolio
-                        url: https://wealth.local.{{ .Values.domain }}
                       - title: Wallabag
                         description: Link aggregator
                         icon: di:wallabag

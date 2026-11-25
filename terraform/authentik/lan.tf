@@ -285,13 +285,6 @@ locals {
       host      = "tracktor.local"
       upstream  = "http://tracktor.homelab.svc.cluster.local:3000"
     }
-    "wealthfolio" = {
-      name      = "wealthfolio"
-      icon      = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/wealthfolio.png"
-      namespace = "homelab"
-      host      = "wealth.local"
-      upstream  = "http://wealthfolio.homelab.svc.cluster.local:8088"
-    }
     "wedding-site" = {
       name = "wedding-site"
       # Calendar icon from the Dashboard Icons catalog for this custom site.
