@@ -13,7 +13,7 @@ terraform {
   required_providers {
     restful = {
       source  = "magodo/restful"
-      version = "= 0.25.2"
+      version = "0.26.0"
     }
     archive = {
       source  = "hashicorp/archive"
@@ -21,7 +21,7 @@ terraform {
     }
     aws = {
       source  = "hashicorp/aws"
-      version = "= 6.73.0"
+      version = "6.74.0"
     }
     sops = {
       source  = "carlpett/sops"
