@@ -2,7 +2,7 @@ terraform {
   required_providers {
     restful = {
       source                = "magodo/restful"
-      version               = "= 0.25.2"
+      version               = "0.26.0"
       configuration_aliases = [restful.home_assistant, restful.music_assistant, restful.account_linking]
     }
   }
