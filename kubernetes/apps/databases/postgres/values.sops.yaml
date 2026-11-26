@@ -16,7 +16,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/postgres
-    tag: 18
+    tag: 19
 #   pullPolicy: Always
 command: {}
 args: {}
