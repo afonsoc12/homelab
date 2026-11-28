@@ -26,7 +26,7 @@ cronjobs:
       restartPolicy: Never
       image:
         repository: ghcr.io/hotio/cloudflareddns
-        digest: sha256:8bf340d011197346897caee95152ee649686f9abbf95c5c0b0f6873b8819c8ba
+        digest: sha256:4128f4c73b842ef013823623bd1cdf815ab3a74d03915a5eaa88cf949eb65890
       nodeSelector:
         kubernetes.io/hostname: k3s-m2
       resources:
