@@ -18,7 +18,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/wallabag/wallabag
-    tag: 2.6.17
+    tag: 2.6.19
     pullPolicy: Always
 #   restartPolicy:
 command: {}

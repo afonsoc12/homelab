@@ -49,7 +49,7 @@ server:
       homelab/customization-revision: "3"
     initContainers:
       - name: prepare-plex-compatibility
-        image: ghcr.io/goauthentik/server:2026.8.6
+        image: ghcr.io/goauthentik/server:2026.8.7
         command: [python, /customization-source/patch_plex.py]
         securityContext:
           runAsUser: 1000
