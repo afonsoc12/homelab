@@ -7,7 +7,7 @@
 ---
 image:
   repository: docker.io/n8nio/n8n
-  tag: 3.3.0
+  tag: 3.4.1
   pullPolicy: Always
 
 # hostNetwork: true

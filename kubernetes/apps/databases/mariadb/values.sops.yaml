@@ -16,7 +16,7 @@ strategy:
     type: Recreate
 image:
     repository: docker.io/mariadb
-    tag: 13.0.2
+    tag: 13.1.2
 #   pullPolicy: Always
 command: {}
 args: {}
