@@ -102,7 +102,7 @@ services:
         condition: service_healthy
 
   prowlarr:
-    image: ghcr.io/linuxserver/prowlarr:3.0.2
+    image: ghcr.io/linuxserver/prowlarr:3.1.0
     container_name: prowlarr
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -119,7 +119,7 @@ services:
       - "/mnt/user/appdata/prowlarr:/config"
 
   qbittorrent:
-    image: ghcr.io/linuxserver/qbittorrent:5.3.0
+    image: ghcr.io/linuxserver/qbittorrent:5.3.1
     container_name: qbittorrent
     restart: unless-stopped
     network_mode: "service:privoxyvpn"
@@ -200,7 +200,7 @@ services:
       - "/mnt/user/appdata/seerr:/app/config"
 
   plex:
-    image: ghcr.io/linuxserver/plex:1.43.5@sha256:9a1325bf0b34a50993a04be0bdcc7fab841d2a78161bd11b4db4ff8478a7ac2a
+    image: ghcr.io/linuxserver/plex:1.43.5@sha256:31e4c2de666cd130bc389133b6c63af08912559d992370e52822f8f229185aef
     container_name: plex
     restart: unless-stopped
     network_mode: host
@@ -285,7 +285,7 @@ services:
       - "/mnt/user/appdata/tautulli:/config"
 
   tdarr:
-    image: ghcr.io/haveagitgat/tdarr:3.08.00
+    image: ghcr.io/haveagitgat/tdarr:3.10.00
     container_name: tdarr
     restart: unless-stopped
     ports:

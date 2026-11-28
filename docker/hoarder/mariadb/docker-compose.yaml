@@ -5,7 +5,7 @@
 # --------------------
 services:
   mariadb:
-    image: mariadb:13.0.2
+    image: mariadb:13.1.2
     container_name: mariadb
     restart: unless-stopped
     network_mode: bridge
